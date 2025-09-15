@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react"; // ✅ Import icon
 
 export default function LoginPage() {
   const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const router = useRouter();
 
   async function onSubmit(formData: FormData) {
     setBusy(true);
@@ -25,7 +28,6 @@ export default function LoginPage() {
       const data = await res.json();
       if (res.ok) {
         setStatus("✅ Login successful!");
-        // later: redirect to dashboard
       } else {
         setStatus(data.error || "❌ Invalid email or password");
       }
@@ -39,15 +41,28 @@ export default function LoginPage() {
   return (
     <section className="section login">
       <div className="site-container">
-        <div className="login-card">
-          <h2 className="login-heading">Login</h2>
-          <form action={onSubmit} className="login-form">
+        <div className="login-card relative">
+          {/* 🔙 Back arrow top-left */}
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="back-btn"
+            aria-label="Go back"
+          >
+            <ArrowLeft size={20} />
+            <span>Back</span>
+          </button>
+
+          <h2 className="login-heading text-center">Login</h2>
+
+          <form action={onSubmit} className="login-form mt-6">
             <input
               type="email"
               name="email"
               placeholder="Email"
               className="input"
               required
+              autoComplete="email"
             />
             <input
               type="password"
@@ -55,6 +70,7 @@ export default function LoginPage() {
               placeholder="Password"
               className="input"
               required
+              autoComplete="current-password"
             />
             <button
               type="submit"
@@ -64,8 +80,16 @@ export default function LoginPage() {
               {busy ? "Logging in..." : "Login"}
             </button>
           </form>
+
           {status && <p className="login-status">{status}</p>}
         </div>
+
+        <p className="mt-4 text-center">
+          Don’t have an account?{" "}
+          <a href="/signup" className="sign-up-link">
+            Sign Up
+          </a>
+        </p>
       </div>
     </section>
   );

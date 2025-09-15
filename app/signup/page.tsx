@@ -1,19 +1,25 @@
 "use client";
-
 import { useState } from "react";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-export default function SignupPage() {
+export default function SignUpPage() {
   const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const router = useRouter();
 
-  async function onSubmit(formData: FormData) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     setBusy(true);
     setStatus(null);
 
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
     const payload = {
-      name: String(formData.get("name") || ""),
-      email: String(formData.get("email") || ""),
-      password: String(formData.get("password") || ""),
+      name: formData.get("name"),
+      email: formData.get("email"),
+      password: formData.get("password"),
     };
 
     try {
@@ -25,12 +31,13 @@ export default function SignupPage() {
 
       const data = await res.json();
       if (res.ok) {
-        setStatus("✅ Account created! You can now log in.");
+        setStatus("✅ Account created successfully. You can log in now.");
+        form.reset();
       } else {
-        setStatus(data.error || "❌ Failed to sign up");
+        setStatus(`❌ ${data.error || "Something went wrong"}`);
       }
     } catch {
-      setStatus("⚠️ Network error. Please try again");
+      setStatus("❌ Network error");
     } finally {
       setBusy(false);
     }
@@ -40,31 +47,54 @@ export default function SignupPage() {
     <section className="section login">
       <div className="site-container">
         <div className="login-card">
+          <button
+            type="button"
+            className="back-btn"
+            aria-label="Go back"
+            onClick={() => router.back()}
+          >
+            <ArrowLeft size={20} />
+            <span>Back</span>
+          </button>
+
           <h2 className="login-heading">Sign Up</h2>
-          <form action={onSubmit} className="login-form">
-            <input name="name" placeholder="Name" className="input" required />
+
+          <form onSubmit={handleSubmit} className="login-form">
             <input
-              type="email"
+              id="name"
+              name="name"
+              placeholder="Full Name"
+              className="input"
+              required
+              autoComplete="name"
+            />
+            <input
+              id="email"
               name="email"
+              type="email"
               placeholder="Email"
               className="input"
               required
+              autoComplete="email"
             />
             <input
-              type="password"
+              id="password"
               name="password"
+              type="password"
               placeholder="Password"
               className="input"
               required
+              autoComplete="new-password"
             />
             <button
               type="submit"
               className="btn btn-primary wide"
               disabled={busy}
             >
-              {busy ? "Signing up..." : "Sign Up"}
+              {busy ? "Registering..." : "Sign Up"}
             </button>
           </form>
+
           {status && <p className="login-status">{status}</p>}
         </div>
       </div>

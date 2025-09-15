@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
 import "./globals.css";
-
-export const metadata: Metadata = {
-  title: "CareTech — Senior IT Help",
-  description: "Patient, friendly tech support for seniors in Miami.",
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+export const metadata = {
+  title: "CareTech",
+  description: "Friendly tech help for seniors",
 };
 
 export default function RootLayout({
@@ -13,7 +13,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
-      <body className="antialiased text-gray-900">{children}</body>
+      <body>
+        <Navbar />
+
+        <main>{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }

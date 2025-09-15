@@ -1,6 +1,16 @@
-type Service = { title: string; desc: string; icon: string };
+import Link from "next/link";
 
-type Props = { items: Service[]; id?: string };
+type Service = {
+  title: string;
+  desc: string;
+  icon: string;
+  slug: string;
+};
+
+type Props = {
+  items: Service[];
+  id?: string;
+};
 
 export default function Services({ items, id = "services" }: Props) {
   return (
@@ -13,11 +23,11 @@ export default function Services({ items, id = "services" }: Props) {
 
         <div className="services-grid">
           {items.map((s, i) => (
-            <div key={i} className="service-card">
+            <Link key={i} href={`/services/${s.slug}`} className="service-card">
               <div className="service-icon">{s.icon}</div>
               <h3 className="service-title">{s.title}</h3>
               <p className="service-desc">{s.desc}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

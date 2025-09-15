@@ -26,7 +26,6 @@ export default function Footer() {
         </a>
       </div>
 
-      {/* bottom row */}
       <div className="site-container footer-bottom">
         <p className="copy">© {year} CareTech. All rights reserved.</p>
         <div className="legal">

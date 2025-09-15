@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 
-const uri = process.env.MONGODB_URI as string; // add this in your .env
+const uri = process.env.MONGODB_URI as string;
 const options = {};
 
 let client: MongoClient | null = null;
@@ -11,7 +11,6 @@ if (!process.env.MONGODB_URI) {
 }
 
 if (process.env.NODE_ENV === "development") {
-  // Use a global variable so the client is not constantly recreated
   if (!(global as any)._mongoClientPromise) {
     client = new MongoClient(uri, options);
     (global as any)._mongoClientPromise = client.connect();
