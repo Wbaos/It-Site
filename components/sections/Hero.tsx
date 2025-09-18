@@ -1,4 +1,3 @@
-// components/sections/Hero.tsx
 type Props = {
   imageSrc?: string;
   title?: string;

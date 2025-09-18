@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
-import clientPromise from "@/lib/mongodb";
+import { connectDB } from "@/lib/mongodb";
+import { User } from "@/app/models/User";
 import bcrypt from "bcryptjs";
+import { setAuthCookie, signToken } from "@/lib/auth";
 
 export async function POST(req: Request) {
   try {
@@ -10,11 +12,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    const client = await clientPromise;
-    const db = client.db("Teck-Database");
-    const users = db.collection("users");
+    await connectDB();
 
-    const user = await users.findOne({ email });
+    const user = await User.findOne({ email });
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
@@ -27,10 +27,15 @@ export async function POST(req: Request) {
       );
     }
 
-    return NextResponse.json({
-      ok: true,
-      user: { name: user.name, email: user.email },
+    // ✅ Sign token + set cookie
+    const token = signToken({
+      id: user._id.toString(),
+      email: user.email,
+      name: user.name,
     });
+    await setAuthCookie(token);
+
+    return NextResponse.json({ ok: true, redirect: "/" });
   } catch (err) {
     console.error("Login API error:", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });

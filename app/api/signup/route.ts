@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
-import clientPromise from "@/lib/mongodb";
+import { connectDB } from "@/lib/mongodb";
+import { User } from "@/app/models/User";
 import bcrypt from "bcryptjs";
+import { setAuthCookie, signToken } from "@/lib/auth";
 
 export async function POST(req: Request) {
   try {
@@ -10,11 +12,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    const client = await clientPromise;
-    const db = client.db("Teck-Database");
-    const users = db.collection("users");
+    await connectDB();
 
-    const existing = await users.findOne({ email });
+    const existing = await User.findOne({ email });
     if (existing) {
       return NextResponse.json(
         { error: "Email already registered" },
@@ -23,15 +23,17 @@ export async function POST(req: Request) {
     }
 
     const hashed = await bcrypt.hash(password, 10);
+    const user = await User.create({ name, email, password: hashed });
 
-    await users.insertOne({
-      name,
+    // ✅ Sign token + set cookie
+    const token = signToken({
+      id: user._id.toString(),
       email,
-      password: hashed,
-      createdAt: new Date(),
+      name,
     });
+    await setAuthCookie(token);
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, redirect: "/" });
   } catch (err) {
     console.error("Signup API error:", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });

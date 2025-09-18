@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react"; // ✅ Import icon
+import { ArrowLeft } from "lucide-react";
 
 export default function LoginPage() {
   const [status, setStatus] = useState<string | null>(null);
@@ -26,10 +26,11 @@ export default function LoginPage() {
       });
 
       const data = await res.json();
-      if (res.ok) {
-        setStatus("✅ Login successful!");
+      if (res.ok && data.ok) {
+        setStatus(" Login successful!");
+        router.push(data.redirect || "/");
       } else {
-        setStatus(data.error || "❌ Invalid email or password");
+        setStatus(data.error || " Invalid email or password");
       }
     } catch {
       setStatus("⚠️ Network error. Please try again");
@@ -42,7 +43,6 @@ export default function LoginPage() {
     <section className="section login">
       <div className="site-container">
         <div className="login-card relative">
-          {/* 🔙 Back arrow top-left */}
           <button
             type="button"
             onClick={() => router.back()}
@@ -62,7 +62,6 @@ export default function LoginPage() {
               placeholder="Email"
               className="input"
               required
-              autoComplete="email"
             />
             <input
               type="password"
@@ -70,7 +69,6 @@ export default function LoginPage() {
               placeholder="Password"
               className="input"
               required
-              autoComplete="current-password"
             />
             <button
               type="submit"
