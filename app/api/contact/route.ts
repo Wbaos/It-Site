@@ -1,5 +1,7 @@
+// app/api/contact/route.ts
 import { NextResponse } from "next/server";
-import clientPromise from "@/lib/mongodb";
+import { connectDB } from "@/lib/mongodb";
+import { Contact } from "@/app/models/Contact";
 import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
@@ -13,19 +15,11 @@ export async function POST(req: Request) {
       );
     }
 
-    // 1️⃣ Save to MongoDB
-    const client = await clientPromise;
-    const db = client.db("caretech");
-    const contacts = db.collection("contacts");
+    // 1️ Save to MongoDB via Mongoose
+    await connectDB();
+    const newContact = await Contact.create({ name, email, message });
 
-    const result = await contacts.insertOne({
-      name,
-      email,
-      message,
-      at: new Date(),
-    });
-
-    // 2️⃣ Send email notification
+    // 2️ Send email notification
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -52,7 +46,7 @@ export async function POST(req: Request) {
       `,
     });
 
-    return NextResponse.json({ ok: true, id: result.insertedId });
+    return NextResponse.json({ ok: true, id: newContact._id });
   } catch (err) {
     console.error("Contact API error:", err);
     return NextResponse.json(

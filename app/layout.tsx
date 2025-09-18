@@ -1,6 +1,9 @@
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { CartProvider } from "@/lib/CartContext";
+import { NavProvider } from "@/lib/NavContext";
+
 export const metadata = {
   title: "CareTech",
   description: "Friendly tech help for seniors",
@@ -14,10 +17,14 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body>
-        <Navbar />
-
-        <main>{children}</main>
-        <Footer />
+        <CartProvider>
+          <NavProvider>
+            {" "}
+            <Navbar />
+            <main className="main-content">{children}</main>
+            <Footer />
+          </NavProvider>
+        </CartProvider>
       </body>
     </html>
   );

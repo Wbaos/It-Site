@@ -30,14 +30,14 @@ export default function SignUpPage() {
       });
 
       const data = await res.json();
-      if (res.ok) {
-        setStatus("✅ Account created successfully. You can log in now.");
-        form.reset();
+      if (res.ok && data.ok) {
+        setStatus("✅ Account created successfully!");
+        router.push(data.redirect || "/");
       } else {
-        setStatus(`❌ ${data.error || "Something went wrong"}`);
+        setStatus(` ${data.error || "Something went wrong"}`);
       }
     } catch {
-      setStatus("❌ Network error");
+      setStatus(" Network error");
     } finally {
       setBusy(false);
     }

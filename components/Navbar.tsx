@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { Bell, Search, Menu, X, LogIn } from "lucide-react";
+import { Bell, Search, Menu, X, LogIn, ShoppingCart } from "lucide-react";
 import { NAV_SERVICES } from "@/lib/serviceCatalog";
+import { useCart } from "@/lib/CartContext";
+import { useNav } from "@/lib/NavContext";
 
 const NAV = [
   { href: "/#how", label: "How It Works" },
@@ -12,12 +14,14 @@ const NAV = [
 ];
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false); // mobile
-  const [dropdownOpen, setDropdownOpen] = useState(false); // desktop
-  const [activeService, setActiveService] = useState<string | null>(null); // subcategories
-  const dropdownRef = useRef<HTMLDivElement>(null); // ✅ ref
+  const [open, setOpen] = useState(false);
+  const [activeService, setActiveService] = useState<string | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // ✅ Close dropdown if clicked outside
+  const { items } = useCart();
+  const { dropdownOpen, setDropdownOpen } = useNav();
+
+  //  Close dropdown if clicked outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -31,16 +35,13 @@ export default function Navbar() {
 
     if (dropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
     }
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [dropdownOpen]);
+  }, [dropdownOpen, setDropdownOpen]);
 
-  //  Close mobile menu on resize >900px
+  // Close mobile menu on resize >900px
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 900 && open) {
@@ -74,7 +75,7 @@ export default function Navbar() {
                 className="nav-link"
                 onClick={(e) => {
                   e.preventDefault();
-                  setDropdownOpen((v) => !v);
+                  setDropdownOpen(!dropdownOpen);
                   setActiveService(null); // reset
                 }}
               >
@@ -117,7 +118,7 @@ export default function Navbar() {
                       </div>
                     ))
                   ) : (
-                    // 🔹 Show subcategories
+                    //  Show subcategories
                     <div className="dropdown-subpanel">
                       <button
                         className="dropdown-back"
@@ -174,7 +175,17 @@ export default function Navbar() {
           <button className="icon-btn" aria-label="Notifications">
             <Bell size={18} />
           </button>
-          <Link href="/login" className="icon-btn" aria-label="Login">
+          <Link href="/cart" className="icon-btn cart-btn" aria-label="Cart">
+            <ShoppingCart size={18} />
+            {Array.isArray(items) && items.length > 0 && (
+              <span className="cart-count">{items.length}</span>
+            )}
+          </Link>
+          <Link
+            href="/login"
+            className="icon-btn icon-btn-login "
+            aria-label="Login"
+          >
             <LogIn size={18} />
           </Link>
         </div>
