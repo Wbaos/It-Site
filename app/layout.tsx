@@ -1,8 +1,8 @@
+// app/layout.tsx
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { CartProvider } from "@/lib/CartContext";
-import { NavProvider } from "@/lib/NavContext";
+import { Providers } from "./Providers";
 
 export const metadata = {
   title: "CareTech",
@@ -17,14 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body>
-        <CartProvider>
-          <NavProvider>
-            {" "}
-            <Navbar />
-            <main className="main-content">{children}</main>
-            <Footer />
-          </NavProvider>
-        </CartProvider>
+        <Providers>
+          <Navbar />
+          <main className="main-content">{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

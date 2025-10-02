@@ -19,6 +19,7 @@ const OrderSchema = new Schema(
     email: { type: String },
     items: { type: [OrderItemSchema], required: true },
     total: { type: Number, required: true },
+    quantity: { type: Number, required: true },
     status: {
       type: String,
       enum: ["pending", "paid", "failed"],

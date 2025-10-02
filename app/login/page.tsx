@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import { ArrowLeft } from "lucide-react";
 
 export default function LoginPage() {
@@ -13,30 +14,23 @@ export default function LoginPage() {
     setBusy(true);
     setStatus(null);
 
-    const payload = {
-      email: String(formData.get("email") || ""),
-      password: String(formData.get("password") || ""),
-    };
+    const email = String(formData.get("email") || "");
+    const password = String(formData.get("password") || "");
 
-    try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+    const res = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
 
-      const data = await res.json();
-      if (res.ok && data.ok) {
-        setStatus(" Login successful!");
-        router.push(data.redirect || "/");
-      } else {
-        setStatus(data.error || " Invalid email or password");
-      }
-    } catch {
-      setStatus("⚠️ Network error. Please try again");
-    } finally {
-      setBusy(false);
+    if (res?.error) {
+      setStatus("⚠️ Invalid email or password");
+    } else {
+      setStatus("✅ Login successful!");
+      router.push("/cart"); // redirect after login
     }
+
+    setBusy(false);
   }
 
   return (

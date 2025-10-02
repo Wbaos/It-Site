@@ -1,5 +1,3 @@
-// lib/serviceCatalog.ts
-
 export type SubItem = {
   title: string;
   slug: string;

@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { Bell, Search, Menu, X, LogIn, ShoppingCart } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { Search, Menu, X, User, ShoppingCart } from "lucide-react";
 import { NAV_SERVICES } from "@/lib/serviceCatalog";
 import { useCart } from "@/lib/CartContext";
 import { useNav } from "@/lib/NavContext";
+import NotificationDropdown from "@/components/NotificationDropdown";
 
 const NAV = [
   { href: "/#how", label: "How It Works" },
@@ -14,14 +16,17 @@ const NAV = [
 ];
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
+  const { data: session } = useSession();
+  const userId = session?.user?.id || "guest";
+
+  // const [open, setOpen] = useState(false);
   const [activeService, setActiveService] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const { items } = useCart();
-  const { dropdownOpen, setDropdownOpen } = useNav();
+  const { open, setOpen, dropdownOpen, setDropdownOpen, notifOpen } = useNav();
 
-  //  Close dropdown if clicked outside
+  // Close dropdown if clicked outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -52,6 +57,14 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, [open]);
 
+  useEffect(() => {
+    if (open || dropdownOpen || notifOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [open, dropdownOpen, notifOpen]);
+
   return (
     <header className="site-header">
       <div className="site-container-var nav-grid">
@@ -64,7 +77,11 @@ export default function Navbar() {
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
-            {open ? <X size={20} /> : <Menu size={20} />}
+            {open ? (
+              <X size={30} strokeWidth={1} />
+            ) : (
+              <Menu size={30} strokeWidth={1} />
+            )}
           </button>
 
           {/* Desktop navigation */}
@@ -76,7 +93,7 @@ export default function Navbar() {
                 onClick={(e) => {
                   e.preventDefault();
                   setDropdownOpen(!dropdownOpen);
-                  setActiveService(null); // reset
+                  setActiveService(null);
                 }}
               >
                 Services ▾
@@ -118,7 +135,7 @@ export default function Navbar() {
                       </div>
                     ))
                   ) : (
-                    //  Show subcategories
+                    // Show subcategories
                     <div className="dropdown-subpanel">
                       <button
                         className="dropdown-back"
@@ -172,9 +189,10 @@ export default function Navbar() {
           <button className="icon-btn" aria-label="Search">
             <Search size={18} />
           </button>
-          <button className="icon-btn" aria-label="Notifications">
-            <Bell size={18} />
-          </button>
+
+          {/* Notifications (dynamic by session) */}
+          <NotificationDropdown userId={userId} />
+
           <Link href="/cart" className="icon-btn cart-btn" aria-label="Cart">
             <ShoppingCart size={18} />
             {Array.isArray(items) && items.length > 0 && (
@@ -183,66 +201,78 @@ export default function Navbar() {
           </Link>
           <Link
             href="/login"
-            className="icon-btn icon-btn-login "
+            className="icon-btn icon-btn-login"
             aria-label="Login"
           >
-            <LogIn size={18} />
+            <User size={18} />
           </Link>
         </div>
       </div>
 
-      {/* Mobile nav stays the same */}
+      {/* Mobile nav */}
       {open && (
         <nav className="mobile-nav" aria-label="Mobile">
-          <div className="site-container-var">
-            <details>
-              <summary className="mobile-link">Services ▾</summary>
-              <div className="mobile-submenu">
-                {NAV_SERVICES.map((cat, i) => (
-                  <div key={i} className="mobile-category">
-                    <h4>{cat.category}</h4>
-                    <ul>
-                      {cat.items.map((s) => (
-                        <li key={s.slug}>
-                          <Link
-                            href={`/services/${s.slug}`}
-                            className="mobile-sublink"
-                            onClick={() => setOpen(false)}
-                          >
-                            {s.title}
-                          </Link>
-                          {s.subItems && (
-                            <ul className="mobile-subsubmenu">
-                              {s.subItems.map((sub) => (
-                                <li key={sub.slug}>
-                                  <Link
-                                    href={`/services/${sub.slug}`}
-                                    className="mobile-subsublink"
-                                    onClick={() => setOpen(false)}
-                                  >
-                                    {sub.title}
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+          <div className="site-container-var-dropdown mobile-submenu">
+            {NAV_SERVICES.map((cat, i) => (
+              <div
+                key={i}
+                className={`mobile-category ${
+                  activeService === cat.category ? "open" : ""
+                }`}
+              >
+                <button
+                  className="mobile-category-btn"
+                  onClick={() =>
+                    setActiveService(
+                      activeService === cat.category ? null : cat.category
+                    )
+                  }
+                >
+                  {cat.category}
+                  <span>{activeService === cat.category ? "−" : "+"}</span>
+                </button>
+
+                <ul className="mobile-category-list">
+                  {activeService === cat.category &&
+                    cat.items.map((s) => (
+                      <li key={s.slug}>
+                        <Link
+                          href={`/services/${s.slug}`}
+                          className="mobile-sublink"
+                          onClick={() => setOpen(false)}
+                        >
+                          {s.title}
+                        </Link>
+                        {s.subItems && (
+                          <ul className="mobile-subsubmenu">
+                            {s.subItems.map((sub) => (
+                              <li key={sub.slug}>
+                                <Link
+                                  href={`/services/${sub.slug}`}
+                                  className="mobile-subsublink"
+                                  onClick={() => setOpen(false)}
+                                >
+                                  {sub.title}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
+                </ul>
               </div>
-            </details>
+            ))}
 
             {NAV.map((i) => (
-              <a
+              <Link
                 key={i.href}
                 href={i.href}
                 className="mobile-link"
                 onClick={() => setOpen(false)}
               >
                 {i.label}
-              </a>
+              </Link>
             ))}
 
             <Link

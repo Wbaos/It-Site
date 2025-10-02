@@ -1,41 +1,37 @@
-// lib/auth.ts
-import jwt from "jsonwebtoken";
-import { cookies } from "next/headers";
+// // lib/auth.ts
+// import jwt from "jsonwebtoken";
+// import { cookies } from "next/headers";
 
-const JWT_SECRET = process.env.JWT_SECRET!;
+// const SECRET = process.env.JWT_SECRET || "supersecret";
 
-// Create a JWT token
-export function signToken(payload: any) {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: "7d" });
-}
+// export function setAuthCookie(user: { id: string; email: string; name: string }) {
+//   const token = jwt.sign(
+//     { id: user.id, email: user.email, name: user.name },
+//     SECRET,
+//     { expiresIn: "7d" }
+//   );
 
-// Verify token
-export function verifyToken(token: string) {
-  try {
-    return jwt.verify(token, JWT_SECRET);
-  } catch {
-    return null;
-  }
-}
+//   cookies().set("auth_token", token, {
+//     httpOnly: true,
+//     secure: process.env.NODE_ENV === "production",
+//     path: "/",
+//     maxAge: 60 * 60 * 24 * 7, // 7 days
+//   });
 
-export async function setAuthCookie(token: string) {
-  const cookieStore = await cookies();
-  cookieStore.set("auth", token, {
-    httpOnly: true,
-    path: "/",
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24 * 7,
-  });
-}
+//   return token;
+// }
 
-// Get cookie
-export async function getAuthCookie() {
-  const cookieStore = await cookies();
-  return cookieStore.get("auth")?.value || null;
-}
+// export function clearAuthCookie() {
+//   cookies().delete("auth_token");
+// }
 
-// Remove cookie
-export async function clearAuthCookie() {
-  const cookieStore = await cookies();
-  cookieStore.delete("auth");
-}
+// export function verifyAuth() {
+//   const token = cookies().get("auth_token")?.value;
+//   if (!token) return null;
+
+//   try {
+//     return jwt.verify(token, SECRET) as { id: string; email: string; name: string };
+//   } catch {
+//     return null;
+//   }
+// }
