@@ -122,7 +122,7 @@ export const homeSections: Section[] = [
       items: HOMEPAGE_TESTIMONIALS,
       title: "What Families Say",
       subtitle: "Real experiences from seniors and their loved ones.",
-      carousel: true, //  homepage gets carousel
+      carousel: true,
     },
   },
   { key: "pricing", Component: Pricing, props: {} },

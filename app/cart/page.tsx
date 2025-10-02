@@ -1,13 +1,13 @@
 "use client";
 
 import { useCart } from "@/lib/CartContext";
-import { useNav } from "@/lib/NavContext"; // ✅ import global nav context
+import { useNav } from "@/lib/NavContext";
 import { useState } from "react";
 import Link from "next/link";
 
 export default function CartPage() {
   const { items, removeItem, updateItemQuantity } = useCart();
-  const { setDropdownOpen } = useNav(); // ✅ hook into nav context
+  const { setDropdownOpen, setOpen } = useNav();
   const [checkingOut, setCheckingOut] = useState(false);
 
   const clearCart = async () => {
@@ -23,11 +23,17 @@ export default function CartPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ items }),
+        credentials: "include",
       });
+
+      if (!res.ok) {
+        const err = await res.json();
+        alert(`Checkout failed: ${err.error}`);
+        return;
+      }
 
       const { url } = await res.json();
       if (url) window.location.href = url;
-      else alert("Failed to create checkout session.");
     } catch (err) {
       console.error("Checkout error:", err);
       alert("Something went wrong with checkout.");
@@ -36,7 +42,7 @@ export default function CartPage() {
     }
   };
 
-  // ✅ subtotal = base + add-ons × quantity
+  // subtotal = base + add-ons × quantity
   const subtotal = Array.isArray(items)
     ? items.reduce((sum, i) => {
         const optionsTotal = i.options?.reduce((s, o) => s + o.price, 0) || 0;
@@ -55,7 +61,7 @@ export default function CartPage() {
               <button
                 className="btn btn-primary"
                 onClick={() => {
-                  setDropdownOpen(true); // ✅ open dropdown
+                  setDropdownOpen(true); // open dropdown
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               >
@@ -76,7 +82,7 @@ export default function CartPage() {
                   <div className="cart-info">
                     <h2 className="item-title">{item.title}</h2>
 
-                    {/* ✅ Show breakdown */}
+                    {/* Show breakdown */}
                     <ul className="item-options">
                       <li>
                         Base Price —{" "}
@@ -165,8 +171,12 @@ export default function CartPage() {
               <button
                 className="btn btn-secondary"
                 onClick={() => {
-                  setDropdownOpen(true); // ✅ open Services dropdown
-                  window.scrollTo({ top: 0, behavior: "smooth" }); // scroll to nav
+                  if (window.innerWidth < 900) {
+                    setOpen(true);
+                  } else {
+                    setDropdownOpen(true);
+                  }
+                  window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               >
                 + Add More Services

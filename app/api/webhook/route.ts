@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { connectDB } from "@/lib/mongodb";
 import { Order } from "@/app/models/Order";
+import { Notification } from "@/app/models/Notification";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -11,32 +12,28 @@ export async function POST(req: Request) {
   const body = await req.text();
 
   try {
-    console.log("🔥 Webhook hit");
-
     const event = stripe.webhooks.constructEvent(
       body,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET!
     );
 
-    console.log("👉 Event type:", event.type);
-
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
-      console.log("✅ Checkout session completed:", session.id);
 
       await connectDB();
 
+      // Parse items from metadata
       let items: any[] = [];
       if (session.metadata?.items) {
         try {
           items = JSON.parse(session.metadata.items);
-          console.log("🛒 Parsed items:", items);
         } catch (err) {
-          console.error(" Failed to parse metadata.items:", err);
+          console.error("Failed to parse metadata.items:", err);
         }
       }
 
+      // Save the order in DB
       const email =
         session.customer_details?.email || session.customer_email || "unknown";
 
@@ -49,12 +46,29 @@ export async function POST(req: Request) {
         status: session.payment_status || "paid",
       });
 
-      console.log("✅ Order saved to Mongo:", order._id);
+      console.log("✅ Order saved:", order._id);
+
+      // 👇 NEW: create a notification if user was logged in
+      if (session.metadata?.userId) {
+        await Notification.create({
+          userId: session.metadata.userId,
+          message: `✅ Your order has been placed for ${items
+            .map((i) => i.title)
+            .join(", ")}`,
+          type: "success",
+          read: false,
+        });
+
+        console.log(
+          "🔔 Notification created for user:",
+          session.metadata.userId
+        );
+      }
     }
 
     return NextResponse.json({ received: true });
   } catch (err: any) {
-    console.error(" Webhook error:", err.message);
+    console.error("Webhook error:", err.message);
     return new NextResponse(`Webhook error: ${err.message}`, { status: 400 });
   }
 }
