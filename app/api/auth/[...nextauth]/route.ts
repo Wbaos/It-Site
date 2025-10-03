@@ -1,4 +1,3 @@
-// app/api/auth/[...nextauth]/route.ts
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
@@ -19,12 +18,14 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         await connectDB();
         const user = await User.findOne({ email: credentials?.email });
+
         if (!user) return null;
 
         const isValid = await bcrypt.compare(
           credentials!.password,
           user.password
         );
+
         if (!isValid) return null;
 
         return {

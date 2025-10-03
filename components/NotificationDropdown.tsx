@@ -13,7 +13,7 @@ type Notification = {
 };
 
 export default function NotificationDropdown({ userId }: { userId: string }) {
-  const { notifOpen, setNotifOpen, setOpen } = useNav(); // ✅ added setOpen
+  const { notifOpen, setNotifOpen, setOpen } = useNav();
   const [notifs, setNotifs] = useState<Notification[]>([]);
   const [newNotifIds, setNewNotifIds] = useState<Set<string>>(new Set());
   const dropdownRef = useRef<HTMLDivElement>(null);
