@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function SignUpPage() {
   const [status, setStatus] = useState<string | null>(null);
@@ -16,23 +17,36 @@ export default function SignUpPage() {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    const payload = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-    };
+    const name = String(formData.get("name") || "");
+    const email = String(formData.get("email") || "");
+    const password = String(formData.get("password") || "");
 
     try {
+      //  Create user
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ name, email, password }),
       });
 
       const data = await res.json();
+
       if (res.ok && data.ok) {
-        setStatus("✅ Account created successfully!");
-        router.push(data.redirect || "/");
+        //  Auto-login the user
+        const loginRes = await signIn("credentials", {
+          redirect: false,
+          email,
+          password,
+        });
+
+        if (loginRes?.error) {
+          setStatus("⚠️ Account created, but login failed. Please log in.");
+          router.push("/login");
+        } else {
+          setStatus(" Account created and logged in!");
+          //  Redirect to homepage
+          router.push("/");
+        }
       } else {
         setStatus(` ${data.error || "Something went wrong"}`);
       }
@@ -66,7 +80,6 @@ export default function SignUpPage() {
               placeholder="Full Name"
               className="input"
               required
-              autoComplete="name"
             />
             <input
               id="email"
@@ -75,7 +88,6 @@ export default function SignUpPage() {
               placeholder="Email"
               className="input"
               required
-              autoComplete="email"
             />
             <input
               id="password"
@@ -84,7 +96,6 @@ export default function SignUpPage() {
               placeholder="Password"
               className="input"
               required
-              autoComplete="new-password"
             />
             <button
               type="submit"

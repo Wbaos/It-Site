@@ -1,4 +1,3 @@
-// app/models/User.ts
 import mongoose, { Schema, models, model } from "mongoose";
 import bcrypt from "bcryptjs";
 
@@ -7,18 +6,18 @@ const UserSchema = new Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    resetToken: { type: String },
+    resetTokenExpiry: { type: Number },
   },
   { timestamps: true }
 );
 
-// 🔒 Hash password before saving
 UserSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next(); // only hash if changed
+  if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
-// 🔑 Add method to compare passwords
 UserSchema.methods.comparePassword = async function (
   candidatePassword: string
 ) {

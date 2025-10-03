@@ -1,36 +1,46 @@
-// // lib/auth.ts
 // import jwt from "jsonwebtoken";
 // import { cookies } from "next/headers";
 
 // const SECRET = process.env.JWT_SECRET || "supersecret";
 
-// export function setAuthCookie(user: { id: string; email: string; name: string }) {
+// export async function setAuthCookie(user: {
+//   id: string;
+//   email: string;
+//   name: string;
+// }) {
 //   const token = jwt.sign(
 //     { id: user.id, email: user.email, name: user.name },
 //     SECRET,
 //     { expiresIn: "7d" }
 //   );
 
-//   cookies().set("auth_token", token, {
+//   const cookieStore = await cookies();
+//   cookieStore.set("auth_token", token, {
 //     httpOnly: true,
 //     secure: process.env.NODE_ENV === "production",
 //     path: "/",
-//     maxAge: 60 * 60 * 24 * 7, // 7 days
+//     maxAge: 60 * 60 * 24 * 7,
 //   });
 
 //   return token;
 // }
 
-// export function clearAuthCookie() {
-//   cookies().delete("auth_token");
+// export async function clearAuthCookie() {
+//   const cookieStore = await cookies();
+//   cookieStore.delete("auth_token");
 // }
 
-// export function verifyAuth() {
-//   const token = cookies().get("auth_token")?.value;
+// export async function verifyAuth() {
+//   const cookieStore = await cookies();
+//   const token = cookieStore.get("auth_token")?.value;
 //   if (!token) return null;
 
 //   try {
-//     return jwt.verify(token, SECRET) as { id: string; email: string; name: string };
+//     return jwt.verify(token, SECRET) as {
+//       id: string;
+//       email: string;
+//       name: string;
+//     };
 //   } catch {
 //     return null;
 //   }

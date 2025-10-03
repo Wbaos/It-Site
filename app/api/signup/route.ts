@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { User } from "@/app/models/User";
-import bcrypt from "bcryptjs";
-import { setAuthCookie, signToken } from "@/lib/auth";
 
 export async function POST(req: Request) {
   try {
@@ -22,18 +20,9 @@ export async function POST(req: Request) {
       );
     }
 
-    const hashed = await bcrypt.hash(password, 10);
-    const user = await User.create({ name, email, password: hashed });
+    await User.create({ name, email, password });
 
-    // ✅ Sign token + set cookie
-    const token = signToken({
-      id: user._id.toString(),
-      email,
-      name,
-    });
-    await setAuthCookie(token);
-
-    return NextResponse.json({ ok: true, redirect: "/" });
+    return NextResponse.json({ ok: true, redirect: "/login" });
   } catch (err) {
     console.error("Signup API error:", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });

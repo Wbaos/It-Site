@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
-import { Search, Menu, X, User, ShoppingCart } from "lucide-react";
+import { Search, Menu, X, ShoppingCart } from "lucide-react";
 import { NAV_SERVICES } from "@/lib/serviceCatalog";
 import { useCart } from "@/lib/CartContext";
 import { useNav } from "@/lib/NavContext";
 import NotificationDropdown from "@/components/NotificationDropdown";
+import UserMenu from "@/components/UserMenu";
 
 const NAV = [
   { href: "/#how", label: "How It Works" },
@@ -19,7 +20,6 @@ export default function Navbar() {
   const { data: session } = useSession();
   const userId = session?.user?.id || "guest";
 
-  // const [open, setOpen] = useState(false);
   const [activeService, setActiveService] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -57,6 +57,7 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, [open]);
 
+  // Prevent background scroll when any menu is open
   useEffect(() => {
     if (open || dropdownOpen || notifOpen) {
       document.body.classList.add("no-scroll");
@@ -75,7 +76,7 @@ export default function Navbar() {
             className="menu-toggle"
             aria-label="Toggle menu"
             aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
+            onClick={() => setOpen(!open)}
           >
             {open ? (
               <X size={30} strokeWidth={1} />
@@ -199,13 +200,9 @@ export default function Navbar() {
               <span className="cart-count">{items.length}</span>
             )}
           </Link>
-          <Link
-            href="/login"
-            className="icon-btn icon-btn-login"
-            aria-label="Login"
-          >
-            <User size={18} />
-          </Link>
+
+          {/* ✅ Profile / Login dropdown menu */}
+          <UserMenu />
         </div>
       </div>
 
