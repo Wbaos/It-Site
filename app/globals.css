@@ -19,12 +19,12 @@ body.no-scroll {
 }
 
 /* Remove visited color globally */
-a:visited {
+/* a:visited {
   color: inherit !important;
-}
+} */
 
 /* Reset focus/active states for links & buttons */
-a:focus,
+/* a:focus,
 a:focus-visible,
 a:active,
 button:focus,
@@ -33,7 +33,7 @@ button:active {
   outline: none;
   color: inherit;
   background: inherit;
-}
+} */
 
 html {
   scroll-behavior: smooth;
@@ -114,7 +114,7 @@ main {
     border: 1px solid #111;
     padding: 0.75rem 1.25rem;
     font-weight: 500;
-    background: rgba(255, 255, 255, 0.9);
+    background: #2563eb;
     color: #111;
     text-decoration: none;
   }
@@ -431,18 +431,9 @@ main {
 }
 
 /* Cart items */
-.modify-btn {
-  font-size: 0.85rem;
-  color: #2563eb;
-  margin-right: 1rem;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
 
-.modify-btn:hover {
-  color: #1e40af;
-  text-decoration: underline;
-}
+
+
 
 .cart-items {
   background: #fff;
@@ -463,6 +454,7 @@ main {
   padding: 0;
   margin: 0;
 }
+
 
 .cart-item {
   display: flex;
@@ -492,26 +484,32 @@ main {
   color: #6b7280;
   margin-bottom: 0.5rem;
   padding-left: 1rem;
-  list-style: disc;
+  list-style: none; 
 }
+
+.item-options li::marker {
+  content: "- ";
+  color: #6b7280;
+}
+
 
 .item-actions {
   margin-top: 0.5rem;
+  display: flex;
+  gap: 20px;
 }
 
-.remove-btn {
+.remove-btn, .modify-btn {
   font-size: 0.85rem;
-  color: #ef4444;
-  background: none;
+  color: #fff;
+  background: black;
   border: none;
   cursor: pointer;
   transition: color 0.2s ease;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
-.remove-btn:hover {
-  color: #b91c1c;
-  text-decoration: underline;
-}
 
 .item-price {
   font-weight: 600;
@@ -568,19 +566,18 @@ main {
   display: flex;
   gap: 1rem;
 }
-.clear-btn {
-  background: #f9fafb;
-  border: 1px solid #d1d5db;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
+/* .clear-btn {
+   font-size: 0.85rem;
+  color: #fff;
+  background: #0f172a;
+  border: none;
   cursor: pointer;
-  font-weight: 500;
-  color: #374151;
-}
+  transition: color 0.2s ease;
+  padding: 10px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+} */
 
-.clear-btn:hover {
-  background: #f3f4f6;
-}
 /* Order summary */
 
 .order-summary {
@@ -613,36 +610,12 @@ main {
   font-size: 1.2rem;
   color: #111827;
 }
-.btn-primary {
-  background: #2563eb;
-  color: #fff;
-  padding: 0.9rem 1.2rem;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  text-align: center;
-  transition: background 0.2s ease;
-}
 
 .btn-primary:hover {
-  background: #1e40af;
+  background: #4b78dd;
 }
 
-.btn-secondary {
-  background: #f9fafb;
-  border: 1px solid #d1d5db;
-  padding: 0.9rem 1.2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  color: #374151;
-  text-align: center;
-}
 
-.btn-secondary:hover {
-  background: #f3f4f6;
-}
 .empty-cart {
   display: flex;
   flex-direction: column;
@@ -659,11 +632,6 @@ main {
   }
 }
 
-/* @media (max-width: 500px) {
-  .icon-btn-login {
-    display: none;
-  }
-} */
 .base-price {
   margin-bottom: 1rem;
   padding: 0.75rem 1rem;
@@ -1177,27 +1145,6 @@ main {
   color: #111827;
 }
 
-.btn-primary {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  background: #2563eb;
-  color: #fff;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 0.85rem;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  text-decoration: none;
-}
-
-.btn-primary:hover {
-  background: #1d4ed8;
-}
-
 /* Back link */
 .back-link {
   margin-top: 1.5rem;
@@ -1455,9 +1402,9 @@ main {
 }
 
 /*===Button Book Now===*/
-.btn.btn-primary {
+.btn.btn-primary,  .btn.btn-secondary, .clear-btn{
   position: relative;
-  background: #2563eb;
+  background: #000000;
   color: #fff;
   font-weight: 500;
   padding: 0.75rem 1.75rem;
@@ -1469,15 +1416,17 @@ main {
   text-transform: uppercase;
   text-align: center;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn.btn-primary:hover {
-  background: #1e40af;
-  transform: translateY(-2px);
+  background: #1b1b1b;
 }
 
 /* Shimmer effect */
-.btn.btn-primary::after {
+.btn.btn-primary::after, .btn.btn-secondary::after,  .clear-btn::after{
   content: "";
   position: absolute;
   top: 0;
@@ -1493,7 +1442,7 @@ main {
   transform: skewX(-20deg);
 }
 
-.btn.btn-primary:hover::after {
+.btn.btn-primary:hover::after, .btn.btn-secondary:hover::after, .clear-btn:hover::after {
   animation: shimmer 1s ease forwards;
 }
 
@@ -1932,21 +1881,6 @@ details[open] .faq-toggle {
   font-size: 0.9rem;
 }
 
-/* call to action */
-.plan-cta {
-  display: inline-block;
-  padding: 0.75rem 1.25rem;
-  border-radius: 0.75rem;
-  background: #2563eb;
-  color: #fff;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background 0.25s ease;
-}
-.plan-cta:hover {
-  background: #1d4ed8;
-}
-
 .testimonials-carousel {
   position: relative;
   --t-gap: 2rem;
@@ -2143,7 +2077,7 @@ details[open] .faq-toggle {
   box-shadow: 0 10px 22px rgba(37, 99, 235, 0.23);
 }
 .contact .btn.btn-primary:hover {
-  background: #1d4ed8;
+  background: #4b78dd;
 }
 
 .contact .form-hint {

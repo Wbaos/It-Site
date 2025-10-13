@@ -22,9 +22,10 @@ export default async function ServicePage({
 
           {service.description && <p>{service.description}</p>}
 
-          <Link href={`/services/${slug}/book`} className="btn btn-primary">
+          <Link href={`/services/${slug}/book/step1`} className="btn btn-primary">
             Book This Service
           </Link>
+
 
           {(service.details ?? []).length > 0 && (
             <ul>

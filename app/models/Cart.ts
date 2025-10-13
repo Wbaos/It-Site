@@ -1,26 +1,45 @@
-// models/Cart.ts
 import mongoose, { Schema, model, models } from "mongoose";
 
-const OptionSchema = new Schema({
-  name: { type: String, required: true },
-  price: { type: Number, default: 0 },
-});
-
-const CartItemSchema = new Schema({
-  slug: { type: String, required: true },
-  title: { type: String, required: true },
-  price: { type: Number, required: true },
-  options: { type: [OptionSchema], default: [] },
-  quantity: { type: Number, default: 1 },
-});
-
-const CartSchema = new Schema(
+const CartOptionSchema = new Schema(
   {
-    sessionId: { type: String, required: true },
-    userId: { type: String },
-    items: [CartItemSchema],
+    name: String,
+    price: Number,
   },
-  { timestamps: true }
+  { _id: false }
 );
+
+const CartItemSchema = new Schema(
+  {
+    id: { type: String, required: true },
+    slug: { type: String, required: true },
+    title: { type: String, required: true },
+    basePrice: { type: Number, required: true },
+    price: { type: Number, required: true },
+    options: [CartOptionSchema],
+    quantity: { type: Number, default: 1 },
+  },
+  { _id: false }
+);
+
+const CartSchema = new Schema({
+  sessionId: { type: String, required: true, unique: true },
+  items: [CartItemSchema],
+
+  contact: {
+    name: String,
+    email: String,
+    phone: String,
+  },
+  address: {
+    street: String,
+    city: String,
+    state: String,
+    zip: String,
+  },
+  schedule: {
+    date: String,
+    time: String,
+  },
+});
 
 export const Cart = models.Cart || model("Cart", CartSchema);
