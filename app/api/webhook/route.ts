@@ -7,7 +7,6 @@ import { Cart } from "@/app/models/Cart";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-
 export async function POST(req: Request) {
   const sig = req.headers.get("stripe-signature")!;
   const body = await req.text();
@@ -42,12 +41,23 @@ export async function POST(req: Request) {
       }
 
       const email =
+        session.metadata?.email ||
         session.customer_details?.email ||
         session.customer_email ||
         "unknown";
 
+
+      const normalizedItems = items.map((i: any) => ({
+        slug: i.slug,
+        title: i.title,
+        basePrice: i.basePrice ?? i.price,
+        price: i.price,
+        options: i.options || [],
+        quantity: i.quantity || 1,
+      }));
+
       const total = (session.amount_total || 0) / 100;
-      const quantity = items.reduce(
+      const quantity = normalizedItems.reduce(
         (sum, i) => sum + (i.quantity || 1),
         0
       );
@@ -55,7 +65,7 @@ export async function POST(req: Request) {
       const order = await Order.create({
         stripeSessionId: session.id,
         email,
-        items,
+        items: normalizedItems,
         total,
         quantity,
         contact,
@@ -63,7 +73,6 @@ export async function POST(req: Request) {
         schedule,
         status: "paid",
       });
-
 
       if (session.metadata?.sessionId) {
         await Cart.findOneAndUpdate(
@@ -75,7 +84,7 @@ export async function POST(req: Request) {
       if (session.metadata?.userId) {
         await Notification.create({
           userId: session.metadata.userId,
-          message: `Your order has been placed for ${items
+          message: `Your order has been placed for ${normalizedItems
             .map((i) => i.title)
             .join(", ")}`,
           type: "success",

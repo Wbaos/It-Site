@@ -791,6 +791,287 @@ main {
   }
 }
 
+/* -------------------------------
+   ACCOUNT PAGE BASE STYLES
+-------------------------------- */
+.account-page {
+  background-color: #f8fafc;
+  min-height: 80vh;
+  padding: 2rem 0;
+}
+
+.account-page .site-container {
+  max-width: 950px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  padding: 2.5rem 3rem;
+}
+
+/* -------------------------------
+   HEADER
+-------------------------------- */
+.account-page h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.account-page button.btn-secondary {
+  background-color: #1f2937;
+  color: white;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.account-page button.btn-secondary:hover {
+  background-color: #111827;
+  transform: scale(1.03);
+}
+
+/* -------------------------------
+   TABS
+-------------------------------- */
+.account-tabs {
+  display: flex;
+  gap: 1.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  margin: 2rem 0;
+}
+
+.account-tabs button {
+  font-size: 1rem;
+  font-weight: 500;
+  padding-bottom: 0.5rem;
+  border: none;
+  background: none;
+  border-bottom: 3px solid transparent;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.account-tabs button.active {
+  color: #2563eb;
+  border-color: #2563eb;
+}
+
+.account-tabs button:hover:not(.active) {
+  color: #1e3a8a;
+}
+
+/* -------------------------------
+   CARDS
+-------------------------------- */
+.account-card-grid {
+  display: grid;
+  gap: 1.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.account-card {
+  background: #f1f5f9;
+  border-radius: 10px;
+  text-align: center;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.account-card p {
+  margin: 0;
+}
+
+.account-card .title {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.account-card .value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* -------------------------------
+   RECENT ORDER SECTION
+-------------------------------- */
+.recent-order {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.recent-order h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+
+.recent-order p {
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+.recent-order ul {
+  list-style: disc;
+  margin-left: 1.5rem;
+  color: #374151;
+}
+
+/* -------------------------------
+   ORDERS LIST
+-------------------------------- */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-left: 0;
+}
+
+.order-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.order-card:hover {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  transform: none;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  background: #f8fafc;
+  transition: background-color 0.2s ease;
+}
+
+
+.order-header p {
+  margin: 0;
+}
+.order-header .order-meta {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+.order-header .order-total {
+  font-weight: 700;
+  color: #2563eb;
+  font-size: 1rem;
+}
+
+.order-items {
+  margin: 0.5rem 0 0 1rem;
+  color: #374151;
+}
+
+.order-header .order-id {
+  font-weight: 600;
+  color: #1e3a8a;
+  font-size: 0.95rem;
+}
+
+/* -------------------------------
+   PROFILE TAB
+-------------------------------- */
+.profile-card {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 1.8rem;
+  max-width: 500px;
+}
+
+.profile-card h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.profile-card p {
+  margin: 0.4rem 0;
+  color: #374151;
+}
+
+.profile-card small {
+  color: #9ca3af;
+}
+/* Collapsible order details */
+.order-card.open {
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+}
+
+.order-header:hover {
+  background: #f1f5f9;
+}
+
+.order-details {
+  padding: 1rem 1.5rem;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  animation: fadeIn 0.3s ease;
+}
+
+.order-section {
+  margin-bottom: 1rem;
+}
+
+.order-section h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #111827;
+}
+
+.order-section p {
+  font-size: 0.875rem;
+  color: #374151;
+    line-height: 1.4;
+
+}
+
+.order-section ul {
+  list-style: disc;
+  margin-left: 1.5rem;
+  color: #374151;
+    font-size: 0.85rem;
+
+}
+
+/* -------------------------------
+   RESPONSIVE
+-------------------------------- */
+@media (max-width: 768px) {
+  .account-page .site-container {
+    padding: 1.5rem;
+  }
+
+  .account-page h1 {
+    font-size: 1.5rem;
+  }
+
+  .account-tabs {
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+}
+
+
 /*==NavBar dropDown==*/
 .mobile-submenu {
   display: flex;
@@ -1289,7 +1570,7 @@ main {
   }
   .site-container {
     padding-left: 0px;
-    width: 100%;
+    /* width: 100%; */
   }
 }
 

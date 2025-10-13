@@ -51,16 +51,16 @@ export default function CartPage() {
                     <span className="option-price">${item.basePrice}</span>
                   </h2>
 
-                  {(item.options?.length ?? 0) > 0 && (
+                  {item.options?.length ? (
                     <ul className="item-options nested-options">
-                      {(item.options ?? []).map((opt, j) => (
+                      {item.options.map((opt, j) => (
                         <li key={j}>
-                          {opt.name} —{" "}
-                          <span className="option-price">${opt.price}</span>
+                          {opt.name} — <span className="option-price">${opt.price}</span>
                         </li>
                       ))}
                     </ul>
-                  )}
+                  ) : null}
+
 
                   <div className="item-actions">
                     <button
