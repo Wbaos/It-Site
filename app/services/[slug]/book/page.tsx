@@ -93,7 +93,6 @@ export default function BookingForm({
     setLoading(true);
 
     try {
-      // build structured options with prices
       const selectedOptionObjects =
         service.questions
           ?.filter((q) => selectedOptions.includes(q.id))
@@ -105,23 +104,23 @@ export default function BookingForm({
       const updatedItem = {
         slug,
         title: service.title,
-        price: service.price,
+        basePrice: service.price,
+        price: subtotal,
         options: selectedOptionObjects,
       };
 
-      // If modifying, remove old version first
       const modifying = searchParams.get("options") !== null;
       if (modifying) {
         await removeItem(slug);
       }
 
       await addItem(updatedItem);
-
       router.push("/cart");
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <section className="section booking">
@@ -162,9 +161,8 @@ export default function BookingForm({
 
             <button
               type="submit"
-              className={`btn btn-primary w-full flex items-center justify-center gap-2 ${
-                loading ? "is-loading" : ""
-              }`}
+              className={`btn btn-primary w-full flex items-center justify-center gap-2 ${loading ? "is-loading" : ""
+                }`}
               disabled={loading}
             >
               {loading ? (
