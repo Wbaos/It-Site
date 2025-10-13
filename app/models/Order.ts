@@ -8,6 +8,7 @@ const OptionSchema = new Schema({
 const OrderItemSchema = new Schema({
   slug: { type: String, required: true },
   title: { type: String, required: true },
+  basePrice: { type: Number, required: true },
   price: { type: Number, required: true },
   options: [OptionSchema],
   quantity: { type: Number, default: 1 },
