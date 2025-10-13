@@ -6,6 +6,7 @@ import {
   useState,
   useEffect,
   ReactNode,
+  useCallback,
 } from "react";
 
 type CartOption = {
@@ -14,18 +15,39 @@ type CartOption = {
 };
 
 type CartItem = {
+  id: string;
   slug: string;
   title: string;
+  basePrice: number;
   price: number;
   options?: CartOption[];
   quantity: number;
+  contact?: {
+    name: string;
+    email: string;
+    phone: string;
+  };
+  address?: {
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+  };
+  schedule?: {
+    date: string;
+    time: string;
+  };
 };
 
 type CartContextType = {
   items: CartItem[];
-  addItem: (item: Omit<CartItem, "quantity">) => Promise<void>;
-  removeItem: (slug: string) => Promise<void>;
-  updateItemQuantity: (slug: string, quantity: number) => Promise<void>;
+  addItem: (item: Omit<CartItem, "quantity" | "id">) => Promise<void>;
+  removeItem: (id: string) => Promise<void>;
+  updateItemQuantity: (id: string, quantity: number) => Promise<void>;
+  updateItem: (id: string, updates: Partial<CartItem>) => void; // ✅ new
+  clearCart: () => Promise<void>;
+  clearCartFrontend: () => void;
+  setItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -33,75 +55,114 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
-  //  Normalize helper
   const normalizeItems = (data: any): CartItem[] =>
     Array.isArray(data?.items) ? data.items : [];
 
-  //  Load cart from backend on mount
   useEffect(() => {
-    fetch("/api/cart")
-      .then((res) => res.json())
+    fetch("/api/cart", { credentials: "include" })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load cart");
+        return res.json();
+      })
       .then((data) => setItems(normalizeItems(data)))
       .catch(() => setItems([]));
   }, []);
 
-  //  Add item (increment if it already exists)
-  const addItem = async (item: Omit<CartItem, "quantity">) => {
-    const existing = items.find(
-      (i) =>
-        i.slug === item.slug &&
-        JSON.stringify(i.options || []) === JSON.stringify(item.options || [])
-    );
+  const addItem = useCallback(
+    async (item: Omit<CartItem, "quantity" | "id">) => {
+      try {
+        const uniqueId = `${item.slug}-${Date.now()}-${Math.random()
+          .toString(36)
+          .substring(2, 8)}`;
 
-    if (existing) {
-      // increment locally
-      const updated = items.map((i) =>
-        i.slug === item.slug &&
-        JSON.stringify(i.options || []) === JSON.stringify(item.options || [])
-          ? { ...i, quantity: i.quantity + 1 }
-          : i
-      );
-      setItems(updated);
-    } else {
-      const newItem = { ...item, quantity: 1 };
-      setItems([...items, newItem]);
-    }
+        const res = await fetch("/api/cart", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...item, id: uniqueId }),
+        });
 
-    // persist to backend
-    const res = await fetch("/api/cart", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(item),
-    });
-    const data = await res.json();
-    setItems(normalizeItems(data));
-  };
+        const data = await res.json();
+        setItems(normalizeItems(data));
+      } catch (err) {
+        console.error("Error adding item:", err);
+      }
+    },
+    [items]
+  );
 
-  //  Remove item completely
-  const removeItem = async (slug: string, options?: CartOption[]) => {
+  const removeItem = useCallback(async (id: string) => {
     const res = await fetch("/api/cart", {
       method: "DELETE",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slug, options }),
+      body: JSON.stringify({ id }),
     });
     const data = await res.json();
     setItems(data.items || []);
-  };
+  }, []);
 
-  //  Update item quantity
-  const updateItemQuantity = async (slug: string, quantity: number) => {
+  const updateItemQuantity = useCallback(
+    async (id: string, quantity: number) => {
+      const res = await fetch("/api/cart", {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, quantity }),
+      });
+      const data = await res.json();
+      setItems(normalizeItems(data));
+    },
+    []
+  );
+
+  const updateItem = useCallback(async (id: string, updates: Partial<CartItem>) => {
+    try {
+      const res = await fetch("/api/cart", {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, ...updates }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update cart item");
+      const data = await res.json();
+      setItems(normalizeItems(data));
+    } catch (err) {
+      console.error("Error updating cart item:", err);
+    }
+  }, []);
+
+
+  const clearCart = useCallback(async () => {
     const res = await fetch("/api/cart", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slug, quantity }),
+      method: "DELETE",
+      credentials: "include",
     });
-    const data = await res.json();
-    setItems(normalizeItems(data));
-  };
+    if (res.ok) {
+      const data = await res.json();
+      setItems(normalizeItems(data));
+    } else {
+      setItems([]);
+    }
+  }, []);
+
+  const clearCartFrontend = useCallback(() => {
+    setItems([]);
+  }, []);
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, updateItemQuantity }}
+      value={{
+        items,
+        addItem,
+        removeItem,
+        updateItemQuantity,
+        updateItem,
+        clearCart,
+        clearCartFrontend,
+        setItems,
+      }}
     >
       {children}
     </CartContext.Provider>

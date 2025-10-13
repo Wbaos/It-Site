@@ -18,7 +18,7 @@ export default function Pricing() {
               <li>Phone or video call</li>
               <li>Step-by-step guidance</li>
             </ul>
-            <a href="#contact" className="plan-cta">
+            <a href="#contact" className="btn btn-primary wide ">
               Get Remote Help
             </a>
           </div>
@@ -33,7 +33,7 @@ export default function Pricing() {
               <li>Wi-Fi, TV, printer setup</li>
               <li>Friendly, patient guidance</li>
             </ul>
-            <a href="#contact" className="plan-cta">
+            <a href="#contact" className="btn btn-primary wide">
               Book a Visit
             </a>
           </div>
@@ -48,7 +48,7 @@ export default function Pricing() {
               <li>Discounted visits</li>
               <li>Peace of mind</li>
             </ul>
-            <a href="#contact" className="plan-cta">
+            <a href="#contact" className="btn btn-primary wide">
               Join Today
             </a>
           </div>
