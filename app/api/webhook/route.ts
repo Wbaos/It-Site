@@ -1,11 +1,12 @@
-// app/api/webhook/route.ts
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { connectDB } from "@/lib/mongodb";
 import { Order } from "@/app/models/Order";
 import { Notification } from "@/app/models/Notification";
+import { Cart } from "@/app/models/Cart";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+
 
 export async function POST(req: Request) {
   const sig = req.headers.get("stripe-signature")!;
@@ -20,49 +21,66 @@ export async function POST(req: Request) {
 
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
-
       await connectDB();
 
-      // Parse items from metadata
       let items: any[] = [];
-      if (session.metadata?.items) {
-        try {
+      let contact: any = {};
+      let address: any = {};
+      let schedule: any = {};
+
+      try {
+        if (session.metadata?.items)
           items = JSON.parse(session.metadata.items);
-        } catch (err) {
-          console.error("Failed to parse metadata.items:", err);
-        }
+        if (session.metadata?.contact)
+          contact = JSON.parse(session.metadata.contact);
+        if (session.metadata?.address)
+          address = JSON.parse(session.metadata.address);
+        if (session.metadata?.schedule)
+          schedule = JSON.parse(session.metadata.schedule);
+      } catch (err) {
+        console.error("Metadata parse error:", err);
       }
 
-      // Save the order in DB
       const email =
-        session.customer_details?.email || session.customer_email || "unknown";
+        session.customer_details?.email ||
+        session.customer_email ||
+        "unknown";
+
+      const total = (session.amount_total || 0) / 100;
+      const quantity = items.reduce(
+        (sum, i) => sum + (i.quantity || 1),
+        0
+      );
 
       const order = await Order.create({
         stripeSessionId: session.id,
         email,
         items,
-        total: (session.amount_total || 0) / 100,
-        quantity: items.reduce((sum, i) => sum + (i.quantity || 1), 0),
-        status: session.payment_status || "paid",
+        total,
+        quantity,
+        contact,
+        address,
+        schedule,
+        status: "paid",
       });
 
-      console.log("✅ Order saved:", order._id);
 
-      // 👇 NEW: create a notification if user was logged in
+      if (session.metadata?.sessionId) {
+        await Cart.findOneAndUpdate(
+          { sessionId: session.metadata.sessionId },
+          { items: [] }
+        );
+      }
+
       if (session.metadata?.userId) {
         await Notification.create({
           userId: session.metadata.userId,
-          message: `✅ Your order has been placed for ${items
+          message: `Your order has been placed for ${items
             .map((i) => i.title)
             .join(", ")}`,
           type: "success",
           read: false,
         });
-
-        console.log(
-          "🔔 Notification created for user:",
-          session.metadata.userId
-        );
       }
     }
 

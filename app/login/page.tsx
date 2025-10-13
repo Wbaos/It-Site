@@ -1,18 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-export default function LoginPage() {
+function LoginContent() {
   const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // fallback: go back to homepage if no callbackUrl provided
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   async function onSubmit(formData: FormData) {
@@ -29,9 +28,9 @@ export default function LoginPage() {
     });
 
     if (res?.error) {
-      setStatus("⚠️ Invalid email or password");
+      setStatus("Invalid email or password");
     } else {
-      setStatus("✅ Login successful!");
+      setStatus("Login successful!");
       router.push(callbackUrl);
     }
 
@@ -42,7 +41,6 @@ export default function LoginPage() {
     <section className="section login">
       <div className="site-container">
         <div className="login-card relative">
-          {/* Back Button */}
           <button
             type="button"
             onClick={() => router.back()}
@@ -80,7 +78,6 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Forgot password link */}
           <p className="mt-3 text-center">
             <Link href="/forgot-password" className="forgot-link">
               Forgot your password?
@@ -98,5 +95,13 @@ export default function LoginPage() {
         </p>
       </div>
     </section>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading login page...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }

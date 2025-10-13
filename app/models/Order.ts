@@ -11,6 +11,21 @@ const OrderItemSchema = new Schema({
   price: { type: Number, required: true },
   options: [OptionSchema],
   quantity: { type: Number, default: 1 },
+  contact: {
+    name: String,
+    email: String,
+    phone: String,
+  },
+  address: {
+    street: String,
+    city: String,
+    state: String,
+    zip: String,
+  },
+  schedule: {
+    date: String,
+    time: String,
+  },
 });
 
 const OrderSchema = new Schema(
@@ -24,6 +39,21 @@ const OrderSchema = new Schema(
       type: String,
       enum: ["pending", "paid", "failed"],
       default: "pending",
+    },
+    contact: {
+      name: String,
+      email: String,
+      phone: String,
+    },
+    address: {
+      street: String,
+      city: String,
+      state: String,
+      zip: String,
+    },
+    schedule: {
+      date: String,
+      time: String,
     },
   },
   { timestamps: true }

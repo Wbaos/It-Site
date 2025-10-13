@@ -1,70 +1,59 @@
-// app/api/checkout/route.ts
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
+import { connectDB } from "@/lib/mongodb";
+import { Cart } from "@/app/models/Cart";
+import { getSessionId } from "@/lib/sessionId";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
   try {
-    // Try to get user session (may be null if guest)
     const session = await getServerSession(authOptions);
+    await connectDB();
+    const sessionId = await getSessionId();
 
-    const { items } = await req.json();
-
-    if (!items || !Array.isArray(items)) {
-      return NextResponse.json(
-        { error: "Invalid cart items" },
-        { status: 400 }
-      );
+    const cart = await Cart.findOne({ sessionId });
+    if (!cart || !cart.items.length) {
+      return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
     }
 
-    const line_items = items.map((item: any) => {
-      const optionsTotal =
-        item.options?.reduce(
-          (sum: number, opt: any) => sum + (opt.price || 0),
-          0
-        ) || 0;
-
-      const unitAmount = Math.round((item.price + optionsTotal) * 100);
-
-      const description = item.options?.length
-        ? item.options
-            .map((opt: any) => `${opt.name} (+$${opt.price})`)
-            .join(", ")
-        : undefined;
-
-      return {
-        price_data: {
-          currency: "usd",
-          unit_amount: unitAmount,
-          product_data: {
-            name: item.title,
-            ...(description ? { description } : {}),
-          },
+    const line_items = cart.items.map((item: any) => ({
+      price_data: {
+        currency: "usd",
+        unit_amount: Math.round(item.price * 100),
+        product_data: {
+          name: item.title,
+          description:
+            item.options?.map((opt: any) => `${opt.name} (+$${opt.price})`).join(", ") ||
+            "Tech service booking",
         },
-        quantity: item.quantity || 1,
-      };
-    });
+      },
+      quantity: item.quantity || 1,
+    }));
 
-    // Only include userId in metadata if user is logged in
+    const metadata: Record<string, string> = {
+      sessionId,
+      items: JSON.stringify(cart.items),
+      contact: JSON.stringify(cart.contact || {}),
+      address: JSON.stringify(cart.address || {}),
+      schedule: JSON.stringify(cart.schedule || {}),
+      ...(session?.user?.id ? { userId: session.user.id } : {}),
+    };
+
     const stripeSession = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
-      automatic_tax: { enabled: true },
       line_items,
-      metadata: {
-        items: JSON.stringify(items),
-        ...(session?.user?.id ? { userId: session.user.id } : {}),
-      },
+      metadata,
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cart`,
     });
 
     return NextResponse.json({ url: stripeSession.url });
-  } catch (err: any) {
-    console.error("Checkout error:", err.message);
+  } catch (err) {
+    console.error("Checkout error:", err);
     return NextResponse.json({ error: "Checkout failed" }, { status: 500 });
   }
 }
