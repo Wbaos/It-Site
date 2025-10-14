@@ -233,6 +233,9 @@ main {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 .user-list li {
   padding: 2px 0;
@@ -241,7 +244,7 @@ main {
 /* Items */
 .user-item {
   display: block;
-  padding: 10px 0;
+  padding: 4px 0;
   font-size: 0.9rem;
   color: #333;
   text-decoration: none;
@@ -249,8 +252,7 @@ main {
 }
 
 .user-item:hover {
-  background-color: #f3f4f6;
-  color: #2563eb;
+  text-decoration: underline;
 }
 
 .user-item.logout {
@@ -795,7 +797,7 @@ main {
    ACCOUNT PAGE BASE STYLES
 -------------------------------- */
 .account-page {
-  background-color: #f8fafc;
+  background-color: #b0c4de;
   min-height: 80vh;
   padding: 2rem 0;
 }
@@ -875,7 +877,7 @@ main {
 }
 
 .account-card {
-  background: #f1f5f9;
+  background: #b0c4de;
   border-radius: 10px;
   text-align: center;
   padding: 1.5rem;
@@ -887,7 +889,7 @@ main {
 }
 
 .account-card .title {
-  color: #6b7280;
+  color: #000;
   font-size: 0.9rem;
 }
 
@@ -930,128 +932,209 @@ main {
    ORDERS LIST
 -------------------------------- */
 .orders-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 1rem;
-  padding-left: 0;
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
 }
 
 .order-card {
-  background: #ffffff;
+  background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-  transition: all 0.25s ease;
-  overflow: hidden;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
 }
 
 .order-card:hover {
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-  transform: none;
+  background: #f1f5f9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .order-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.2rem;
-  cursor: pointer;
-  background: #f8fafc;
-  transition: background-color 0.2s ease;
 }
 
-
-.order-header p {
+.order-number {
+  font-weight: 600;
+  color: #0f172a;
   margin: 0;
 }
-.order-header .order-meta {
-  color: #64748b;
-  font-size: 0.85rem;
+
+.order-date {
+  color: #475569;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
 }
-.order-header .order-total {
+
+.order-total {
   font-weight: 700;
-  color: #2563eb;
   font-size: 1rem;
+  color: #0f172a;
 }
 
-.order-items {
-  margin: 0.5rem 0 0 1rem;
-  color: #374151;
-}
-
-.order-header .order-id {
+.status {
+  text-transform: capitalize;
   font-weight: 600;
-  color: #1e3a8a;
-  font-size: 0.95rem;
 }
+
+.status.paid {
+  color: #2563eb;
+}
+
+.status.completed {
+  color: #16a34a;
+}
+
+.status.pending {
+  color: #d97706;
+}
+
+.order-details {
+  border-top: 1px solid #e2e8f0;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  animation: fadeIn 0.25s ease;
+}
+
+.order-section {
+  margin-bottom: 0.75rem;
+}
+
+.order-section h4 {
+  margin: 0 0 0.25rem 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+.order-section p {
+  margin: 0;
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 /* -------------------------------
    PROFILE TAB
 -------------------------------- */
 .profile-card {
-  background: #f9fafb;
+  background: #b0c4de;
+  /* border: 1px solid #e2e8f0; */
   border-radius: 10px;
-  padding: 1.8rem;
-  max-width: 500px;
+  padding: 1.5rem;
+  max-width: 480px;
+  margin-top: 1rem;
 }
 
 .profile-card h2 {
-  font-size: 1.25rem;
+  margin-bottom: 1.25rem;
+  color: #0f172a;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
   font-weight: 600;
-  margin-bottom: 1rem;
+  color: #334155;
+  margin-bottom: 0.25rem;
 }
 
-.profile-card p {
-  margin: 0.4rem 0;
-  color: #374151;
-}
-
-.profile-card small {
-  color: #9ca3af;
-}
-/* Collapsible order details */
-.order-card.open {
-  border-color: #2563eb;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
-}
-
-.order-header:hover {
-  background: #f1f5f9;
-}
-
-.order-details {
-  padding: 1rem 1.5rem;
-  background: #f9fafb;
-  border-top: 1px solid #e5e7eb;
-  animation: fadeIn 0.3s ease;
-}
-
-.order-section {
-  margin-bottom: 1rem;
-}
-
-.order-section h4 {
+.form-group input {
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
   font-size: 0.95rem;
+  background: #fff;
+  color: #0f172a;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.form-group input:disabled {
+  background: #f1f5f9;
+  color: #475569;
+  cursor: not-allowed;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+/* --- Buttons --- */
+.edit-btn,
+.save-btn,
+.cancel-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.25rem;
   font-weight: 600;
-  margin-bottom: 0.4rem;
-  color: #111827;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-.order-section p {
-  font-size: 0.875rem;
-  color: #374151;
-    line-height: 1.4;
-
+.edit-btn {
+  background: #2563eb;
+  color: white;
 }
 
-.order-section ul {
-  list-style: disc;
-  margin-left: 1.5rem;
-  color: #374151;
-    font-size: 0.85rem;
-
+.edit-btn:hover {
+  background: #1d4ed8;
 }
+
+.edit-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.cancel-btn {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.cancel-btn:hover {
+  background: #cbd5e1;
+}
+
+.save-btn {
+  background: #16a34a;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #15803d;
+}
+
+.save-btn:disabled,
+.cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.success-msg {
+  margin-top: 0.75rem;
+  color: #16a34a;
+  font-weight: 500;
+}
+
 
 /* -------------------------------
    RESPONSIVE

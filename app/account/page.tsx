@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import clsx from "clsx";
 import { redirect } from "next/navigation";
 
@@ -72,10 +72,7 @@ export default function AccountPage() {
                     <h1>
                         Welcome, {user?.name?.split(" ")[0] || "User"} <span>👋</span>
                     </h1>
-                    <button onClick={() => signOut({ callbackUrl: "/" })}
-                        className="logout-btn">
-                        Log Out
-                    </button>
+
                 </div>
 
                 <div className="account-tabs">
@@ -192,80 +189,50 @@ export function OrdersTab({
 
     return (
         <ul className="orders-list">
-            {orders.map((order: Order) => (
+            {orders.map((order, index) => (
                 <li
                     key={order._id}
-                    className={`order-card ${openOrderId === order._id ? "open" : ""
-                        }`}
+                    className={`order-card ${openOrderId === order._id ? "open" : ""}`}
+                    onClick={() => toggleOrder(order._id)}
                 >
-                    <div
-                        className="order-header cursor-pointer"
-                        onClick={() => toggleOrder(order._id)}
-                    >
+                    {/* HEADER */}
+                    <div className="order-header">
                         <div>
-                            <p className="font-semibold text-gray-800">
-                                Order #{order._id.slice(-6).toUpperCase()}
-                            </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="order-number">Order #{index + 1}</p>
+                            <p className="order-date">
                                 {new Date(order.createdAt).toLocaleDateString()} —{" "}
-                                <span className="capitalize">{order.status}</span>
+                                <span className={`status ${order.status}`}>{order.status}</span>
                             </p>
                         </div>
-                        <p className="font-medium text-blue-600">${order.total.toFixed(2)}</p>
+                        <p className="order-total">${order.total.toFixed(2)}</p>
                     </div>
 
+                    {/* DETAILS */}
                     {openOrderId === order._id && (
                         <div className="order-details">
                             <div className="order-section">
                                 <h4>Items</h4>
                                 <ul>
-                                    {order.items.map(
-                                        (item: Order["items"][number], idx: number) => (
-                                            <li key={idx}>
-                                                {item.title} (${item.basePrice ?? item.price})
-                                                {item.options?.length ? (
-                                                    <ul>
-                                                        {item.options.map(
-                                                            (opt: { name: string; price: number }, j: number) => (
-                                                                <li key={j}>
-                                                                    {opt.name} (+${opt.price})
-                                                                </li>
-                                                            )
-                                                        )}
-                                                    </ul>
-                                                ) : null}
-                                            </li>
-                                        )
-                                    )}
+                                    {order.items.map((item, i) => (
+                                        <li key={i}>
+                                            {item.title} (${item.basePrice ?? item.price})
+                                            {item.options?.length ? (
+                                                <ul>
+                                                    {item.options.map((opt, j) => (
+                                                        <li key={j}>
+                                                            {opt.name} (+${opt.price})
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            ) : null}
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
 
-                            {order.contact && (
+                            {order.schedule?.date && (
                                 <div className="order-section">
-                                    <h4>Contact Information</h4>
-                                    <p>
-                                        <strong>Name:</strong> {order.contact.name || "N/A"}
-                                        <br />
-                                        <strong>Email:</strong> {order.contact.email || "N/A"}
-                                        <br />
-                                        <strong>Phone:</strong> {order.contact.phone || "N/A"}
-                                    </p>
-                                </div>
-                            )}
-
-                            {order.address && (
-                                <div className="order-section">
-                                    <h4>Service Address</h4>
-                                    <p>
-                                        {order.address.street}, {order.address.city},{" "}
-                                        {order.address.state} {order.address.zip}
-                                    </p>
-                                </div>
-                            )}
-
-                            {order.schedule && (
-                                <div className="order-section">
-                                    <h4>Scheduled Availability</h4>
+                                    <h4>Scheduled</h4>
                                     <p>
                                         {order.schedule.date} at {order.schedule.time}
                                     </p>
@@ -279,21 +246,112 @@ export function OrdersTab({
     );
 }
 
+
 /* -------------------------------------------
    PROFILE TAB
 ------------------------------------------- */
 function ProfileTab({ user }: { user: any }) {
+    const { update } = useSession(); // ✅ allows refreshing user session
+    const [name, setName] = useState(user?.name || "");
+    const [email, setEmail] = useState(user?.email || "");
+    const [phone, setPhone] = useState(user?.phone || "");
+    const [editing, setEditing] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [saved, setSaved] = useState(false);
+
+    function handleCancel() {
+        // revert to original values
+        setName(user?.name || "");
+        setEmail(user?.email || "");
+        setPhone(user?.phone || "");
+        setEditing(false);
+    }
+
+    async function handleSave(e: React.FormEvent) {
+        e.preventDefault();
+        setSaving(true);
+        setSaved(false);
+
+        const res = await fetch("/api/profile", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, phone }),
+        });
+
+        setSaving(false);
+
+        if (res.ok) {
+            // ✅ refresh the session data so new values appear immediately
+            await update();
+
+            setSaved(true);
+            setEditing(false);
+
+            // hide success message after 2s
+            setTimeout(() => setSaved(false), 2000);
+        } else {
+            alert("Failed to save profile");
+        }
+    }
+
     return (
-        <div className="profile-card">
+        <form className="profile-card" onSubmit={handleSave}>
             <h2>Profile Information</h2>
-            <p>
-                <strong>Name:</strong> {user?.name || "N/A"}
-            </p>
-            <p>
-                <strong>Email:</strong> {user?.email}
-            </p>
-            <small>(In the future, you can make this editable)</small>
-        </div>
+
+            <div className="form-group">
+                <label htmlFor="name">Full Name</label>
+                <input
+                    id="name"
+                    type="text"
+                    value={name}
+                    disabled={!editing}
+                    onChange={(e) => setName(e.target.value)}
+                />
+            </div>
+
+            <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input id="email" type="email" value={email} disabled />
+            </div>
+
+            <div className="form-group">
+                <label htmlFor="phone">Phone</label>
+                <input
+                    id="phone"
+                    type="tel"
+                    value={phone}
+                    disabled={!editing}
+                    onChange={(e) => setPhone(e.target.value)}
+                />
+            </div>
+
+            {/* --- BUTTON SECTION --- */}
+            {!editing ? (
+                <button
+                    type="button"
+                    className="edit-btn"
+                    onClick={() => setEditing(true)}
+                >
+                    Edit Profile
+                </button>
+            ) : (
+                <div className="edit-actions">
+                    <button
+                        type="button"
+                        className="cancel-btn"
+                        onClick={handleCancel}
+                        disabled={saving}
+                    >
+                        Cancel
+                    </button>
+                    <button type="submit" className="save-btn" disabled={saving}>
+                        {saving ? "Saving..." : "Save Changes"}
+                    </button>
+                </div>
+            )}
+
+            {saved && <p className="success-msg">✅ Profile updated successfully</p>}
+        </form>
     );
 }
 

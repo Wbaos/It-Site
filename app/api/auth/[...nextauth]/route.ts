@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { connectDB } from "@/lib/mongodb";
 import { User } from "@/app/models/User";
-
 import type { NextAuthOptions, Session } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 
@@ -32,14 +31,39 @@ export const authOptions: NextAuthOptions = {
           id: user._id.toString(),
           email: user.email,
           name: user.name || "",
+          phone: user.phone || "",
         };
       },
     }),
   ],
+
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.phone = user.phone;
+      }
+
+      if (token.email) {
+        await connectDB();
+        const freshUser = await User.findOne({ email: token.email });
+        if (freshUser) {
+          token.phone = freshUser.phone || "";
+          token.name = freshUser.name || "";
+        }
+      }
+
+      return token;
+    },
+
     async session({ session, token }: { session: Session; token: JWT }) {
       if (session.user) {
-        session.user.id = token.sub!;
+        session.user.id = token.id as string;
+        session.user.name = token.name as string;
+        session.user.email = token.email as string;
+        session.user.phone = token.phone as string;
       }
       return session;
     },
