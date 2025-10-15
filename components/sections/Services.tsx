@@ -1,35 +1,47 @@
 import Link from "next/link";
+import { sanity } from "@/lib/sanity";
 
-type Service = {
-  title: string;
-  desc: string;
-  icon: string;
-  slug: string;
-};
+export const revalidate = 60;
 
-type Props = {
-  items: Service[];
-  id?: string;
-};
+export default async function Services() {
+  const services = await sanity.fetch(`
+    *[_type == "service" && popular == true] | order(title asc)[0...8]{
+      _id,
+      title,
+      "slug": slug.current,
+      description,
+      icon
+    }
+  `);
 
-export default function Services({ items, id = "services" }: Props) {
   return (
-    <section id={id} className="section services">
+    <section id="services" className="section services">
       <div className="site-container-services">
         <h2 className="services-heading">Popular Tech Services</h2>
         <p className="services-sub">
           Helping seniors stay connected, safe, and confident with technology.
         </p>
 
-        <div className="services-grid">
-          {items.map((s, i) => (
-            <Link key={i} href={`/services/${s.slug}`} className="service-card">
-              <div className="service-icon">{s.icon}</div>
-              <h3 className="service-title">{s.title}</h3>
-              <p className="service-desc">{s.desc}</p>
-            </Link>
-          ))}
-        </div>
+        {services.length === 0 ? (
+          <p className="no-services">No services available yet.</p>
+        ) : (
+          <div className="services-grid">
+            {services.map((s: any) => (
+              <Link
+                key={s._id}
+                href={`/services/${s.slug}`}
+                className="service-card"
+              >
+                <div className="service-icon">  {s.icon ? s.icon : "💻"}
+                </div>
+                <h3 className="service-title">{s.title}</h3>
+                {s.description && (
+                  <p className="service-desc">{s.description}</p>
+                )}
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

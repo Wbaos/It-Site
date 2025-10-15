@@ -1023,7 +1023,7 @@ main {
   border-bottom: 1px solid #e5e7eb;
   font-weight: 500;
   transition: color 0.2s ease;
-  font-family: sans-serif;
+   font-family: var(--font-family-main);
   font-size: 22px;
 }
 
@@ -1512,7 +1512,7 @@ main {
   border-bottom: 1px solid #e5e7eb;
   transition: color 0.2s ease;
   font-size: 22px;
-  font-family: sans-serif;
+   font-family: var(--font-family-main);
 }
 
 .mobile-sublist {
@@ -1786,16 +1786,17 @@ main {
 
 /* Title */
 .service-title {
-  font-size: 1.75rem;
+  font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
   text-align: center;
   color: #111827;
+  font-family: var(--font-family-main);
 }
 
 @media (max-width: 500px) {
   .service-title {
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
 }
 
@@ -1922,7 +1923,7 @@ main {
 
 .services-heading {
   text-align: center;
-  font-size: clamp(1.9rem, 2.8vw, 2.4rem);
+  font-size: clamp(2.6rem, 3.8vw, 3.4rem);
   font-weight: 800;
   margin-bottom: 0.5rem;
 }
@@ -1930,11 +1931,11 @@ main {
 .services-sub {
   text-align: center;
   color: var(--muted);
-  max-width: 40rem;
   margin-inline: auto;
   margin-bottom: 2.5rem;
-  font-size: 1.05rem;
   line-height: 1.6;
+   font-family: var(--font-family-main);
+  font-size: 26px;
 }
 
 /* grid */
@@ -1955,6 +1956,7 @@ main {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   text-decoration: none;
+   font-family: var(--font-family-main);
 }
 .service-card:hover {
   transform: translateY(-6px) scale(1.02);
@@ -1982,15 +1984,22 @@ main {
 /* title + desc */
 
 .service-desc {
-  font-size: 0.95rem;
+  font-size: 20px;
   color: var(--muted);
   line-height: 1.5;
+   font-family: var(--font-family-main);
+
 }
 .site-container-services {
   padding: 50px 30px;
 }
 
 @media (max-width: 500px) {
+  .service-card {
+
+  padding: 2rem 1rem;
+
+}
   .services-grid {
     gap: 0.75rem;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -2417,7 +2426,7 @@ details[open] .faq-toggle {
   font-size: 3rem;
   line-height: 1;
   color: #e5e7eb;
-  font-family: Georgia, serif;
+   font-family: var(--font-family-main);
   z-index: 0;
 }
 .testimonial-text {
