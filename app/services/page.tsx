@@ -11,6 +11,7 @@ export default async function ServicesPage() {
     price,
     image { asset -> { url } }
   }`);
+    console.log("Fetched services:", services);
 
     return (
         <section className="services-page">
