@@ -3,15 +3,6 @@
 import { useState, use, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { NAV_SERVICES, SERVICES } from "@/lib/serviceCatalog";
-
-function isValidSlug(slug: string) {
-  return NAV_SERVICES.some((cat) =>
-    cat.items.some(
-      (s) => s.slug === slug || s.subItems?.some((sub) => sub.slug === slug)
-    )
-  );
-}
 
 export default function Step2({
   params,
@@ -19,24 +10,10 @@ export default function Step2({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
-  const service = SERVICES[slug];
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  if (!service || !isValidSlug(slug)) {
-    return (
-      <section className="section booking">
-        <div className="site-container">
-          <h1>Service not found</h1>
-          <Link href="/services" className="btn">
-            ← Back to Services
-          </Link>
-        </div>
-      </section>
-    );
-  }
-
-  const priceParam = searchParams.get("price") || String(service.price);
+  const priceParam = searchParams.get("price") || "0";
   const optionsParam = searchParams.get("options") || "[]";
   const contactParam = searchParams.get("contact") || "{}";
 
@@ -66,6 +43,11 @@ export default function Step2({
   };
 
   const handleNext = async () => {
+    if (!contact.name || !contact.email || !contact.phone) {
+      alert("Please fill in all contact fields before continuing.");
+      return;
+    }
+
     try {
       await fetch("/api/cart", {
         method: "PUT",
@@ -88,7 +70,6 @@ export default function Step2({
 
     router.push(`/services/${slug}/book/step3?${query}`);
   };
-
 
   return (
     <section className="section booking">

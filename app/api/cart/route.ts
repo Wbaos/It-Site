@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import { Cart as CartFixed } from "@/app/models/Cart";
+import { Cart as CartModel } from "@/app/models/Cart";
 import { getSessionId } from "@/lib/sessionId";
+import { randomUUID } from "crypto";
 
 export async function GET(req: Request) {
   await connectDB();
@@ -14,9 +15,9 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "No sessionId provided" }, { status: 400 });
   }
 
-  let cart = await CartFixed.findOne({ sessionId });
+  let cart = await CartModel.findOne({ sessionId });
   if (!cart) {
-    cart = await CartFixed.create({ sessionId, items: [] });
+    cart = await CartModel.create({ sessionId, items: [] });
   }
 
   return NextResponse.json({ items: cart.items });
@@ -26,19 +27,23 @@ export async function POST(req: Request) {
   try {
     await connectDB();
     const sessionId = await getSessionId();
-    const { id, slug, title, basePrice, options } = await req.json();
+    const { slug, title, basePrice, options } = await req.json();
 
     const addonsTotal =
-      options?.reduce((sum: number, opt: any) => sum + (opt.price || 0), 0) || 0;
+      options?.reduce(
+        (sum: number, opt: { price?: number }) => sum + (opt.price || 0),
+        0
+      ) || 0;
     const totalPrice = (basePrice || 0) + addonsTotal;
 
-    let cart = await CartFixed.findOne({ sessionId });
-    if (!cart) cart = await CartFixed.create({ sessionId, items: [] });
+    let cart = await CartModel.findOne({ sessionId });
+    if (!cart) cart = await CartModel.create({ sessionId, items: [] });
 
-    const existing = cart.items.find((i: any) => i.id === id);
+    const existing = cart.items.find((i: any) => i.slug === slug);
+
     if (!existing) {
       cart.items.push({
-        id,
+        id: randomUUID(),
         slug,
         title,
         basePrice,
@@ -47,7 +52,6 @@ export async function POST(req: Request) {
         quantity: 1,
       });
     }
-    console.log("🧠 Session ID:", sessionId);
 
     await cart.save();
     return NextResponse.json({ items: cart.items });
@@ -64,7 +68,7 @@ export async function PUT(req: Request) {
     const body = await req.json();
     const { id, quantity, contact, address, schedule, ...updates } = body;
 
-    const cart = await CartFixed.findOne({ sessionId });
+    const cart = await CartModel.findOne({ sessionId });
     if (!cart) {
       return NextResponse.json({ error: "Cart not found" }, { status: 404 });
     }
@@ -108,7 +112,7 @@ export async function PUT(req: Request) {
 export async function DELETE(req: Request) {
   await connectDB();
   const sessionId = await getSessionId();
-  const cart = await CartFixed.findOne({ sessionId });
+  const cart = await CartModel.findOne({ sessionId });
   if (!cart) return NextResponse.json({ error: "Cart not found" }, { status: 404 });
 
   const body = await req.json().catch(() => null);

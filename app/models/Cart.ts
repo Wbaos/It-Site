@@ -10,7 +10,7 @@ const CartOptionSchema = new Schema(
 
 const CartItemSchema = new Schema(
   {
-    id: { type: String, required: true },
+    id: { type: String, required: false },
     slug: { type: String, required: true },
     title: { type: String, required: true },
     basePrice: { type: Number, required: true },

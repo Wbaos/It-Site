@@ -36,8 +36,7 @@ export default function Step3({
         state: parsed.state || "",
         zip: parsed.zip || "",
       });
-    } catch {
-    }
+    } catch { }
   }, [addressParam]);
 
   const handleNext = async () => {
@@ -63,7 +62,6 @@ export default function Step3({
 
     router.push(`/services/${slug}/book/step4?${query}`);
   };
-
 
   return (
     <section className="section booking">
