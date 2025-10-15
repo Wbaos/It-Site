@@ -2,11 +2,14 @@
 import { useState, useEffect } from "react";
 
 export type Testimonial = {
-  name: string;
-  text: string;
-  date: string;
-  rating: number;
+  name?: string;
+  author?: string;
+  text?: string;
+  quote?: string;
+  date?: string;
+  rating?: number;
 };
+
 
 type Props = {
   items?: Testimonial[];
@@ -88,8 +91,8 @@ export default function TestimonialsList({
       ? cols === 3
         ? "cols-3"
         : cols === 1
-        ? "cols-1"
-        : "grid-mode"
+          ? "cols-1"
+          : "grid-mode"
       : "grid-mode",
     mode === "next-anim" ? "animate shift-next" : "",
     mode === "prev-prep" ? "no-anim shift-prev-start" : "",
@@ -115,35 +118,41 @@ export default function TestimonialsList({
             <div className={trackClass} onTransitionEnd={onTransitionEnd}>
               {frame.map((i, pos) => {
                 const t = items[i];
-                const date = new Date(t.date).toLocaleDateString(undefined, {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                });
+                const date =
+                  t.date && !isNaN(new Date(t.date).getTime())
+                    ? new Date(t.date).toLocaleDateString(undefined, {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })
+                    : "";
 
                 return (
-                  <div className="t-slide" key={`${i}-${pos}-${t.name}`}>
+                  <div className="t-slide" key={`${i}-${pos}-${t.name || t.author || pos}`}>
                     <blockquote className="testimonial-card">
                       <div className="t-meta">
                         <div className="stars">
                           {Array.from({ length: 5 }).map((_, s) => (
                             <span
                               key={s}
-                              className={`star ${s < t.rating ? "filled" : ""}`}
+                              className={`star ${s < (t.rating ?? 5) ? "filled" : ""}`}
                             >
                               ★
                             </span>
                           ))}
                         </div>
-                        <time className="t-date">{date}</time>
+                        {date && <time className="t-date">{date}</time>}
                       </div>
 
-                      <p className="testimonial-text">“{t.text}”</p>
-                      <footer className="testimonial-author">— {t.name}</footer>
+                      <p className="testimonial-text">“{t.text || t.quote}”</p>
+                      <footer className="testimonial-author">
+                        — {t.name || t.author || "Anonymous"}
+                      </footer>
                     </blockquote>
                   </div>
                 );
               })}
+
             </div>
           </div>
 

@@ -16,13 +16,19 @@ export default function Step4({
     params.then((p) => setSlug(p.slug));
   }, [params]);
 
-  const priceParam = searchParams.get("price");
-  const optionsParam = searchParams.get("options");
-  const contactParam = searchParams.get("contact");
-  const addressParam = searchParams.get("address");
+  const priceParam = searchParams.get("price") || "0";
+  const optionsParam = searchParams.get("options") || "[]";
+  const contactParam = searchParams.get("contact") || "{}";
+  const addressParam = searchParams.get("address") || "{}";
   const scheduleParam = searchParams.get("schedule") || "{}";
 
-  const parsedAddress = addressParam ? JSON.parse(addressParam) : {};
+  const parsedAddress = (() => {
+    try {
+      return JSON.parse(addressParam);
+    } catch {
+      return {};
+    }
+  })();
 
   const [schedule, setSchedule] = useState({ date: "", time: "" });
   const [loading, setLoading] = useState(false);
@@ -34,8 +40,7 @@ export default function Step4({
         date: parsed.date || "",
         time: parsed.time || "",
       });
-    } catch {
-    }
+    } catch { }
   }, [scheduleParam]);
 
   const handleFinish = async () => {
@@ -65,7 +70,6 @@ export default function Step4({
       setLoading(false);
     }
   };
-
 
   if (!slug) return null;
 
@@ -103,9 +107,9 @@ export default function Step4({
         <p className="back-link">
           <Link
             href={`/services/${slug}/book/step3?slug=${slug}&price=${priceParam}&options=${encodeURIComponent(
-              optionsParam || "[]"
+              optionsParam
             )}&contact=${encodeURIComponent(
-              contactParam || "{}"
+              contactParam
             )}&address=${encodeURIComponent(
               JSON.stringify(parsedAddress)
             )}&schedule=${encodeURIComponent(JSON.stringify(schedule))}`}
