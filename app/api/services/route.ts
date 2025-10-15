@@ -1,40 +1,54 @@
 import { NextResponse } from "next/server";
-import { client } from "@/lib/sanity.client";
+import { sanity } from "@/lib/sanity";
+
+type Service = {
+  _id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  price?: number;
+  category?: string;
+  image?: { asset?: { url: string } };
+  parentService?: { _id: string };
+  subservices?: Service[];
+};
 
 export async function GET() {
   try {
-    const services = await client.fetch(`
-      *[_type == "service" && !defined(parentService)]{
+    const query = `
+      *[_type == "service"]{
         _id,
         title,
         "slug": slug.current,
-        "category": category->title,
-        price,
         description,
-        image,
-        details,
-        faqs,
-        testimonials,
-        "subservices": *[_type == "service" && references(^._id)]{
-          _id,
-          title,
-          "slug": slug.current,
-          price,
-          description
-        }
-      } | order(category->title asc, title asc)
-    `);
+        price,
+        "category": category->title,
+        image { asset -> { url } },
+        parentService->{ _id }
+      }
+    `;
 
-    const grouped = services.reduce((acc: Record<string, any[]>, item: any) => {
-      const cat = item.category || "Other";
-      if (!acc[cat]) acc[cat] = [];
-      acc[cat].push(item);
-      return acc;
-    }, {});
+    const services: Service[] = await sanity.fetch(query);
+
+    const parents = services.filter((s) => !s.parentService);
+    const subs = services.filter((s) => s.parentService);
+
+    for (const parent of parents) {
+      parent.subservices = subs.filter(
+        (sub: Service) => sub.parentService?._id === parent._id
+      );
+    }
+
+    const grouped: Record<string, Service[]> = {};
+    for (const s of parents) {
+      const cat = s.category || "Other";
+      if (!grouped[cat]) grouped[cat] = [];
+      grouped[cat].push(s);
+    }
 
     return NextResponse.json(grouped);
-  } catch (err: any) {
-    console.error("Failed to fetch services:", err);
+  } catch (err) {
+    console.error("❌ Error fetching services:", err);
     return NextResponse.json(
       { error: "Failed to fetch services" },
       { status: 500 }

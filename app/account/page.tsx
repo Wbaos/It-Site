@@ -170,7 +170,7 @@ function OverviewTab({
 /* -------------------------------------------
    ORDERS TAB
 ------------------------------------------- */
-export function OrdersTab({
+function OrdersTab({
     orders,
     loading,
 }: {
@@ -251,7 +251,7 @@ export function OrdersTab({
    PROFILE TAB
 ------------------------------------------- */
 function ProfileTab({ user }: { user: any }) {
-    const { update } = useSession(); // ✅ allows refreshing user session
+    const { update } = useSession();
     const [name, setName] = useState(user?.name || "");
     const [email, setEmail] = useState(user?.email || "");
     const [phone, setPhone] = useState(user?.phone || "");
@@ -281,13 +281,11 @@ function ProfileTab({ user }: { user: any }) {
         setSaving(false);
 
         if (res.ok) {
-            // ✅ refresh the session data so new values appear immediately
             await update();
 
             setSaved(true);
             setEditing(false);
 
-            // hide success message after 2s
             setTimeout(() => setSaved(false), 2000);
         } else {
             alert("Failed to save profile");
