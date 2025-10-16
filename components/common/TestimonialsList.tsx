@@ -10,7 +10,6 @@ export type Testimonial = {
   rating?: number;
 };
 
-
 type Props = {
   items?: Testimonial[];
   title?: string;
@@ -27,7 +26,7 @@ export default function TestimonialsList({
   if (!items.length) return null;
 
   const [start, setStart] = useState(0);
-  const [cols, setCols] = useState<0 | 1 | 3>(0);
+  const [cols, setCols] = useState<0 | 1 | 2 | 3>(0);
   const [mode, setMode] = useState<
     "idle" | "next-anim" | "prev-prep" | "prev-anim"
   >("idle");
@@ -36,9 +35,9 @@ export default function TestimonialsList({
     if (!carousel) return;
     const decide = () => {
       const w = window.innerWidth;
-      if (w < 1000) setCols(1);
-      else if (w >= 1000) setCols(3);
-      else setCols(0);
+      if (w < 760) setCols(1);
+      else if (w >= 760 && w < 1300) setCols(2);
+      else setCols(3);
     };
     decide();
     window.addEventListener("resize", decide);
@@ -48,16 +47,12 @@ export default function TestimonialsList({
   const idx = (n: number) => (n + items.length) % items.length;
 
   let frame: number[] = [];
-  if (carousel && cols === 3) {
-    frame =
-      mode === "prev-prep" || mode === "prev-anim"
-        ? [idx(start - 1), start, idx(start + 1), idx(start + 2)]
-        : [start, idx(start + 1), idx(start + 2), idx(start + 3)];
-  } else if (carousel && cols === 1) {
-    frame =
-      mode === "prev-prep" || mode === "prev-anim"
-        ? [idx(start - 1), start]
-        : [start, idx(start + 1)];
+  if (carousel && cols > 0) {
+    if (mode === "prev-prep" || mode === "prev-anim") {
+      frame = Array.from({ length: cols + 1 }, (_, i) => idx(start - 1 + i));
+    } else {
+      frame = Array.from({ length: cols + 1 }, (_, i) => idx(start + i));
+    }
   } else {
     frame = items.map((_, i) => i);
   }
@@ -90,9 +85,11 @@ export default function TestimonialsList({
     carousel
       ? cols === 3
         ? "cols-3"
-        : cols === 1
-          ? "cols-1"
-          : "grid-mode"
+        : cols === 2
+          ? "cols-2"
+          : cols === 1
+            ? "cols-1"
+            : "grid-mode"
       : "grid-mode",
     mode === "next-anim" ? "animate shift-next" : "",
     mode === "prev-prep" ? "no-anim shift-prev-start" : "",
@@ -108,7 +105,7 @@ export default function TestimonialsList({
         {subtitle && <p className="testimonials-sub">{subtitle}</p>}
 
         <div className="testimonials-carousel">
-          {carousel && (cols === 1 || cols === 3) && (
+          {carousel && cols > 0 && (
             <button type="button" className="t-arrow left" onClick={prev}>
               ‹
             </button>
@@ -128,14 +125,18 @@ export default function TestimonialsList({
                     : "";
 
                 return (
-                  <div className="t-slide" key={`${i}-${pos}-${t.name || t.author || pos}`}>
+                  <div
+                    className="t-slide"
+                    key={`${i}-${pos}-${t.name || t.author || pos}`}
+                  >
                     <blockquote className="testimonial-card">
                       <div className="t-meta">
                         <div className="stars">
                           {Array.from({ length: 5 }).map((_, s) => (
                             <span
                               key={s}
-                              className={`star ${s < (t.rating ?? 5) ? "filled" : ""}`}
+                              className={`star ${s < (t.rating ?? 5) ? "filled" : ""
+                                }`}
                             >
                               ★
                             </span>
@@ -144,7 +145,9 @@ export default function TestimonialsList({
                         {date && <time className="t-date">{date}</time>}
                       </div>
 
-                      <p className="testimonial-text">“{t.text || t.quote}”</p>
+                      <p className="testimonial-text">
+                        “{t.text || t.quote}”
+                      </p>
                       <footer className="testimonial-author">
                         — {t.name || t.author || "Anonymous"}
                       </footer>
@@ -152,11 +155,10 @@ export default function TestimonialsList({
                   </div>
                 );
               })}
-
             </div>
           </div>
 
-          {carousel && (cols === 1 || cols === 3) && (
+          {carousel && cols > 0 && (
             <button type="button" className="t-arrow right" onClick={next}>
               ›
             </button>
