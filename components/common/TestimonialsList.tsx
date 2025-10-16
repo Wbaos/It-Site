@@ -26,39 +26,43 @@ export default function TestimonialsList({
   if (!items.length) return null;
 
   const [start, setStart] = useState(0);
-  const [cols, setCols] = useState<0 | 1 | 2 | 3>(0);
+  const [cols, setCols] = useState<0 | 1 | 2 | 3 | undefined>(undefined);
   const [mode, setMode] = useState<
     "idle" | "next-anim" | "prev-prep" | "prev-anim"
   >("idle");
 
   useEffect(() => {
     if (!carousel) return;
+
     const decide = () => {
       const w = window.innerWidth;
       if (w < 760) setCols(1);
-      else if (w >= 760 && w < 1300) setCols(2);
+      else if (w < 1300) setCols(2);
       else setCols(3);
     };
+
     decide();
     window.addEventListener("resize", decide);
     return () => window.removeEventListener("resize", decide);
   }, [carousel]);
 
+  if (carousel && cols === undefined) return null;
+
   const idx = (n: number) => (n + items.length) % items.length;
 
   let frame: number[] = [];
-  if (carousel && cols > 0) {
-    if (mode === "prev-prep" || mode === "prev-anim") {
-      frame = Array.from({ length: cols + 1 }, (_, i) => idx(start - 1 + i));
-    } else {
-      frame = Array.from({ length: cols + 1 }, (_, i) => idx(start + i));
-    }
+  if (carousel && cols && cols >= 1) {
+    const visible = cols === 3 ? 4 : cols === 2 ? 3 : 2;
+    frame =
+      mode === "prev-prep" || mode === "prev-anim"
+        ? Array.from({ length: visible }, (_, i) => idx(start - 1 + i))
+        : Array.from({ length: visible }, (_, i) => idx(start + i));
   } else {
     frame = items.map((_, i) => i);
   }
 
   const onTransitionEnd = () => {
-    if (!carousel || cols === 0) return;
+    if (!carousel || !cols) return;
     if (mode === "next-anim") {
       setStart((s) => idx(s + 1));
       setMode("idle");
@@ -69,11 +73,12 @@ export default function TestimonialsList({
   };
 
   const next = () => {
-    if (!carousel || cols === 0 || mode !== "idle") return;
+    if (!carousel || !cols || mode !== "idle") return;
     setMode("next-anim");
   };
+
   const prev = () => {
-    if (!carousel || cols === 0 || mode !== "idle") return;
+    if (!carousel || !cols || mode !== "idle") return;
     setMode("prev-prep");
     requestAnimationFrame(() => {
       requestAnimationFrame(() => setMode("prev-anim"));
@@ -87,9 +92,7 @@ export default function TestimonialsList({
         ? "cols-3"
         : cols === 2
           ? "cols-2"
-          : cols === 1
-            ? "cols-1"
-            : "grid-mode"
+          : "cols-1"
       : "grid-mode",
     mode === "next-anim" ? "animate shift-next" : "",
     mode === "prev-prep" ? "no-anim shift-prev-start" : "",
@@ -105,7 +108,7 @@ export default function TestimonialsList({
         {subtitle && <p className="testimonials-sub">{subtitle}</p>}
 
         <div className="testimonials-carousel">
-          {carousel && cols > 0 && (
+          {carousel && cols && (
             <button type="button" className="t-arrow left" onClick={prev}>
               ‹
             </button>
@@ -158,7 +161,7 @@ export default function TestimonialsList({
             </div>
           </div>
 
-          {carousel && cols > 0 && (
+          {carousel && cols && (
             <button type="button" className="t-arrow right" onClick={next}>
               ›
             </button>
