@@ -80,13 +80,16 @@ main {
 
   #hero .hero-title {
     font-weight: 700;
-    font-size: clamp(2rem, 5vw, 3.75rem);
+    font-size: clamp(3rem, 6vw, 3.75rem);
+    font-family: var(--font-family-main);
+
   }
 
   #hero .hero-sub {
     margin-top: 1rem;
-    font-size: clamp(1rem, 2.2vw, 1.5rem);
-    opacity: 0.9;
+    font-size: clamp(1.8rem, 3.2vw, 2.2rem);
+    font-family: var(--font-family-main);
+
   }
 
   #hero .btn-cta {
@@ -99,6 +102,11 @@ main {
     background: #fff;
     color: #000;
     text-decoration: none;
+    font-family: var(--font-family-main);
+    font-size: 25px;
+  }
+  #hero .btn-cta:hover{
+    background: #edebeb;
   }
 }
 
@@ -1905,8 +1913,9 @@ main {
 }
 
 .highlight-title {
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 600;
+  font-family: var(--font-family-main);
 }
 
 .highlight-desc,
@@ -1915,24 +1924,70 @@ main {
 }
 
 .highlight-desc {
-  font-size: 0.95rem;
-  color: var(--muted);
+  font-size: 22px;
+  font-family: var(--font-family-main);
 }
+@media (max-width: 760px) {
+  .highlights-grid.carousel-mode {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    height: 180px; 
+  }
+
+  .highlight {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    text-align: center;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+  }
+
+  .highlight.active {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 2;
+  }
+
+  .highlight.prev {
+    opacity: 0;
+    transform: translateX(-100%);
+    z-index: 1;
+  }
+
+  .highlight.next {
+    opacity: 0;
+    transform: translateX(100%);
+    z-index: 1;
+  }
+
+  .highlights-grid {
+    display: block;
+  }
+}
+
 
 /* ===== SERVICES ===== */
 
 .services-heading {
   text-align: center;
   font-size: clamp(2.6rem, 3.8vw, 3.4rem);
-  font-weight: 800;
+  font-weight: 600;
   margin-bottom: 0.5rem;
+  font-family: var(--font-family-main);
+
 }
 
 .services-sub {
   text-align: center;
-  color: var(--muted);
   margin-inline: auto;
   margin-bottom: 2.5rem;
+  margin-top: 10px;
   line-height: 1.6;
    font-family: var(--font-family-main);
   font-size: 26px;
@@ -1985,7 +2040,6 @@ main {
 
 .service-desc {
   font-size: 20px;
-  color: var(--muted);
   line-height: 1.5;
    font-family: var(--font-family-main);
 
@@ -2000,16 +2054,11 @@ main {
   padding: 2rem 1rem;
 
 }
-  .services-grid {
-    gap: 0.75rem;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  }
   .service-card:hover {
     transform: none;
   }
   .site-container {
     padding-left: 0px;
-    /* width: 100%; */
   }
 }
 
@@ -2316,25 +2365,26 @@ details[open] .faq-toggle {
 
 .how-heading {
   text-align: center;
-  font-size: clamp(1.75rem, 2.5vw, 2.25rem);
-  font-weight: 700;
+  font-size: clamp(2.6rem, 3.8vw, 3.4rem);
+  font-weight: 600;
   margin: 0;
+  font-family: var(--font-family-main);
 }
 
 .how-sub {
   text-align: center;
-  color: var(--muted);
-  max-width: 36rem;
   margin-inline: auto;
   margin-bottom: 2.5rem;
-  font-size: 1.05rem;
+  font-size: 26px;
   line-height: 1.6;
+  font-family: var(--font-family-main);
+  margin-top: 10px;
 }
 
 .how-grid {
   display: grid;
   gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 /* each step card */
@@ -2370,15 +2420,17 @@ details[open] .faq-toggle {
 }
 
 .step-title {
-  font-size: 1.125rem;
+  font-size: 2rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
+  font-family: var(--font-family-main);
 }
 
 .step-desc {
-  font-size: 0.95rem;
-  color: var(--muted);
+  font-size: 20px;
   line-height: 1.5;
+  font-family: var(--font-family-main);
+
 }
 
 .site-container-how {
@@ -2391,15 +2443,22 @@ details[open] .faq-toggle {
 }
 
 /* ===== TESTIMONIALS ===== */
+.testimonials-heading{
+  font-family: var(--font-family-main);
+  font-size: clamp(2.6rem, 3.8vw, 3.4rem);
+  text-align: center;
+  margin-bottom: 0;
+}
 
 .testimonials-sub {
   text-align: center;
-  color: var(--muted);
-  max-width: 36rem;
   margin-inline: auto;
   margin-bottom: 2.5rem;
-  font-size: 1.05rem;
+  margin-top: 10px;
+  font-size: 26px;
   line-height: 1.6;
+  font-family: var(--font-family-main);
+
 }
 
 /* cards */
@@ -2413,6 +2472,7 @@ details[open] .faq-toggle {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   display: flex;
   flex-direction: column;
+  margin: 0;
 }
 .testimonial-card:hover {
   transform: translateY(-4px);
@@ -2431,19 +2491,20 @@ details[open] .faq-toggle {
 }
 .testimonial-text {
   position: relative;
-  font-size: 1.05rem;
+  font-size: 24px;
   line-height: 1.6;
-  color: var(--fg);
   z-index: 1;
+   font-family: var(--font-family-main);
 }
+
 .testimonial-author {
   margin-top: auto;
   font-weight: 600;
-  color: var(--muted);
   text-align: right;
+   font-family: var(--font-family-main);
+   font-size: 20px;
 }
 
-/* make every slide be a flex box once, globally */
 .t-track .t-slide {
   display: flex;
 }
@@ -2468,6 +2529,56 @@ details[open] .faq-toggle {
   transform: translateX(0);
 }
 
+/* ------------- 2-COLUMN RESPONSIVE TESTIMONIALS ------------- */
+
+.t-track.cols-2 {
+  display: flex;
+  gap: var(--t-gap);
+  align-items: stretch;
+}
+
+.t-track.cols-2 .t-slide {
+  flex: 0 0 calc(50% - (var(--t-gap) / 2)); 
+  box-sizing: border-box;
+}
+
+.t-track.cols-2.shift-next {
+  transform: translateX(calc(-50% - (var(--t-gap) / 2)));
+}
+
+.t-track.cols-2.shift-prev-start {
+  transform: translateX(calc(-50% - (var(--t-gap) / 2)));
+}
+
+.t-track.cols-2.shift-prev-end {
+  transform: translateX(0);
+}
+
+/* ====== 3-UP (desktop ≥1000px) ====== */
+.t-track.cols-3 {
+  display: flex;
+  gap: var(--t-gap);
+  align-items: stretch;
+}
+.t-track.cols-3 .t-slide {
+  display: flex;
+  flex: 0 0 calc(100% / 3 - (var(--t-gap) * 2 / 3));
+  box-sizing: border-box;
+}
+.t-track.cols-3.shift-next {
+  transform: translateX(calc(-100% / 3 - (var(--t-gap) / 3)));
+}
+.t-track.cols-3.shift-prev-start {
+  transform: translateX(calc(-100% / 3 - (var(--t-gap) / 3)));
+}
+.t-track.cols-3.shift-prev-end {
+  transform: translateX(0);
+}
+.site-container-pricing {
+  padding: 50px 30px;
+}
+
+
 /* arrows */
 .testimonials .t-arrow {
   height: 50px;
@@ -2485,9 +2596,12 @@ details[open] .faq-toggle {
 /* row above the quote: stars + date */
 .t-meta {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.75rem;
+  font-size: 26px;
+  gap: 5px;
 }
 
 .star.filled {
@@ -2495,10 +2609,7 @@ details[open] .faq-toggle {
 }
 
 /* date at right */
-.t-date {
-  font-size: 0.9rem;
-  color: var(--muted);
-}
+
 .site-container-testimonials {
   padding: 50px 30px;
 }
@@ -2521,7 +2632,6 @@ details[open] .faq-toggle {
 
 .pricing-sub {
   text-align: center;
-  color: var(--muted);
   max-width: 36rem;
   margin-inline: auto;
   margin-bottom: 2.5rem;
@@ -2576,7 +2686,6 @@ details[open] .faq-toggle {
 .plan-price span {
   font-size: 0.95rem;
   font-weight: 400;
-  color: var(--muted);
 }
 
 /* features */
@@ -2615,6 +2724,7 @@ details[open] .faq-toggle {
   overflow: hidden;
 }
 
+
 /* Shared track behavior */
 .t-track {
   will-change: transform;
@@ -2627,30 +2737,7 @@ details[open] .faq-toggle {
   transition: none !important;
 }
 
-/* ====== 3-UP (desktop ≥1000px) ====== */
-.t-track.cols-3 {
-  display: flex;
-  gap: var(--t-gap);
-  align-items: stretch;
-}
-.t-track.cols-3 .t-slide {
-  display: flex;
-  flex: 0 0 calc(100% / 3 - (var(--t-gap) * 2 / 3));
-  box-sizing: border-box;
-}
-/* move by one card + its gap share */
-.t-track.cols-3.shift-next {
-  transform: translateX(calc(-100% / 3 - (var(--t-gap) / 3)));
-}
-.t-track.cols-3.shift-prev-start {
-  transform: translateX(calc(-100% / 3 - (var(--t-gap) / 3)));
-}
-.t-track.cols-3.shift-prev-end {
-  transform: translateX(0);
-}
-.site-container-pricing {
-  padding: 50px 30px;
-}
+
 
 /* ===== CONTACT (scoped; affects only .contact section) ===== */
 .contact {
@@ -2707,7 +2794,7 @@ details[open] .faq-toggle {
 }
 .contact .contact-sub {
   margin-bottom: 1.25rem;
-  color: var(--muted, #475569);
+  color: var( #475569);
 }
 .contact .contact-link {
   color: #2563eb;
@@ -2801,7 +2888,7 @@ details[open] .faq-toggle {
 }
 
 .contact .form-hint {
-  color: var(--muted, #475569);
+  color: var( #475569);
   font-size: 0.9rem;
   margin-top: 0.4rem;
 }
