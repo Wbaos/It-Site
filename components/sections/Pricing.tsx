@@ -1,4 +1,22 @@
-export default function Pricing() {
+import { sanity } from "@/lib/sanity";
+import Link from "next/link";
+
+export const revalidate = 60;
+
+export default async function Pricing() {
+  const plans = await sanity.fetch(`
+    *[_type == "pricingPlan"] | order(order asc) {
+      _id,
+      title,
+      price,
+      duration,
+      features,
+      buttonText,
+      buttonLink,
+      featured
+    }
+  `);
+
   return (
     <section id="pricing" className="section pricing">
       <div className="site-container-pricing">
@@ -8,50 +26,29 @@ export default function Pricing() {
         </p>
 
         <div className="pricing-grid">
-          <div className="pricing-card">
-            <h3 className="plan-title">Remote Help</h3>
-            <p className="plan-price">
-              $29 <span>/ 30 min</span>
-            </p>
-            <ul className="plan-features">
-              <li>Quick fixes</li>
-              <li>Phone or video call</li>
-              <li>Step-by-step guidance</li>
-            </ul>
-            <a href="#contact" className="btn btn-primary wide ">
-              Get Remote Help
-            </a>
-          </div>
+          {plans.map((p: any) => (
+            <div
+              key={p._id}
+              className={`pricing-card ${p.featured ? "featured" : ""}`}
+            >
+              <h3 className="plan-title">{p.title}</h3>
+              <p className="plan-price">
+                {p.price} <span>{p.duration}</span>
+              </p>
 
-          <div className="pricing-card featured">
-            <h3 className="plan-title">In-Home Visit</h3>
-            <p className="plan-price">
-              $89 <span>/ hour</span>
-            </p>
-            <ul className="plan-features">
-              <li>Hands-on tech support</li>
-              <li>Wi-Fi, TV, printer setup</li>
-              <li>Friendly, patient guidance</li>
-            </ul>
-            <a href="#contact" className="btn btn-primary wide">
-              Book a Visit
-            </a>
-          </div>
+              {p.features?.length > 0 && (
+                <ul className="plan-features">
+                  {p.features.map((f: string, i: number) => (
+                    <li key={i}>{f}</li>
+                  ))}
+                </ul>
+              )}
 
-          <div className="pricing-card">
-            <h3 className="plan-title">Membership</h3>
-            <p className="plan-price">
-              $19 <span>/ month</span>
-            </p>
-            <ul className="plan-features">
-              <li>Priority scheduling</li>
-              <li>Discounted visits</li>
-              <li>Peace of mind</li>
-            </ul>
-            <a href="#contact" className="btn btn-primary wide">
-              Join Today
-            </a>
-          </div>
+              <Link href={p.buttonLink || "#contact"} className="btn btn-primary wide">
+                {p.buttonText || "Book Now"}
+              </Link>
+            </div>
+          ))}
         </div>
       </div>
     </section>
