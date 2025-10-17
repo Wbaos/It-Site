@@ -6,11 +6,20 @@ import Link from "next/link";
 import { useCart } from "@/lib/CartContext";
 import { sanity } from "@/lib/sanity";
 
+// ==== TYPES ====
+type QuestionOption = {
+  label: string;
+  extraCost?: number;
+};
+
 type Question = {
   id: string;
   label: string;
   shortLabel?: string;
+  type?: "checkbox" | "select" | "text";
   extraCost?: number;
+  options?: QuestionOption[];
+  placeholder?: string;
 };
 
 type AddOn = {
@@ -30,20 +39,26 @@ type Service = {
   questions?: Question[];
 };
 
-export default function Step1({ params }: { params: Promise<{ slug: string }> }) {
+export default function Step1({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { items, addItem, updateItem } = useCart();
 
   const [service, setService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [slug, setSlug] = useState("");
+  const [responses, setResponses] = useState<Record<string, any>>({});
 
+  // === Fetch slug from params ===
   useEffect(() => {
     params.then((p) => setSlug(p.slug));
   }, [params]);
 
+  // === Fetch service details from Sanity ===
   useEffect(() => {
     if (!slug) return;
 
@@ -59,7 +74,11 @@ export default function Step1({ params }: { params: Promise<{ slug: string }> })
           faqs,
           testimonials,
           image{asset->{url}},
-          questions[]{id, label, shortLabel, extraCost}
+          questions[]{
+            id, label, shortLabel, type, placeholder,
+            extraCost,
+            options[]{label, extraCost}
+          }
         }`,
         { slug }
       );
@@ -70,25 +89,33 @@ export default function Step1({ params }: { params: Promise<{ slug: string }> })
     fetchService();
   }, [slug]);
 
+  // === Edit mode handling ===
   const isEdit = searchParams.get("edit") === "true";
   const editId = searchParams.get("id");
 
   useEffect(() => {
     if (isEdit && editId && service) {
       const itemToEdit = items.find((i: any) => i.id === editId);
-      if (itemToEdit?.options?.length && service.questions) {
-        const matchedIds = service.questions
-          .filter((q) =>
-            itemToEdit.options?.some(
-              (opt: any) => opt.name === (q.shortLabel || q.label)
-            )
-          )
-          .map((q) => q.id);
-        setSelectedOptions(matchedIds || []);
+      if (itemToEdit && Array.isArray(itemToEdit.options) && service.questions) {
+        const prefilled: Record<string, any> = {};
+        service.questions.forEach((q) => {
+          const match = itemToEdit.options?.find((opt: any) =>
+            opt.name.includes(q.shortLabel || q.label)
+          );
+          if (match) {
+            if (q.type === "checkbox") prefilled[q.id] = true;
+            else if (q.type === "select")
+              prefilled[q.id] = match.name.split(": ")[1];
+            else if (q.type === "text")
+              prefilled[q.id] = match.name.split(": ")[1];
+          }
+        });
+        setResponses(prefilled);
       }
     }
   }, [isEdit, editId, items, service]);
 
+  // === Loading state ===
   if (loading)
     return (
       <section className="section booking">
@@ -98,6 +125,7 @@ export default function Step1({ params }: { params: Promise<{ slug: string }> })
       </section>
     );
 
+  // === Not found ===
   if (!service)
     return (
       <section className="section booking">
@@ -110,24 +138,35 @@ export default function Step1({ params }: { params: Promise<{ slug: string }> })
       </section>
     );
 
-  const toggleOption = (id: string) => {
-    setSelectedOptions((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
-  };
-
+  // === Calculate add-ons and totals ===
   const addOns: AddOn[] =
-    (service.questions ?? [])
-      .filter((q) => selectedOptions.includes(q.id))
-      .map((q) => ({
-        name: q.shortLabel || q.label,
-        price: q.extraCost ?? 0,
-      })) || [];
+    service.questions
+      ?.map((q) => {
+        const value = responses[q.id];
+        if (!value) return null;
 
-  const addOnsTotal = addOns.reduce(
-    (sum: number, o: AddOn) => sum + (o.price || 0),
-    0
-  );
+        if (q.type === "checkbox" && value === true)
+          return { name: q.shortLabel || q.label, price: q.extraCost ?? 0 };
+
+        if (q.type === "select") {
+          const selectedOpt = q.options?.find((o) => o.label === value);
+          return {
+            name: `${q.shortLabel || q.label}: ${value}`,
+            price: selectedOpt?.extraCost ?? 0,
+          };
+        }
+
+        if (q.type === "text")
+          return {
+            name: `${q.shortLabel || q.label}: ${value}`,
+            price: 0,
+          };
+
+        return null;
+      })
+      .filter(Boolean) as AddOn[]
+
+  const addOnsTotal = (addOns ?? []).reduce((sum, o) => sum + (o.price || 0), 0);
   const subtotal = service.price + addOnsTotal;
 
   const handleSave = async () => {
@@ -148,6 +187,7 @@ export default function Step1({ params }: { params: Promise<{ slug: string }> })
     router.push("/cart");
   };
 
+  // === Render ===
   return (
     <section className="section booking">
       <div className="site-container booking-wrapper">
@@ -162,20 +202,63 @@ export default function Step1({ params }: { params: Promise<{ slug: string }> })
           </div>
 
           {service.questions?.map((q) => (
-            <label key={q.id} className="option-item extra-option">
-              <div className="option-left">
-                <span className="option-label">{q.label}</span>
-                {q.extraCost && (
-                  <span className="option-extra">+${q.extraCost}</span>
-                )}
-              </div>
-              <input
-                type="checkbox"
-                checked={selectedOptions.includes(q.id)}
-                onChange={() => toggleOption(q.id)}
-                className="option-checkbox"
-              />
-            </label>
+            <div key={q.id} className="option-item extra-option">
+              <label className="option-label">{q.label}</label>
+
+              {/* Checkbox */}
+              {q.type === "checkbox" && (
+                <div className="option-control">
+                  <input
+                    type="checkbox"
+                    checked={!!responses[q.id]}
+                    onChange={(e) =>
+                      setResponses({
+                        ...responses,
+                        [q.id]: e.target.checked,
+                      })
+                    }
+                    className="option-checkbox"
+                  />
+                  {q.extraCost && (
+                    <span className="option-extra">
+                      +${q.extraCost.toFixed(2)}
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {/* Select dropdown */}
+              {q.type === "select" && (
+                <select
+                  value={responses[q.id] || ""}
+                  onChange={(e) =>
+                    setResponses({ ...responses, [q.id]: e.target.value })
+                  }
+                  className="option-select"
+                >
+                  <option value="">Select an option...</option>
+                  {q.options?.map((opt) => (
+                    <option key={opt.label} value={opt.label}>
+                      {opt.label}{" "}
+                      {opt.extraCost ? `(+$${opt.extraCost.toFixed(2)})` : ""}
+                    </option>
+                  ))}
+                </select>
+              )}
+
+              {/* Text input */}
+              {q.type === "text" && (
+                <input
+                  type="text"
+                  placeholder={q.placeholder || "Enter your answer"}
+                  value={responses[q.id] || ""}
+                  onChange={(e) =>
+                    setResponses({ ...responses, [q.id]: e.target.value })
+                  }
+                  className="option-input"
+                />
+              )}
+            </div>
           ))}
 
           <div className="order-summary">

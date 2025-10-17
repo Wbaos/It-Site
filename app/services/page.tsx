@@ -22,7 +22,7 @@ export default async function ServicesPage() {
                     <p className="no-services">No services available yet.</p>
                 ) : (
                     <div className="services-grid">
-                        {services.map((service: any) => (
+                        {services.map((service: any, index: number) => (
                             <div key={service._id} className="service-card">
                                 {service.image?.asset?.url && (
                                     <Image
@@ -31,6 +31,8 @@ export default async function ServicesPage() {
                                         width={400}
                                         height={250}
                                         className="service-image"
+                                        priority={index === 0}
+                                        fetchPriority={index === 0 ? "high" : "auto"}
                                     />
                                 )}
                                 <div className="service-content">
@@ -41,6 +43,7 @@ export default async function ServicesPage() {
                                 </div>
                             </div>
                         ))}
+
                     </div>
                 )}
             </div>

@@ -3,12 +3,23 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
-import { Search, Menu, X, ShoppingCart, ChevronDown, ChevronUp } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  Search,
+  Menu,
+  X,
+  ShoppingCart,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import { useCart } from "@/lib/CartContext";
 import { useNav } from "@/lib/NavContext";
 import NotificationDropdown from "@/components/NotificationDropdown";
 import UserMenu from "@/components/UserMenu";
 import SearchModal from "@/components/SearchModal";
+import { useLoading } from "@/lib/LoadingContext";
+import SvgIcon from "@/components/common/SvgIcons";
+
 
 const NAV = [
   { href: "/#how", label: "How It Works" },
@@ -24,16 +35,23 @@ export default function Navbar() {
   const [categories, setCategories] = useState<any[]>([]);
   const [activeService, setActiveService] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loadingServices, setLoadingServices] = useState(true);
   const [searchOpen, setSearchOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
   const [servicesOpen, setServicesOpen] = useState(false);
-
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const { items } = useCart();
   const { open, setOpen, dropdownOpen, setDropdownOpen, notifOpen } = useNav();
+  const { setLoading } = useLoading();
+  const router = useRouter();
+  const pathname = usePathname();
 
+  // ✅ Hide loader automatically when route changes
+  useEffect(() => {
+    setLoading(false);
+  }, [pathname, setLoading]);
+
+  // ✅ Fetch categories/services from API
   useEffect(() => {
     async function fetchData() {
       try {
@@ -49,12 +67,13 @@ export default function Navbar() {
       } catch (err) {
         console.error("Failed to fetch services:", err);
       } finally {
-        setLoading(false);
+        setLoadingServices(false);
       }
     }
     fetchData();
   }, []);
 
+  // ✅ Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -72,6 +91,7 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dropdownOpen]);
 
+  // ✅ Disable body scroll when overlays open
   useEffect(() => {
     if (open || dropdownOpen || notifOpen) {
       document.body.classList.add("no-scroll");
@@ -80,6 +100,7 @@ export default function Navbar() {
     }
   }, [open, dropdownOpen, notifOpen]);
 
+  // ✅ Close mobile nav when resizing above breakpoint
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth > 900 && open) {
@@ -88,11 +109,11 @@ export default function Navbar() {
         setActiveCategory(null);
       }
     }
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [open]);
 
+  // ✅ Ensure search or notifications close mobile nav
   useEffect(() => {
     if (searchOpen || notifOpen) {
       setOpen(false);
@@ -100,7 +121,6 @@ export default function Navbar() {
       setActiveCategory(null);
     }
   }, [searchOpen, notifOpen]);
-
 
   return (
     <>
@@ -122,6 +142,7 @@ export default function Navbar() {
             </button>
 
             <nav className="primary-nav" aria-label="Primary">
+              {/* SERVICES DROPDOWN */}
               <div className="nav-item dropdown" ref={dropdownRef}>
                 <a
                   href="#"
@@ -138,12 +159,15 @@ export default function Navbar() {
                 {dropdownOpen && (
                   <div className="dropdown-panel">
                     {!activeService ? (
-                      loading ? (
+                      loadingServices ? (
                         <p className="dropdown-loading">Loading...</p>
                       ) : (
                         <>
                           {categories.map((cat) => (
-                            <div key={cat.category} className="dropdown-category">
+                            <div
+                              key={cat.category}
+                              className="dropdown-category"
+                            >
                               <h4>{cat.category}</h4>
                               <ul>
                                 {cat.items.map((srv: any) => {
@@ -162,13 +186,22 @@ export default function Navbar() {
                                             setActiveService(slug);
                                           }}
                                         >
-                                          {srv.title} ▸
+                                          {srv.title}
                                         </a>
                                       ) : (
                                         <Link
                                           href={`/services/${slug}`}
                                           className="dropdown-link"
-                                          onClick={() => setDropdownOpen(false)}
+                                          onClick={(e) => {
+                                            // ✅ Prevent infinite loader if clicking same service
+                                            if (pathname === `/services/${slug}`) {
+                                              setLoading(true);
+                                              setTimeout(() => setLoading(false), 800);
+                                            } else {
+                                              setLoading(true);
+                                            }
+                                            setDropdownOpen(false);
+                                          }}
                                         >
                                           {srv.title}
                                         </Link>
@@ -183,34 +216,61 @@ export default function Navbar() {
                       )
                     ) : (
                       <div className="dropdown-subpanel">
-                        <button
-                          className="dropdown-back"
-                          onClick={() => setActiveService(null)}
-                        >
-                          ← Back
-                        </button>
-                        <ul>
-                          {categories
-                            .flatMap((c) => c.items)
-                            .filter(
-                              (s) =>
-                                (s.slug?.current || s.slug) === activeService
-                            )
-                            .flatMap((parent) =>
-                              (parent.subservices || []).map((sub: any) => (
-                                <li key={sub._id}>
-                                  <Link
-                                    href={`/services/${sub.slug?.current || sub.slug}`}
-                                    className="dropdown-sublink"
-                                    onClick={() => setDropdownOpen(false)}
-                                  >
-                                    {sub.title}
-                                  </Link>
-                                </li>
-                              ))
-                            )}
-                        </ul>
+                        {(() => {
+                          const parentInfo = categories
+                            .map((cat) => ({
+                              categoryName: cat.category,
+                              service: cat.items.find(
+                                (s: any) => (s.slug?.current || s.slug) === activeService
+                              ),
+                            }))
+                            .find((x) => x.service);
+
+                          const categoryName = parentInfo?.categoryName || "";
+                          const parentName = parentInfo?.service?.title || "";
+
+                          return (
+                            <div className="dropdown-subpanel">
+                              <div className="dropdown-header">
+                                {/* Clickable category breadcrumb */}
+                                <button className="dropdown-back" onClick={() => setActiveService(null)}>
+                                  <SvgIcon name="arrow-back" size={22} className="arrow" />
+                                  {categoryName}
+                                </button>
+
+                                <span className="breadcrumb-sep">/</span>
+                                <span className="dropdown-current">{parentName}</span>
+                              </div>
+
+                              {/* Subservices list */}
+                              <ul className="dropdown-sublist">
+                                {parentInfo?.service?.subservices?.map((sub: any) => (
+                                  <li key={sub._id}>
+                                    <Link
+                                      href={`/services/${sub.slug?.current || sub.slug}`}
+                                      className="dropdown-sublink"
+                                      onClick={(e) => {
+                                        if (
+                                          pathname === `/services/${sub.slug?.current || sub.slug}`
+                                        ) {
+                                          setLoading(true);
+                                          setTimeout(() => setLoading(false), 800);
+                                        } else {
+                                          setLoading(true);
+                                        }
+                                        setDropdownOpen(false);
+                                      }}
+                                    >
+                                      {sub.title}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          );
+                        })()}
                       </div>
+
                     )}
                   </div>
                 )}
@@ -250,17 +310,20 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* ✅ MOBILE MENU WITH COLLAPSIBLE CATEGORIES */}
+      {/* ✅ MOBILE NAV */}
       {open && (
         <div className="mobile-nav">
-          {/* SERVICES MAIN DROPDOWN */}
           <div className="mobile-category">
             <button
               className="mobile-category-btn"
               onClick={() => setServicesOpen(!servicesOpen)}
             >
               <span>Services</span>
-              {servicesOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+              {servicesOpen ? (
+                <ChevronUp size={18} />
+              ) : (
+                <ChevronDown size={18} />
+              )}
             </button>
 
             {servicesOpen && (
@@ -294,7 +357,15 @@ export default function Navbar() {
                               <li key={srv._id}>
                                 <Link
                                   href={`/services/${slug}`}
-                                  onClick={() => setOpen(false)}
+                                  onClick={(e) => {
+                                    if (pathname === `/services/${slug}`) {
+                                      setLoading(true);
+                                      setTimeout(() => setLoading(false), 800);
+                                    } else {
+                                      setLoading(true);
+                                    }
+                                    setOpen(false);
+                                  }}
                                 >
                                   {srv.title}
                                 </Link>
@@ -324,6 +395,7 @@ export default function Navbar() {
       )}
 
       {searchOpen && <SearchModal onClose={() => setSearchOpen(false)} />}
+
     </>
   );
 }

@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 
+/** @type {NextConfig} */
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -8,6 +9,14 @@ const nextConfig: NextConfig = {
         hostname: "cdn.sanity.io",
       },
     ],
+  },
+
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
+    return config;
   },
 };
 
