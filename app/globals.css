@@ -42,6 +42,38 @@ main {
   flex: 1;
 }
 
+.global-loader {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  font-family: var(--font-family-main);
+  color: #1e293b;
+  font-size: 50px;
+}
+.global-loader p{
+  margin-top: 0;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+  color: #2563eb;
+  width: 40px !important;
+  height: 40px !important;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
 /* ================= HERO ================= */
 @layer components {
   #hero {
@@ -1646,13 +1678,12 @@ main {
 }
 
 .dropdown-link:hover {
-  background: #f3f4f6;
-  color: #2563eb;
+  color: #000000;
   transform: translateX(3px);
+  text-decoration: underline;
 }
 
 .dropdown-link::before {
-  content: "•";
   color: #2563eb;
   font-size: 1.2rem;
   line-height: 1;
@@ -1700,41 +1731,62 @@ main {
 
 /* Inputs */
 .input {
-  padding: 14px 12px; /* taller inputs */
+  padding: 14px 12px; 
   border: 1px solid #ddd;
   border-radius: 6px;
 }
 
 /* Subpanel wrapper */
 .dropdown-subpanel {
-  grid-column: 1 / -1; /* take full width */
+  grid-column: 1 / -1; 
   animation: slideIn 0.3s ease forwards;
 }
 
 /* Back button */
 .dropdown-back {
-  display: inline-block;
-  margin-bottom: 1rem;
+  display: inline-flex;
   padding: 0.4rem 0.8rem;
   font-size: 20px;
-  font-weight: 500;
-  color: #2563eb;
-  background: #f3f4f6;
+  font-weight: 600;
+  background: #fff;
   border: none;
+  gap: 10px;
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
    font-family: var(--font-family-main);
+}
+.dropdown-header{
+  display: flex;
+  align-items: center;
+}
 
+.dropdown-sublist{
+  list-style: none;
 }
-.dropdown-back:hover {
-  background: #e5e7eb;
-  color: #1d4ed8;
+
+.dropdown-back .arrow-icon {
+  transition: color 0.2s ease, transform 0.2s ease;
+  color: inherit;
 }
+
+.dropdown-back:hover .arrow-icon {
+  color: #fff;
+  transform: translateX(-3px);
+}
+
+.dropdown-current {
+  color: #000;
+  font-weight: 500;
+  font-family: var(--font-family-main);
+  font-size: 20px;
+  padding: 0.6rem 0.8rem;
+}
+
 
 /* Subcategory links */
 .dropdown-sublink {
-  display: flex;
+  display: inline-block;
   align-items: center;
   gap: 0.75rem;
   padding: 0.5rem 0;
@@ -1745,12 +1797,15 @@ main {
   border-radius: 6px;
   transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
   font-family: var(--font-family-main);
-
 }
 .dropdown-sublink:hover {
-  background: #f3f4f6;
-  color: #2563eb;
-  transform: translateX(3px);
+text-decoration: underline;
+}
+
+.dropdown-header ul{
+  margin: 0px;
+  padding-left: 3rem;
+  list-style: none;
 }
 
 /* Slide animation */

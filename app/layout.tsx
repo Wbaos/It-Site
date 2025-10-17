@@ -2,6 +2,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Providers } from "./Providers";
+import { LoadingProvider } from "@/lib/LoadingContext";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
   },
   description:
     "Learn how to set up your devices, secure your smart home, and keep your tech running smoothly with expert CareTech guides.",
-  metadataBase: new URL("https://caretech-blog.vercel.app"), //set base URL
+  metadataBase: new URL("https://caretech-blog.vercel.app"),
   openGraph: {
     title: "CareTech Blog",
     description:
@@ -50,9 +51,11 @@ export default function RootLayout({
 
       <body>
         <Providers>
-          <Navbar />
-          <main className="main-content">{children}</main>
-          <Footer />
+          <LoadingProvider>
+            <Navbar />
+            <main className="main-content">{children}</main>
+            <Footer />
+          </LoadingProvider>
         </Providers>
       </body>
     </html>
