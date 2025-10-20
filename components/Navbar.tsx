@@ -46,12 +46,12 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // ✅ Hide loader automatically when route changes
+  // Hide loader automatically when route changes
   useEffect(() => {
     setLoading(false);
   }, [pathname, setLoading]);
 
-  // ✅ Fetch categories/services from API
+  // Fetch categories/services from API
   useEffect(() => {
     async function fetchData() {
       try {
@@ -73,7 +73,7 @@ export default function Navbar() {
     fetchData();
   }, []);
 
-  // ✅ Close dropdown when clicking outside
+  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -91,7 +91,7 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dropdownOpen]);
 
-  // ✅ Disable body scroll when overlays open
+  // Disable body scroll when overlays open
   useEffect(() => {
     if (open || dropdownOpen || notifOpen) {
       document.body.classList.add("no-scroll");
@@ -100,7 +100,7 @@ export default function Navbar() {
     }
   }, [open, dropdownOpen, notifOpen]);
 
-  // ✅ Close mobile nav when resizing above breakpoint
+  // Close mobile nav when resizing above breakpoint
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth > 900 && open) {
@@ -113,7 +113,7 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, [open]);
 
-  // ✅ Ensure search or notifications close mobile nav
+  // Ensure search or notifications close mobile nav
   useEffect(() => {
     if (searchOpen || notifOpen) {
       setOpen(false);
@@ -193,7 +193,7 @@ export default function Navbar() {
                                           href={`/services/${slug}`}
                                           className="dropdown-link"
                                           onClick={(e) => {
-                                            // ✅ Prevent infinite loader if clicking same service
+                                            // Prevent infinite loader if clicking same service
                                             if (pathname === `/services/${slug}`) {
                                               setLoading(true);
                                               setTimeout(() => setLoading(false), 800);
@@ -310,7 +310,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* ✅ MOBILE NAV */}
+      {/* MOBILE NAV */}
       {open && (
         <div className="mobile-nav">
           <div className="mobile-category">
