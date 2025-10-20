@@ -6,7 +6,7 @@ import HowItWorks from "@/components/sections/HowItWorks";
 import TestimonialsList, {
     Testimonial,
 } from "@/components/common/TestimonialsList";
-import Pricing from "@/components/sections/Pricing";
+import Pricing from "@/components/sections/PricingServer";
 import Contact from "@/components/sections/Contact";
 
 type Section = {

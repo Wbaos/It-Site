@@ -3,6 +3,7 @@ import { sanity } from "@/lib/sanity";
 import Link from "next/link";
 import Image from "next/image";
 import TestimonialsList from "@/components/common/TestimonialsList";
+import ServiceReviewsWrapper from "@/components/ServiceReviewsWrapper";
 
 export default async function ServicePage({
   params,
@@ -29,6 +30,7 @@ export default async function ServicePage({
   return (
     <section className="section service-detail">
       <div className="site-container service-layout">
+        {/* Service Hero Image */}
         {service.image?.asset?.url && (
           <Image
             src={service.image.asset.url}
@@ -40,14 +42,20 @@ export default async function ServicePage({
           />
         )}
 
+        {/* Service Information */}
         <div className="service-info">
           <h1 className="service-title">{service.title}</h1>
+
           {service.price && (
             <p className="service-price">${service.price} / setup</p>
           )}
+
           {service.description && <p>{service.description}</p>}
 
-          <Link href={`/services/${slug}/book/step1`} className="btn btn-primary">
+          <Link
+            href={`/services/${slug}/book/step1`}
+            className="btn btn-primary"
+          >
             Book This Service
           </Link>
 
@@ -61,27 +69,27 @@ export default async function ServicePage({
         </div>
       </div>
 
+      {/* FAQs Section */}
       {service.faqs && service.faqs.length > 0 && (
         <div className="service-faq">
           <h2 className="faq-heading">❓ Frequently Asked Questions</h2>
           <ul className="faq-list">
-            {service.faqs.map(
-              (faq: { q: string; a: string }, i: number) => (
-                <li key={i} className="faq-item">
-                  <details>
-                    <summary className="faq-question">
-                      {faq.q}
-                      <span className="faq-toggle">+</span>
-                    </summary>
-                    <p className="faq-answer">{faq.a}</p>
-                  </details>
-                </li>
-              )
-            )}
+            {service.faqs.map((faq: { q: string; a: string }, i: number) => (
+              <li key={i} className="faq-item">
+                <details>
+                  <summary className="faq-question">
+                    {faq.q}
+                    <span className="faq-toggle">+</span>
+                  </summary>
+                  <p className="faq-answer">{faq.a}</p>
+                </details>
+              </li>
+            ))}
           </ul>
         </div>
       )}
 
+      {/* Testimonials Section */}
       {service.testimonials && service.testimonials.length > 0 && (() => {
         const validTestimonials = service.testimonials
           .filter(
@@ -105,6 +113,12 @@ export default async function ServicePage({
           />
         );
       })()}
+
+      {/*Dynamic Reviews (Client-Side Section) */}
+      <div className="site-container">
+        <ServiceReviewsWrapper slug={slug} />
+      </div>
+
     </section>
   );
 }

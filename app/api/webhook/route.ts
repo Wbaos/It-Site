@@ -5,7 +5,9 @@ import { Order } from "@/app/models/Order";
 import { Notification } from "@/app/models/Notification";
 import { Cart } from "@/app/models/Cart";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2025-08-27.basil",
+});
 
 export async function POST(req: Request) {
   const sig = req.headers.get("stripe-signature")!;
@@ -18,10 +20,21 @@ export async function POST(req: Request) {
       process.env.STRIPE_WEBHOOK_SECRET!
     );
 
+    await connectDB();
+
+    // Handle successful checkout
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
-      await connectDB();
 
+      const isSubscription = session.mode === "subscription";
+      const userId = session.metadata?.userId || null;
+      const email =
+        session.metadata?.email ||
+        session.customer_details?.email ||
+        session.customer_email ||
+        "unknown";
+
+      // Parse extra metadata if it exists
       let items: any[] = [];
       let contact: any = {};
       let address: any = {};
@@ -40,13 +53,6 @@ export async function POST(req: Request) {
         console.error("Metadata parse error:", err);
       }
 
-      const email =
-        session.metadata?.email ||
-        session.customer_details?.email ||
-        session.customer_email ||
-        "unknown";
-
-
       const normalizedItems = items.map((i: any) => ({
         slug: i.slug,
         title: i.title,
@@ -62,8 +68,10 @@ export async function POST(req: Request) {
         0
       );
 
+      //Create Order document in MongoDB
       const order = await Order.create({
         stripeSessionId: session.id,
+        userId,
         email,
         items: normalizedItems,
         total,
@@ -72,25 +80,55 @@ export async function POST(req: Request) {
         address,
         schedule,
         status: "paid",
+        // Add these for subscription tracking
+        planName: session.metadata?.planName || null,
+        planPrice: session.metadata?.planPrice || null,
+        planInterval: session.metadata?.planInterval || null,
       });
 
-      if (session.metadata?.sessionId) {
+      // Empty cart only for one-time purchases
+      if (session.metadata?.sessionId && !isSubscription) {
         await Cart.findOneAndUpdate(
           { sessionId: session.metadata.sessionId },
           { items: [] }
         );
       }
 
-      if (session.metadata?.userId) {
+      // Notify user
+      if (userId) {
         await Notification.create({
-          userId: session.metadata.userId,
-          message: `Your order has been placed for ${normalizedItems
-            .map((i) => i.title)
-            .join(", ")}`,
+          userId,
+          message: isSubscription
+            ? `Your ${session.metadata?.planName || "subscription"} ($${session.metadata?.planPrice}/${session.metadata?.planInterval || "month"}) has started successfully.`
+            : `Your order has been placed for ${normalizedItems.map((i) => i.title).join(", ")}.`,
           type: "success",
           read: false,
         });
       }
+    }
+
+    // Handle subscription cancellation
+    if (event.type === "customer.subscription.deleted") {
+      const sub = event.data.object as Stripe.Subscription;
+
+      let customerEmail = "unknown";
+      if (typeof sub.customer === "string") {
+        try {
+          const customer = await stripe.customers.retrieve(sub.customer);
+          if (!customer.deleted && "email" in customer) {
+            customerEmail = customer.email || "unknown";
+          }
+        } catch (e) {
+          console.error("Failed to fetch customer email:", e);
+        }
+      }
+
+      await Notification.create({
+        userId: null,
+        message: `Your subscription (${customerEmail}) has been canceled.`,
+        type: "warning",
+        read: false,
+      });
     }
 
     return NextResponse.json({ received: true });

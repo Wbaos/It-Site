@@ -31,6 +31,7 @@ const OrderItemSchema = new Schema({
 
 const OrderSchema = new Schema(
   {
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     stripeSessionId: { type: String, required: true },
     email: { type: String },
     items: { type: [OrderItemSchema], required: true },
@@ -41,6 +42,12 @@ const OrderSchema = new Schema(
       enum: ["pending", "paid", "failed"],
       default: "pending",
     },
+
+    // New fields for subscriptions
+    planName: { type: String, default: null },
+    planPrice: { type: String, default: null },
+    planInterval: { type: String, default: null },
+
     contact: {
       name: String,
       email: String,

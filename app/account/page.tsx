@@ -58,7 +58,6 @@ export default function AccountPage() {
 
 
     const user = session?.user;
-    const totalSpent = orders.reduce((sum, o) => sum + (o.total || 0), 0);
     const tabs: Array<"overview" | "orders" | "profile"> = [
         "overview",
         "orders",
@@ -91,7 +90,6 @@ export default function AccountPage() {
                     <OverviewTab
                         user={user}
                         orders={orders}
-                        totalSpent={totalSpent}
                         loading={loading}
                     />
                 )}
@@ -108,12 +106,10 @@ export default function AccountPage() {
 function OverviewTab({
     user,
     orders,
-    totalSpent,
     loading,
 }: {
     user: any;
     orders: Order[];
-    totalSpent: number;
     loading: boolean;
 }) {
     const recent = orders[0];
@@ -122,14 +118,12 @@ function OverviewTab({
         <div className="overview-tab">
             <div className="account-card-grid">
                 <Card title="Total Orders" value={loading ? "..." : orders.length} />
-                <Card
-                    title="Total Spent"
-                    value={loading ? "..." : `$${totalSpent.toFixed(2)}`}
-                />
+
                 <Card
                     title="Last Booking"
                     value={
                         loading
+
                             ? "..."
                             : recent
                                 ? new Date(recent.createdAt).toLocaleDateString()
