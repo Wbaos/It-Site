@@ -9,6 +9,7 @@ const UserSchema = new Schema(
     phone: { type: String },
     resetToken: { type: String },
     resetTokenExpiry: { type: Number },
+    stripeCustomerId: { type: String, default: null },
   },
   { timestamps: true }
 );
