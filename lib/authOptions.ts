@@ -33,8 +33,10 @@ export const authOptions: NextAuthOptions = {
             },
         }),
     ],
+
     callbacks: {
         async jwt({ token, user }) {
+            // Preserve id on first login
             if (user) {
                 token.id = user.id;
                 token.name = user.name;
@@ -42,12 +44,14 @@ export const authOptions: NextAuthOptions = {
                 token.phone = user.phone;
             }
 
+            //  Keep data fresh but don't remove id
             if (token.email) {
                 await connectDB();
                 const freshUser = await User.findOne({ email: token.email });
                 if (freshUser) {
-                    token.phone = freshUser.phone || "";
+                    token.id = freshUser._id.toString();
                     token.name = freshUser.name || "";
+                    token.phone = freshUser.phone || "";
                 }
             }
 

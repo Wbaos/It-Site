@@ -1079,6 +1079,21 @@ main {
 /* -------------------------------
    ACCOUNT PAGE BASE STYLES
 -------------------------------- */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+
+.btn-disabled{
+  padding: 10px;
+}
 .account-page {
   background-color: #b0c4de;
   min-height: 80vh;
@@ -1456,7 +1471,7 @@ main {
   max-width: 600px;
   padding: 16px;
   z-index: 101;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  /* box-shadow: 0 10px 25px rgba(0,0,0,0.2); */
 }
 
 .input-group {
@@ -1478,7 +1493,7 @@ main {
 }
 
 .results {
-  margin-top: 12px;
+  /* margin-top: 12px; */
   max-height: 400px;
   overflow-y: auto;
   font-size: 18px;
@@ -1975,7 +1990,7 @@ text-decoration: underline;
 }
 
 .btn-write-review {
-    background: #f3f4f6;
+    background: #E2E8EE;
     border: 1px solid #e5e7eb;
     border-radius: 6px;
     padding: 0.7rem 1.2rem;
@@ -2628,6 +2643,7 @@ text-decoration: underline;
   transform: skewX(-20deg);
 }
 
+
 .btn.btn-primary:hover::after, .btn.btn-secondary:hover::after, .clear-btn:hover::after {
   animation: shimmer 1s ease forwards;
 }
@@ -3034,6 +3050,7 @@ details[open] .faq-toggle {
   }
 }
 /*===Plans===*/
+
 .plan-container-back-btn{
   background: #e2e8f0;
   color: #000000;

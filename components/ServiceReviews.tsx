@@ -60,7 +60,7 @@ export default function ServiceReviews({ slug }: { slug: string }) {
 
             {/* Existing Reviews */}
             <div className="existing-reviews">
-                {reviews.length === 0 && <p>No reviews yet.</p>}
+                {reviews.length === 0 && <p>No reviews yet — be the first to share your experience!</p>}
                 <ul className="review-list">
                     {reviews.map((r) => (
                         <li key={r._id} className="review-card">

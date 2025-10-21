@@ -33,6 +33,7 @@ const OrderSchema = new Schema(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     stripeSessionId: { type: String, required: true },
+    stripeSubscriptionId: { type: String, default: null },
     email: { type: String },
     items: { type: [OrderItemSchema], required: true },
     total: { type: Number, required: true },
@@ -43,10 +44,13 @@ const OrderSchema = new Schema(
       default: "pending",
     },
 
-    // New fields for subscriptions
+    /* -----------------------------------------
+       Subscriptions flat fields (match webhook)
+    ----------------------------------------- */
     planName: { type: String, default: null },
     planPrice: { type: String, default: null },
     planInterval: { type: String, default: null },
+    nextPayment: { type: String, default: null },
 
     contact: {
       name: String,
