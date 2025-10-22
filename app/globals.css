@@ -688,9 +688,6 @@ main {
 
 /* Cart items */
 
-
-
-
 .cart-items {
   background: #fff;
   border-radius: 16px;
@@ -718,6 +715,7 @@ main {
   align-items: flex-start;
   border-bottom: 1px solid #e5e7eb;
   padding: 1rem 0;
+  gap: 20px;
 }
 
 .cart-item:last-child {
@@ -822,19 +820,6 @@ main {
   display: flex;
   gap: 1rem;
 }
-/* .clear-btn {
-   font-size: 0.85rem;
-  color: #fff;
-  background: #0f172a;
-  border: none;
-  cursor: pointer;
-  transition: color 0.2s ease;
-  padding: 10px 10px;
-  border-radius: 5px;
-  text-decoration: none;
-} */
-
-/* Order summary */
 
 .order-summary {
   background: #fff;
@@ -867,10 +852,6 @@ main {
   color: #111827;
 }
 
-/* .btn-primary:hover {
-  background: #4b78dd;
-} */
-
 
 .empty-cart {
   display: flex;
@@ -888,6 +869,20 @@ main {
   }
 }
 
+@media (max-width: 600px) {
+  .cart-items {
+    padding: 1rem;
+  }
+  .item-price {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .item-title{
+    margin-top: 0;
+  }
+}
+
+
 .base-price {
   margin-bottom: 1rem;
   padding: 0.75rem 1rem;
@@ -902,27 +897,52 @@ main {
   font-weight: 700;
   color: #2563eb;
 }
-
 .option-item.extra-option {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1rem;
-  margin-bottom: 0.75rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  margin-bottom: 0;
   background: #fff;
   transition: border-color 0.2s, box-shadow 0.2s;
+  border-bottom: 1px solid #e5e7eb;
+  gap: 30px;
 }
 
-.option-item.extra-option:hover {
+.option-item.extra-option.text-field {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.option-item.extra-option.text-field .option-label {
+  color: #111827;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+.option-item.extra-option.text-field .option-input {
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #111827;
+  background-color: #f9fafb;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.option-item.extra-option.text-field .option-input:focus {
+  outline: none;
   border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  background-color: #fff;
 }
 
 .option-left {
   display: flex;
   flex-direction: column;
+  gap: 20px;
 }
 
 .option-label {
@@ -933,7 +953,7 @@ main {
 .option-extra {
   font-size: 0.9rem;
   color: #ef4444;
-  margin-top: 0.2rem;
+  margin-top: 0;
 }
 
 .option-checkbox {
@@ -941,6 +961,13 @@ main {
   height: 18px;
   cursor: pointer;
 }
+
+.option-control{
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
 
 /* Success Page */
 .success-card {
@@ -1852,7 +1879,7 @@ text-decoration: underline;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
   margin-top: 1.5rem;
   transition: box-shadow 0.3s ease;
 }
@@ -1910,6 +1937,7 @@ text-decoration: underline;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
 }
 
 .option-extra {
