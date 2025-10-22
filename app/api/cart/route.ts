@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import { Cart as CartModel } from "@/app/models/Cart";
+import { Cart as CartModel } from "../../models/Cart";
 import { getSessionId } from "@/lib/sessionId";
 import { randomUUID } from "crypto";
 
