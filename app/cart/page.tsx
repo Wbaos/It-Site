@@ -126,7 +126,7 @@ export default function CartPage() {
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
-              + Add More Services
+              More Services
             </button>
           </div>
         </div>

@@ -74,7 +74,7 @@ export default function Step1({
           faqs,
           testimonials,
           image{asset->{url}},
-          questions[]{
+          questions[] {
             id, label, shortLabel, type, placeholder,
             extraCost,
             options[]{label, extraCost}
@@ -164,9 +164,12 @@ export default function Step1({
 
         return null;
       })
-      .filter(Boolean) as AddOn[]
+      .filter(Boolean) as AddOn[];
 
-  const addOnsTotal = (addOns ?? []).reduce((sum, o) => sum + (o.price || 0), 0);
+  const addOnsTotal = (addOns ?? []).reduce(
+    (sum, o) => sum + (o.price || 0),
+    0
+  );
   const subtotal = service.price + addOnsTotal;
 
   const handleSave = async () => {
@@ -201,70 +204,84 @@ export default function Step1({
             <span className="price-main">${service.price}</span>
           </div>
 
-          {service.questions?.map((q) => (
-            <div key={q.id} className="option-item extra-option">
-              <label className="option-label">{q.label}</label>
+          {/* Render add-ons/questions only if service has them */}
+          {service.questions && service.questions.length > 0 && (
+            <>
+              {service.questions.map((q) => (
+                <div
+                  key={q.id}
+                  className={`option-item extra-option ${q.type === "text" ? "text-field" : ""
+                    }`}
+                >
+                  <div className="option-left">
+                    <label className="option-label">{q.label}</label>
 
-              {/* Checkbox */}
-              {q.type === "checkbox" && (
-                <div className="option-control">
-                  <input
-                    type="checkbox"
-                    checked={!!responses[q.id]}
-                    onChange={(e) =>
-                      setResponses({
-                        ...responses,
-                        [q.id]: e.target.checked,
-                      })
-                    }
-                    className="option-checkbox"
-                  />
-                  {q.extraCost && (
-                    <span className="option-extra">
-                      +${q.extraCost.toFixed(2)}
-                    </span>
+                    {q.type === "text" && (
+                      <input
+                        type="text"
+                        placeholder={q.placeholder || "Enter your answer"}
+                        value={responses[q.id] || ""}
+                        onChange={(e) =>
+                          setResponses({
+                            ...responses,
+                            [q.id]: e.target.value,
+                          })
+                        }
+                        className="option-input"
+                      />
+                    )}
+                  </div>
+
+                  {q.type === "checkbox" && (
+                    <div className="option-control">
+                      <input
+                        type="checkbox"
+                        checked={!!responses[q.id]}
+                        onChange={(e) =>
+                          setResponses({
+                            ...responses,
+                            [q.id]: e.target.checked,
+                          })
+                        }
+                        className="option-checkbox"
+                      />
+                      {q.extraCost && (
+                        <span className="option-extra">
+                          +${q.extraCost.toFixed(2)}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  {q.type === "select" && (
+                    <div className="option-control">
+                      <select
+                        value={responses[q.id] || ""}
+                        onChange={(e) =>
+                          setResponses({ ...responses, [q.id]: e.target.value })
+                        }
+                        className="option-select"
+                      >
+                        <option value="">Select an option...</option>
+                        {q.options?.map((opt) => (
+                          <option key={opt.label} value={opt.label}>
+                            {opt.label}{" "}
+                            {opt.extraCost ? `(+$${opt.extraCost.toFixed(2)})` : ""}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   )}
                 </div>
-              )}
+              ))}
 
-              {/* Select dropdown */}
-              {q.type === "select" && (
-                <select
-                  value={responses[q.id] || ""}
-                  onChange={(e) =>
-                    setResponses({ ...responses, [q.id]: e.target.value })
-                  }
-                  className="option-select"
-                >
-                  <option value="">Select an option...</option>
-                  {q.options?.map((opt) => (
-                    <option key={opt.label} value={opt.label}>
-                      {opt.label}{" "}
-                      {opt.extraCost ? `(+$${opt.extraCost.toFixed(2)})` : ""}
-                    </option>
-                  ))}
-                </select>
-              )}
-
-              {/* Text input */}
-              {q.type === "text" && (
-                <input
-                  type="text"
-                  placeholder={q.placeholder || "Enter your answer"}
-                  value={responses[q.id] || ""}
-                  onChange={(e) =>
-                    setResponses({ ...responses, [q.id]: e.target.value })
-                  }
-                  className="option-input"
-                />
-              )}
-            </div>
-          ))}
+            </>
+          )}
 
           <div className="order-summary">
             <h3>Order Summary</h3>
             <p>Base Price: ${service.price}</p>
-            <p>Add-ons: ${addOnsTotal}</p>
+            {addOnsTotal > 0 && <p>Add-ons: ${addOnsTotal}</p>}
             <hr />
             <strong>Total: ${subtotal}</strong>
           </div>
