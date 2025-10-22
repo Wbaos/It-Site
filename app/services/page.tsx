@@ -37,7 +37,9 @@ export default async function ServicesPage() {
                                 )}
                                 <div className="service-content">
                                     <h2 className="service-title">{service.title}</h2>
-                                    <p className="service-category">{service.category}</p>
+                                    <p className="service-category">
+                                        {service.category?.title || "Uncategorized"}
+                                    </p>
                                     <p className="service-description">{service.description}</p>
                                     <p className="service-price">${service.price}</p>
                                 </div>
