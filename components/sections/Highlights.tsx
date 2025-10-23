@@ -1,15 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
-
-type Highlight = { icon: string; title: string; desc: string };
-
-const HIGHLIGHTS: Highlight[] = [
-  { icon: "⚡", title: "Fast Service", desc: "Same-day availability in most areas." },
-  { icon: "🤝", title: "Friendly Experts", desc: "Patient support with clear explanations." },
-  { icon: "💳", title: "Fair Pricing", desc: "Only pay when the job is done right." },
-];
+import { sanity } from "@/lib/sanity";
 
 export default function Highlights() {
+  const [highlights, setHighlights] = useState<any[]>([]);
   const [isSmall, setIsSmall] = useState(false);
   const [index, setIndex] = useState(0);
 
@@ -20,27 +14,43 @@ export default function Highlights() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  // Fetch from Sanity
   useEffect(() => {
-    if (!isSmall) return;
+    (async () => {
+      const data = await sanity.fetch(`
+        *[_type == "highlight"] | order(order asc) {
+          _id,
+          icon,
+          title,
+          desc
+        }
+      `);
+      setHighlights(data);
+    })();
+  }, []);
+
+  // Auto carousel
+  useEffect(() => {
+    if (!isSmall || highlights.length === 0) return;
     const interval = setInterval(() => {
-      setIndex((i) => (i + 1) % HIGHLIGHTS.length);
+      setIndex((i) => (i + 1) % highlights.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, [isSmall]);
+  }, [isSmall, highlights]);
 
   return (
     <section id="highlights" className="highlights">
       <div className="site-container">
         <div className={`highlights-grid ${isSmall ? "carousel-mode" : ""}`}>
-          {HIGHLIGHTS.map((h, i) => {
+          {highlights.map((h, i) => {
             let positionClass = "";
             if (i === index) positionClass = "active";
-            else if (i === (index - 1 + HIGHLIGHTS.length) % HIGHLIGHTS.length)
+            else if (i === (index - 1 + highlights.length) % highlights.length)
               positionClass = "prev";
             else positionClass = "next";
 
             return (
-              <div key={i} className={`highlight ${positionClass}`}>
+              <div key={h._id} className={`highlight ${positionClass}`}>
                 <span className="highlight-icon">{h.icon}</span>
                 <div>
                   <h3 className="highlight-title">{h.title}</h3>
