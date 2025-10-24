@@ -1,7 +1,7 @@
 import { sanity } from "@/lib/sanity";
 import PricingClient from "./PricingClient";
 
-export const revalidate = 30;
+export const revalidate = 0;
 
 export default async function PricingServer() {
   const plans = await sanity.fetch(`
