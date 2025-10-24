@@ -8,7 +8,9 @@ export default async function PlanPage(props: { params: { slug: string } }) {
         `*[_type == "pricingPlan" && slug.current == $slug][0]{
       _id,
       title,
+      slug,
       price,
+      annualPrice,
       duration,
       features,
       stripeProductId,

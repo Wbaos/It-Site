@@ -9,12 +9,13 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-08-27.basil",
 });
 
-// Utility to get the next payment date safely
+//Utility: get next payment date safely
 function getNextPaymentDate(sub: Stripe.Subscription): string | null {
-  const s = sub as any;
+  const s = sub as any; // <-- temporary relaxed type
   const end = s.current_period_end ?? s.items?.data?.[0]?.current_period_end ?? null;
   return end ? new Date(end * 1000).toISOString() : null;
 }
+
 
 export async function POST(req: Request) {
   const sig = req.headers.get("stripe-signature");
@@ -36,7 +37,17 @@ export async function POST(req: Request) {
     // ================================================================
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
-      const isSubscription = session.mode === "subscription";
+
+      if (session.mode === "subscription") {
+        console.log("Skipping checkout.session.completed (subscription)");
+        return NextResponse.json({ received: true });
+      }
+
+      const existingOrder = await Order.findOne({ stripeSessionId: session.id });
+      if (existingOrder) {
+        console.log("Duplicate checkout.session.completed ignored");
+        return NextResponse.json({ received: true });
+      }
 
       const userId = session.metadata?.userId || null;
       const email =
@@ -46,103 +57,53 @@ export async function POST(req: Request) {
         "unknown";
 
       const total = (session.amount_total || 0) / 100;
+      const sessionId = session.metadata?.sessionId;
+      const cart = sessionId ? await Cart.findOne({ sessionId }) : null;
 
-      let orderData: any = {
+      const order = await Order.create({
         stripeSessionId: session.id,
-        stripeSubscriptionId: session.subscription || null,
         userId,
         email,
         total,
         quantity: 1,
         status: "paid",
-        isSubscription,
-      };
+        isSubscription: false,
+        items: cart?.items || [],
+        contact: cart?.contact || {},
+        address: cart?.address || {},
+        schedule: cart?.schedule || {},
+      });
 
-      if (isSubscription) {
-        // Subscriptions → include plan data
-        const planName = session.metadata?.planName || null;
-        const planPrice = session.metadata?.planPrice || null;
-        const planInterval = session.metadata?.planInterval || null;
-        let nextPayment: string | null = null;
-
-        // Try to fetch next payment from Stripe
-        if (session.subscription) {
-          try {
-            const sub = (await stripe.subscriptions.retrieve(
-              session.subscription as string
-            )) as Stripe.Subscription;
-            nextPayment = getNextPaymentDate(sub);
-          } catch (err) {
-            console.error("⚠️ Could not fetch subscription:", err);
-          }
-        }
-
-        Object.assign(orderData, {
-          planName,
-          planPrice,
-          planInterval,
-          nextPayment,
-          items: [],
-        });
-      } else {
-        // Regular service → attach cart items + schedule if any
-        const sessionId = session.metadata?.sessionId;
-        const cart = sessionId
-          ? await Cart.findOne({ sessionId })
-          : null;
-
-        Object.assign(orderData, {
-          items: cart?.items || [],
-          contact: cart?.contact || {},
-          address: cart?.address || {},
-          schedule: cart?.schedule || {},
-          planName: null,
-          planPrice: null,
-          planInterval: null,
-          nextPayment: null,
-        });
-
-        if (sessionId) await Cart.findOneAndUpdate({ sessionId }, { items: [] });
-      }
-
-      const order = await Order.create(orderData);
+      if (sessionId) await Cart.findOneAndUpdate({ sessionId }, { items: [] });
 
       if (userId) {
         await Notification.create({
           userId,
-          message: isSubscription
-            ? `Your ${order.planName || "subscription"} ($${order.planPrice}/${order.planInterval}) has started successfully.`
-            : `Your payment of $${order.total} has been completed successfully.`,
+          message: `Your payment of $${order.total} has been completed successfully.`,
           type: "success",
           read: false,
         });
       }
+
+      return NextResponse.json({ received: true });
     }
 
     // ================================================================
-    //  SUBSCRIPTION CREATED
-    // ================================================================
-    if (event.type === "customer.subscription.created") {
-      const sub = event.data.object as Stripe.Subscription;
-      const nextPayment = getNextPaymentDate(sub);
-      const updated = await Order.findOneAndUpdate(
-        { stripeSubscriptionId: sub.id },
-        { nextPayment },
-        { new: true }
-      );
-
-    }
-
-    // ================================================================
-    //  INVOICE PAYMENT SUCCEEDED
+    // INVOICE PAYMENT SUCCEEDED (initial + recurring payments)
     // ================================================================
     if (event.type === "invoice.payment_succeeded") {
       const invoice = event.data.object as Stripe.Invoice & { subscription?: string };
 
-      if (invoice.subscription) {
-        const sub = (await stripe.subscriptions.retrieve(invoice.subscription, {
+      if (!invoice.subscription) {
+        console.log("No subscription ID — ignoring invoice.");
+        return NextResponse.json({ received: true });
+      }
+
+      // Only create order for first payment (subscription_create)
+      if (invoice.billing_reason === "subscription_create") {
+        const sub = await stripe.subscriptions.retrieve(invoice.subscription, {
           expand: ["items.data.price.product"],
-        })) as Stripe.Subscription;
+        });
 
         const nextPayment = getNextPaymentDate(sub);
         const firstItem = sub.items.data[0];
@@ -152,35 +113,71 @@ export async function POST(req: Request) {
         const planName = productObj?.name || priceObj?.nickname || "Unknown Plan";
         const planPrice = (priceObj?.unit_amount || 0) / 100;
         const planInterval = priceObj?.recurring?.interval || "month";
+        const email = invoice.customer_email || "unknown";
+        const userId = (invoice.metadata as any)?.userId || null;
+
+        const existingOrder = await Order.findOne({
+          stripeSubscriptionId: sub.id,
+        });
+        if (existingOrder) {
+          return NextResponse.json({ received: true });
+        }
+
+        const order = await Order.create({
+          stripeSubscriptionId: sub.id,
+          userId,
+          email,
+          total: planPrice,
+          quantity: 1,
+          status: "paid",
+          isSubscription: true,
+          planName,
+          planPrice,
+          planInterval,
+          nextPayment,
+        });
+
+        if (userId) {
+          await Notification.create({
+            userId,
+            message: `Your ${planName} subscription ($${planPrice}/${planInterval}) has started successfully.`,
+            type: "success",
+            read: false,
+          });
+        }
+      } else {
+        // Renewal payments — update next payment only
+        const sub = await stripe.subscriptions.retrieve(invoice.subscription);
+        const nextPayment = getNextPaymentDate(sub);
 
         await Order.findOneAndUpdate(
           { stripeSubscriptionId: invoice.subscription },
-          {
-            nextPayment,
-            planName,
-            planPrice: planPrice.toString(),
-            planInterval,
-          },
+          { nextPayment },
           { new: true }
         );
       }
+
+      return NextResponse.json({ received: true });
     }
 
     // ================================================================
-    //  SUBSCRIPTION UPDATED
+    // SUBSCRIPTION UPDATED
     // ================================================================
     if (event.type === "customer.subscription.updated") {
       const sub = event.data.object as Stripe.Subscription;
       const nextPayment = getNextPaymentDate(sub);
+
       await Order.findOneAndUpdate(
         { stripeSubscriptionId: sub.id },
         { nextPayment, status: sub.status },
         { new: true }
       );
+
+      return NextResponse.json({ received: true });
     }
 
     // ================================================================
-    //  SUBSCRIPTION DELETED (CANCELED)
+    // SUBSCRIPTION CANCELED / DELETED
     // ================================================================
     if (event.type === "customer.subscription.deleted") {
       const sub = event.data.object as Stripe.Subscription & { customer?: string };
@@ -190,8 +187,9 @@ export async function POST(req: Request) {
       if (typeof sub.customer === "string") {
         try {
           const customer = (await stripe.customers.retrieve(sub.customer)) as Stripe.Customer;
-          if (!("deleted" in customer) && "email" in customer)
+          if (!("deleted" in customer) && "email" in customer) {
             email = (customer as any).email || "unknown";
+          }
         } catch (e) {
           console.error(" Failed to fetch customer email:", e);
         }
@@ -204,14 +202,20 @@ export async function POST(req: Request) {
           type: "info",
           read: false,
         });
-
-        await Order.findOneAndUpdate(
-          { stripeSubscriptionId: sub.id },
-          { status: "canceled" }
-        );
       }
+
+      await Order.findOneAndUpdate(
+        { stripeSubscriptionId: sub.id },
+        { status: "canceled" }
+      );
+
+      return NextResponse.json({ received: true });
     }
 
+    // ================================================================
+    // DEFAULT CATCH-ALL
+    // ================================================================
+    console.log(`Unhandled event type: ${event.type}`);
     return NextResponse.json({ received: true });
   } catch (err: any) {
     console.error(" Webhook error:", err.message);
