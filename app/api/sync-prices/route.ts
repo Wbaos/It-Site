@@ -8,7 +8,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(req: Request) {
     try {
-        const data = await req.json().catch(() => ({}));
         console.log(" Sanity webhook received or manual sync");
 
         const plans = await sanity.fetch(`
@@ -26,25 +25,27 @@ export async function POST(req: Request) {
         for (const plan of plans) {
             if (!plan.stripeProductId) continue;
 
-            // Fetch all existing prices for the product
             const allPrices = await stripe.prices.list({
                 product: plan.stripeProductId,
                 limit: 100,
             });
 
-            // --------------------------
-            //  Handle monthly price
-            // --------------------------
+            // ==========================
+            // Handle Monthly Price
+            // ==========================
             if (plan.price) {
-                const monthlyActive = allPrices.data.find(
-                    (p) =>
-                        p.active &&
-                        p.recurring?.interval === "month" &&
-                        (p.unit_amount || 0) / 100 === Number(plan.price)
+                const existingMonthly = allPrices.data.find(
+                    (p) => p.active && p.recurring?.interval === "month"
                 );
 
-                if (!monthlyActive) {
-                    // Deactivate old monthly prices
+                if (
+                    !existingMonthly ||
+                    (existingMonthly.unit_amount || 0) / 100 !== Number(plan.price)
+                ) {
+                    await stripe.products.update(plan.stripeProductId, {
+                        default_price: null as any,
+                    });
+
                     await Promise.all(
                         allPrices.data
                             .filter((p) => p.active && p.recurring?.interval === "month")
@@ -67,19 +68,22 @@ export async function POST(req: Request) {
                 }
             }
 
-            // --------------------------
-            //  Handle yearly price
-            // --------------------------
+            // ==========================
+            // Handle Yearly Price
+            // ==========================
             if (plan.annualPrice) {
-                const yearlyActive = allPrices.data.find(
-                    (p) =>
-                        p.active &&
-                        p.recurring?.interval === "year" &&
-                        (p.unit_amount || 0) / 100 === Number(plan.annualPrice)
+                const existingYearly = allPrices.data.find(
+                    (p) => p.active && p.recurring?.interval === "year"
                 );
 
-                if (!yearlyActive) {
-                    // Deactivate old yearly prices
+                if (
+                    !existingYearly ||
+                    (existingYearly.unit_amount || 0) / 100 !== Number(plan.annualPrice)
+                ) {
+                    await stripe.products.update(plan.stripeProductId, {
+                        default_price: null as any,
+                    });
+
                     await Promise.all(
                         allPrices.data
                             .filter((p) => p.active && p.recurring?.interval === "year")
@@ -93,7 +97,11 @@ export async function POST(req: Request) {
                         product: plan.stripeProductId,
                     });
 
-                    console.log(`✅ Updated yearly price for ${plan.title}: $${plan.annualPrice}`);
+                    await stripe.products.update(plan.stripeProductId, {
+                        default_price: newYearPrice.id,
+                    });
+
+                    console.log(` Updated yearly price for ${plan.title}: $${plan.annualPrice}`);
                     updates.push(`${plan.title} (year)`);
                 }
             }
