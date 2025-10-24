@@ -32,26 +32,39 @@ const OrderItemSchema = new Schema({
 const OrderSchema = new Schema(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    stripeSessionId: { type: String, required: true },
+
+    stripeSessionId: { type: String, required: false },
     stripeSubscriptionId: { type: String, default: null },
+
     email: { type: String },
-    items: { type: [OrderItemSchema], required: true },
+    items: { type: [OrderItemSchema], default: [] },
     total: { type: Number, required: true },
     quantity: { type: Number, required: true },
+    isSubscription: { type: Boolean, default: false },
+
     status: {
       type: String,
-      enum: ["pending", "paid", "failed"],
+      enum: [
+        "pending",
+        "paid",
+        "failed",
+        "active",
+        "trialing",
+        "past_due",
+        "incomplete",
+        "incomplete_expired",
+        "unpaid",
+        "canceled",
+      ],
       default: "pending",
     },
 
-    /* -----------------------------------------
-       Subscriptions flat fields (match webhook)
-    ----------------------------------------- */
     planName: { type: String, default: null },
-    planPrice: { type: String, default: null },
+    planPrice: { type: Number, default: null },
     planInterval: { type: String, default: null },
     nextPayment: { type: String, default: null },
 
+    // 🔹 Customer info
     contact: {
       name: String,
       email: String,
