@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { sanity } from "@/lib/sanity";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export default async function Services() {
   const services = await sanity.fetch(`
