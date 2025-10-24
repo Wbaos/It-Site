@@ -12,19 +12,37 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(req: Request) {
     try {
+        // ===========================================================
+        // AUTHENTICATION
+        // ===========================================================
         const session = await getServerSession(authOptions);
-
         if (!session || !session.user) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
+        const userId = session.user.id ?? "";
+        const email = session.user.email ?? "";
+        const name = session.user.name ?? "";
 
-        const { planName } = await req.json();
+        if (!email || !userId) {
+            return NextResponse.json(
+                { error: "Missing user information" },
+                { status: 400 }
+            );
+        }
+
+        // ===========================================================
+        // PARSE REQUEST BODY
+        // ===========================================================
+        const body = await req.json();
+        const planName: string | undefined = body?.planName;
         if (!planName) {
             return NextResponse.json({ error: "Missing plan name" }, { status: 400 });
         }
 
-        // Fetch plan details from Sanity
+        // ===========================================================
+        // FETCH PLAN FROM SANITY
+        // ===========================================================
         const plan = await sanity.fetch(
             `*[_type == "pricingPlan" && title == $planName][0]{
         _id,
@@ -44,161 +62,137 @@ export async function POST(req: Request) {
             );
         }
 
-        const email = session?.user?.email ?? "";
-        const userId = session?.user?.id ?? "";
-
-        if (!email) {
-            console.warn("Unauthorized access attempt to /api/subscribe");
-            return NextResponse.json(
-                { error: "You must be logged in." },
-                { status: 401 }
-            );
-        }
-
-        // Connect to DB and find user
+        // ===========================================================
+        // CONNECT TO MONGODB & FIND USER
+        // ===========================================================
         await connectDB();
         const dbUser = await User.findById(userId);
         if (!dbUser) {
             return NextResponse.json(
-                { error: "User not found in database." },
+                { error: "User not found in database" },
                 { status: 404 }
             );
         }
 
         // ===========================================================
-        //  Create or reuse Stripe customer (auto-healing version)
+        // ENSURE STRIPE CUSTOMER EXISTS
         // ===========================================================
         let customerId = dbUser.stripeCustomerId as string | undefined;
 
-        async function ensureStripeCustomer(
-            email: string,
-            name?: string | null
-        ): Promise<string> {
-            let validCustomerId: string | null = null;
-
+        async function ensureStripeCustomer(): Promise<string> {
             if (customerId) {
                 try {
                     const existing = await stripe.customers.retrieve(customerId);
-                    if (!("deleted" in existing) && existing.id) {
-                        validCustomerId = existing.id;
-                    }
-                } catch (err: any) {
-                    console.error(" Unexpected error checking Stripe customer:", err);
+                    if (!("deleted" in existing)) return existing.id;
+                } catch {
+                    console.warn(" Invalid Stripe customer, recreating...");
                 }
             }
 
-            if (!validCustomerId) {
-                const newCustomer = await stripe.customers.create({
-                    email: email ?? "",
-                    name: name ?? "",
-                    metadata: { userId: String(userId) },
-                });
-                validCustomerId = newCustomer.id;
-                dbUser.stripeCustomerId = validCustomerId;
-                await dbUser.save();
-            }
+            const newCustomer = await stripe.customers.create({
+                email,
+                name,
+                metadata: { userId: String(userId) },
+            });
 
-            return validCustomerId;
+            dbUser.stripeCustomerId = newCustomer.id;
+            await dbUser.save();
+            return newCustomer.id;
         }
 
-        const verifiedCustomerId = await ensureStripeCustomer(
-            email ?? "",
-            session.user?.name ?? ""
-        );
+        const verifiedCustomerId = await ensureStripeCustomer();
 
         // ===========================================================
-        // Retrieve active price for plan
+        // ENSURE CORRECT RECURRING PRICE
         // ===========================================================
-        const prices = await stripe.prices.list({
+        const planPrice = Number(plan.price);
+        const planInterval = plan.duration.includes("year") ? "year" : "month";
+
+        const allPrices = await stripe.prices.list({
             product: plan.stripeProductId,
-            active: true,
-            limit: 1,
+            limit: 100,
         });
 
-        let priceId = prices.data[0]?.id;
-        const currentStripePrice = prices.data[0]?.unit_amount
-            ? prices.data[0].unit_amount / 100
-            : undefined;
-        const planPrice = Number(plan.price);
+        let matchingPrice = allPrices.data.find(
+            (p) =>
+                p.active &&
+                p.type === "recurring" &&
+                p.recurring?.interval === planInterval &&
+                (p.unit_amount || 0) / 100 === planPrice
+        );
 
-        // Sync if Sanity and Stripe differ
-        if (currentStripePrice !== planPrice) {
-            (async () => {
-                try {
-                    await stripe.products.update(plan.stripeProductId as string, {
-                        default_price: null as unknown as string,
-                    });
-                    for (const p of prices.data) {
-                        await stripe.prices.update(p.id, { active: false });
-                    }
-                    const newPrice = await stripe.prices.create({
-                        unit_amount: Math.round(planPrice * 100),
-                        currency: "usd",
-                        recurring: {
-                            interval: plan.duration.includes("month") ? "month" : "year",
-                        },
-                        product: plan.stripeProductId as string,
-                    });
-                    await stripe.products.update(plan.stripeProductId as string, {
-                        default_price: newPrice.id,
-                    });
-                    await fetch(
-                        `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2023-08-01/data/mutate/production`,
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                Authorization: `Bearer ${process.env.SANITY_WRITE_TOKEN}`,
+        if (!matchingPrice) {
+            console.log(`Creating new ${planInterval}ly recurring price for $${planPrice}`);
+
+            await Promise.all(
+                allPrices.data
+                    .filter((p) => p.active)
+                    .map((p) => stripe.prices.update(p.id, { active: false }))
+            );
+
+            matchingPrice = await stripe.prices.create({
+                unit_amount: Math.round(planPrice * 100),
+                currency: "usd",
+                recurring: { interval: planInterval },
+                product: plan.stripeProductId,
+            });
+
+            await stripe.products.update(plan.stripeProductId, {
+                default_price: matchingPrice.id,
+            });
+
+            await fetch(
+                `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2023-08-01/data/mutate/production`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${process.env.SANITY_WRITE_TOKEN}`,
+                    },
+                    body: JSON.stringify({
+                        mutations: [
+                            {
+                                patch: {
+                                    id: plan._id,
+                                    set: { lastSyncedPrice: planPrice },
+                                },
                             },
-                            body: JSON.stringify({
-                                mutations: [
-                                    {
-                                        patch: {
-                                            id: plan._id,
-                                            set: { lastSyncedPrice: planPrice },
-                                        },
-                                    },
-                                ],
-                            }),
-                        }
-                    );
-                } catch (err) {
-                    console.error(" Background price update failed:", err);
+                        ],
+                    }),
                 }
-            })();
+            );
         }
 
+        const priceId = matchingPrice.id;
+
         // ===========================================================
-        // Create Checkout Session with full metadata
+        // CREATE STRIPE CHECKOUT SESSION (SUBSCRIPTION)
         // ===========================================================
         const metadata = {
-            userId: String(userId),
-            email: String(email),
-            planName: String(plan.title),
-            planPrice: String(plan.price),
-            planInterval: String(plan.duration).replace("/", "").trim(),
-            stripeProductId: String(plan.stripeProductId),
+            userId,
+            email,
+            planName: plan.title,
+            planPrice: String(planPrice),
+            planInterval,
+            stripeProductId: plan.stripeProductId,
         };
-
 
         const stripeSession = await stripe.checkout.sessions.create({
             mode: "subscription",
-            payment_method_types: ["card"],
             customer: verifiedCustomerId,
-            line_items: [{ price: priceId!, quantity: 1 }],
+            line_items: [{ price: priceId, quantity: 1 }],
             success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success`,
             cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/#pricing`,
             metadata,
-            subscription_data: {
-                metadata,
-            },
+            subscription_data: { metadata },
         });
 
-
-        // Return checkout URL
+        // ===========================================================
+        // RETURN SESSION URL TO FRONTEND
+        // ===========================================================
         return NextResponse.json({ url: stripeSession.url });
     } catch (error) {
-        console.error(" Subscribe error:", error);
+        console.error("Subscribe error:", error);
         return NextResponse.json(
             { error: "Failed to create subscription" },
             { status: 500 }

@@ -9,11 +9,18 @@ export async function GET() {
         const session = await getServerSession(authOptions);
         await connectDB();
 
-        if (!session?.user?.email) {
+        if (!session?.user) {
             return NextResponse.json({ orders: [] });
         }
 
-        const orders = await Order.find({ email: session.user.email })
+        const query = {
+            $or: [
+                { userId: session.user.id },
+                { email: session.user.email },
+            ],
+        };
+
+        const orders = await Order.find(query)
             .sort({ createdAt: -1 })
             .lean();
 

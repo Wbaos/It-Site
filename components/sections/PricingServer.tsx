@@ -1,12 +1,7 @@
 import { sanity } from "@/lib/sanity";
 import PricingClient from "./PricingClient";
-import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-08-27.basil",
-});
-
-export const revalidate = 0;
+export const revalidate = 30;
 
 export default async function PricingServer() {
   const plans = await sanity.fetch(`
@@ -15,6 +10,7 @@ export default async function PricingServer() {
       title,
       slug,
       price,
+      annualPrice,
       duration,
       features,
       buttonText,
@@ -23,24 +19,11 @@ export default async function PricingServer() {
     }
   `);
 
-  const enrichedPlans = await Promise.all(
-    plans.map(async (plan: any) => {
-      try {
-        const prices = await stripe.prices.list({
-          product: plan.stripeProductId,
-          active: true,
-          limit: 1,
-        });
+  const normalizedPlans = plans.map((p: any) => ({
+    ...p,
+    price: Number(p.price) || 0,
+    annualPrice: Number(p.annualPrice) || 0,
+  }));
 
-        const unitAmount = prices.data[0]?.unit_amount ?? 0;
-        const price = unitAmount / 100;
-        return { ...plan, price };
-      } catch (err) {
-        console.error("Stripe price fetch failed:", err);
-        return { ...plan, price: 0 };
-      }
-    })
-  );
-
-  return <PricingClient plans={enrichedPlans} />;
+  return <PricingClient plans={normalizedPlans} />;
 }

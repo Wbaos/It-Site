@@ -1,18 +1,55 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 
 export default function PricingClient({ plans }: { plans: any[] }) {
+    const [isAnnual, setIsAnnual] = useState(false);
+
     return (
-        <section id="pricing" className="section pricing">
-            <div className="site-container-pricing">
-                <h2 className="pricing-heading">Service Packages</h2>
-                <p className="pricing-sub">Save more with TechCare monthly plans.</p>
+        <section
+            id="pricing"
+            className={`pricing-section ${isAnnual ? "annual-mode" : "monthly-mode"}`}
+        >
+            <div className="pricing-container">
+                <h2 className="pricing-heading">Our Pricing</h2>
+
+                {/* Toggle */}
+                <div className="toggle-wrapper">
+                    <span className={!isAnnual ? "active" : ""}>Monthly</span>
+                    <label className="switch">
+                        <input
+                            type="checkbox"
+                            checked={isAnnual}
+                            onChange={() => setIsAnnual(!isAnnual)}
+                        />
+                        <span className="slider"></span>
+                    </label>
+                    <span className={isAnnual ? "active" : ""}>Annually</span>
+                </div>
+
+                <p className="discount-note">
+                    Save up to <strong>20%</strong> with annual billing!
+                </p>
 
                 <div className="pricing-grid">
                     {plans.map((p) => {
-                        const priceDisplay =
-                            p.price && Number(p.price) > 0 ? `$${p.price}` : "$—";
-                        const durationDisplay = p.duration || "/month";
+                        let displayPrice: number | null = null;
+
+                        if (isAnnual) {
+                            if (p.annualPrice && !isNaN(Number(p.annualPrice))) {
+                                displayPrice = Number(p.annualPrice);
+                            } else {
+                                displayPrice = null;
+                            }
+                        } else {
+                            if (p.price && !isNaN(Number(p.price))) {
+                                displayPrice = Number(p.price);
+                            } else {
+                                displayPrice = null;
+                            }
+                        }
+
+                        const durationDisplay = isAnnual ? "/year" : "/month";
 
                         return (
                             <div
@@ -20,9 +57,18 @@ export default function PricingClient({ plans }: { plans: any[] }) {
                                 className={`pricing-card ${p.featured ? "featured" : ""}`}
                             >
                                 <h3 className="plan-title">{p.title}</h3>
-                                <p className="plan-price">
-                                    {priceDisplay} <span>{durationDisplay}</span>
-                                </p>
+
+                                {displayPrice !== null ? (
+                                    <p className="plan-price">
+                                        ${displayPrice.toFixed(2)}
+                                        <span>{durationDisplay}</span>
+                                    </p>
+                                ) : (
+                                    <p className="plan-price missing">
+                                        <span>Price unavailable</span>
+                                        <small>Please update this plan in Sanity</small>
+                                    </p>
+                                )}
 
                                 {p.features?.length > 0 && (
                                     <ul className="plan-features">
@@ -32,12 +78,15 @@ export default function PricingClient({ plans }: { plans: any[] }) {
                                     </ul>
                                 )}
 
-                                {p.slug?.current && (
+                                {p.slug?.current && displayPrice !== null && (
                                     <Link
-                                        href={`/plans/${p.slug.current}`}
-                                        className="btn btn-primary wide"
+                                        href={`/plans/${p.slug.current}?interval=${isAnnual ? "year" : "month"}`}
+                                        className="btn wide"
+                                        onClick={() => {
+                                            sessionStorage.setItem("scrollY", window.scrollY.toString());
+                                        }}
                                     >
-                                        {p.buttonText || "Join Today"}
+                                        Learn More
                                     </Link>
                                 )}
                             </div>
