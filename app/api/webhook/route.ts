@@ -47,7 +47,6 @@ export async function POST(req: Request) {
       const session = event.data.object as Stripe.Checkout.Session;
 
       if (session.mode === "subscription") {
-        console.log("ℹ️ Skipping checkout.session.completed (subscription)");
         return NextResponse.json({ received: true });
       }
 
@@ -55,7 +54,6 @@ export async function POST(req: Request) {
         stripeSessionId: session.id,
       });
       if (existingOrder) {
-        console.log("ℹ️ Duplicate checkout.session.completed ignored");
         return NextResponse.json({ received: true });
       }
 
@@ -96,7 +94,6 @@ export async function POST(req: Request) {
         });
       }
 
-      console.log(`✅ One-time order recorded for ${email}`);
       return NextResponse.json({ received: true });
     }
 
@@ -126,7 +123,6 @@ export async function POST(req: Request) {
         stripeSubscriptionId: sub.id,
       });
       if (existingOrder) {
-        console.log(`ℹ Subscription ${sub.id} already recorded.`);
         return NextResponse.json({ received: true });
       }
 
@@ -153,7 +149,6 @@ export async function POST(req: Request) {
         });
       }
 
-      console.log(` Recorded new subscription ${sub.id} for ${email}`);
       return NextResponse.json({ received: true });
     }
 
@@ -166,12 +161,11 @@ export async function POST(req: Request) {
       };
 
       if (!invoice.subscription) {
-        console.log("ℹ No subscription ID — ignoring invoice.");
         return NextResponse.json({ received: true });
       }
 
       if (invoice.billing_reason === "subscription_create") {
-        // 🔹 first subscription payment
+        //  first subscription payment
         const sub = await stripe.subscriptions.retrieve(
           invoice.subscription,
           { expand: ["items.data.price.product"] }
@@ -196,9 +190,7 @@ export async function POST(req: Request) {
           stripeSubscriptionId: sub.id,
         });
         if (existingOrder) {
-          console.log(
-            "ℹ Subscription order already exists, skipping duplicate."
-          );
+
           return NextResponse.json({ received: true });
         }
 
@@ -224,8 +216,6 @@ export async function POST(req: Request) {
             read: false,
           });
         }
-
-        console.log(`💰 Subscription payment processed for ${email}`);
       } else {
         //  renewal payment — update nextPayment only
         const sub = await stripe.subscriptions.retrieve(
@@ -239,7 +229,6 @@ export async function POST(req: Request) {
           { new: true }
         );
 
-        console.log(` Updated next payment date for ${invoice.subscription}`);
       }
 
       return NextResponse.json({ received: true });
@@ -258,7 +247,6 @@ export async function POST(req: Request) {
         { new: true }
       );
 
-      console.log(` Subscription ${sub.id} updated (${sub.status})`);
       return NextResponse.json({ received: true });
     }
 
@@ -299,14 +287,12 @@ export async function POST(req: Request) {
         });
       }
 
-      console.log(` Subscription ${sub.id} canceled for ${email}`);
       return NextResponse.json({ received: true });
     }
 
     // ================================================================
     // Catch-all: log other event types
     // ================================================================
-    console.log(`ℹ Ignored event type: ${event.type}`);
     return NextResponse.json({ received: true });
   } catch (err: any) {
     console.error(" Webhook error:", err.message);

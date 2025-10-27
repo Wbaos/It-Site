@@ -2,22 +2,25 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { connectDB } from "@/lib/mongodb";
-import { User } from "@/app/models/User";
+import { Order } from "@/app/models/Order";
 
 export async function GET() {
     try {
         const session = await getServerSession(authOptions);
-        if (!session?.user?.email) {
+        if (!session || !session.user?.email) {
             return NextResponse.json({ hasSubscription: false });
         }
 
         await connectDB();
-        const user = await User.findOne({ email: session.user.email });
 
-        const hasSubscription = !!user?.stripeCustomerId;
-        return NextResponse.json({ hasSubscription });
+        const hasSubscription = await Order.exists({
+            email: session.user.email,
+            isSubscription: true,
+        });
+
+        return NextResponse.json({ hasSubscription: !!hasSubscription });
     } catch (err) {
-        console.error("Error checking subscription:", err);
+        console.error("check-subscription error:", err);
         return NextResponse.json({ hasSubscription: false });
     }
 }

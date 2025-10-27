@@ -10,6 +10,8 @@ type Order = {
     _id: string;
     total: number;
     status: string;
+    refunded?: boolean;
+    deleted?: boolean
     createdAt: string;
 
     contact?: { name?: string; email?: string; phone?: string };
@@ -283,7 +285,7 @@ function OrdersTab({
                                 <p className="order-date">
                                     {new Date(order.createdAt).toLocaleDateString()} —{" "}
                                     <span className={`status ${order.status}`}>
-                                        {order.status}
+                                        {order.refunded ? "Refunded" : order.status}
                                     </span>
                                 </p>
                             </div>
@@ -307,10 +309,20 @@ function OrdersTab({
                                                 </li>
                                                 <li>
                                                     <strong>Next Payment:</strong>{" "}
-                                                    {order.nextPayment && order.nextPayment !== "pending"
-                                                        ? new Date(order.nextPayment).toLocaleDateString()
-                                                        : "—"}
+                                                    {order.nextPayment && order.nextPayment !== "pending" ? (
+                                                        <>
+                                                            <u>{new Date(order.nextPayment).toLocaleDateString()}</u>
+                                                            {order.status === "canceled" && (
+                                                                <span style={{ color: "#df3c52", marginLeft: "6px" }}>
+                                                                    (will remain active until this date)
+                                                                </span>
+                                                            )}
+                                                        </>
+                                                    ) : (
+                                                        "—"
+                                                    )}
                                                 </li>
+
 
                                             </ul>
                                         </div>
@@ -358,7 +370,44 @@ function OrdersTab({
                                     </>
                                 ) : (
                                     <div className="order-section">
-                                        <h4>Items</h4>
+                                        <div className="order-section-header">
+                                            <h4>Items</h4>
+                                            <a
+                                                href="#"
+                                                className={`delete-order-link ${order.refunded ? "disabled" : ""}`}
+                                                onClick={async (e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+
+                                                    if (order.refunded) {
+                                                        alert("This order has already been refunded.");
+                                                        return;
+                                                    }
+
+                                                    const confirmed = confirm("Are you sure you want to refund this order?");
+                                                    if (!confirmed) return;
+
+                                                    try {
+                                                        const res = await fetch(`/api/orders/${order._id}`, { method: "DELETE" });
+                                                        const data = await res.json();
+
+                                                        if (res.ok) {
+                                                            alert("Order refunded successfully!");
+                                                            window.location.reload();
+                                                        } else {
+                                                            alert(data.error || "Failed to refund order");
+                                                        }
+                                                    } catch (err) {
+                                                        console.error("Error refunding order:", err);
+                                                        alert("Something went wrong while refunding the order.");
+                                                    }
+                                                }}
+                                            >
+                                                {order.refunded ? "Refunded" : "Refund Order"}
+                                            </a>
+
+                                        </div>
+
                                         <ul>
                                             {order.items.map((item, i) => (
                                                 <li key={i}>
