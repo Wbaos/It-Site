@@ -32,16 +32,13 @@ const OrderItemSchema = new Schema({
 const OrderSchema = new Schema(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-
-    stripeSessionId: { type: String, required: false },
+    stripeSessionId: { type: String },
     stripeSubscriptionId: { type: String, default: null },
-
     email: { type: String },
     items: { type: [OrderItemSchema], default: [] },
     total: { type: Number, required: true },
     quantity: { type: Number, required: true },
     isSubscription: { type: Boolean, default: false },
-
     status: {
       type: String,
       enum: [
@@ -55,16 +52,16 @@ const OrderSchema = new Schema(
         "incomplete_expired",
         "unpaid",
         "canceled",
+        "refunded",
       ],
       default: "pending",
     },
-
+    refunded: { type: Boolean, default: false },
+    deleted: { type: Boolean, default: false },
     planName: { type: String, default: null },
     planPrice: { type: Number, default: null },
     planInterval: { type: String, default: null },
     nextPayment: { type: String, default: null },
-
-    // 🔹 Customer info
     contact: {
       name: String,
       email: String,

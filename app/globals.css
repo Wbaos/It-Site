@@ -1227,11 +1227,30 @@ main {
 /* -------------------------------
    RECENT ORDER SECTION
 -------------------------------- */
+.order-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.delete-order-link {
+  color: #111827; 
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.delete-order-link:hover {
+  opacity: 0.7;
+}
 .recent-order {
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
-  padding: 1.5rem;
+  padding: 0 1.5rem;
   margin-top: 1.5rem;
 }
 
@@ -1293,6 +1312,7 @@ main {
   color: #475569;
   font-size: 0.9rem;
   margin-top: 0.25rem;
+  margin-bottom: 0;
 }
 
 .order-total {
@@ -1326,7 +1346,7 @@ main {
 }
 
 .order-section {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0;
 }
 
 .order-section h4 {
