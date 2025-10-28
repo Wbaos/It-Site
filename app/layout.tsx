@@ -119,6 +119,30 @@ export default function RootLayout({
           name="copyright"
           content="© 2025 TechCare. All rights reserved."
         />
+
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "TechCare",
+            "url": "https://www.calltechcare.com",
+            "logo": "https://www.calltechcare.com/logo-og.png",
+            "sameAs": [
+              "https://www.facebook.com/TechCare",
+              "https://www.instagram.com/TechCare",
+              "https://www.linkedin.com/company/techcare"
+            ],
+            "description": "Friendly, professional tech support for all ages — setup, troubleshoot, and optimize your devices at home or remotely.",
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+1-7863662729",
+              "contactType": "Customer Service",
+              "areaServed": "US",
+              "availableLanguage": ["English", "Spanish"]
+            }
+          })}
+        </script>
+
       </head>
 
       <body>
