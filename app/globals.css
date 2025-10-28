@@ -528,13 +528,6 @@ main {
   transition: background-color 0.3s;
 }
 
-.notification-item.info {
-  border-left: 4px solid #3b82f6;
-}
-.notification-item.error {
-  border-left: 4px solid #ef4444;
-}
-
 /* Highlight for new notifications */
 .notification-item.new-notification {
   background-color: #fef9c3;
@@ -898,22 +891,20 @@ main {
   color: #2563eb;
 }
 .option-item.extra-option {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0;
-  background: #fff;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  border-bottom: 1px solid #e5e7eb;
-  gap: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0;
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    gap: 5px;
+    flex-direction: column;
 }
 
 .option-item.extra-option.text-field {
   flex-direction: column;
   align-items: flex-start;
   gap: 0.5rem;
-  border-bottom: 1px solid #e5e7eb;
 }
 
 .option-item.extra-option.text-field .option-label {
@@ -942,8 +933,34 @@ main {
 .option-left {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 5px;
+  width: 100%;
 }
+.option-select, .option-input-wrapper input, .option-control .option-input{
+  padding: 10px;
+  font-size: 15px;
+  width: 100%;
+  
+}
+
+.option-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='10' width='10' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><polygon points='0,0 20,0 10,10'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 15px center; 
+  background-size: 10px;
+  padding-right: 2rem;  
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+
+ .option-input-wrapper input{
+  padding-right: 40px;
+ }
 
 .option-label {
   font-weight: 500;
@@ -966,6 +983,7 @@ main {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
+  width: 100%;
 }
 
 
@@ -1154,6 +1172,7 @@ main {
   border-radius: 8px;
   font-weight: 500;
   transition: all 0.2s ease;
+  margin-top: 10px;
 }
 
 .account-page button.btn-secondary:hover {
@@ -1940,7 +1959,7 @@ text-decoration: underline;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e5e7eb;
+  /* border-bottom: 1px solid #e5e7eb; */
   padding-bottom: 0.75rem;
 }
 
@@ -1952,6 +1971,31 @@ text-decoration: underline;
   font-size: 1rem;
   color: #111827;
 }
+
+.option-input-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.option-clear.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.option-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  color: #000000;
+  cursor: pointer;
+  line-height: 1;
+}
+
 
 .option-controls {
   display: flex;
@@ -1982,22 +2026,6 @@ text-decoration: underline;
   color: #111827;
 }
 
-/* Back link */
-.back-link {
-  margin-top: 1.5rem;
-  text-align: center;
-}
-
-.back-link a {
-  color: #4b5563;
-  text-decoration: underline;
-  font-size: 0.95rem;
-  transition: color 0.2s;
-}
-
-.back-link a:hover {
-  color: #111827;
-}
 @media (max-width: 768px) {
   .booking-card {
     width: 80%;

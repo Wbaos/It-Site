@@ -81,6 +81,20 @@ export async function POST(req: Request) {
         address: cart?.address || {},
         schedule: cart?.schedule || {},
       });
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/send-order-email`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            to: email,
+            order,
+          }),
+        });
+        console.log(` Order confirmation email sent to ${email}`);
+      } catch (emailErr) {
+        console.error(" Failed to send confirmation email:", emailErr);
+      }
+
 
       if (sessionId)
         await Cart.findOneAndUpdate({ sessionId }, { items: [] });
