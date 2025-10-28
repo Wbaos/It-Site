@@ -273,12 +273,11 @@ export default function Step1({
                         onChange={(e) =>
                           setResponses({ ...responses, [q.id]: e.target.value })
                         }
-                        className="option-input"
+                        className="option-input option-text"
                       />
                       <button
                         type="button"
-                        className={`option-clear ${responses[q.id] ? "visible" : "hidden"
-                          }`}
+                        className={`option-clear ${responses[q.id] ? "visible" : "hidden"}`}
                         onClick={() => setResponses({ ...responses, [q.id]: "" })}
                         aria-label="Clear camera model"
                       >
@@ -292,13 +291,10 @@ export default function Step1({
                         type="text"
                         value={customInputs[q.id]}
                         onChange={(e) =>
-                          setCustomInputs({
-                            ...customInputs,
-                            [q.id]: e.target.value,
-                          })
+                          setCustomInputs({ ...customInputs, [q.id]: e.target.value })
                         }
                         placeholder="Enter your option..."
-                        className="option-input"
+                        className="option-input option-text"
                         autoFocus
                       />
                       <button
@@ -335,7 +331,7 @@ export default function Step1({
                           }
                         }
                       }}
-                      className="option-input"
+                      className="option-input option-select"
                       disabled={Boolean(q.dependsOn && !responses[q.dependsOn])}
                     >
                       <option value="">Select an option...</option>
@@ -350,18 +346,14 @@ export default function Step1({
                           return parentMatch?.options?.map((opt) => (
                             <option key={opt.label} value={opt.label}>
                               {opt.label}
-                              {opt.extraCost
-                                ? ` (+$${opt.extraCost.toFixed(2)})`
-                                : ""}
+                              {opt.extraCost ? ` (+$${opt.extraCost.toFixed(2)})` : ""}
                             </option>
                           ));
                         })()
                         : q.options?.map((opt) => (
                           <option key={opt.label} value={opt.label}>
                             {opt.label}
-                            {opt.extraCost
-                              ? ` (+$${opt.extraCost.toFixed(2)})`
-                              : ""}
+                            {opt.extraCost ? ` (+$${opt.extraCost.toFixed(2)})` : ""}
                           </option>
                         ))}
 
@@ -370,6 +362,7 @@ export default function Step1({
                   )}
                 </div>
               )}
+
             </div>
           ))}
 

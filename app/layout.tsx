@@ -5,34 +5,91 @@ import { Providers } from "./Providers";
 import { LoadingProvider } from "@/lib/LoadingContext";
 import type { Metadata } from "next";
 
+// ============================================================================
+//  SITE METADATA — SEO + SOCIAL + PWA
+// ============================================================================
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.calltechcare.com"),
+
   title: {
-    default: "CareTech | Friendly Tech Help for Seniors",
-    template: "%s | CareTech",
+    default: "TechCare | Friendly Tech Support Made Simple",
+    template: "%s | TechCare",
   },
   description:
-    "Learn how to set up your devices, secure your smart home, and keep your tech running smoothly with expert CareTech guides.",
-  metadataBase: new URL("https://caretech-blog.vercel.app"),
+    "TechCare offers friendly, professional tech support for all ages — from phone and tablet setup to Wi-Fi troubleshooting and smart home installation. Book expert help online or in person.",
+  keywords: [
+    "Tech Support",
+    "Wi-Fi Help",
+    "Smart Home Setup",
+    "Tablet Assistance",
+    "Phone Troubleshooting",
+    "Computer Help",
+    "Device Installation",
+    "TechCare",
+    "Tech Support Miami",
+    "Remote Tech Help",
+    "In-Home Tech Support",
+  ],
+
   openGraph: {
-    title: "CareTech Blog",
+    title: "TechCare – Friendly Tech Support Made Simple",
     description:
-      "Simple, helpful tech tutorials and setup guides for phones, tablets, Wi-Fi, and more.",
-    url: "https://caretech-blog.vercel.app/blog",
-    siteName: "CareTech",
+      "Get reliable tech assistance for your devices, Wi-Fi, and smart home. TechCare makes technology stress-free for everyone — at home or remotely.",
+    url: "https://www.calltechcare.com",
+    siteName: "TechCare",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/logo-og.png",
+        width: 1200,
+        height: 630,
+        alt: "TechCare – Friendly Tech Support Made Simple",
+      },
+    ],
   },
+
   twitter: {
     card: "summary_large_image",
-    title: "CareTech Blog",
+    site: "@TechCare",
+    title: "TechCare | Friendly Tech Support for Everyone",
     description:
-      "Friendly tech help for seniors — guides for phones, tablets, Wi-Fi, and more.",
+      "Your trusted tech experts — setup, troubleshoot, and optimize your devices with ease. Available in person or online.",
+    images: ["/logo-og.png"],
   },
+
+  // --- Browser & device icons ---
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+      { url: "/web-app-manifest-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/web-app-manifest-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: ["/apple-touch-icon.png"],
+    shortcut: ["/favicon.ico"],
+  },
+
+  manifest: "/site.webmanifest",
+
+  // --- Google & Crawler Settings ---
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
+// ============================================================================
+//  ROOT LAYOUT
+// ============================================================================
 export default function RootLayout({
   children,
 }: {
@@ -41,12 +98,27 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
+        {/* PERFORMANCE & PREFETCH */}
         <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="" />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
-        <link rel="preload" href="/favicon.ico" as="image" />
+        <link rel="preload" href="/logo.svg" as="image" />
 
-        <meta name="theme-color" content="#b3c7e6" />
+        {/* FAVICONS & MANIFEST */}
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+
+        {/* CANONICAL URL */}
+        <link rel="canonical" href="https://www.calltechcare.com" />
+
+        {/* META TAGS */}
+        <meta name="theme-color" content="#0891b2" />
+        <meta name="author" content="TechCare" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="copyright"
+          content="© 2025 TechCare. All rights reserved."
+        />
       </head>
 
       <body>
