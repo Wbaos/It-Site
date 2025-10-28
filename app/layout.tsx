@@ -61,20 +61,18 @@ export const metadata: Metadata = {
   // --- Browser & device icons ---
   icons: {
     icon: [
-      { url: "/logo.svg", type: "image/svg+xml" }, // ✅ SVG favicon
+      { url: "/logo.svg", type: "image/svg+xml" },
       { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
     ],
     apple: ["/apple-touch-icon.png"],
-    shortcut: ["/favicon.ico"], // ✅ single .ico reference only
+    shortcut: ["/favicon.ico"],
   },
 
   manifest: "/site.webmanifest",
 
-  // --- Google & crawler settings ---
   robots: {
     index: true,
     follow: true,
-    nocache: false,
     googleBot: {
       index: true,
       follow: true,
@@ -96,22 +94,14 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
-        {/* PERFORMANCE & PREFETCH */}
+        {/* PERFORMANCE */}
         <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="" />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
         <link rel="preload" href="/logo.svg" as="image" />
 
-        {/* --- FAVICONS & MANIFEST --- */}
-        <link rel="icon" type="image/svg+xml" href="/logo.svg" />
-        <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-        <meta name="apple-mobile-web-app-title" content="TechCare" /> {/* ✅ fixes iOS warning */}
-
-        {/* CANONICAL URL */}
+        {/* OTHER META */}
+        <meta name="apple-mobile-web-app-title" content="TechCare" />
         <link rel="canonical" href="https://www.calltechcare.com" />
-
-        {/* META TAGS */}
         <meta name="theme-color" content="#0891b2" />
         <meta name="author" content="TechCare" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -142,7 +132,6 @@ export default function RootLayout({
           })}
         </script>
       </head>
-
       <body>
         <Providers>
           <LoadingProvider>
