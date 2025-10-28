@@ -4,6 +4,12 @@ import { useState, use, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
+type User = {
+  name?: string;
+  email?: string;
+  phone?: string;
+};
+
 export default function Step2({
   params,
 }: {
@@ -16,15 +22,51 @@ export default function Step2({
   const priceParam = searchParams.get("price") || "0";
   const optionsParam = searchParams.get("options") || "[]";
   const contactParam = searchParams.get("contact") || "{}";
-
   const basePrice = parseFloat(priceParam) || 0;
 
+  // ------------------------------------------------------
+  // Contact State
+  // ------------------------------------------------------
   const [contact, setContact] = useState({
     name: "",
     email: "",
     phone: "",
   });
 
+  // Will be used to store user info if logged in
+  const [user, setUser] = useState<User | null>(null);
+
+  // ------------------------------------------------------
+  // Try to load user session automatically (mock example)
+  // ------------------------------------------------------
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        // Replace this endpoint with your actual auth route or session endpoint
+        const res = await fetch("/api/auth/session", { credentials: "include" });
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.user) {
+            setUser(data.user);
+            // prefill email if logged in
+            setContact((prev) => ({
+              ...prev,
+              email: data.user.email || "",
+              name: data.user.name || "",
+            }));
+          }
+        }
+      } catch (err) {
+        console.warn("No active session found");
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // ------------------------------------------------------
+  // Load contact from params (if returning to this page)
+  // ------------------------------------------------------
   useEffect(() => {
     try {
       const parsed = JSON.parse(contactParam);
@@ -38,13 +80,25 @@ export default function Step2({
     }
   }, [contactParam]);
 
+  // ------------------------------------------------------
+  // Input change handler
+  // ------------------------------------------------------
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setContact({ ...contact, [e.target.name]: e.target.value });
   };
 
+  // ------------------------------------------------------
+  // Continue to next step
+  // ------------------------------------------------------
   const handleNext = async () => {
-    if (!contact.name || !contact.email || !contact.phone) {
-      alert("Please fill in all contact fields before continuing.");
+    if (!contact.name || !contact.phone) {
+      alert("Please fill in your name and phone before continuing.");
+      return;
+    }
+
+    // Only validate email if the user is not logged in
+    if (!user && !contact.email) {
+      alert("Please enter your email before continuing.");
       return;
     }
 
@@ -85,15 +139,20 @@ export default function Step2({
             required
             className="input"
           />
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            value={contact.email}
-            onChange={handleChange}
-            required
-            className="input"
-          />
+
+          {/* Email field — hidden if user logged in */}
+          {!user?.email && (
+            <input
+              name="email"
+              type="email"
+              placeholder="Email"
+              value={contact.email}
+              onChange={handleChange}
+              required
+              className="input"
+            />
+          )}
+
           <input
             name="phone"
             type="tel"
