@@ -41,15 +41,17 @@ export async function POST(req: Request) {
     await connectDB();
 
     // ================================================================
-    // CHECKOUT SESSION COMPLETED (one-time payments only)
+    // CHECKOUT SESSION COMPLETED (one-time payments)
     // ================================================================
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
 
+      // Ignore subscriptions here — handled separately
       if (session.mode === "subscription") {
         return NextResponse.json({ received: true });
       }
 
+      // Skip if order already exists
       const existingOrder = await Order.findOne({
         stripeSessionId: session.id,
       });
@@ -57,6 +59,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ received: true });
       }
 
+      // Extract data
       const userId = session.metadata?.userId || null;
       const email =
         session.metadata?.email ||
@@ -68,6 +71,7 @@ export async function POST(req: Request) {
       const sessionId = session.metadata?.sessionId;
       const cart = sessionId ? await Cart.findOne({ sessionId }) : null;
 
+      // Create order
       const order = await Order.create({
         stripeSessionId: session.id,
         userId,
@@ -81,24 +85,45 @@ export async function POST(req: Request) {
         address: cart?.address || {},
         schedule: cart?.schedule || {},
       });
+
+      //  Send confirmation email via your own API route
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/send-order-email`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            to: email,
-            order,
-          }),
-        });
-        console.log(` Order confirmation email sent to ${email}`);
+        console.log(` Sending confirmation email to ${email}...`);
+
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/send-order-email`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              customerEmail: email,
+              serviceTitle:
+                cart?.items?.[0]?.title || "TechCare Service Booking",
+              basePrice: cart?.items?.[0]?.basePrice || total,
+              addOns: cart?.items?.[0]?.options || [],
+              total,
+            }),
+          }
+        );
+
+        const data = await res.json();
+        if (data?.success) {
+          console.log(` Order confirmation email sent to ${email}`);
+        } else {
+          console.warn(
+            `⚠️ Failed to send confirmation email: ${data?.error || "Unknown error"}`
+          );
+        }
       } catch (emailErr) {
-        console.error(" Failed to send confirmation email:", emailErr);
+        console.error(" Error while sending confirmation email:", emailErr);
       }
 
-
-      if (sessionId)
+      // Empty cart after successful payment
+      if (sessionId) {
         await Cart.findOneAndUpdate({ sessionId }, { items: [] });
+      }
 
+      // Create in-app notification
       if (userId) {
         await Notification.create({
           userId,
@@ -112,7 +137,7 @@ export async function POST(req: Request) {
     }
 
     // ================================================================
-    // SUBSCRIPTION CREATED (fires immediately after checkout)
+    // SUBSCRIPTION CREATED
     // ================================================================
     if (event.type === "customer.subscription.created") {
       const sub = event.data.object as Stripe.Subscription;
@@ -122,7 +147,6 @@ export async function POST(req: Request) {
       const priceObj = firstItem?.price;
       const productObj = priceObj?.product as Stripe.Product | undefined;
 
-      //  Pull plan name from product, price nickname, or checkout metadata fallback
       const planName =
         productObj?.name ||
         priceObj?.nickname ||
@@ -167,7 +191,7 @@ export async function POST(req: Request) {
     }
 
     // ================================================================
-    // INVOICE PAYMENT SUCCEEDED (initial + renewals)
+    // INVOICE PAYMENT SUCCEEDED (renewals)
     // ================================================================
     if (event.type === "invoice.payment_succeeded") {
       const invoice = event.data.object as Stripe.Invoice & {
@@ -179,11 +203,9 @@ export async function POST(req: Request) {
       }
 
       if (invoice.billing_reason === "subscription_create") {
-        //  first subscription payment
-        const sub = await stripe.subscriptions.retrieve(
-          invoice.subscription,
-          { expand: ["items.data.price.product"] }
-        );
+        const sub = await stripe.subscriptions.retrieve(invoice.subscription, {
+          expand: ["items.data.price.product"],
+        });
 
         const nextPayment = getNextPaymentDate(sub);
         const firstItem = sub.items.data[0];
@@ -204,7 +226,6 @@ export async function POST(req: Request) {
           stripeSubscriptionId: sub.id,
         });
         if (existingOrder) {
-
           return NextResponse.json({ received: true });
         }
 
@@ -231,10 +252,7 @@ export async function POST(req: Request) {
           });
         }
       } else {
-        //  renewal payment — update nextPayment only
-        const sub = await stripe.subscriptions.retrieve(
-          invoice.subscription
-        );
+        const sub = await stripe.subscriptions.retrieve(invoice.subscription);
         const nextPayment = getNextPaymentDate(sub);
 
         await Order.findOneAndUpdate(
@@ -242,14 +260,13 @@ export async function POST(req: Request) {
           { nextPayment },
           { new: true }
         );
-
       }
 
       return NextResponse.json({ received: true });
     }
 
     // ================================================================
-    // SUBSCRIPTION UPDATED (plan switch, interval change, etc.)
+    // SUBSCRIPTION UPDATED
     // ================================================================
     if (event.type === "customer.subscription.updated") {
       const sub = event.data.object as Stripe.Subscription;
@@ -283,7 +300,7 @@ export async function POST(req: Request) {
             email = (customer as any).email || "unknown";
           }
         } catch (e) {
-          console.error("⚠️ Failed to fetch customer email:", e);
+          console.error(" Failed to fetch customer email:", e);
         }
       }
 
@@ -305,7 +322,7 @@ export async function POST(req: Request) {
     }
 
     // ================================================================
-    // Catch-all: log other event types
+    // Catch-all
     // ================================================================
     return NextResponse.json({ received: true });
   } catch (err: any) {
