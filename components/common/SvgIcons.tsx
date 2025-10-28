@@ -1,5 +1,6 @@
+
 interface SvgIconProps {
-    name: "arrow-back" | "user-avatar";
+    name: "arrow-back" | "user-avatar" | "techcare-logo";
     size?: number;
     color?: string;
     className?: string;
@@ -12,7 +13,9 @@ export default function SvgIcon({
     className = "",
 }: SvgIconProps) {
     switch (name) {
-        // Black Arrow Icon 
+        // ------------------------------------------------------------------------
+        // ⬅️ Arrow Back
+        // ------------------------------------------------------------------------
         case "arrow-back":
             return (
                 <svg
@@ -47,7 +50,9 @@ export default function SvgIcon({
                 </svg>
             );
 
-        // user avatar
+        // ------------------------------------------------------------------------
+        // 👤 User Avatar
+        // ------------------------------------------------------------------------
         case "user-avatar":
             return (
                 <svg
@@ -60,7 +65,7 @@ export default function SvgIcon({
                     className={className}
                 >
                     <g
-                        transform="translate(1.4 1.4) scale(2.81 2.91)"
+                        transform="translate(1.4 1.4) scale(2.91)"
                         style={{
                             fill: color,
                             stroke: "none",
@@ -74,6 +79,41 @@ export default function SvgIcon({
                 </svg>
             );
 
+        // ------------------------------------------------------------------------
+        // ⚙️ TechCare Logo (Circular Circuit Icon)
+        // ------------------------------------------------------------------------
+        case "techcare-logo":
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 512 512"
+                    className={className}
+                >
+                    <circle cx="256" cy="256" r="248" fill="#0891b2" />
+                    <path
+                        d="M368 176a144 144 0 1 0 0 160"
+                        fill="none"
+                        stroke="#ffffff"
+                        strokeWidth="28"
+                        strokeLinecap="round"
+                    />
+                    <circle cx="368" cy="176" r="14" fill="#a7f3d0" />
+                    <circle cx="160" cy="256" r="14" fill="#a7f3d0" />
+                    <circle cx="368" cy="336" r="14" fill="#a7f3d0" />
+                    <path
+                        d="M198 180l-20-20M198 332l-20 20M310 112l0 28M310 372l0 28"
+                        stroke="#ffffff"
+                        strokeWidth="10"
+                        strokeLinecap="round"
+                    />
+                </svg>
+            );
+
+        // ------------------------------------------------------------------------
+        // Default (no match)
+        // ------------------------------------------------------------------------
         default:
             return null;
     }
