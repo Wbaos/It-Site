@@ -61,18 +61,16 @@ export const metadata: Metadata = {
   // --- Browser & device icons ---
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/logo.svg", type: "image/svg+xml" }, // ✅ SVG favicon
       { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
-      { url: "/web-app-manifest-192x192.png", sizes: "192x192", type: "image/png" },
-      { url: "/web-app-manifest-512x512.png", sizes: "512x512", type: "image/png" },
     ],
     apple: ["/apple-touch-icon.png"],
-    shortcut: ["/favicon.ico"],
+    shortcut: ["/favicon.ico"], // ✅ single .ico reference only
   },
 
   manifest: "/site.webmanifest",
 
-  // --- Google & Crawler Settings ---
+  // --- Google & crawler settings ---
   robots: {
     index: true,
     follow: true,
@@ -103,10 +101,12 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
         <link rel="preload" href="/logo.svg" as="image" />
 
-        {/* FAVICONS & MANIFEST */}
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        {/* --- FAVICONS & MANIFEST --- */}
+        <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
+        <meta name="apple-mobile-web-app-title" content="TechCare" /> {/* ✅ fixes iOS warning */}
 
         {/* CANONICAL URL */}
         <link rel="canonical" href="https://www.calltechcare.com" />
@@ -115,34 +115,32 @@ export default function RootLayout({
         <meta name="theme-color" content="#0891b2" />
         <meta name="author" content="TechCare" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta
-          name="copyright"
-          content="© 2025 TechCare. All rights reserved."
-        />
+        <meta name="copyright" content="© 2025 TechCare. All rights reserved." />
 
+        {/* STRUCTURED DATA */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
-            "name": "TechCare",
-            "url": "https://www.calltechcare.com",
-            "logo": "https://www.calltechcare.com/logo-og.png",
-            "sameAs": [
+            name: "TechCare",
+            url: "https://www.calltechcare.com",
+            logo: "https://www.calltechcare.com/logo-og.png",
+            sameAs: [
               "https://www.facebook.com/TechCare",
               "https://www.instagram.com/TechCare",
-              "https://www.linkedin.com/company/techcare"
+              "https://www.linkedin.com/company/techcare",
             ],
-            "description": "Friendly, professional tech support for all ages — setup, troubleshoot, and optimize your devices at home or remotely.",
-            "contactPoint": {
+            description:
+              "Friendly, professional tech support for all ages — setup, troubleshoot, and optimize your devices at home or remotely.",
+            contactPoint: {
               "@type": "ContactPoint",
-              "telephone": "+1-7863662729",
-              "contactType": "Customer Service",
-              "areaServed": "US",
-              "availableLanguage": ["English", "Spanish"]
-            }
+              telephone: "+1-7863662729",
+              contactType: "Customer Service",
+              areaServed: "US",
+              availableLanguage: ["English", "Spanish"],
+            },
           })}
         </script>
-
       </head>
 
       <body>
