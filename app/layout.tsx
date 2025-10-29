@@ -104,7 +104,7 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="" />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
-        <link rel="preload" href="/logo.svg" as="image" />
+        {/* <link rel="preload" href="/logo.svg" as="image" /> */}
 
         <meta name="apple-mobile-web-app-title" content="TechCare" />
         <link rel="canonical" href="https://www.calltechcare.com" />
