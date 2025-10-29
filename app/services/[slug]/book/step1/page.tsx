@@ -106,7 +106,7 @@ export default function Step1({
     fetchService();
   }, [slug]);
 
-  // --- Edit mode (prefill)
+  // Edit mode (prefill)
   const isEdit = searchParams.get("edit") === "true";
   const editId = searchParams.get("id");
 
@@ -132,7 +132,7 @@ export default function Step1({
     }
   }, [isEdit, editId, items, service]);
 
-  // --- Compute Add-ons and totals
+  // Compute Add-ons and totals
   const addOns: AddOn[] =
     service?.questions
       ?.map((q) => {
@@ -163,7 +163,7 @@ export default function Step1({
   const addOnsTotal = addOns.reduce((sum, o) => sum + (o.price || 0), 0);
   const subtotal = service ? service.price + addOnsTotal : 0;
 
-  // --- Save to cart and go to Step 2
+  // Save to cart and go to Step 2
   const handleNext = async () => {
     if (!service) return;
 
@@ -182,7 +182,7 @@ export default function Step1({
     router.push(`/services/${slug}/book/step2?price=${subtotal}`);
   };
 
-  // --- Loading UI
+  // Loading UI
   if (loading)
     return (
       <section className="section booking">
@@ -204,7 +204,7 @@ export default function Step1({
       </section>
     );
 
-  // --- Render UI
+  // Render UI
   return (
     <section className="section booking">
       <div className="site-container booking-wrapper">
@@ -221,27 +221,29 @@ export default function Step1({
           {service.questions?.map((q) => (
             <div
               key={q.id}
-              className={`option-item extra-option ${q.type === "text" ? "text-field" : ""
-                }`}
+              className={`option-item extra-option ${q.type === "text" ? "text-field" : ""}`}
             >
-              <div className="option-left">
-                <label className="option-label">{q.label}</label>
+              {/* Only render the top label if NOT a checkbox */}
+              {q.type !== "checkbox" && (
+                <div className="option-left">
+                  <label className="option-label">{q.label}</label>
 
-                {q.type === "text" && (
-                  <input
-                    type="text"
-                    placeholder={q.placeholder || "Enter your answer"}
-                    value={responses[q.id] || ""}
-                    onChange={(e) =>
-                      setResponses({ ...responses, [q.id]: e.target.value })
-                    }
-                    className="option-input"
-                  />
-                )}
-              </div>
+                  {q.type === "text" && (
+                    <input
+                      type="text"
+                      placeholder={q.placeholder || "Enter your answer"}
+                      value={responses[q.id] || ""}
+                      onChange={(e) =>
+                        setResponses({ ...responses, [q.id]: e.target.value })
+                      }
+                      className="option-input"
+                    />
+                  )}
+                </div>
+              )}
 
               {q.type === "checkbox" && (
-                <div className="option-control">
+                <label className="option-control checkbox-inline">
                   <input
                     type="checkbox"
                     checked={!!responses[q.id]}
@@ -253,13 +255,17 @@ export default function Step1({
                     }
                     className="option-checkbox"
                   />
-                  {q.extraCost && (
-                    <span className="option-extra">
-                      +${q.extraCost.toFixed(2)}
-                    </span>
-                  )}
-                </div>
+                  <span className="option-label">
+                    {q.label}
+                    {q.extraCost && (
+                      <span className="option-extra">
+                        {" "} (+${q.extraCost.toFixed(2)})
+                      </span>
+                    )}
+                  </span>
+                </label>
               )}
+
 
               {q.type === "select" && (
                 <div className="option-control">

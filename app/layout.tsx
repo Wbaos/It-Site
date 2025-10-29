@@ -1,4 +1,3 @@
-/* app/layout.tsx */
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -117,7 +116,7 @@ export default function RootLayout({
           content="© 2025 TechCare. All rights reserved."
         />
 
-        {/* ✅ STRUCTURED DATA (hydration-safe) */}
+        {/* STRUCTURED DATA (hydration-safe) */}
         <script
           type="application/ld+json"
           suppressHydrationWarning

@@ -5,7 +5,7 @@ export const revalidate = 0;
 
 export default async function Services() {
   const services = await sanity.fetch(`
-  *[_type == "service" && popular == true] | order(title asc)[0...8]{
+*[_type == "service" && popular == true && enabled == true] | order(title asc)[0...8]{
     _id,
     title,
     "slug": slug.current,

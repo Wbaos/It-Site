@@ -2,15 +2,22 @@ import { sanity } from "@/lib/sanity";
 import Image from "next/image";
 
 export default async function ServicesPage() {
-    const services = await sanity.fetch(`*[_type == "service"] | order(title asc) {
-    _id,
-    title,
-    slug,
-    category,
-    description,
-    price,
-    image { asset -> { url } }
-  }`);
+    const services = await sanity.fetch(`*[_type == "service" && enabled == true] | order(title asc) {
+  _id,
+  title,
+  slug,
+  category->{
+    title
+  },
+  description,
+  price,
+  image {
+    asset->{
+      url
+    }
+  }
+}`);
+
     console.log("Fetched services:", services);
 
     return (

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, use, useEffect } from "react";
+import { use, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useFormValidation } from "@/lib/useFormValidation";
 
 type User = {
   name?: string;
@@ -24,31 +25,30 @@ export default function Step2({
   const contactParam = searchParams.get("contact") || "{}";
   const basePrice = parseFloat(priceParam) || 0;
 
-  // ------------------------------------------------------
-  // Contact State
-  // ------------------------------------------------------
-  const [contact, setContact] = useState({
+  //  use reusable validation hook
+  const {
+    values: contact,
+    setValues: setContact,
+    handleChange,
+    validateRequired,
+    getInputClass,
+  } = useFormValidation({
     name: "",
     email: "",
     phone: "",
   });
 
-  // Will be used to store user info if logged in
   const [user, setUser] = useState<User | null>(null);
 
-  // ------------------------------------------------------
-  // Try to load user session automatically (mock example)
-  // ------------------------------------------------------
+  //  Load user session if logged in
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        // Replace this endpoint with your actual auth route or session endpoint
         const res = await fetch("/api/auth/session", { credentials: "include" });
         if (res.ok) {
           const data = await res.json();
           if (data?.user) {
             setUser(data.user);
-            // prefill email if logged in
             setContact((prev) => ({
               ...prev,
               email: data.user.email || "",
@@ -62,11 +62,9 @@ export default function Step2({
     };
 
     fetchUser();
-  }, []);
+  }, [setContact]);
 
-  // ------------------------------------------------------
-  // Load contact from params (if returning to this page)
-  // ------------------------------------------------------
+  //  Load contact data if returning to this step
   useEffect(() => {
     try {
       const parsed = JSON.parse(contactParam);
@@ -78,27 +76,17 @@ export default function Step2({
     } catch {
       setContact({ name: "", email: "", phone: "" });
     }
-  }, [contactParam]);
+  }, [contactParam, setContact]);
 
-  // ------------------------------------------------------
-  // Input change handler
-  // ------------------------------------------------------
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setContact({ ...contact, [e.target.name]: e.target.value });
-  };
-
-  // ------------------------------------------------------
-  // Continue to next step
-  // ------------------------------------------------------
+  //  Continue to next step
   const handleNext = async () => {
-    if (!contact.name || !contact.phone) {
-      alert("Please fill in your name and phone before continuing.");
+    if (!validateRequired()) {
+      alert("Please fill in all required fields before continuing.");
       return;
     }
 
-    // Only validate email if the user is not logged in
-    if (!user && !contact.email) {
-      alert("Please enter your email before continuing.");
+    if (!user && !/\S+@\S+\.\S+/.test(contact.email)) {
+      alert("Please enter a valid email address.");
       return;
     }
 
@@ -135,32 +123,29 @@ export default function Step2({
             name="name"
             placeholder="Full Name"
             value={contact.name}
-            onChange={handleChange}
-            required
-            className="input"
+            onChange={(e) => handleChange("name", e.target.value)}
+            className={getInputClass("name")}
           />
 
-          {/* Email field — hidden if user logged in */}
+          {/* Hide email if already logged in */}
           {!user?.email && (
             <input
               name="email"
               type="email"
               placeholder="Email"
               value={contact.email}
-              onChange={handleChange}
-              required
-              className="input"
+              onChange={(e) => handleChange("email", e.target.value)}
+              className={getInputClass("email")}
             />
           )}
 
           <input
             name="phone"
             type="tel"
-            placeholder="Phone"
+            placeholder="Phone Number"
             value={contact.phone}
-            onChange={handleChange}
-            required
-            className="input"
+            onChange={(e) => handleChange("phone", e.target.value)}
+            className={getInputClass("phone")}
           />
 
           <button
