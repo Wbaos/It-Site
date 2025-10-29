@@ -13,17 +13,19 @@ export default function PricingClient({ plans }: { plans: any[] }) {
             <div className="pricing-container">
                 <h2 className="pricing-heading">Our Pricing</h2>
 
-                {/* Toggle */}
                 <div className="toggle-wrapper">
                     <span className={!isAnnual ? "active" : ""}>Monthly</span>
+
                     <label className="switch">
                         <input
                             type="checkbox"
                             checked={isAnnual}
                             onChange={() => setIsAnnual(!isAnnual)}
+                            aria-label="Toggle between monthly and annual billing"
                         />
                         <span className="slider"></span>
                     </label>
+
                     <span className={isAnnual ? "active" : ""}>Annually</span>
                 </div>
 
@@ -80,19 +82,22 @@ export default function PricingClient({ plans }: { plans: any[] }) {
 
                                 {p.slug?.current && displayPrice !== null && (
                                     <Link
-                                        href={`/plans/${p.slug.current}?interval=${isAnnual ? "year" : "month"}`}
+                                        href={`/plans/${p.slug.current}?interval=${isAnnual ? "year" : "month"
+                                            }`}
                                         className="btn wide"
                                         onClick={() => {
-                                            sessionStorage.setItem("scrollY", window.scrollY.toString());
+                                            sessionStorage.setItem(
+                                                "scrollY",
+                                                window.scrollY.toString()
+                                            );
                                         }}
                                     >
                                         Learn More
                                         <span className="sr-only">
-                                            about the {p.title.replace(/Plan/i, "").trim()} plan ({isAnnual ? "annual" : "monthly"} billing)
+                                            about the {p.title.replace(/Plan/i, "").trim()} plan (
+                                            {isAnnual ? "annual" : "monthly"} billing)
                                         </span>
                                     </Link>
-
-
                                 )}
                             </div>
                         );
