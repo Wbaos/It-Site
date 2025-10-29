@@ -53,7 +53,7 @@ export default function Highlights() {
               <div key={h._id} className={`highlight ${positionClass}`}>
                 <span className="highlight-icon">{h.icon}</span>
                 <div>
-                  <h3 className="highlight-title">{h.title}</h3>
+                  <h2 className="highlight-title">{h.title}</h2>
                   <p className="highlight-desc">{h.desc}</p>
                 </div>
               </div>
