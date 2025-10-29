@@ -3690,6 +3690,7 @@ input:checked + .slider:before {
 }
 
 /* ===== FOOTER (scoped) ===== */
+
 .site-footer {
   background: #0f172a;
   color: #cbd5e1;
@@ -3708,12 +3709,15 @@ input:checked + .slider:before {
 
 /* brand centered */
 .site-footer .footer-brand {
-  justify-self: center;
-  color: #fff;
-  text-decoration: none;
-  font-weight: 800;
-  font-size: 1.125rem;
-  letter-spacing: 0.2px;
+    /* justify-self: center; */
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1.125rem;
+    letter-spacing: 0.2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 /* nav on the left, compact and muted */

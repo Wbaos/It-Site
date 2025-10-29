@@ -1,18 +1,30 @@
+import Image from "next/image";
 import { ArrowUp } from "lucide-react";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+
   return (
     <footer className="site-footer">
       {/* top row */}
       <div className="site-container footer-top">
-        <a
-          href="#hero"
-          className="footer-brand"
-          aria-label="CareTech – back to top"
-        >
-          CareTech
-        </a>
+        <div className="footer-brand-wrapper">
+
+          <a
+            href="#hero"
+            className="footer-brand"
+            aria-label="CallTechCare – back to top"
+          >
+            <Image
+              src="/logo.svg"
+              alt="TechCare Logo"
+              width={36}
+              height={36}
+              className="footer-logo"
+            />
+            CallTechCare
+          </a>
+        </div>
 
         <nav className="footer-nav" aria-label="Footer">
           <a href="#services">Services</a>
@@ -27,7 +39,7 @@ export default function Footer() {
       </div>
 
       <div className="site-container footer-bottom">
-        <p className="copy">© {year} CareTech. All rights reserved.</p>
+        <p className="copy">© {year} CallTechCare. All rights reserved.</p>
         <div className="legal">
           <a href="#" aria-label="Privacy policy">
             Privacy

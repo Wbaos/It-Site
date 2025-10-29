@@ -15,7 +15,7 @@ export default async function BlogPage() {
     return (
         <section className="blog-page">
             <div className="blog-container">
-                <h1 className="blog-title">CareTech Blog</h1>
+                <h1 className="blog-title">CallTechCare Blog</h1>
 
                 {posts.length === 0 ? (
                     <p className="no-posts">No posts yet.</p>

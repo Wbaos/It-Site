@@ -286,7 +286,7 @@ export default function Navbar() {
 
           {/* BRAND */}
           <Link href="/" className="brand" aria-label="Home">
-            CareTech
+            CallTechCare
           </Link>
 
           {/* ACTIONS */}
