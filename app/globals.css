@@ -66,13 +66,6 @@ main {
   height: 40px !important;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-
 /* ================= HERO ================= */
 @layer components {
   #hero {
@@ -154,13 +147,13 @@ main {
   padding: 0 2rem;
 }
 
-.blog-title {
+/* .blog-title {
   text-align: left;
   font-size: 2.5rem;
   font-weight: 700;
   color: #1f2937;
   margin-bottom: 3rem;
-}
+} */
 
 .no-posts {
   text-align: center;
@@ -199,9 +192,9 @@ main {
   transform: scale(1.03);
 }
 
-.blog-content {
+/* .blog-content {
   padding: 1.5rem;
-}
+} */
 
 .blog-card-title {
   font-size: 1.3rem;
@@ -413,10 +406,6 @@ main {
   color: var(--fg);
   cursor: pointer;
 }
-.cart-btn {
-  position: relative;
-}
-
 .cart-btn {
   position: relative;
 }
@@ -640,24 +629,24 @@ main {
   flex-direction: column;
 }
 
-.notif-item {
+/* .notif-item {
   padding: 10px;
   border-bottom: 1px solid #eee;
 }
 
 .notif-item:last-child {
   border-bottom: none;
-}
+} */
 
-.notif-success {
+/* .notif-success {
   color: green;
-}
-.notif-info {
+} */
+/* .notif-info {
   color: blue;
 }
 .notif-error {
   color: red;
-}
+} */
 
 /* ===== CART PAGE ===== */
 .cart {
@@ -2833,15 +2822,14 @@ details[open] .faq-toggle {
 }
 
 /*===Add to cart==*/
-/* Loading spinner */
-.spinner {
+/* .spinner {
   border: 3px solid rgba(255, 255, 255, 0.3);
   border-top: 3px solid #fff;
   border-radius: 50%;
   width: 16px;
   height: 16px;
   animation: spin 0.6s linear infinite;
-}
+} */
 
 @keyframes spin {
   to {
