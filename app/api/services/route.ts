@@ -16,7 +16,7 @@ type Service = {
 export async function GET() {
   try {
     const query = `
-      *[_type == "service"]{
+      *[_type == "service" && enabled == true]{
         _id,
         title,
         "slug": slug.current,
@@ -30,15 +30,18 @@ export async function GET() {
 
     const services: Service[] = await sanity.fetch(query);
 
+    //  Separate parent and subservices
     const parents = services.filter((s) => !s.parentService);
     const subs = services.filter((s) => s.parentService);
 
+    //  Attach enabled subservices only
     for (const parent of parents) {
       parent.subservices = subs.filter(
         (sub: Service) => sub.parentService?._id === parent._id
       );
     }
 
+    //  Group services by category
     const grouped: Record<string, Service[]> = {};
     for (const s of parents) {
       const cat = s.category || "Other";
@@ -48,7 +51,7 @@ export async function GET() {
 
     return NextResponse.json(grouped);
   } catch (err) {
-    console.error("❌ Error fetching services:", err);
+    console.error(" Error fetching services:", err);
     return NextResponse.json(
       { error: "Failed to fetch services" },
       { status: 500 }

@@ -1,26 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { use, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useFormValidation } from "@/lib/useFormValidation";
 
 export default function Step4({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const [slug, setSlug] = useState<string | null>(null);
+  const router = useRouter();
+  const { slug } = use(params);
   const searchParams = useSearchParams();
-
-  useEffect(() => {
-    params.then((p) => setSlug(p.slug));
-  }, [params]);
 
   const priceParam = searchParams.get("price") || "0";
   const optionsParam = searchParams.get("options") || "[]";
   const contactParam = searchParams.get("contact") || "{}";
   const addressParam = searchParams.get("address") || "{}";
   const scheduleParam = searchParams.get("schedule") || "{}";
+
+  const basePrice = parseFloat(priceParam) || 0;
 
   const parsedAddress = (() => {
     try {
@@ -30,9 +30,21 @@ export default function Step4({
     }
   })();
 
-  const [schedule, setSchedule] = useState({ date: "", time: "" });
+  // use the shared form validation hook
+  const {
+    values: schedule,
+    setValues: setSchedule,
+    handleChange,
+    validateRequired,
+    getInputClass,
+  } = useFormValidation({
+    date: "",
+    time: "",
+  });
+
   const [loading, setLoading] = useState(false);
 
+  // Prefill if user navigates back
   useEffect(() => {
     try {
       const parsed = JSON.parse(scheduleParam);
@@ -40,14 +52,20 @@ export default function Step4({
         date: parsed.date || "",
         time: parsed.time || "",
       });
-    } catch { }
-  }, [scheduleParam]);
+    } catch {
+      setSchedule({ date: "", time: "" });
+    }
+  }, [scheduleParam, setSchedule]);
 
   const handleFinish = async () => {
-    if (!slug) return;
-    setLoading(true);
+    if (!validateRequired()) {
+      alert("Please select both date and time before continuing.");
+      return;
+    }
 
+    setLoading(true);
     try {
+      // save schedule in cart
       await fetch("/api/cart", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -55,6 +73,7 @@ export default function Step4({
         credentials: "include",
       });
 
+      // start checkout
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -76,22 +95,21 @@ export default function Step4({
   return (
     <section className="section booking">
       <div className="site-container booking-wrapper">
-        <h1 className="service-title">Step 4: Availability</h1>
+        <h1 className="service-title">Availability</h1>
 
         <form className="booking-card" onSubmit={(e) => e.preventDefault()}>
           <input
             type="date"
-            className="input"
+            className={getInputClass("date")}
             value={schedule.date}
-            onChange={(e) => setSchedule({ ...schedule, date: e.target.value })}
-            required
+            onChange={(e) => handleChange("date", e.target.value)}
           />
+
           <input
             type="time"
-            className="input"
+            className={getInputClass("time")}
             value={schedule.time}
-            onChange={(e) => setSchedule({ ...schedule, time: e.target.value })}
-            required
+            onChange={(e) => handleChange("time", e.target.value)}
           />
 
           <button
