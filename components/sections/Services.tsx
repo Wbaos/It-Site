@@ -1,18 +1,20 @@
 import Link from "next/link";
+import Image from "next/image";
 import { sanity } from "@/lib/sanity";
+import { urlFor } from "@/lib/sanityImage";
 
 export const revalidate = 0;
 
 export default async function Services() {
   const services = await sanity.fetch(`
-*[_type == "service" && popular == true && enabled == true] | order(title asc)[0...8]{
-    _id,
-    title,
-    "slug": slug.current,
-    description,
-    "iconUrl": icon.asset->url
-  }
-`);
+    *[_type == "service" && popular == true && enabled == true] | order(title asc)[0...8]{
+      _id,
+      title,
+      "slug": slug.current,
+      description,
+      icon
+    }
+  `);
 
   return (
     <section id="services" className="section services">
@@ -27,24 +29,25 @@ export default async function Services() {
         ) : (
           <div className="services-grid">
             {services.map((s: any) => (
-              <Link
-                key={s._id}
-                href={`/services/${s.slug}`}
-                className="service-card"
-              >
+              <Link key={s._id} href={`/services/${s.slug}`} className="service-card">
                 <div className="service-icon">
-                  {s.iconUrl ? (
-                    <img src={s.iconUrl} alt={`${s.title} icon`} className="icon-img" />
+                  {s.icon ? (
+                    <Image
+                      src={urlFor(s.icon).width(120).height(120).auto("format").url()}
+                      alt={`${s.title} icon`}
+                      width={120}
+                      height={120}
+                      className="icon-img"
+                      loading="lazy"
+                      sizes="(max-width: 768px) 100vw, 120px"
+                    />
                   ) : (
                     "💻"
                   )}
                 </div>
 
-
                 <h3 className="service-title">{s.title}</h3>
-                {s.description && (
-                  <p className="service-desc">{s.description}</p>
-                )}
+                {s.description && <p className="service-desc">{s.description}</p>}
               </Link>
             ))}
           </div>
