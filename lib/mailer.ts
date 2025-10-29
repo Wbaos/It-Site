@@ -10,7 +10,7 @@ export const transporter = nodemailer.createTransport({
 
 export async function sendResetEmail(to: string, resetUrl: string) {
   const mailOptions = {
-    from: `"CareTech Support" <${process.env.EMAIL_USER}>`,
+    from: `"CallTechCare Support" <${process.env.EMAIL_USER}>`,
     to,
     subject: "Reset your password",
     html: `
