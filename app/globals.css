@@ -3487,7 +3487,7 @@ input:checked + .slider:before {
 
 /* ===== BUTTON ===== */
 .btn.wide {
-  background: #7b8dfb;
+  background: #4f46e5; 
   color: #fff;
   padding: 0.9rem 0;
   border-radius: 0.5rem;
@@ -3498,62 +3498,71 @@ input:checked + .slider:before {
   text-align: center;
   transition: all 0.3s ease;
 }
+
 .btn.wide:hover {
-  background: #6b7ded;
+  background: #4338ca; 
 }
+
 .pricing-card.featured .btn.wide {
   background: #fff;
-  color: #5866e9;
+  color: #4f46e5;
   font-weight: 700;
 }
 .pricing-card.featured .btn.wide:hover {
-  background: #f8faff;
+  background: #f5f7ff;
 }
 
 /* ===== THEMES ===== */
 
 /* === Monthly Mode (Blue) === */
 .monthly-mode {
-  --switch-color: #3B82F6;
+  --switch-color: #1e40af;
 }
+
 .monthly-mode .pricing-card.featured {
-  background: linear-gradient(180deg, #3B82F6 0%, #2563EB 100%);
-  box-shadow: 0 8px 28px rgba(37, 99, 235, 0.3);
+  background: linear-gradient(180deg, #1e40af 0%, #1d4ed8 100%);
+  box-shadow: 0 8px 28px rgba(29, 78, 216, 0.3);
 }
+
 .monthly-mode .btn.wide {
-  background: #3B82F6;
+  background: #1e40af;
+  color: #fff;
 }
 .monthly-mode .btn.wide:hover {
-  background: #2563EB;
+  background: #1d4ed8;
 }
 .monthly-mode .pricing-card.featured .btn.wide {
-  color: #2563EB;
+  color: #1d4ed8;
 }
 
 .annual-mode {
-  --switch-color: #6e7ff4;
+  --switch-color: #4338ca;
 }
+
 .annual-mode .pricing-card.featured {
-  background: linear-gradient(180deg, #7b8dfb 0%, #5866e9 100%);
-  box-shadow: 0 8px 28px rgba(88, 102, 233, 0.35);
+  background: linear-gradient(180deg, #4338ca 0%, #3730a3 100%);
+  box-shadow: 0 8px 28px rgba(55, 48, 163, 0.35);
 }
+
 .annual-mode .btn.wide {
-  background: #6e7ff4;
+  background: #4338ca;
+  color: #fff;
 }
 .annual-mode .btn.wide:hover {
-  background: #5866e9;
+  background: #3730a3;
 }
 .annual-mode .pricing-card.featured .btn.wide {
-  color: #5866e9;
+  color: #4338ca;
 }
 
 /* === Sync toggle color === */
 .monthly-mode .slider {
-  background-color: #3B82F6 !important;
+  background-color: #1e40af !important;
 }
 .annual-mode .slider {
-  background-color: #6e7ff4 !important;
+  background-color: #4338ca !important;
 }
+
 
 /* ===== CONTACT (scoped; affects only .contact section) ===== */
 .contact {
