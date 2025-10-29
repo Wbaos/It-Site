@@ -87,7 +87,12 @@ export default function PricingClient({ plans }: { plans: any[] }) {
                                         }}
                                     >
                                         Learn More
+                                        <span className="sr-only">
+                                            about the {p.title.replace(/Plan/i, "").trim()} plan ({isAnnual ? "annual" : "monthly"} billing)
+                                        </span>
                                     </Link>
+
+
                                 )}
                             </div>
                         );
