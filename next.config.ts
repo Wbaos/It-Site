@@ -9,8 +9,9 @@ const nextConfig: NextConfig = {
         hostname: "cdn.sanity.io",
       },
     ],
+    formats: ["image/avif", "image/webp"],
+    unoptimized: false,
   },
-
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

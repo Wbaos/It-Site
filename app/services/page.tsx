@@ -1,24 +1,17 @@
 import { sanity } from "@/lib/sanity";
+import { urlFor } from "@/lib/sanityImage";
 import Image from "next/image";
 
 export default async function ServicesPage() {
     const services = await sanity.fetch(`*[_type == "service" && enabled == true] | order(title asc) {
-  _id,
-  title,
-  slug,
-  category->{
-    title
-  },
-  description,
-  price,
-  image {
-    asset->{
-      url
-    }
-  }
-}`);
-
-    console.log("Fetched services:", services);
+    _id,
+    title,
+    slug,
+    category->{ title },
+    description,
+    price,
+    image
+  }`);
 
     return (
         <section className="services-page">
@@ -31,17 +24,19 @@ export default async function ServicesPage() {
                     <div className="services-grid">
                         {services.map((service: any, index: number) => (
                             <div key={service._id} className="service-card">
-                                {service.image?.asset?.url && (
+                                {service.image && (
                                     <Image
-                                        src={service.image.asset.url}
+                                        src={urlFor(service.image).width(400).height(250).auto("format").url()}
                                         alt={service.title}
                                         width={400}
                                         height={250}
                                         className="service-image"
                                         priority={index === 0}
                                         fetchPriority={index === 0 ? "high" : "auto"}
+                                        sizes="(max-width: 768px) 100vw, 400px"
                                     />
                                 )}
+
                                 <div className="service-content">
                                     <h2 className="service-title">{service.title}</h2>
                                     <p className="service-category">
@@ -52,7 +47,6 @@ export default async function ServicesPage() {
                                 </div>
                             </div>
                         ))}
-
                     </div>
                 )}
             </div>
