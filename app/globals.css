@@ -3357,10 +3357,15 @@ details[open] .faq-toggle {
 }
 
 .toggle-wrapper span {
+  color: #475569; 
   transition: color 0.3s ease;
 }
 .toggle-wrapper span.active {
-  color: var(--switch-color);
+  color: #0f172a; 
+  font-weight: 700;
+  background-color: #e0f2fe; 
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
 }
 
 /* Switch */
