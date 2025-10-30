@@ -102,9 +102,17 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
-        <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="" />
+        {/* Optimize connection hints */}
+        <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
-        {/* <link rel="preload" href="/logo.svg" as="image" /> */}
+
+        {/* Preload your hero image for faster LCP */}
+        <link
+          rel="preload"
+          as="image"
+          href="/helping2.jpg"
+          fetchPriority="high"
+        />
 
         <meta name="apple-mobile-web-app-title" content="TechCare" />
         <link rel="canonical" href="https://www.calltechcare.com" />
@@ -116,7 +124,7 @@ export default function RootLayout({
           content="© 2025 TechCare. All rights reserved."
         />
 
-        {/* STRUCTURED DATA (hydration-safe) */}
+        {/* STRUCTURED DATA */}
         <script
           type="application/ld+json"
           suppressHydrationWarning
