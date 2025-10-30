@@ -3226,6 +3226,8 @@ details[open] .faq-toggle {
   transition: none !important;
 }
 
+/*Plan Details*/
+
 .plan-section {
   min-height: 100vh;
   background-color: #f9fafb;
