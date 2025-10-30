@@ -8,6 +8,7 @@ export type Testimonial = {
   quote?: string;
   date?: string;
   rating?: number;
+  verified?: boolean;
 };
 
 type Props = {
@@ -151,9 +152,28 @@ export default function TestimonialsList({
                       <p className="testimonial-text">
                         “{t.text || t.quote}”
                       </p>
+
                       <footer className="testimonial-author">
-                        — {t.name || t.author || "Anonymous"}
+                        <span className="author-name">— {t.name || t.author || "Anonymous"}</span>
+
+                        {t.verified && (
+                          <span className="verified-pill below" title="Verified Client">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                              width="14"
+                              height="14"
+                            >
+                              <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm-1.2 14.1-4.2-4.2 1.4-1.4 2.8 2.8 5.8-5.8 1.4 1.4Z" />
+                            </svg>
+                            <span>Verified</span>
+                          </span>
+                        )}
                       </footer>
+
+
+
                     </blockquote>
                   </div>
                 );
