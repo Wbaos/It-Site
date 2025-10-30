@@ -2232,7 +2232,7 @@ text-decoration: underline;
   display: flex;
   gap: 0.3rem;
   font-size: 1.8rem;
-  /* margin: 1rem 0 1.2rem; */
+  padding-right: 40px;
 }
 
 .star {
@@ -3097,7 +3097,6 @@ details[open] .faq-toggle {
 
 .testimonial-author {
   margin-top: auto;
-  font-weight: 600;
   text-align: right;
    font-family: var(--font-family-main);
    font-size: 20px;
@@ -3201,10 +3200,27 @@ details[open] .faq-toggle {
   padding: 50px 30px 100px;
 }
 
+
 @media (max-width: 500px) {
   .testimonial-card {
     margin: 0;
     padding: 2rem 1rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .stars {
+    font-size: 1rem;
+  }
+  .t-date{
+    font-size: 20px;
+  }
+  .testimonial-text{
+    font-size: 20px;
+  }
+  
+  .testimonial-author {
+    font-size: 15px;
   }
 }
 
