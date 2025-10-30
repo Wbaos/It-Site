@@ -25,12 +25,12 @@ type Section = {
 const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
     {
         name: "Jorge Manuel.",
-        text: "They were patient and explained everything to my mom.They were patient and explained everything to my mom.They were patient and explained everything to my mom.They were patient and explained everything to my mom.They were patient and explained everything to my mom.They were patient and explained everything to my mom.",
+        text: "They were patient and explained everything clearrly.",
         date: "2025-05-12",
         rating: 5,
     },
     {
-        name: "George T.",
+        name: "Brian T.",
         text: "Set up our Wi-Fi and TV in one visit. Great service!",
         date: "2025-04-29",
         rating: 5,
@@ -41,12 +41,7 @@ const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
         date: "2025-03-03",
         rating: 5,
     },
-    {
-        name: "María La.",
-        text: "Very respectful and helpful. Highly recommendedl.",
-        date: "2025-03-03",
-        rating: 5,
-    },
+
 ];
 
 export const homeSections: Section[] = [

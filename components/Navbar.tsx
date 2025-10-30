@@ -285,9 +285,20 @@ export default function Navbar() {
           </div>
 
           {/* BRAND */}
-          <Link href="/" className="brand" aria-label="Home">
+          <Link
+            href="/"
+            className="brand"
+            aria-label="Home"
+            onClick={() => {
+              setOpen(false);
+              setServicesOpen(false);
+              setActiveCategory(null);
+              setDropdownOpen(false);
+            }}
+          >
             CallTechCare
           </Link>
+
 
           {/* ACTIONS */}
           <div className="actions">
