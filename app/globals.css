@@ -3096,11 +3096,38 @@ details[open] .faq-toggle {
 }
 
 .testimonial-author {
-  margin-top: auto;
-  text-align: right;
-   font-family: var(--font-family-main);
-   font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 16px;
+  font-family: var(--font-family-main);
 }
+
+.author-name {
+  font-size: 18px;
+  color: #111827;
+}
+
+.verified-pill.below {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #3b82f6;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-top: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.verified-pill.below svg {
+  fill: #fff;
+  width: 13px;
+  height: 13px;
+}
+
 
 .t-track .t-slide {
   display: flex;
