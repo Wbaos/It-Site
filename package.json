@@ -24,8 +24,10 @@
     "next": "15.5.2",
     "next-auth": "^4.24.11",
     "nodemailer": "^6.9.11",
+    "openai": "^6.7.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-markdown": "^10.1.0",
     "resend": "^6.3.0",
     "stripe": "^18.5.0"
   },

@@ -1,12 +1,19 @@
+import Link from "next/link";
+
 export default function CancelPage() {
   return (
-    <section className="section">
-      <div className="site-container">
-        <h1> Payment Canceled</h1>
-        <p>
-          No worries — your booking wasn’t charged. You can try again anytime.
+    <main className="thankyou-container">
+      <div className="thankyou-card">
+        <h1>❌ Payment Canceled</h1>
+        <p>Your payment was not completed.</p>
+        <p className="thankyou-note">
+          If you still want to confirm your appointment, you can try again anytime.
         </p>
+
+        <Link href="/" className="thankyou-home">
+          ⬅️ Return Home
+        </Link>
       </div>
-    </section>
+    </main>
   );
 }
