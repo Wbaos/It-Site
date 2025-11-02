@@ -26,7 +26,7 @@ export default function FAQPage() {
         },
         {
             q: "Do you offer monthly or yearly plans?",
-            a: "Yes! Our TechCare Plans let you enjoy ongoing tech support for a flat monthly or annual rate. Perfect for seniors who want reliable help anytime.",
+            a: "Yes! Our CallTechCare Plans let you enjoy ongoing tech support for a flat monthly or annual rate. Perfect for seniors who want reliable help anytime.",
         },
         {
             q: "Can I get remote help instead of an in-person visit?",

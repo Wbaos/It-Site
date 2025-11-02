@@ -1,6 +1,6 @@
 {
-  "name": "TechCare",
-  "short_name": "TechCare",
+  "name": "CallTechCare",
+  "short_name": "CallTechCare",
   "description": "Friendly, professional tech support for all ages — setup, troubleshoot, and optimize your devices at home or remotely.",
   "start_url": "/",
   "scope": "/",

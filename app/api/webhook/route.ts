@@ -98,7 +98,7 @@ export async function POST(req: Request) {
             body: JSON.stringify({
               customerEmail: email,
               serviceTitle:
-                cart?.items?.[0]?.title || "TechCare Service Booking",
+                cart?.items?.[0]?.title || "CallTechCare Service Booking",
               basePrice: cart?.items?.[0]?.basePrice || total,
               addOns: cart?.items?.[0]?.options || [],
               total,

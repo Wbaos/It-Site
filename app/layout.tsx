@@ -9,11 +9,11 @@ import ChatWidget from "@/components/ChatWidget";
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.calltechcare.com"),
   title: {
-    default: "TechCare | Friendly Tech Support Made Simple",
-    template: "%s | TechCare",
+    default: "CallTechCare | Friendly Tech Support Made Simple",
+    template: "%s | CallTechCare",
   },
   description:
-    "TechCare offers friendly, professional tech support for all ages — from phone and tablet setup to Wi-Fi troubleshooting and smart-home installation. Book expert help online or in person.",
+    "CallTechCare offers friendly, professional tech support for all ages — from phone and tablet setup to Wi-Fi troubleshooting and smart-home installation. Book expert help online or in person.",
   keywords: [
     "Tech Support",
     "Wi-Fi Help",
@@ -22,17 +22,17 @@ export const metadata: Metadata = {
     "Phone Troubleshooting",
     "Computer Help",
     "Device Installation",
-    "TechCare",
+    "CallTechCare",
     "Tech Support Miami",
     "Remote Tech Help",
     "In-Home Tech Support",
   ],
   openGraph: {
-    title: "TechCare – Friendly Tech Support Made Simple",
+    title: "CallTechCare – Friendly Tech Support Made Simple",
     description:
       "Reliable tech assistance for your devices, Wi-Fi, and smart home. CallTechCare makes technology stress-free for everyone — at home or remotely.",
     url: "https://www.calltechcare.com",
-    siteName: "TechCare",
+    siteName: "CallTechCare",
     locale: "en_US",
     type: "website",
     images: [
@@ -40,14 +40,14 @@ export const metadata: Metadata = {
         url: "/logo-og.png",
         width: 1200,
         height: 630,
-        alt: "TechCare – Friendly Tech Support Made Simple",
+        alt: "CallTechCare – Friendly Tech Support Made Simple",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    site: "@TechCare",
-    title: "TechCare | Friendly Tech Support for Everyone",
+    site: "@CallTechCare",
+    title: "CallTechCare | Friendly Tech Support for Everyone",
     description:
       "Your trusted tech experts — setup, troubleshoot, and optimize your devices with ease. Available in person or online.",
     images: ["/logo-og.png"],
@@ -81,13 +81,12 @@ export default function RootLayout({
   const orgJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "TechCare",
+    name: "CallTechCare",
     url: "https://www.calltechcare.com",
     logo: "https://www.calltechcare.com/logo-og.png",
     sameAs: [
-      "https://www.facebook.com/TechCare",
-      "https://www.instagram.com/TechCare",
-      "https://www.linkedin.com/company/techcare",
+      "https://www.facebook.com/CallTechCare",
+      "https://www.instagram.com/CallTechCare",
     ],
     description:
       "Friendly, professional tech support for all ages — setup, troubleshoot, and optimize your devices at home or remotely.",
@@ -115,14 +114,14 @@ export default function RootLayout({
           href="/helping2.jpg"
           fetchPriority="high"
         />
-        <meta name="apple-mobile-web-app-title" content="TechCare" />
+        <meta name="apple-mobile-web-app-title" content="CallTechCare" />
         <link rel="canonical" href="https://www.calltechcare.com" />
         <meta name="theme-color" content="#0891b2" />
-        <meta name="author" content="TechCare" />
+        <meta name="author" content="CallTechCare" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="copyright"
-          content="© 2025 TechCare. All rights reserved."
+          content="© 2025 CallTechCare. All rights reserved."
         />
         <script
           type="application/ld+json"
