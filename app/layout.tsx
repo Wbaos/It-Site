@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { Providers } from "./Providers";
 import { LoadingProvider } from "@/lib/LoadingContext";
 import type { Metadata } from "next";
+import ChatWidget from "@/components/ChatWidget";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.calltechcare.com"),
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     template: "%s | TechCare",
   },
   description:
-    "TechCare offers friendly, professional tech support for all ages — from phone and tablet setup to Wi-Fi troubleshooting and smart home installation. Book expert help online or in person.",
+    "TechCare offers friendly, professional tech support for all ages — from phone and tablet setup to Wi-Fi troubleshooting and smart-home installation. Book expert help online or in person.",
   keywords: [
     "Tech Support",
     "Wi-Fi Help",
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "TechCare – Friendly Tech Support Made Simple",
     description:
-      "Get reliable tech assistance for your devices, Wi-Fi, and smart home. TechCare makes technology stress-free for everyone — at home or remotely.",
+      "Reliable tech assistance for your devices, Wi-Fi, and smart home. CallTechCare makes technology stress-free for everyone — at home or remotely.",
     url: "https://www.calltechcare.com",
     siteName: "TechCare",
     locale: "en_US",
@@ -102,18 +103,18 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
-        {/* Optimize connection hints */}
-        <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://cdn.sanity.io"
+          crossOrigin="anonymous"
+        />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
-
-        {/* Preload your hero image for faster LCP */}
         <link
           rel="preload"
           as="image"
           href="/helping2.jpg"
           fetchPriority="high"
         />
-
         <meta name="apple-mobile-web-app-title" content="TechCare" />
         <link rel="canonical" href="https://www.calltechcare.com" />
         <meta name="theme-color" content="#0891b2" />
@@ -123,8 +124,6 @@ export default function RootLayout({
           name="copyright"
           content="© 2025 TechCare. All rights reserved."
         />
-
-        {/* STRUCTURED DATA */}
         <script
           type="application/ld+json"
           suppressHydrationWarning
@@ -137,6 +136,8 @@ export default function RootLayout({
             <Navbar />
             <main className="main-content">{children}</main>
             <Footer />
+            {/* Sofía – AI Chatbot */}
+            <ChatWidget />
           </LoadingProvider>
         </Providers>
       </body>
