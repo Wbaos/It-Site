@@ -12,7 +12,7 @@ export default function ChatWidget() {
     const [messages, setMessages] = useState<Msg[]>([
         {
             from: "bot",
-            text: "Hi 👋 I'm **Sofía** from TechCare. Which device do you need help with today? (computer, printer, Wi-Fi, TV, etc.)",
+            text: "Hi 👋 I'm **Sofía** from CallTechCare. Which device do you need help with today? (computer, printer, Wi-Fi, TV, etc.)",
         },
     ]);
 

@@ -15,7 +15,7 @@ export default function OrderConfirmationEmail({ order }: { order: any }) {
     return (
         <Html>
             <Head />
-            <Preview>Your TechCare Order Confirmation</Preview>
+            <Preview>Your CallTechCare Order Confirmation</Preview>
             <Body style={{ fontFamily: "Arial, sans-serif", background: "#f9f9f9", padding: "20px" }}>
                 <Container style={{ background: "#fff", padding: "20px", borderRadius: "10px" }}>
                     <Heading as="h2">
@@ -54,7 +54,7 @@ export default function OrderConfirmationEmail({ order }: { order: any }) {
                         </Link>
                     </Section>
 
-                    <Text style={{ marginTop: "20px" }}>– The TechCare Team 💙</Text>
+                    <Text style={{ marginTop: "20px" }}>– The CallTechCare Team 💙</Text>
                 </Container>
             </Body>
         </Html>

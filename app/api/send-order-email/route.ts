@@ -34,7 +34,7 @@ export async function POST(req: Request) {
         const htmlContent = `
       <div style="font-family: Arial, sans-serif; padding: 20px; color:#111;">
         <h2 style="margin:0 0 12px;">Thank you for your order!</h2>
-        <p style="margin:0 0 12px;">Here’s a summary of your booking with <strong>TechCare</strong>:</p>
+        <p style="margin:0 0 12px;">Here’s a summary of your booking with <strong>CallTechCare</strong>:</p>
 
         <p><strong>Service:</strong> ${serviceTitle ?? "—"}</p>
         <p><strong>Base Price:</strong> $${Number(basePrice || 0).toFixed(2)}</p>
@@ -46,16 +46,16 @@ export async function POST(req: Request) {
         <h3>Total: $${Number(total || 0).toFixed(2)}</h3>
 
         <p style="margin:12px 0 0;">We'll contact you soon to confirm your appointment.</p>
-        <p style="color:#555;">— The TechCare Team</p>
+        <p style="color:#555;">— The CallTechCare Team</p>
       </div>
     `;
 
         const response = await resend.emails.send({
-            from: `TechCare <${FROM_EMAIL}>`,
+            from: `CallTechCare <${FROM_EMAIL}>`,
             to: [customerEmail],
             ...(BCC_EMAIL ? { bcc: [BCC_EMAIL] } : {}),
             replyTo: REPLY_TO,
-            subject: `Your TechCare Order — ${serviceTitle ?? "Confirmation"}`,
+            subject: `Your CallTechCare Order — ${serviceTitle ?? "Confirmation"}`,
             html: htmlContent,
         });
 

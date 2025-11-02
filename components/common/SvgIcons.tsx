@@ -2,7 +2,7 @@ interface SvgIconProps {
     name:
     | "arrow-back"
     | "user-avatar"
-    | "techcare-logo"
+    | "calltechcare-logo"
     | "facebook"
     | "instagram"
     | "linkedin"
@@ -84,7 +84,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         // TechCare Logo (Circular Circuit Icon)
         // ------------------------------------------------------------------------
-        case "techcare-logo":
+        case "calltechcare-logo":
             return (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
