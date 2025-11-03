@@ -92,7 +92,7 @@ export default function ChatWidget() {
                     <header className="ctc-chat-header">
                         <div className="ctc-chat-header-name">
                             <span className="dot-online" />
-                            <span>Sofía – TechCare Assistant</span>
+                            <span>Sofía – CallTechCare Assistant</span>
                         </div>
                         <button
                             className="ctc-chat-close"

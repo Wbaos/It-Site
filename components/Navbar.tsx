@@ -296,7 +296,7 @@ export default function Navbar() {
               setDropdownOpen(false);
             }}
           >
-            CallTechCare
+            <SvgIcon name="calltechcare-logoName" />
           </Link>
 
 
