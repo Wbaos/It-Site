@@ -3,6 +3,7 @@ interface SvgIconProps {
     | "arrow-back"
     | "user-avatar"
     | "calltechcare-logo"
+    | "calltechcare-logoName"
     | "facebook"
     | "instagram"
     | "linkedin"
@@ -169,21 +170,55 @@ export default function SvgIcon({
                 </svg>
             );
         // ------------------------------------------------------------------------
-        //  YouTube Icon (white logo, transparent background)
+        // CallTechCare Logo (Compact width, perfect alignment - fixed height error)
         // ------------------------------------------------------------------------
-        case "youtube":
+        case "calltechcare-logoName":
             return (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 576 512"
-                    width={size}
-                    height={size}
+                    viewBox="0 0 240 55"
+                    width="200"
                     className={className}
+                    role="img"
+                    aria-label="CallTechCare"
+                    style={{
+                        display: "block",
+                        verticalAlign: "middle",
+                        height: "auto",
+                    }}
                 >
-                    <path
-                        fill="#ffffff"
-                        d="M549.7 124.1c-6.3-23.7-24.9-42.3-48.6-48.6C458.8 64 288 64 288 64S117.2 64 74.9 75.5c-23.7 6.3-42.3 24.9-48.6 48.6C15.9 166.4 15.9 256 15.9 256s0 89.6 10.4 131.9c6.3 23.7 24.9 42.3 48.6 48.6C117.2 448 288 448 288 448s170.8 0 213.1-11.5c23.7-6.3 42.3-24.9 48.6-48.6 10.4-42.3 10.4-131.9 10.4-131.9s0-89.6-10.4-131.9zM232.2 338.5V173.5L375.6 256 232.2 338.5z"
-                    />
+                    <g transform="translate(0,2)">
+                        <g transform="translate(0,8) scale(1.35)">
+                            <path
+                                d="M16 2C10.25 2 5.5 6.582 5.5 12v4a2.5 2.5 0 0 0 2.5 2.5h1.5a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H8.5C8.65 8.5 12 5.5 16 5.5S23.35 8.5 23.5 13.5H22a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h1.5a2.5 2.5 0 0 0 2.5-2.5v-4C26 6.582 21.25 2 16 2Zm4.8 16.5a.75.75 0 0 0-1.03.28c-.42.8-1.26 1.42-2.27 1.42h-1.5a1 1 0 1 0 0 2h1.5c1.94 0 3.64-1.2 4.35-2.6a.75.75 0 0 0-.28-1.07Z"
+                                fill="#0094FF"
+                            />
+                        </g>
+
+                        <text
+                            x="50"
+                            y="38"
+                            fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif"
+                            fontSize="30"
+                            fontWeight="700"
+                            fill="#0094FF"
+                            style={{ letterSpacing: "-0.4px" }}
+                        >
+                            Call
+                        </text>
+
+                        <text
+                            x="110"
+                            y="38"
+                            fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif"
+                            fontSize="30"
+                            fontWeight="700"
+                            fill="#1F2937"
+                            style={{ letterSpacing: "-0.4px" }}
+                        >
+                            TechCare
+                        </text>
+                    </g>
                 </svg>
             );
 

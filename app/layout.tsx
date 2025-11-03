@@ -118,7 +118,10 @@ export default function RootLayout({
         <link rel="canonical" href="https://www.calltechcare.com" />
         <meta name="theme-color" content="#0891b2" />
         <meta name="author" content="CallTechCare" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+        />
         <meta
           name="copyright"
           content="© 2025 CallTechCare. All rights reserved."
