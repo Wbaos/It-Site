@@ -2,8 +2,8 @@
 import { useState } from "react";
 
 export default function Contact({
-  headline = "Questions? Let’s talk.",
-  phone = "(786) 366-2729",
+  headline = "Get In Touch",
+  subtitle = "Have a question? We're here to help.",
 }) {
   const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -19,6 +19,7 @@ export default function Contact({
     const payload = {
       name: String(formData.get("name") || ""),
       email: String(formData.get("email") || ""),
+      company: String(formData.get("company") || ""),
       message: String(formData.get("message") || ""),
     };
 
@@ -30,91 +31,74 @@ export default function Contact({
       });
 
       if (res.ok) {
-        setStatus("Thanks! We’ll get back to you within a business day.");
+        setStatus("Thanks! We'll reply shortly.");
         form.reset();
       } else {
         const data = await res.json().catch(() => ({}));
-        setStatus(data.error || "Something went wrong. Please try again.");
+        setStatus(data.error || "Something went wrong.");
       }
     } catch {
-      setStatus("Network error. Please try again.");
+      setStatus("Network error. Try again.");
     } finally {
       setBusy(false);
     }
   }
 
-  const telHref = `tel:${phone.replace(/[^\d+]/g, "")}`;
-
   return (
-    <section id="contact" className="section contact">
-      <div className="contact-blob" aria-hidden="true" />
-      <div className="site-container">
-        <div className="contact-card form">
-          <h2 className="contact-heading">{headline}</h2>
-          <p className="contact-sub">
-            Call us at{" "}
-            <a href={telHref} className="contact-link">
-              {phone}
-            </a>{" "}
-            or send a message:
-          </p>
+    <section id="contact" className="contact">
+      <div className="contact-blob" aria-hidden="true"></div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="contact-form"
-            aria-describedby="contact-help"
-          >
-            <div className="field">
-              <label htmlFor="name" className="label">
-                Your name
-              </label>
-              <input id="name" name="name" className="input" required />
-            </div>
+      <div className="contact-header">
+        <h2 className="contact-title">{headline}</h2>
+        <p className="contact-desc">{subtitle}</p>
+      </div>
 
+      <div className="contact-form-card">
+        <form className="contact-form" onSubmit={handleSubmit}>
+          
+          <div className="form-row">
             <div className="field">
-              <label htmlFor="email" className="label">
-                Email
-              </label>
+              <label className="label">Name</label>
               <input
-                id="email"
-                name="email"
-                type="email"
+                name="name"
                 className="input"
+                placeholder="John Doe"
                 required
               />
             </div>
 
             <div className="field">
-              <label htmlFor="message" className="label">
-                How can we help?
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={5}
-                className="textarea"
+              <label className="label">Email</label>
+              <input
+                name="email"
+                className="input"
+                type="email"
+                placeholder="john@company.com"
+                required
               />
             </div>
+          </div>
 
-            <button
-              type="submit"
-              className="btn btn-primary wide"
-              disabled={busy}
-            >
-              {busy ? "Sending..." : "Send"}
-            </button>
+          <div className="field">
+            <label className="label">Company</label>
+            <input name="company" className="input" placeholder="Your Company" />
+          </div>
 
-            <p id="contact-help" className="form-hint">
-              We typically reply within one business day.
-            </p>
+          <div className="field">
+            <label className="label">Message</label>
+            <textarea
+              name="message"
+              className="textarea"
+              placeholder="Tell us about your IT needs..."
+            />
+          </div>
 
-            {status && (
-              <p className="form-status" role="status" aria-live="polite">
-                {status}
-              </p>
-            )}
-          </form>
-        </div>
+          <button type="submit" className="btn-submit">
+            Send Message
+          </button>
+
+          {status && <p className="form-status">{status}</p>}
+        </form>
       </div>
     </section>
   );

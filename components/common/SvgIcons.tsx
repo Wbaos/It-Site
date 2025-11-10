@@ -7,7 +7,11 @@ interface SvgIconProps {
     | "facebook"
     | "instagram"
     | "linkedin"
-    | "youtube";
+    | "youtube"
+    | "blog-author"
+    | "calendar"
+    | "chevron-right"
+    | "book-open";
     size?: number;
     color?: string;
     className?: string;
@@ -52,6 +56,27 @@ export default function SvgIcon({
                             strokeLinecap="round"
                         />
                     </g>
+                </svg>
+            );
+            // ------------------------------------------------------------------------
+            // Arrow Blog
+            // ------------------------------------------------------------------------
+            case "chevron-right":
+            return (
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={size}
+                height={size}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke={color}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={className}
+                >
+                <path d="M5 12h14" />
+                <path d="M13 5l7 7-7 7" />
                 </svg>
             );
 
@@ -152,7 +177,7 @@ export default function SvgIcon({
                 </svg>
             );
         // ------------------------------------------------------------------------
-        // 💼 LinkedIn Icon (white logo, transparent background)
+        //  LinkedIn Icon (white logo, transparent background)
         // ------------------------------------------------------------------------
         case "linkedin":
             return (
@@ -170,7 +195,7 @@ export default function SvgIcon({
                 </svg>
             );
         // ------------------------------------------------------------------------
-        // CallTechCare Logo (Compact width, perfect alignment - fixed height error)
+        // CallTechCare Logo 
         // ------------------------------------------------------------------------
         case "calltechcare-logoName":
             return (
@@ -188,10 +213,10 @@ export default function SvgIcon({
                     }}
                 >
                     <g transform="translate(0,2)">
-                        <g transform="translate(0,8) scale(1.35)">
+                        <g transform="translate(8,8) scale(1.45)">
                             <path
                                 d="M16 2C10.25 2 5.5 6.582 5.5 12v4a2.5 2.5 0 0 0 2.5 2.5h1.5a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H8.5C8.65 8.5 12 5.5 16 5.5S23.35 8.5 23.5 13.5H22a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h1.5a2.5 2.5 0 0 0 2.5-2.5v-4C26 6.582 21.25 2 16 2Zm4.8 16.5a.75.75 0 0 0-1.03.28c-.42.8-1.26 1.42-2.27 1.42h-1.5a1 1 0 1 0 0 2h1.5c1.94 0 3.64-1.2 4.35-2.6a.75.75 0 0 0-.28-1.07Z"
-                                fill="#0094FF"
+                                fill="#14b8a6"
                             />
                         </g>
 
@@ -201,19 +226,19 @@ export default function SvgIcon({
                             fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif"
                             fontSize="30"
                             fontWeight="700"
-                            fill="#0094FF"
+                            fill="#14b8a6"
                             style={{ letterSpacing: "-0.4px" }}
                         >
                             Call
                         </text>
 
                         <text
-                            x="110"
+                            x="103"
                             y="38"
                             fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif"
                             fontSize="30"
                             fontWeight="700"
-                            fill="#1F2937"
+                            fill="#14b8a6"
                             style={{ letterSpacing: "-0.4px" }}
                         >
                             TechCare
@@ -222,6 +247,77 @@ export default function SvgIcon({
                 </svg>
             );
 
+            // ------------------------------------------------------------------------
+            // Blog Author Icon
+            // ------------------------------------------------------------------------
+            case "blog-author":
+                return (
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={size}
+                        height={size}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke={color}
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={className}
+                    >
+                        <path d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                        <path d="M4.5 20.25a7.5 7.5 0 1115 0v.75H4.5v-.75z" />
+                    </svg>
+                );
+
+            // ------------------------------------------------------------------------
+            // Calendar Icon
+            // ------------------------------------------------------------------------
+            case "calendar":
+                return (
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={size}
+                        height={size}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke={color}
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={className}
+                    >
+                        <path d="M8 7V3m8 4V3" />
+                        <rect x="3" y="5" width="18" height="16" rx="2" />
+                        <path d="M3 11h18" />
+                    </svg>
+                );
+                // ------------------------------------------------------------------------
+                // --- Open Book Icon with Circle Background
+                // ------------------------------------------------------------------------
+
+                case "book-open":
+                return (
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 48 48"
+                    className={className}
+                    >
+                    <circle cx="24" cy="24" r="22" fill="#0d172a" opacity="0.8" />
+
+                    <g
+                        fill="none"
+                        stroke={color}
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <path d="M14 16h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3h-7z" />
+                        <path d="M34 16h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                    </g>
+                    </svg>
+                );
         // ------------------------------------------------------------------------
         // Default
         // ------------------------------------------------------------------------
