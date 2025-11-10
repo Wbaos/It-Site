@@ -47,18 +47,33 @@ const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
 
 export const homeSections: Section[] = [
     {
-        key: "hero",
-        Component: Hero,
-        props: {
-            // Broader message that fits home + business + future services
-            title: "Reliable help for your home and business.",
-            subtitle:
-                "Friendly, dependable services for homes and businesses — tech setup, repairs, installations, and more.",
-            ctaText: "Talk to Us",
-            ctaHref: "#contact",
-            imageSrc: "/helping2.jpg",
-        },
+    key: "hero",
+    Component: Hero,
+    props: {
+        imageSrc: "/helping2.jpg",
+
+        titleLine1: "Your Technology,",
+        titleLine2: "Our Expertise",
+
+        subtitle:
+            "Comprehensive IT support and managed services to keep your business running smoothly. From remote assistance to on-site support, we've got you covered.",
+
+        badgeText: "24/7 Professional IT Support",
+
+        primaryCtaText: "Get Started",
+        primaryCtaHref: "#contact",
+
+        secondaryCtaText: "View Services",
+        secondaryCtaHref: "#services",
+
+        stats: [
+            { value: "500+", label: "Happy Clients" },
+            { value: "99.9%", label: "Uptime Guarantee" },
+            { value: "<15min", label: "Response Time" },
+        ],
     },
+},
+
     { key: "highlights", Component: Highlights, props: {} },
     { key: "services", Component: Services },
     { key: "how", Component: HowItWorks, props: {} },

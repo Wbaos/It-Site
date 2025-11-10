@@ -6,51 +6,61 @@ import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, message } = await req.json();
+    const body = await req.json();
+
+    const name = String(body.name || "").trim();
+    const email = String(body.email || "").trim();
+    const message = String(body.message || "").trim();
+    const company = String(body.company || "").trim(); 
 
     if (!name || !email || !message) {
       return NextResponse.json(
-        { ok: false, error: "Missing fields" },
+        { ok: false, error: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    // 1️ Save to MongoDB via Mongoose
     await connectDB();
-    const newContact = await Contact.create({ name, email, message });
-
-    // 2️ Send email notification
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
+    const newContact = await Contact.create({
+      name,
+      email,
+      message,
+      company,
+      date: new Date(),
     });
 
-    await transporter.sendMail({
-      from: `"Senior IT Website" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_TO,
-      subject: `📩 New Contact Form Submission`,
-      text: `
-        Name: ${name}
-        Email: ${email}
-        Message: ${message}
-      `,
-      html: `
-        <h2>New Contact Form Submission</h2>
-        <p><b>Name:</b> ${name}</p>
-        <p><b>Email:</b> ${email}</p>
-        <p><b>Message:</b> ${message}</p>
-        <p><small>Received at: ${new Date().toLocaleString()}</small></p>
-      `,
-    });
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS || !process.env.EMAIL_TO) {
+      console.warn("⚠️ Missing email environment variables.");
+    } else {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+
+      await transporter.sendMail({
+        from: `"CallTechCare Website" <${process.env.EMAIL_USER}>`,
+        to: process.env.EMAIL_TO,
+        subject: `📩 New Contact Form Submission`,
+        html: `
+          <h2>New Contact Form Submission</h2>
+          <p><b>Name:</b> ${name}</p>
+          <p><b>Email:</b> ${email}</p>
+          ${company ? `<p><b>Company:</b> ${company}</p>` : ""}
+          <p><b>Message:</b><br>${message}</p>
+          <hr>
+          <p><small>Received: ${new Date().toLocaleString()}</small></p>
+        `,
+      });
+    }
 
     return NextResponse.json({ ok: true, id: newContact._id });
-  } catch (err) {
-    console.error("Contact API error:", err);
+  } catch (err: any) {
+    console.error("❌ Contact API error:", err);
     return NextResponse.json(
-      { ok: false, error: "Server error" },
+      { ok: false, error: "Server error. Please try again later." },
       { status: 500 }
     );
   }
