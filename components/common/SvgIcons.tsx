@@ -11,7 +11,9 @@ interface SvgIconProps {
     | "blog-author"
     | "calendar"
     | "chevron-right"
-    | "book-open";
+    | "chevron-left"
+    | "book-open"
+    | "tag";
     size?: number;
     color?: string;
     className?: string;
@@ -59,7 +61,7 @@ export default function SvgIcon({
                 </svg>
             );
             // ------------------------------------------------------------------------
-            // Arrow Blog
+            // Arrow  Right
             // ------------------------------------------------------------------------
             case "chevron-right":
             return (
@@ -79,6 +81,29 @@ export default function SvgIcon({
                 <path d="M13 5l7 7-7 7" />
                 </svg>
             );
+    // ------------------------------------------------------------------------
+            // Arrow  Left
+            // ------------------------------------------------------------------------
+          
+            case "chevron-left":
+                return (
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={className}
+                    >
+                    <path d="M19 12H5" />
+                    <path d="M11 19l-7-7 7-7" />
+                    </svg>
+                );
+
 
         // ------------------------------------------------------------------------
         // User Avatar
@@ -318,6 +343,25 @@ export default function SvgIcon({
                     </g>
                     </svg>
                 );
+                case "tag":
+                    return (
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width={size}
+                            height={size}
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke={color}
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className={className}
+                        >
+                            <path d="M20.59 13.41L11 3H3v8l9.59 9.59c.78.78 2.05.78 2.83 0l5.17-5.17c.78-.78.78-2.05 0-2.83z" />
+                            <circle cx="7.5" cy="7.5" r="1.5" />
+                        </svg>
+                    );
+
         // ------------------------------------------------------------------------
         // Default
         // ------------------------------------------------------------------------
