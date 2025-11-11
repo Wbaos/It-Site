@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" fill="none">
+  <!-- Background -->
+  <rect width="60" height="60" rx="14" fill="#10B981"/>
+  
+  <!-- Bigger Icon -->
+  <g transform="translate(13,13) scale(1.45)">
+    <rect width="20" height="14" x="2" y="5" rx="2"
+      stroke="white" stroke-width="2" fill="none"/>
+    <line x1="2" x2="22" y1="10" y2="10"
+      stroke="white" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

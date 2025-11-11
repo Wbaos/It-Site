@@ -1,11 +1,11 @@
 import type { ComponentType } from "react";
 import Hero from "@/components/sections/Hero";
-import Highlights from "@/components/sections/Highlights";
 import Services from "@/components/sections/Services";
 import HowItWorks from "@/components/sections/HowItWorks";
 import TestimonialsList, { Testimonial } from "@/components/common/TestimonialsList";
 import Pricing from "@/components/sections/PricingServer";
 import Contact from "@/components/sections/Contact";
+import HighlightsServer from "@/components/sections/HighLigthsServer";
 
 type Section = {
     key:
@@ -74,7 +74,7 @@ export const homeSections: Section[] = [
     },
 },
 
-    { key: "highlights", Component: Highlights, props: {} },
+{ key: "highlights", Component: HighlightsServer, props: {} },
     { key: "services", Component: Services },
     { key: "how", Component: HowItWorks, props: {} },
     {

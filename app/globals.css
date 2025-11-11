@@ -92,14 +92,15 @@ main {
     --card-border: #1e293b;
   }
 
-  #hero {
-    position: relative;
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-    overflow: hidden;
-    background: #060b19;
-  }
+#hero {
+  padding: clamp(4rem, 10vh, 7rem) 1rem;
+  background: linear-gradient(180deg, #061020 0%, #03050a 100%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 
   #hero .hero-img {
     width: 100%;
@@ -124,12 +125,10 @@ main {
     position: absolute;
     inset: 0;
     z-index: 2;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-
     padding-top: clamp(4rem, 10vh, 8rem);
     padding-inline: 1rem;
   }
@@ -2718,17 +2717,52 @@ text-decoration: underline;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 0;
+  padding: 20px 0;
 }
 
 .highlight-icon {
-  font-size: 2rem;
-  line-height: 1;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+  background-color: var(--iconColor);
+  transition: transform 0.25s ease;
+  overflow: visible;
 }
 
+.highlight-icon::after {
+  content: "";
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 55px;    
+  height: 20px;    
+  background: var(--shadowHoverColor);
+  border-radius: 50%;
+  opacity: 0;
+  transition:
+    opacity 0.25s ease,
+    width 0.25s ease,
+    height 0.25s ease;
+}
+
+.highlight-icon:hover::after {
+  opacity: 1;
+  width: 62px;     
+  height: 16px;    
+
+
+}
+
+
 .highlight-title {
-  font-size: 2rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 500;
   font-family: var(--font-family-main);
 }
 
@@ -2738,8 +2772,9 @@ text-decoration: underline;
 }
 
 .highlight-desc {
-  font-size: 22px;
+  font-size:18px;
   font-family: var(--font-family-main);
+  margin-bottom:0 ;
 }
 @media (max-width: 760px) {
   .highlights-grid.carousel-mode {
@@ -2802,7 +2837,7 @@ text-decoration: underline;
 
 .section.services {
   padding: 6rem 1rem;
-  background: #020617; 
+  background: #060b1d; 
 }
 
 .site-container-services {
@@ -2816,6 +2851,7 @@ text-decoration: underline;
   color: #f8fafc;
   text-align: center;
   margin-bottom: 0.5rem;
+  margin-top: 0;
 }
 
 .services-sub {
@@ -2944,6 +2980,11 @@ text-decoration: underline;
     0 1px 0 rgba(255, 255, 255, 0.08) inset;
 }
 
+@media (max-width: 600px) {
+  .section.services{
+    padding: 4rem 1rem;
+  }
+}
 /* ========== Service Detail ========== */
 .service-detail {
   padding: 70px 20px;
@@ -4437,7 +4478,7 @@ input:checked + .slider:before {
 .contact {
   position: relative;
   background: #0b1220;
-  padding: 7rem 1rem 8rem;
+  padding: 5rem 1rem 8rem;
   text-align: center;
   color: #e5f3ff;
   overflow: visible !important;    
