@@ -234,7 +234,7 @@ export default function Navbar() {
                               <div className="dropdown-header">
                                 {/* Clickable category breadcrumb */}
                                 <button className="dropdown-back" onClick={() => setActiveService(null)}>
-                                  <SvgIcon name="arrow-back" size={22} className="arrow" />
+                                  <SvgIcon name="chevron-left" size={22} className="arrow" />
                                   {categoryName}
                                 </button>
 
