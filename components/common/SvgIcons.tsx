@@ -1,6 +1,5 @@
 interface SvgIconProps {
     name:
-    | "arrow-back"
     | "user-avatar"
     | "calltechcare-logo"
     | "calltechcare-logoName"
@@ -13,7 +12,16 @@ interface SvgIconProps {
     | "chevron-right"
     | "chevron-left"
     | "book-open"
-    | "tag";
+    | "tag"
+    | "privacy-shield"
+    | "privacy-info-collect"
+    | "privacy-how-we-use"
+    | "privacy-security"
+    | "privacy-sharing"
+    | "privacy-cookies"
+    | "privacy-children"
+    | "privacy-changes"
+    | "privacy-questions";
     size?: number;
     color?: string;
     className?: string;
@@ -27,43 +35,9 @@ export default function SvgIcon({
 }: SvgIconProps) {
     switch (name) {
         // ------------------------------------------------------------------------
-        //  Arrow Back
+        // Arrow  Right
         // ------------------------------------------------------------------------
-        case "arrow-back":
-            return (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={size}
-                    height={size}
-                    viewBox="0 0 256 256"
-                    className={className}
-                >
-                    <g
-                        style={{
-                            stroke: "none",
-                            strokeWidth: 0,
-                            strokeDasharray: "none",
-                            strokeLinecap: "butt",
-                            strokeLinejoin: "miter",
-                            strokeMiterlimit: 10,
-                            fill: color,
-                            fillRule: "nonzero",
-                            opacity: 1,
-                        }}
-                        transform="translate(1.4066 1.4066) scale(2.81 2.81)"
-                    >
-                        <path
-                            d="M 0.053 44.915 l 33.782 -19.553 v 13.353 h 56.029 c 0.075 0 0.136 0.061 0.136 0.136 v 12.298 c 0 0.075 -0.061 0.136 -0.136 0.136 H 33.835 v 13.353 L 0.053 45.085 C -0.018 45.05 -0.018 44.95 0.053 44.915 z"
-                            fill={color}
-                            strokeLinecap="round"
-                        />
-                    </g>
-                </svg>
-            );
-            // ------------------------------------------------------------------------
-            // Arrow  Right
-            // ------------------------------------------------------------------------
-            case "chevron-right":
+        case "chevron-right":
             return (
                 <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -81,28 +55,28 @@ export default function SvgIcon({
                 <path d="M13 5l7 7-7 7" />
                 </svg>
             );
-    // ------------------------------------------------------------------------
-            // Arrow  Left
-            // ------------------------------------------------------------------------
-          
-            case "chevron-left":
-                return (
-                    <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={size}
-                    height={size}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke={color}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className={className}
-                    >
-                    <path d="M19 12H5" />
-                    <path d="M11 19l-7-7 7-7" />
-                    </svg>
-                );
+        // ------------------------------------------------------------------------
+        // Arrow  Left
+        // ------------------------------------------------------------------------
+        
+        case "chevron-left":
+            return (
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={size}
+                height={size}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke={color}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={className}
+                >
+                <path d="M19 12H5" />
+                <path d="M11 19l-7-7 7-7" />
+                </svg>
+            );
 
 
         // ------------------------------------------------------------------------
@@ -272,96 +246,375 @@ export default function SvgIcon({
                 </svg>
             );
 
-            // ------------------------------------------------------------------------
-            // Blog Author Icon
-            // ------------------------------------------------------------------------
-            case "blog-author":
-                return (
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width={size}
-                        height={size}
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke={color}
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className={className}
-                    >
-                        <path d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
-                        <path d="M4.5 20.25a7.5 7.5 0 1115 0v.75H4.5v-.75z" />
-                    </svg>
-                );
-
-            // ------------------------------------------------------------------------
-            // Calendar Icon
-            // ------------------------------------------------------------------------
-            case "calendar":
-                return (
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width={size}
-                        height={size}
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke={color}
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className={className}
-                    >
-                        <path d="M8 7V3m8 4V3" />
-                        <rect x="3" y="5" width="18" height="16" rx="2" />
-                        <path d="M3 11h18" />
-                    </svg>
-                );
-                // ------------------------------------------------------------------------
-                // --- Open Book Icon with Circle Background
-                // ------------------------------------------------------------------------
-
-                case "book-open":
-                return (
-                    <svg
+        // ------------------------------------------------------------------------
+        // Blog Author Icon
+        // ------------------------------------------------------------------------
+        case "blog-author":
+            return (
+                <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width={size}
                     height={size}
-                    viewBox="0 0 48 48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className={className}
-                    >
-                    <circle cx="24" cy="24" r="22" fill="#0d172a" opacity="0.8" />
+                >
+                    <path d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                    <path d="M4.5 20.25a7.5 7.5 0 1115 0v.75H4.5v-.75z" />
+                </svg>
+            );
 
-                    <g
+        // ------------------------------------------------------------------------
+        // Calendar Icon
+        // ------------------------------------------------------------------------
+        case "calendar":
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={className}
+                >
+                    <path d="M8 7V3m8 4V3" />
+                    <rect x="3" y="5" width="18" height="16" rx="2" />
+                    <path d="M3 11h18" />
+                </svg>
+            );
+        // ------------------------------------------------------------------------
+        // --- Open Book
+        // ------------------------------------------------------------------------
+
+        case "book-open":
+            return (
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={size}
+                height={size}
+                viewBox="0 0 48 48"
+                className={className}
+                >
+                <circle cx="24" cy="24" r="22" fill="#0d172a" opacity="0.8" />
+
+                <g
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                >
+                    <path d="M14 16h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3h-7z" />
+                    <path d="M34 16h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                </g>
+                </svg>
+            );
+        // ------------------------------------------------------------------------
+        // Tag
+        // ------------------------------------------------------------------------
+        case "tag":
+            return (
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={size}
+                        height={size}
+                        viewBox="0 0 24 24"
                         fill="none"
                         stroke={color}
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className={className}
                     >
-                        <path d="M14 16h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3h-7z" />
-                        <path d="M34 16h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                    </g>
+                        <path d="M20.59 13.41L11 3H3v8l9.59 9.59c.78.78 2.05.78 2.83 0l5.17-5.17c.78-.78.78-2.05 0-2.83z" />
+                        <circle cx="7.5" cy="7.5" r="1.5" />
                     </svg>
                 );
-                case "tag":
-                    return (
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width={size}
-                            height={size}
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke={color}
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className={className}
-                        >
-                            <path d="M20.59 13.41L11 3H3v8l9.59 9.59c.78.78 2.05.78 2.83 0l5.17-5.17c.78-.78.78-2.05 0-2.83z" />
-                            <circle cx="7.5" cy="7.5" r="1.5" />
-                        </svg>
-                    );
+        // ------------------------------------------------------------------------
+        // privacy-shield
+        // ------------------------------------------------------------------------
+        case "privacy-shield":
+            return (
+                <svg width={size} height={size} viewBox="0 0 24 24" className={className}>
+                <circle cx="12" cy="12" r="10"
+                    fill="#10b981"
+                    fillOpacity="0.15"
+                />
+                <path
+                    d="M12 6.5
+                    C13.9 7.3 15.8 7.8 17.5 8.1
+                    V11.2
+                    C17.5 14.7 15 17.5 12 18.8
+                    C9 17.5 6.5 14.7 6.5 11.2
+                    V8.1
+                    C8.2 7.8 10.1 7.3 12 6.5Z"
+                    stroke="#10b981"
+                    strokeWidth="1.3"
+                    fill="none"
+                    strokeLinejoin="round"
+                />
+                </svg>
+            );
+        // ------------------------------------------------------------------------
+        // privacy-info-collect
+        // ------------------------------------------------------------------------
+        case "privacy-info-collect":
+            return (
+                <svg
+                width={size}
+                height={size}
+                viewBox="0 0 28 28"
+                className={className}
+                fill="none"
+                >
+                <rect
+                    x="0"
+                    y="0"
+                    width="28"
+                    height="28"
+                    rx="8"
+                    fill="#10b981"
+                    fillOpacity="0.10"
+                />
 
+                <g transform="translate(5 4) scale(0.75)">
+                    <path
+                    d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+                    stroke="#34d399"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    />
+                    <path
+                    d="M14 2v4a2 2 0 0 0 2 2h4"
+                    stroke="#34d399"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    />
+                    <path d="M10 9H8" stroke="#34d399" strokeWidth="2" strokeLinecap="round" />
+                    <path d="M16 13H8" stroke="#34d399" strokeWidth="2" strokeLinecap="round" />
+                    <path d="M16 17H8" stroke="#34d399" strokeWidth="2" strokeLinecap="round" />
+                </g>
+                </svg>
+            );
+
+
+        // ------------------------------------------------------------------------
+        // privacy-how-we-use
+        // ------------------------------------------------------------------------
+        case "privacy-how-we-use":
+            return (
+                <svg
+                width={size}
+                height={size}
+                viewBox="0 0 28 28"
+                className={className}
+                fill="none"
+                >
+                <rect
+                    x="0"
+                    y="0"
+                    width="28"
+                    height="28"
+                    rx="8"
+                    fill="#10b981"
+                    fillOpacity="0.10"
+                />
+
+                <g transform="translate(5 5) scale(0.75)">
+                    <path
+                    d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"
+                    stroke="#34d399"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    />
+                    <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                    stroke="#34d399"
+                    strokeWidth="2"
+                    />
+                </g>
+                </svg>
+            );
+
+        // ------------------------------------------------------------------------
+        // privacy-security (exact match to screenshot)
+        // ------------------------------------------------------------------------
+        case "privacy-security":
+            return (
+                <svg
+                width={size}
+                height={size}
+                viewBox="0 0 28 28"
+                className={className}
+                fill="none"
+                >
+                <rect
+                    x="0"
+                    y="0"
+                    width="28"
+                    height="28"
+                    rx="8"
+                    fill="#10b981"
+                    fillOpacity="0.10"
+                />
+
+                <g transform="translate(5 5) scale(0.70)">
+                    <path
+                    d="M7 11V8a5 5 0 0 1 10 0v3"
+                    stroke="#34d399"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    />
+                    <rect
+                    x="5"
+                    y="11"
+                    width="14"
+                    height="10"
+                    rx="2"
+                    stroke="#34d399"
+                    strokeWidth="2"
+                    fill="none"
+                    />
+                </g>
+                </svg>
+            );
+
+        // ------------------------------------------------------------------------
+        // privacy-sharin
+        // ------------------------------------------------------------------------
+        case "privacy-sharing":
+            return (
+                <svg width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
+                <rect x="0" y="0" width="28" height="28" rx="8"
+                        fill="#10b981" fillOpacity="0.10" />
+
+                <g transform="translate(4 5) scale(0.75)">
+                    <circle cx="18" cy="5" r="3" stroke="#34d399" strokeWidth="2" />
+                    <circle cx="6" cy="12" r="3" stroke="#34d399" strokeWidth="2" />
+                    <circle cx="18" cy="19" r="3" stroke="#34d399" strokeWidth="2" />
+                    <path d="M8.6 10.7l6.8-4.2M8.6 13.3l6.8 4.2"
+                        stroke="#34d399" strokeWidth="2" strokeLinecap="round" />
+                </g>
+                </svg>
+            );
+
+
+        // ------------------------------------------------------------------------
+        // privacy-cookies
+        // ------------------------------------------------------------------------
+        case "privacy-cookies":
+            return (
+                <svg width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
+                <rect x="0" y="0" width="28" height="28" rx="8"
+                        fill="#10b981" fillOpacity="0.10" />
+
+                <g transform="translate(4 5) scale(0.75)">
+                    <path
+                    d="M21.8 12.1A9 9 0 1 1 11 2.2
+                        a4 4 0 0 0 6.9 3.2
+                        4 4 0 0 0 3.9 4.7Z"
+                    stroke="#34d399"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    fill="none"
+                    />
+                    <circle cx="10" cy="8" r="1" fill="#34d399" />
+                    <circle cx="14.5" cy="10" r="1" fill="#34d399" />
+                    <circle cx="9" cy="14" r="1" fill="#34d399" />
+                    <circle cx="15" cy="15.5" r="1" fill="#34d399" />
+                </g>
+                </svg>
+            );
+
+        // ------------------------------------------------------------------------
+        // privacy-children
+        // ------------------------------------------------------------------------
+        case "privacy-children":
+            return (
+                <svg width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
+                <rect x="0" y="0" width="28" height="28" rx="8"
+                        fill="#10b981" fillOpacity="0.10" />
+
+                <g transform="translate(5 4) scale(0.75)">
+                    {/* Adult */}
+                    <circle cx="14" cy="7" r="3" stroke="#34d399" strokeWidth="2" />
+                    <path d="M10 21v-6a4 4 0 0 1 8 0v6" 
+                        stroke="#34d399" strokeWidth="2" strokeLinecap="round"/>
+
+                    {/* Child */}
+                    <circle cx="7" cy="12" r="2" stroke="#34d399" strokeWidth="2" />
+                    <path d="M5 21v-5a2 2 0 0 1 4 0v5"
+                        stroke="#34d399" strokeWidth="2" strokeLinecap="round"/>
+                </g>
+                </svg>
+            );
+
+        // ------------------------------------------------------------------------
+        // privacy-changes
+        // ------------------------------------------------------------------------
+        case "privacy-changes":
+            return (
+                <svg width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
+                <rect x="0" y="0" width="28" height="28" rx="8"
+                        fill="#10b981" fillOpacity="0.10" />
+
+                <g transform="translate(5 5) scale(0.75)">
+                    <path
+                    d="M3 12a9 9 0 1 1 3 6.7"
+                    stroke="#34d399"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    />
+                    <path
+                    d="M3 12h4m-4 0v4"
+                    stroke="#34d399"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    />
+                </g>
+                </svg>
+            );
+
+        // ------------------------------------------------------------------------
+        // privacy-questions
+        // ------------------------------------------------------------------------
+        case "privacy-questions":
+            return (
+                <svg width={size} height={size} viewBox="0 0 28 28" fill="none" className={className}>
+                <rect width="28" height="28" rx="8" fill="#10b981" fillOpacity="0.10" />
+                <g transform="translate(4 4) scale(0.75)">
+                    <path
+                    d="M6 7h9a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3H9l-3 2v-5a3 3 0 0 1 0-5Z"
+                    stroke="#34d399"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    fill="none"
+                    />
+                    <path
+                    d="M18 14c1.5 0 3 1 3 2.5v3.5l-3-1h-2"
+                    stroke="#34d399"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    />
+                </g>
+                </svg>
+            );
         // ------------------------------------------------------------------------
         // Default
         // ------------------------------------------------------------------------

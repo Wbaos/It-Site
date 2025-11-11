@@ -623,7 +623,6 @@ main {
   box-shadow:
     0 6px 16px rgba(13, 164, 143, 0.40),
     inset 0 1px 3px rgba(255, 255, 255, 0.15);
-  transform: translateY(-1px);
 }
 
 .single-blog-cta-btn:active {
@@ -654,10 +653,7 @@ main {
 .single-blog-back:hover {
   background: rgba(20, 184, 166, 0.10);    
   border-color: rgba(20, 184, 166, 0.35);   
-
   box-shadow: 0 0 12px rgba(20, 184, 166, 0.25);
-
-
 }
 
 
@@ -3697,66 +3693,161 @@ details[open] .faq-toggle {
 
 
 /*Privacy/terms*/
-.legal-section {
-  width: 90%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 4rem 0;
-  color: #1f2937; 
+.legal-wrapper {
+  /* width: 100%; */
+  min-height: 100vh;
+  padding: 4rem 1rem;
+  background: rgb(2 6 23 / var(--tw-bg-opacity, 1));; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.legal-title {
-  font-size: 2.25rem;
-  font-weight: 700;
-  text-align: center;
-  color: #111827;
-  margin-bottom: 1rem;
+.legal-container {
+  width: 100%;
+  max-width: 64rem;
 }
 
-.legal-date {
-  text-align: center;
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin-bottom: 2.5rem;
-}
-
-.legal-content {
-  max-width: 720px;
-  margin: 0 auto;
-  line-height: 1.8;
-}
-
-.legal-content h2 {
-  font-size: 1.5rem;
+.legal-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  color: #14b8a6;
   font-weight: 600;
-  margin-top: 2.5rem;
-  margin-bottom: 0.75rem;
-  color: #111827;
-    font-family: var(--font-family-main);
-
-}
-
-.legal-content p {
-  margin-bottom: 1rem;
-    font-family: var(--font-family-main);
-
-}
-
-.legal-content ul {
-  list-style: disc;
-  padding-left: 1.5rem;
-  margin-bottom: 1rem;
-    font-family: var(--font-family-main);
-
-}
-
-.legal-content a {
-  color: #2563eb; 
   text-decoration: none;
+  border: 1px solid rgba(20, 184, 166, 0.18);
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  margin-bottom: 2rem;
 }
 
-.legal-content a:hover {
-  text-decoration: underline;
+.legal-back:hover {
+  background: rgba(20, 184, 166, 0.10);
+  border-color: rgba(20, 184, 166, 0.35);
+  box-shadow: 0 0 12px rgba(20, 184, 166, 0.25);
+}
+
+.legal-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.legal-contact-layout {
+  display: flex;
+  gap: 1.5rem;
+  padding: 30px!important;
+}
+
+.legal-contact-content-col h2 {
+  margin-bottom: 0.5rem;
+}
+.legal-contact-content-col h2{
+  margin: 0;
+}
+.legal-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+  margin-top: 15px;
+}
+
+.legal-updated {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-bottom: 1rem;
+}
+
+.legal-intro {
+  color: #cbd5e1;
+  max-width: 650px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.legal-card {
+  background: rgb(15 23 42 / 0.5);
+  padding: 0.5rem 1.5rem;
+  border-radius: 14px;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.legal-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+.legal-card-icon {
+  color: #14b8a6; 
+}
+
+.legal-card h2 {
+  color: #f1f5f9;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.legal-highlight {
+  color: #10b981!important; 
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.35rem;
+  font-size: 1.02rem;
+}
+
+.legal-contact-btn {
+  background: linear-gradient(135deg, #0b7568, #0c8274);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.7rem 1.6rem;
+  border-radius: 0.75rem;
+  display: inline-block;
+  text-decoration: none;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  box-shadow:
+    0 4px 10px rgba(13, 164, 143, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+
+  transition: 0.25s ease;
+}
+
+.legal-contact-btn:hover {
+  background: linear-gradient(135deg, #0c8a7b, #0d9686);
+  box-shadow:
+    0 6px 16px rgba(13, 164, 143, 0.40),
+    inset 0 1px 3px rgba(255, 255, 255, 0.15);
+}
+
+
+.legal-card p,
+.legal-card li {
+  color: #cbd5e1;
+  line-height: 1.75;
+  font-size: 0.95rem;
+}
+
+.legal-card ul {
+  padding-left: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.legal-contact-card {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 /*----AI----*/
