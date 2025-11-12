@@ -3300,9 +3300,9 @@ details[open] .faq-toggle {
 }
 
 .how-sub {
-  font-size: 26px;
-  font-family: var(--font-family-main);  
+  font-size: 1.5rem;
   color: #94a3b8;
+  font-family: var(--font-family-main);  
   margin-bottom: 4rem;
   margin-top: 0;
   line-height: 1.6;
@@ -3343,7 +3343,7 @@ details[open] .faq-toggle {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  background: linear-gradient(135deg, #12afa1, #14b8a6);
   color: #fff;
   font-weight: 800;
   font-size: 2rem;
@@ -3377,7 +3377,7 @@ details[open] .faq-toggle {
   font-size: 2rem;
   font-family: var(--font-family-main);  
   font-weight: 600;
-  color: #bcc2cb;
+  color: #f1f5f9;
   margin-bottom: 0.5rem;
 }
 
@@ -3439,15 +3439,15 @@ details[open] .faq-toggle {
 }
 
 .testimonials-heading {
-  font-size: 2.2rem;
-  font-weight: 700;
+  font-size: clamp(2.4rem, 3.5vw, 3.2rem);
+  font-weight: 800;
   color: #f8fafc;
   margin-bottom: 8px;
 }
 
 .testimonials-sub {
   color: #94a3b8;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   margin-bottom: 60px;
 }
 
@@ -3503,7 +3503,7 @@ details[open] .faq-toggle {
 }
 
 .testimonial-card {
-  background: #fff;
+  background: #fdfdfd;
   border-radius: 14px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
   padding: 40px 35px;
@@ -4191,11 +4191,11 @@ details[open] .faq-toggle {
 .discount-note {
   margin-top: -1rem;
   text-align: center;
-  color: #6b7280;
+  color: #e9e6e6;
   font-size: 0.9rem;
 }
 .pricing-section {
-  background: #f9f9ff;
+  background: #020617;
   padding: 60px 20px;
   display: flex;
   justify-content: center;
@@ -4213,9 +4213,9 @@ details[open] .faq-toggle {
 /* ===== HEADING ===== */
 .pricing-heading {
   text-align: center;
-  font-size: clamp(2.2rem, 3.6vw, 3rem);
-  font-weight: 700;
-  color: #4b5563;
+  font-size: clamp(2.4rem, 3.5vw, 3.2rem);
+  font-weight: 800;
+  color: #f8fafc;
   margin-bottom: 1.5rem;
   margin-top: 0;
   font-family: var(--font-family-main);
@@ -4235,11 +4235,11 @@ details[open] .faq-toggle {
 }
 
 .toggle-wrapper span {
-  color: #475569; 
+  color: #f8fafc; 
   transition: color 0.3s ease;
 }
 .toggle-wrapper span.active {
-  color: #0f172a; 
+  color: #000000; 
   font-weight: 700;
   background-color: #e0f2fe; 
   border-radius: 6px;
@@ -4288,7 +4288,7 @@ input:checked + .slider:before {
 .pricing-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
+  gap: 3.5rem;
   justify-items: center;
   align-items: start;
   max-width: 1100px;
@@ -4307,7 +4307,7 @@ input:checked + .slider:before {
 
 /* ===== CARD ===== */
 .pricing-card {
-  background: #fff;
+  background: #fdfdfd;
   border-radius: 0.8rem;
   padding: 2.5rem 2rem;
   display: flex;
@@ -4387,7 +4387,8 @@ input:checked + .slider:before {
   font-weight: 700;
 }
 .pricing-card.featured .btn.wide:hover {
-  background: #f5f7ff;
+  opacity: 1;
+  box-shadow: 0 6px 10px rgba(255, 255, 255, 0.35);
 }
 
 /* ===== THEMES ===== */
@@ -4398,19 +4399,20 @@ input:checked + .slider:before {
 }
 
 .monthly-mode .pricing-card.featured {
-  background: linear-gradient(180deg, #1e40af 0%, #1d4ed8 100%);
-  box-shadow: 0 8px 28px rgba(29, 78, 216, 0.3);
+  background: linear-gradient(180deg, #529f82 0%, #12b0a1 100%);
+  box-shadow: 0 8px 28px rgba(29, 216, 154, 0.3);
 }
 
 .monthly-mode .btn.wide {
-  background: #1e40af;
+  background: #14b8a6;
   color: #fff;
 }
 .monthly-mode .btn.wide:hover {
-  background: #1d4ed8;
+  opacity: 0.9;
+  box-shadow: 0 12px 26px rgba(16, 185, 129, 0.35), 0 1px 0 rgba(255, 255, 255, 0.08) inset;
 }
 .monthly-mode .pricing-card.featured .btn.wide {
-  color: #1d4ed8;
+  color: #000000;
 }
 
 .annual-mode {
@@ -4435,7 +4437,7 @@ input:checked + .slider:before {
 
 /* === Sync toggle color === */
 .monthly-mode .slider {
-  background-color: #1e40af !important;
+  background-color: #14b8a6  !important;
 }
 .annual-mode .slider {
   background-color: #4338ca !important;
