@@ -3463,6 +3463,7 @@ details[open] .faq-toggle {
   width: 100%;
   max-width: 1200px;
   position: relative;
+  touch-action: pan-y;
 }
 
 .carousel-track {
@@ -3495,6 +3496,9 @@ details[open] .faq-toggle {
   .star-icon {
     width: 14px;
     height: 14px;
+  }
+   .carousel-viewport {
+    touch-action: pan-y pinch-zoom;
   }
 }
 
@@ -3594,7 +3598,7 @@ details[open] .faq-toggle {
   background: #13afa1;
   color: #fff;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   padding: 3px 8px;
   border-radius: 999px;
 }
@@ -3622,7 +3626,6 @@ details[open] .faq-toggle {
   display: flex;
   justify-content: center;
   gap: 40px;
-  margin-top: 30px;
 }
 
 .owl-prev,
