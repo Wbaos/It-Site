@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { User } from "@/app/models/User";
+import { sanityWriteClient } from "@/lib/sanityWriteClient";
 
 export async function POST(req: Request) {
   try {
@@ -20,7 +21,19 @@ export async function POST(req: Request) {
       );
     }
 
-    await User.create({ name, email, password });
+    const user = await User.create({ name, email, password });
+
+    try {
+      await sanityWriteClient.create({
+        _type: "user",
+        name,
+        email,
+        createdAt: new Date().toISOString(),
+        source: "website-signup",
+      });
+    } catch (err) {
+      console.error("Sanity archive error:", err);
+    }
 
     return NextResponse.json({ ok: true, redirect: "/login" });
   } catch (err) {
