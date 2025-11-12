@@ -20,7 +20,12 @@ export default async function ServicePage({
       image { asset -> { url } },
       details,
       faqs,
-      testimonials
+      testimonials[] | order(date desc) {
+        name,
+        text,
+        date,
+        rating
+      }
     }`,
     { slug }
   );
@@ -30,7 +35,6 @@ export default async function ServicePage({
   return (
     <section className="section service-detail">
       <div className="site-container service-layout">
-        {/* Service Hero Image */}
         {service.image?.asset?.url && (
           <Image
             src={service.image.asset.url}
@@ -90,35 +94,23 @@ export default async function ServicePage({
       )}
 
       {/* Testimonials Section */}
-      {service.testimonials && service.testimonials.length > 0 && (() => {
-        const validTestimonials = service.testimonials
-          .filter(
-            (t: any) =>
-              (t.text || t.quote) && (t.name || t.author)
-          )
-          .map((t: any) => ({
-            author: t.name || t.author,
-            text: t.text || t.quote,
-            date: t.date || t.publishedAt || null,
-            rating: t.rating || 5,
-          }));
+      {service.testimonials && service.testimonials.length > 0 && (
+        <TestimonialsList
+          items={service.testimonials.map((t: any) => ({
+            name: t.name,
+            text: t.text,
+            rating: t.rating ?? 5,
+            verified: true,
+            date: t.date,
+          }))}
+          title={`What Clients Say About ${service.title}`}
+        />
+      )}
 
-        if (validTestimonials.length === 0) return null;
-
-        return (
-          <TestimonialsList
-            items={validTestimonials}
-            title={`What Clients Say About ${service.title}`}
-            carousel={validTestimonials.length > 1}
-          />
-        );
-      })()}
-
-      {/*Dynamic Reviews (Client-Side Section) */}
+      {/* Dynamic Reviews */}
       <div className="site-container">
         <ServiceReviewsWrapper slug={slug} />
       </div>
-
     </section>
   );
 }
