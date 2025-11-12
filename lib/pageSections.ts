@@ -20,7 +20,6 @@ type Section = {
     props?: any;
 };
 
-// Testimonials now include verified badges
 const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
     {
         name: "Jorge Manuel.",
@@ -77,16 +76,17 @@ export const homeSections: Section[] = [
 { key: "highlights", Component: HighlightsServer, props: {} },
     { key: "services", Component: Services },
     { key: "how", Component: HowItWorks, props: {} },
-    {
-        key: "testimonials",
-        Component: TestimonialsList,
-        props: {
-            items: HOMEPAGE_TESTIMONIALS,
-            title: "What Clients Say",
-            subtitle: "Real experiences from satisfied homeowners and businesses.",
-            carousel: true,
-        },
+ {
+    key: "testimonials",
+    Component: TestimonialsList,
+    props: {
+        items: HOMEPAGE_TESTIMONIALS,
+        title: "What Clients Say",
+        subtitle: "Real experiences from satisfied homeowners and businesses.",
     },
+},
+
+
     { key: "pricing", Component: Pricing, props: {} },
     {
         key: "contact",

@@ -1,191 +1,188 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import { useEffect, useRef, useState } from "react";
+import SvgIcon from "./SvgIcons";
 
 export type Testimonial = {
   name?: string;
-  author?: string;
   text?: string;
-  quote?: string;
-  date?: string;
   rating?: number;
   verified?: boolean;
+  date?: string;
 };
 
 type Props = {
-  items?: Testimonial[];
+  items: Testimonial[];
   title?: string;
   subtitle?: string;
   carousel?: boolean;
 };
 
 export default function TestimonialsList({
-  items = [],
-  title = "What Our Clients Say",
-  subtitle,
-  carousel = false,
+  items,
+  title = "What Clients Say",
+  subtitle = "Real experiences from satisfied homeowners and businesses.",
 }: Props) {
-  if (!items.length) return null;
+  const n = items.length;
+  const [cols, setCols] = useState(3);
+  const [index, setIndex] = useState(cols);
+  const [animating, setAnimating] = useState(false);
+  const trackRef = useRef<HTMLDivElement>(null);
 
-  const [start, setStart] = useState(0);
-  const [cols, setCols] = useState<0 | 1 | 2 | 3 | undefined>(undefined);
-  const [mode, setMode] = useState<
-    "idle" | "next-anim" | "prev-prep" | "prev-anim"
-  >("idle");
+  const startXRef = useRef<number | null>(null);
+  const deltaXRef = useRef<number>(0);
 
   useEffect(() => {
-    if (!carousel) return;
-
-    const decide = () => {
-      const w = window.innerWidth;
-      if (w < 760) setCols(1);
-      else if (w < 1300) setCols(2);
+    const handleResize = () => {
+      if (window.innerWidth < 760) setCols(1);
+      else if (window.innerWidth < 1300) setCols(2);
       else setCols(3);
     };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-    decide();
-    window.addEventListener("resize", decide);
-    return () => window.removeEventListener("resize", decide);
-  }, [carousel]);
+  const extended = [...items.slice(-cols), ...items, ...items.slice(0, cols)];
+  const cardWidth = 100 / cols;
 
-  if (carousel && cols === undefined) return null;
+  const goNext = () => {
+    if (animating) return;
+    setAnimating(true);
+    setIndex((i) => i + 1);
+  };
 
-  const idx = (n: number) => (n + items.length) % items.length;
+  const goPrev = () => {
+    if (animating) return;
+    setAnimating(true);
+    setIndex((i) => i - 1);
+  };
 
-  let frame: number[] = [];
-  if (carousel && cols && cols >= 1) {
-    const visible = cols === 3 ? 4 : cols === 2 ? 3 : 2;
-    frame =
-      mode === "prev-prep" || mode === "prev-anim"
-        ? Array.from({ length: visible }, (_, i) => idx(start - 1 + i))
-        : Array.from({ length: visible }, (_, i) => idx(start + i));
-  } else {
-    frame = items.map((_, i) => i);
-  }
-
-  const onTransitionEnd = () => {
-    if (!carousel || !cols) return;
-    if (mode === "next-anim") {
-      setStart((s) => idx(s + 1));
-      setMode("idle");
-    } else if (mode === "prev-anim") {
-      setStart((s) => idx(s - 1));
-      setMode("idle");
+  const handleTransitionEnd = () => {
+    setAnimating(false);
+    if (index >= n + cols) {
+      setIndex(cols);
+    } else if (index < cols) {
+      setIndex(n + cols - 1);
     }
   };
 
-  const next = () => {
-    if (!carousel || !cols || mode !== "idle") return;
-    setMode("next-anim");
-  };
+  const translatePercent = -index * cardWidth;
 
-  const prev = () => {
-    if (!carousel || !cols || mode !== "idle") return;
-    setMode("prev-prep");
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => setMode("prev-anim"));
-    });
-  };
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
 
-  const trackClass = [
-    "t-track",
-    carousel
-      ? cols === 3
-        ? "cols-3"
-        : cols === 2
-          ? "cols-2"
-          : "cols-1"
-      : "grid-mode",
-    mode === "next-anim" ? "animate shift-next" : "",
-    mode === "prev-prep" ? "no-anim shift-prev-start" : "",
-    mode === "prev-anim" ? "animate shift-prev-end" : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+    const handleTouchStart = (e: TouchEvent) => {
+      startXRef.current = e.touches[0].clientX;
+      deltaXRef.current = 0;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (startXRef.current !== null) {
+        deltaXRef.current = e.touches[0].clientX - startXRef.current;
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (Math.abs(deltaXRef.current) > 50) {
+        if (deltaXRef.current < 0) goNext(); 
+        else goPrev(); 
+      }
+      startXRef.current = null;
+      deltaXRef.current = 0;
+    };
+
+    track.addEventListener("touchstart", handleTouchStart, { passive: true });
+    track.addEventListener("touchmove", handleTouchMove, { passive: true });
+    track.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      track.removeEventListener("touchstart", handleTouchStart);
+      track.removeEventListener("touchmove", handleTouchMove);
+      track.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [cols, index, animating]);
+
+
+const renderStars = (rating = 0) => (
+  <div className="stars">
+    {Array.from({ length: 5 }).map((_, i) => (
+      <SvgIcon
+        key={i}
+        name="star"
+        size={18}
+        color="#facc15"
+        className={i < rating ? "star-filled" : "star-outline"}
+      />
+    ))}
+  </div>
+);
+
 
   return (
-    <section className="section testimonials">
+    <section id="testimonials" className="section testimonials">
       <div className="site-container-testimonials">
         {title && <h2 className="testimonials-heading">{title}</h2>}
         {subtitle && <p className="testimonials-sub">{subtitle}</p>}
 
-        <div className="testimonials-carousel">
-          {carousel && cols && (
-            <button type="button" className="t-arrow left" onClick={prev}>
-              ‹
-            </button>
-          )}
-
-          <div className="t-viewport">
-            <div className={trackClass} onTransitionEnd={onTransitionEnd}>
-              {frame.map((i, pos) => {
-                const t = items[i];
+        <div className="carousel-wrapper">
+          <div className="carousel-viewport">
+            <div
+              ref={trackRef}
+              className={`carousel-track ${animating ? "animating" : "no-anim"}`}
+              style={{
+                transform: `translateX(${translatePercent}%)`,
+              }}
+              onTransitionEnd={handleTransitionEnd}
+            >
+              {extended.map((t, i) => {
                 const date =
                   t.date && !isNaN(new Date(t.date).getTime())
-                    ? new Date(t.date).toLocaleDateString(undefined, {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })
+                    ? new Date(t.date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                        timeZone: "UTC",
+                      })
                     : "";
 
                 return (
-                  <div
-                    className="t-slide"
-                    key={`${i}-${pos}-${t.name || t.author || pos}`}
-                  >
-                    <blockquote className="testimonial-card">
-                      <div className="t-meta">
-                        <div className="stars">
-                          {Array.from({ length: 5 }).map((_, s) => (
-                            <span
-                              key={s}
-                              className={`star ${s < (t.rating ?? 5) ? "filled" : ""
-                                }`}
-                            >
-                              ★
-                            </span>
-                          ))}
-                        </div>
-                        {date && <time className="t-date">{date}</time>}
+                  <div className="carousel-slide" key={i}>
+                    <div className="testimonial-card fade-up">
+                      <div className="stars-date-row top-row">
+                        {renderStars(t.rating)}
+                        {date && <div className="t-date">{date}</div>}
                       </div>
 
-                      <p className="testimonial-text">
-                        “{t.text || t.quote}”
-                      </p>
+                      <p className="testimonial-text">{t.text}</p>
 
-                      <footer className="testimonial-author">
-                        <span className="author-name">— {t.name || t.author || "Anonymous"}</span>
-
-                        {t.verified && (
-                          <span className="verified-pill below" title="Verified Client">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                              fill="currentColor"
-                              width="14"
-                              height="14"
-                            >
-                              <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm-1.2 14.1-4.2-4.2 1.4-1.4 2.8 2.8 5.8-5.8 1.4 1.4Z" />
-                            </svg>
-                            <span>Verified</span>
-                          </span>
-                        )}
-                      </footer>
-
-
-
-                    </blockquote>
+                      <div className="testimonial-footer">
+                        <div className="footer-right">
+                          {t.name && <span className="t-name">{t.name}</span>}
+                          {t.verified && (
+                            <span className="verified-pill below" title="Verified Client">
+                              <SvgIcon name="verified-check" size={14} color="#fff" />
+                              <span>Verified</span>
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 );
               })}
             </div>
           </div>
 
-          {carousel && cols && (
-            <button type="button" className="t-arrow right" onClick={next}>
+          <div className="owl-nav">
+            <button className="owl-prev" onClick={goPrev}>
+              ‹
+            </button>
+            <button className="owl-next" onClick={goNext}>
               ›
             </button>
-          )}
+          </div>
         </div>
       </div>
     </section>

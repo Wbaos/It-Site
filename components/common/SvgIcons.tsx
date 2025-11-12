@@ -21,7 +21,9 @@ interface SvgIconProps {
     | "privacy-cookies"
     | "privacy-children"
     | "privacy-changes"
-    | "privacy-questions";
+    | "privacy-questions"
+    | "star"
+    | "verified-check";
     size?: number;
     color?: string;
     className?: string;
@@ -613,6 +615,42 @@ export default function SvgIcon({
                     strokeLinecap="round"
                     />
                 </g>
+                </svg>
+            );
+        // ------------------------------------------------------------------------
+        // star
+        // ------------------------------------------------------------------------
+        case "star":
+        return (
+            <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width={size || 18}
+            height={size || 18}
+            className={className}
+            fill="none" // <-- Important: no automatic fill
+            stroke="none"
+            >
+            <path
+                d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                className="star-shape"
+            />
+            </svg>
+        );
+        // ------------------------------------------------------------------------
+        // verified-check
+        // ------------------------------------------------------------------------
+        case "verified-check":
+            return (
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill={color || "currentColor"}
+                width={size || 14}
+                height={size || 14}
+                className={className}
+                >
+                <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm-1.2 14.1-4.2-4.2 1.4-1.4 2.8 2.8 5.8-5.8 1.4 1.4Z" />
                 </svg>
             );
         // ------------------------------------------------------------------------
