@@ -82,6 +82,19 @@ export default function Step3({
   return (
     <section className="section booking">
       <div className="site-container booking-wrapper">
+        <p className="back-link">
+          <Link
+            href={`/services/${slug}/book/step2?slug=${slug}&price=${basePrice}&options=${encodeURIComponent(
+              optionsParam
+            )}&contact=${encodeURIComponent(contact)}&address=${encodeURIComponent(
+              JSON.stringify(address)
+            )}&schedule=${encodeURIComponent(
+              searchParams.get("schedule") || "{}"
+            )}`}
+          >
+            ← Back to Contact Info
+          </Link>
+        </p>
         <h1 className="service-title">Address Information</h1>
 
         <form className="booking-card" onSubmit={(e) => e.preventDefault()}>
@@ -117,25 +130,11 @@ export default function Step3({
           <button
             type="button"
             onClick={handleNext}
-            className="btn btn-primary w-full mt-4"
+            className="btn-primary2"
           >
             Next → Availability
           </button>
         </form>
-
-        <p className="back-link">
-          <Link
-            href={`/services/${slug}/book/step2?slug=${slug}&price=${basePrice}&options=${encodeURIComponent(
-              optionsParam
-            )}&contact=${encodeURIComponent(contact)}&address=${encodeURIComponent(
-              JSON.stringify(address)
-            )}&schedule=${encodeURIComponent(
-              searchParams.get("schedule") || "{}"
-            )}`}
-          >
-            ← Back to Contact Info
-          </Link>
-        </p>
       </div>
     </section>
   );

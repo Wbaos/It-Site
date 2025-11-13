@@ -25,7 +25,6 @@ export default function Step2({
   const contactParam = searchParams.get("contact") || "{}";
   const basePrice = parseFloat(priceParam) || 0;
 
-  //  use reusable validation hook
   const {
     values: contact,
     setValues: setContact,
@@ -114,55 +113,51 @@ export default function Step2({
   };
 
   return (
-    <section className="section booking">
-      <div className="site-container booking-wrapper">
-        <h1 className="service-title">Contact Information</h1>
+   <section className="section booking  section-color">
+  <div className="site-container booking-wrapper">
+    <div className="back-link">
+      <Link href={`/services/${slug}/book/step1`}>
+        ← Back to Service Options
+      </Link>
+    </div>
 
-        <form className="booking-card" onSubmit={(e) => e.preventDefault()}>
-          <input
-            name="name"
-            placeholder="Full Name"
-            value={contact.name}
-            onChange={(e) => handleChange("name", e.target.value)}
-            className={getInputClass("name")}
-          />
+    <h1 className="service-title">Contact Information</h1>
 
-          {/* Hide email if already logged in */}
-          {!user?.email && (
-            <input
-              name="email"
-              type="email"
-              placeholder="Email"
-              value={contact.email}
-              onChange={(e) => handleChange("email", e.target.value)}
-              className={getInputClass("email")}
-            />
-          )}
+    <form className="booking-card" onSubmit={(e) => e.preventDefault()}>
+      <input
+        name="name"
+        placeholder="Full Name"
+        value={contact.name}
+        onChange={(e) => handleChange("name", e.target.value)}
+        className={getInputClass("name")}
+      />
 
-          <input
-            name="phone"
-            type="tel"
-            placeholder="Phone Number"
-            value={contact.phone}
-            onChange={(e) => handleChange("phone", e.target.value)}
-            className={getInputClass("phone")}
-          />
+      {!user?.email && (
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          value={contact.email}
+          onChange={(e) => handleChange("email", e.target.value)}
+          className={getInputClass("email")}
+        />
+      )}
 
-          <button
-            type="button"
-            onClick={handleNext}
-            className="btn btn-primary w-full mt-4"
-          >
-            Next → Address Info
-          </button>
-        </form>
+      <input
+        name="phone"
+        type="tel"
+        placeholder="Phone Number"
+        value={contact.phone}
+        onChange={(e) => handleChange("phone", e.target.value)}
+        className={getInputClass("phone")}
+      />
 
-        <p className="back-link">
-          <Link href={`/services/${slug}/book/step1`}>
-            ← Back to Service Options
-          </Link>
-        </p>
-      </div>
-    </section>
+      <button type="button" onClick={handleNext} className="btn-primary2">
+        Next → Address Info
+      </button>
+    </form>
+  </div>
+</section>
+
   );
 }
