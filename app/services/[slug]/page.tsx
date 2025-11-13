@@ -152,9 +152,9 @@ export default async function ServicePage({
       </div>
 
       {/* Floating button + observer */}
-      <BookButtonWatcher /> {/* 👈 watches the original */}
+      <BookButtonWatcher /> 
       <div id="floating-book-container" className="floating-book-hidden">
-        <Link href={`/services/${slug}/book/step1`} className="btn-book">
+        <Link href={`/services/${slug}/book/step1`} className="">
           BOOK THIS SERVICE
         </Link>
       </div>
