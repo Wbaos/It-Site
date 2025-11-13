@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Transition } from "@headlessui/react";
+import { Check, ChevronDown, X } from "lucide-react";
 import { useCart } from "@/lib/CartContext";
 import { sanity } from "@/lib/sanity";
 
@@ -16,7 +18,7 @@ type Question = {
   id: string;
   label: string;
   shortLabel?: string;
-  type?: "checkbox" | "select" | "text";
+  type?: "checkbox" | "select" | "multi-select" | "text";
   extraCost?: number;
   options?: QuestionOption[];
   placeholder?: string;
@@ -91,10 +93,7 @@ export default function Step1({
             allowOther,
             dependsOn,
             options[]{label, extraCost},
-            optionsByParent[]{
-              parentValue,
-              options[]{label, extraCost}
-            }
+            optionsByParent[]{ parentValue, options[]{label, extraCost} }
           }
         }`,
         { slug }
@@ -106,7 +105,7 @@ export default function Step1({
     fetchService();
   }, [slug]);
 
-  // Edit mode (prefill)
+  // --- Edit mode (prefill)
   const isEdit = searchParams.get("edit") === "true";
   const editId = searchParams.get("id");
 
@@ -121,10 +120,8 @@ export default function Step1({
           );
           if (match) {
             if (q.type === "checkbox") prefilled[q.id] = true;
-            else if (q.type === "select")
-              prefilled[q.id] = match.name.split(": ")[1];
-            else if (q.type === "text")
-              prefilled[q.id] = match.name.split(": ")[1];
+            else if (q.type === "select") prefilled[q.id] = match.name.split(": ")[1];
+            else if (q.type === "text") prefilled[q.id] = match.name.split(": ")[1];
           }
         });
         setResponses(prefilled);
@@ -132,7 +129,7 @@ export default function Step1({
     }
   }, [isEdit, editId, items, service]);
 
-  // Compute Add-ons and totals
+  // --- Compute Add-ons and totals
   const addOns: AddOn[] =
     service?.questions
       ?.map((q) => {
@@ -153,17 +150,28 @@ export default function Step1({
           };
         }
 
+        if (q.type === "multi-select" && Array.isArray(value)) {
+          const selectedOptions = q.options?.filter((opt) =>
+            value.includes(opt.label)
+          );
+          return selectedOptions?.map((opt) => ({
+            name: `${q.shortLabel || q.label}: ${opt.label}`,
+            price: opt.extraCost ?? 0,
+          }));
+        }
+
         if (q.type === "text")
           return { name: `${q.shortLabel || q.label}: ${value}`, price: 0 };
 
         return null;
       })
+      .flat()
       .filter(Boolean) as AddOn[] || [];
 
   const addOnsTotal = addOns.reduce((sum, o) => sum + (o.price || 0), 0);
   const subtotal = service ? service.price + addOnsTotal : 0;
 
-  // Save to cart and go to Step 2
+  // --- Save to cart and go to Step 2
   const handleNext = async () => {
     if (!service) return;
 
@@ -178,11 +186,10 @@ export default function Step1({
     if (isEdit && editId) updateItem(editId, updatedItem);
     else await addItem(updatedItem);
 
-    // Go to Step 2 to collect contact info
     router.push(`/services/${slug}/book/step2?price=${subtotal}`);
   };
 
-  // Loading UI
+  // --- Loading UI
   if (loading)
     return (
       <section className="section booking">
@@ -204,7 +211,7 @@ export default function Step1({
       </section>
     );
 
-  // Render UI
+  // --- Render UI
   return (
     <section className="section booking">
       <div className="site-container booking-wrapper">
@@ -219,29 +226,7 @@ export default function Step1({
           </div>
 
           {service.questions?.map((q) => (
-            <div
-              key={q.id}
-              className={`option-item extra-option ${q.type === "text" ? "text-field" : ""}`}
-            >
-              {/* Only render the top label if NOT a checkbox */}
-              {q.type !== "checkbox" && (
-                <div className="option-left">
-                  <label className="option-label">{q.label}</label>
-
-                  {q.type === "text" && (
-                    <input
-                      type="text"
-                      placeholder={q.placeholder || "Enter your answer"}
-                      value={responses[q.id] || ""}
-                      onChange={(e) =>
-                        setResponses({ ...responses, [q.id]: e.target.value })
-                      }
-                      className="option-input"
-                    />
-                  )}
-                </div>
-              )}
-
+            <div key={q.id} className="option-item extra-option">
               {q.type === "checkbox" && (
                 <label className="option-control checkbox-inline">
                   <input
@@ -259,116 +244,133 @@ export default function Step1({
                     {q.label}
                     {q.extraCost && (
                       <span className="option-extra">
-                        {" "} (+${q.extraCost.toFixed(2)})
+                        {" "}
+                        (+${q.extraCost.toFixed(2)})
                       </span>
                     )}
                   </span>
                 </label>
               )}
 
-
-              {q.type === "select" && (
-                <div className="option-control">
-                  {/* CASE 1: Camera Model changes to text input if brand = Other */}
-                  {q.id === "cameraModel" && responses["cameraBrand"] === "Other" ? (
-                    <div className="option-input-wrapper">
-                      <input
-                        type="text"
-                        placeholder="Enter your camera model..."
-                        value={responses[q.id] || ""}
-                        onChange={(e) =>
-                          setResponses({ ...responses, [q.id]: e.target.value })
-                        }
-                        className="option-input option-text"
-                      />
-                      <button
-                        type="button"
-                        className={`option-clear ${responses[q.id] ? "visible" : "hidden"}`}
-                        onClick={() => setResponses({ ...responses, [q.id]: "" })}
-                        aria-label="Clear camera model"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ) : q.id in customInputs ? (
-                    // CASE 2: “Other” custom input for any field
-                    <div className="option-input-wrapper">
-                      <input
-                        type="text"
-                        value={customInputs[q.id]}
-                        onChange={(e) =>
-                          setCustomInputs({ ...customInputs, [q.id]: e.target.value })
-                        }
-                        placeholder="Enter your option..."
-                        className="option-input option-text"
-                        autoFocus
-                      />
-                      <button
-                        type="button"
-                        className="option-clear"
-                        onClick={() => {
-                          const updated = { ...customInputs };
-                          delete updated[q.id];
-                          setCustomInputs(updated);
-                          setResponses({ ...responses, [q.id]: "" });
-                        }}
-                        aria-label="Cancel custom option"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ) : (
-                    <select
-                      value={responses[q.id] || ""}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        if (val === "Other") {
-                          setCustomInputs({ ...customInputs, [q.id]: "" });
-                          setResponses({ ...responses, [q.id]: "Other" });
-                        } else {
-                          if (q.id === "cameraBrand") {
-                            setResponses((prev) => ({
-                              ...prev,
-                              [q.id]: val,
-                              cameraModel: "",
-                            }));
-                          } else {
-                            setResponses({ ...responses, [q.id]: val });
-                          }
-                        }
-                      }}
-                      className="option-input option-select"
-                      disabled={Boolean(q.dependsOn && !responses[q.dependsOn])}
-                    >
-                      <option value="">Select an option...</option>
-
-                      {q.dependsOn
-                        ? (() => {
-                          const parentVal = responses[q.dependsOn];
-                          if (!parentVal || parentVal === "Other") return null;
-                          const parentMatch = q.optionsByParent?.find(
-                            (p) => p.parentValue === parentVal
-                          );
-                          return parentMatch?.options?.map((opt) => (
-                            <option key={opt.label} value={opt.label}>
-                              {opt.label}
-                              {opt.extraCost ? ` (+$${opt.extraCost.toFixed(2)})` : ""}
-                            </option>
-                          ));
-                        })()
-                        : q.options?.map((opt) => (
-                          <option key={opt.label} value={opt.label}>
-                            {opt.label}
-                            {opt.extraCost ? ` (+$${opt.extraCost.toFixed(2)})` : ""}
-                          </option>
-                        ))}
-
-                      {q.allowOther && <option value="Other">Other</option>}
-                    </select>
-                  )}
+              {q.type === "text" && (
+                <div className="option-left">
+                  <label className="option-label">{q.label}</label>
+                  <input
+                    type="text"
+                    placeholder={q.placeholder || "Enter your answer"}
+                    value={responses[q.id] || ""}
+                    onChange={(e) =>
+                      setResponses({ ...responses, [q.id]: e.target.value })
+                    }
+                    className="option-input"
+                  />
                 </div>
               )}
 
+              {q.type === "select" && (
+                <div className="option-left">
+                  <label className="option-label">{q.label}</label>
+                  <select
+                    value={responses[q.id] || ""}
+                    onChange={(e) => setResponses({ ...responses, [q.id]: e.target.value })}
+                    className="option-input option-select"
+                  >
+                    <option value="">Select an option...</option>
+                    {q.options?.map((opt) => (
+                      <option key={opt.label} value={opt.label}>
+                        {opt.label}
+                        {opt.extraCost ? ` (+$${opt.extraCost.toFixed(2)})` : ""}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {q.type === "multi-select" && (
+                <div className="option-left">
+                  <label className="option-label">{q.label}</label>
+                 <Listbox
+              value={responses[q.id] || []}
+              onChange={(selected) => setResponses({ ...responses, [q.id]: selected })}
+              multiple
+            >
+              {({ open }) => (
+                <div className="multi-select-wrapper">
+                  <ListboxButton  as="div" className="multi-select-button" role="button" tabIndex={0}>
+                    {Array.isArray(responses[q.id]) && responses[q.id].length > 0 ? (
+                      <div className="multi-select-chips">
+                        {responses[q.id].map((v: string) => (
+                          <span key={v} className="multi-select-chip">
+                            {v}
+                            <span
+                              role="button"
+                              tabIndex={0}
+                              className="multi-select-remove"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const updated = responses[q.id].filter((x: string) => x !== v);
+                                setResponses({ ...responses, [q.id]: updated });
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  e.stopPropagation();
+                                  const updated = responses[q.id].filter((x: string) => x !== v);
+                                  setResponses({ ...responses, [q.id]: updated });
+                                }
+                              }}
+                            >
+                              <X className="w-3 h-3" />
+                            </span>
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <span className="multi-select-placeholder">Select options...</span>
+                    )}
+                    <ChevronDown className="multi-select-icon w-4 h-4" />
+                  </ListboxButton >
+
+                  <Transition
+                    as={Fragment}
+                    show={open}
+                    leave="transition ease-in duration-100"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <ListboxOptions  className="multi-select-options">
+                      {q.options?.map((opt) => (
+                        <ListboxOption
+                          key={opt.label}
+                          value={opt.label}
+                          className={({ active, selected }) =>
+                            `multi-select-option${active ? " active" : ""}${selected ? " selected" : ""}`
+                          }
+                        >
+                          {({ selected }) => (
+                            <>
+                              <span>{opt.label}</span>
+                              {opt.extraCost && (
+                                <span className="option-price">
+                                  (+${opt.extraCost.toFixed(2)})
+                                </span>
+                              )}
+                              {selected && (
+                                <span className="checkmark">
+                                  <Check  />
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </ListboxOption>
+                      ))}
+                    </ListboxOptions >
+                  </Transition>
+                </div>
+              )}
+            </Listbox>
+
+                </div>
+              )}
             </div>
           ))}
 
@@ -383,7 +385,7 @@ export default function Step1({
           <button
             type="button"
             onClick={handleNext}
-            className="btn btn-primary w-full mt-4"
+            className="btn-primary2"
           >
             Continue → Contact Info
           </button>

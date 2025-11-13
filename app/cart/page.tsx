@@ -143,7 +143,7 @@ export default function CartPage() {
           </div>
 
           <button
-            className="btn btn-primary w-full mt-4"
+            className="btn-primary2"
             onClick={() => {
               const firstItem = items[0];
               if (firstItem) {

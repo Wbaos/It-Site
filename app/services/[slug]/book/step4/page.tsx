@@ -30,7 +30,6 @@ export default function Step4({
     }
   })();
 
-  // use the shared form validation hook
   const {
     values: schedule,
     setValues: setSchedule,
@@ -95,6 +94,19 @@ export default function Step4({
   return (
     <section className="section booking">
       <div className="site-container booking-wrapper">
+             <p className="back-link">
+          <Link
+            href={`/services/${slug}/book/step3?slug=${slug}&price=${priceParam}&options=${encodeURIComponent(
+              optionsParam
+            )}&contact=${encodeURIComponent(
+              contactParam
+            )}&address=${encodeURIComponent(
+              JSON.stringify(parsedAddress)
+            )}&schedule=${encodeURIComponent(JSON.stringify(schedule))}`}
+          >
+            ← Back to Address Info
+          </Link>
+        </p>
         <h1 className="service-title">Availability</h1>
 
         <form className="booking-card" onSubmit={(e) => e.preventDefault()}>
@@ -115,26 +127,12 @@ export default function Step4({
           <button
             type="button"
             onClick={handleFinish}
-            className="btn btn-primary w-full mt-2"
+            className="btn-primary2"
             disabled={loading}
           >
             {loading ? "Redirecting..." : "Confirm & Pay →"}
           </button>
         </form>
-
-        <p className="back-link">
-          <Link
-            href={`/services/${slug}/book/step3?slug=${slug}&price=${priceParam}&options=${encodeURIComponent(
-              optionsParam
-            )}&contact=${encodeURIComponent(
-              contactParam
-            )}&address=${encodeURIComponent(
-              JSON.stringify(parsedAddress)
-            )}&schedule=${encodeURIComponent(JSON.stringify(schedule))}`}
-          >
-            ← Back to Address Info
-          </Link>
-        </p>
       </div>
     </section>
   );
