@@ -628,7 +628,7 @@ export default function SvgIcon({
             width={size || 18}
             height={size || 18}
             className={className}
-            fill="none" // <-- Important: no automatic fill
+            fill="none" 
             stroke="none"
             >
             <path
