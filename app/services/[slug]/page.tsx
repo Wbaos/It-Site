@@ -154,10 +154,12 @@ export default async function ServicePage({
       {/* Floating button + observer */}
       <BookButtonWatcher /> 
       <div id="floating-book-container" className="floating-book-hidden">
-        <Link href={`/services/${slug}/book/step1`} className="">
+        <Link href={`/services/${slug}/book/step1`} className="floating-book-btn">
           BOOK THIS SERVICE
         </Link>
-      </div>
+    </div>
+
+
     </section>
   );
 }
