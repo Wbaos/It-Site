@@ -6,94 +6,104 @@ import TestimonialsList, { Testimonial } from "@/components/common/TestimonialsL
 import Pricing from "@/components/sections/PricingServer";
 import Contact from "@/components/sections/Contact";
 import HighlightsServer from "@/components/sections/HighLigthsServer";
-
+import SEOIntro from "@/components/sections/SEOIntro";
+import WhyChooseUs from "@/components/sections/WhyChooseUs";
 type Section = {
-    key:
+  key:
     | "hero"
+    | "seo-intro"
     | "services"
     | "highlights"
     | "how"
+    | "why"
     | "testimonials"
     | "pricing"
     | "contact";
-    Component: ComponentType<any>;
-    props?: any;
+  Component: ComponentType<any>;
+  props?: any;
 };
 
 const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
-    {
-        name: "Jorge Manuel.",
-        text: "They were patient and explained everything clearly.",
-        date: "2025-05-12",
-        rating: 5,
-        verified: true,
-    },
-    {
-        name: "Brian T.",
-        text: "Set up our Wi-Fi and TV in one visit. Great service!",
-        date: "2025-04-29",
-        rating: 5,
-        verified: true,
-    },
-    {
-        name: "María L.",
-        text: "Very respectful and helpful. Highly recommended.",
-        date: "2025-03-03",
-        rating: 5,
-        verified: true,
-    },
+  {
+    name: "Jorge Manuel.",
+    text: "They were patient and explained everything clearly.",
+    date: "2025-05-12",
+    rating: 5,
+    verified: true,
+  },
+  {
+    name: "Brian T.",
+    text: "Set up our Wi-Fi and TV in one visit. Great service!",
+    date: "2025-04-29",
+    rating: 5,
+    verified: true,
+  },
+  {
+    name: "María L.",
+    text: "Very respectful and helpful. Highly recommended.",
+    date: "2025-03-03",
+    rating: 5,
+    verified: true,
+  },
 ];
 
 export const homeSections: Section[] = [
-    {
+  {
     key: "hero",
     Component: Hero,
     props: {
         imageSrc: "/helping2.jpg",
 
-        titleLine1: "Your Technology,",
-        titleLine2: "Our Expertise",
+        titleLine1: "Friendly Tech Support",
+        titleLine2: "for Homes & Small Businesses",
 
         subtitle:
-            "Comprehensive IT support and managed services to keep your business running smoothly. From remote assistance to on-site support, we've got you covered.",
+            "Serving homes, seniors, home offices, and small businesses across Miami, Pembroke Pines, Broward & Homestead with fast WiFi fixes, computer help, smart-home setups, and reliable IT support.",
 
-        badgeText: "24/7 Professional IT Support",
+        badgeText: "Trusted Tech Support for Homes & Small Businesses in South Florida",
 
         primaryCtaText: "Get Started",
         primaryCtaHref: "#contact",
 
-        secondaryCtaText: "View Services",
-        secondaryCtaHref: "#services",
+        secondaryCtaText: "See All Services",
+        secondaryCtaHref: "/#services",
 
         stats: [
-            { value: "500+", label: "Happy Clients" },
-            { value: "99.9%", label: "Uptime Guarantee" },
-            { value: "<15min", label: "Response Time" },
+            { value: "500+", label: "Local Clients Helped" },
+            { value: "4.9/5", label: "Customer Satisfaction" },
+            { value: "Same-Day", label: "Appointments Available" },
         ],
-    },
-},
+        },
+  },
+ 
+  { key: "highlights", Component: HighlightsServer, props: {} },
 
-{ key: "highlights", Component: HighlightsServer, props: {} },
-    { key: "services", Component: Services },
-    { key: "how", Component: HowItWorks, props: {} },
- {
+  { key: "services", Component: Services },
+
+  { key: "seo-intro", Component: SEOIntro, props: {}, },
+  { key: "why", Component: WhyChooseUs },
+
+
+  { key: "how", Component: HowItWorks, props: {} },
+
+  {
     key: "testimonials",
     Component: TestimonialsList,
     props: {
-        items: HOMEPAGE_TESTIMONIALS,
-        title: "What Clients Say",
-        subtitle: "Real experiences from satisfied homeowners and businesses.",
+      items: HOMEPAGE_TESTIMONIALS,
+      title: "What Clients Say",
+      subtitle: "Real experiences from satisfied homeowners and families.",
     },
-},
+  },
 
+  { key: "pricing", Component: Pricing, props: {} },
 
-    { key: "pricing", Component: Pricing, props: {} },
-    {
-        key: "contact",
-        Component: Contact,
-        props: {
-            headline: "Questions? Let’s talk.",
-            phone: "(786) 366-2729",
-        },
+  {
+    key: "contact",
+    Component: Contact,
+    props: {
+      headline: "Questions? Let’s talk.",
+      phone: "(786) 366-2729",
     },
+  },
 ];

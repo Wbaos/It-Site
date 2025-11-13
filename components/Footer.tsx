@@ -56,6 +56,15 @@ export default function Footer() {
             </a>
           </p>
           <p>Mon–Sat: 8 AM – 9 PM</p>
+
+          <div className="footer-areas">
+            <p className="areas-title">📍 Service Areas</p>
+            <p className="areas-list">
+              Miami • Pembroke Pines • Broward County • Homestead • Miramar •
+              Hollywood • Fort Lauderdale • Doral • Kendall • Hialeah • Weston •
+              Davie • Sunrise • Cutler Bay • Aventura
+            </p>
+          </div>
         </div>
       </div>
 
@@ -71,7 +80,6 @@ export default function Footer() {
               rel="noopener noreferrer"
             >
               <SvgIcon name="facebook" size={28} color="#ffffff" className="social-icon" />
-
             </a>
             <a
               href="https://instagram.com"
@@ -80,26 +88,7 @@ export default function Footer() {
               rel="noopener noreferrer"
             >
               <SvgIcon name="instagram" size={28} color="#ffffff" />
-
             </a>
-            {/* <a
-              href="https://linkedin.com"
-              aria-label="LinkedIn"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <SvgIcon name="linkedin" size={28} />
-
-            </a> */}
-            {/* <a
-              href="https://youtube.com"
-              aria-label="YouTube"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <SvgIcon name="youtube" size={28} />
-
-            </a> */}
           </div>
         </div>
 
@@ -138,8 +127,7 @@ export default function Footer() {
         </div>
 
         <p className="copy">
-          © {year} CallTechCare. All rights reserved. Built with ❤️ in South
-          Florida.
+          © {year} CallTechCare. All rights reserved. Built with ❤️ in South Florida.
         </p>
       </div>
     </footer>

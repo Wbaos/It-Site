@@ -9,28 +9,27 @@ import ChatWidget from "@/components/ChatWidget";
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.calltechcare.com"),
   title: {
-    default: "CallTechCare | Friendly Tech Support Made Simple",
+    default: "Tech Support for Homes & Small Businesses | CallTechCare",
     template: "%s | CallTechCare",
   },
   description:
-    "CallTechCare offers friendly, professional tech support for all ages — from phone and tablet setup to Wi-Fi troubleshooting and smart-home installation. Book expert help online or in person.",
+    "Fast, friendly tech support for homes, seniors, home offices, and small businesses across Miami, Pembroke Pines, Broward & Homestead. WiFi fixes, computer help, smart-home installation, printer setup & more.",
   keywords: [
-    "Tech Support",
-    "Wi-Fi Help",
-    "Smart Home Setup",
-    "Tablet Assistance",
-    "Phone Troubleshooting",
-    "Computer Help",
-    "Device Installation",
-    "CallTechCare",
-    "Tech Support Miami",
-    "Remote Tech Help",
-    "In-Home Tech Support",
+    "Tech Support South Florida",
+    "Home Tech Support",
+    "Small Business IT Support",
+    "WiFi Troubleshooting Miami",
+    "Computer Help Broward",
+    "Smart Home Installation",
+    "Home Office Tech Support",
+    "Pembroke Pines Tech Support",
+    "Miami Tech Support",
+    "Broward IT Services",
   ],
   openGraph: {
-    title: "CallTechCare – Friendly Tech Support Made Simple",
+    title: "Home & Small Business Tech Support | CallTechCare",
     description:
-      "Reliable tech assistance for your devices, Wi-Fi, and smart home. CallTechCare makes technology stress-free for everyone — at home or remotely.",
+      "Same-day tech support for homes, seniors, home offices and small businesses across Miami, Broward, Pembroke Pines & Homestead. WiFi fixes, computer help, smart-home setup & more.",
     url: "https://www.calltechcare.com",
     siteName: "CallTechCare",
     locale: "en_US",
@@ -40,16 +39,16 @@ export const metadata: Metadata = {
         url: "/logo-og.png",
         width: 1200,
         height: 630,
-        alt: "CallTechCare – Friendly Tech Support Made Simple",
+        alt: "CallTechCare – Tech Support for Homes & Small Businesses",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     site: "@CallTechCare",
-    title: "CallTechCare | Friendly Tech Support for Everyone",
+    title: "Tech Support for Homes & Small Businesses",
     description:
-      "Your trusted tech experts — setup, troubleshoot, and optimize your devices with ease. Available in person or online.",
+      "Serving Miami, Broward, Pembroke Pines & Homestead. WiFi issues, computers, smart-home devices, printers & more.",
     images: ["/logo-og.png"],
   },
   icons: {
@@ -80,23 +79,43 @@ export default function RootLayout({
 }) {
   const orgJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "LocalBusiness",
     name: "CallTechCare",
     url: "https://www.calltechcare.com",
-    logo: "https://www.calltechcare.com/logo-og.png",
+    image: "https://www.calltechcare.com/logo-og.png",
+    description:
+      "Tech support for homes, seniors, home offices, and small businesses across Miami, Pembroke Pines, Broward & Homestead. WiFi fixes, computer repair, smart-home setups & more.",
+    telephone: "+1-786-366-2729",
+    areaServed: [
+      "Miami FL",
+      "Pembroke Pines FL",
+      "Broward County FL",
+      "Homestead FL",
+      "Miramar FL",
+      "Hollywood FL",
+      "Fort Lauderdale FL"
+    ],
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "South Florida",
+      addressRegion: "FL",
+      addressCountry: "USA",
+    },
+    openingHours: "Mo-Sa 08:00-21:00",
     sameAs: [
       "https://www.facebook.com/CallTechCare",
-      "https://www.instagram.com/CallTechCare",
+      "https://www.instagram.com/CallTechCare"
     ],
-    description:
-      "Friendly, professional tech support for all ages — setup, troubleshoot, and optimize your devices at home or remotely.",
-    contactPoint: {
-      "@type": "ContactPoint",
-      telephone: "+1-7863662729",
-      contactType: "Customer Service",
-      areaServed: "US",
-      availableLanguage: ["English", "Spanish"],
-    },
+    serviceType: [
+      "Home Tech Support",
+      "Small Business IT Support",
+      "WiFi Troubleshooting",
+      "Computer Help",
+      "Smart Home Device Setup",
+      "Printer & Router Setup",
+      "Remote Tech Support"
+    ],
+    paymentAccepted: ["Cash", "Credit Card", "Zelle"],
   };
 
   return (
@@ -108,12 +127,14 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+
         <link
           rel="preload"
           as="image"
           href="/helping2.jpg"
           fetchPriority="high"
         />
+
         <meta name="apple-mobile-web-app-title" content="CallTechCare" />
         <link rel="canonical" href="https://www.calltechcare.com" />
         <meta name="theme-color" content="#0891b2" />
@@ -126,19 +147,20 @@ export default function RootLayout({
           name="copyright"
           content="© 2025 CallTechCare. All rights reserved."
         />
+
         <script
           type="application/ld+json"
           suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
         />
       </head>
+
       <body>
         <Providers>
           <LoadingProvider>
             <Navbar />
             <main className="main-content">{children}</main>
             <Footer />
-            {/* Sofía – AI Chatbot */}
             <ChatWidget />
           </LoadingProvider>
         </Providers>

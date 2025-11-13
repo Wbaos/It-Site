@@ -704,7 +704,7 @@ main {
 .brand {
   justify-self: center;
   font-weight: 800;
-  font-size: 1.125rem;
+  font-size: 3rem;
   letter-spacing: 0.2px;
   color: var(--fg);
   text-decoration: none;
@@ -5010,6 +5010,24 @@ box-shadow:
 .footer-contact a:hover {
   color: #fff;
 }
+.footer-areas {
+  margin-top: 1rem;
+  max-width: 260px;
+}
+
+.areas-title {
+  color: #14b8a6;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.areas-list {
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
 
 /* ===== Social & Trust ===== */
 .footer-middle {
@@ -5106,6 +5124,99 @@ box-shadow:
     margin-top: 1rem;
   }
 }
+
+/* ======Why Choose Us======*/
+.why-choose {
+  padding: 5rem 1rem;
+  background: linear-gradient(
+  180deg,
+  #03050a 0%,
+  #041323 35%,
+  #061020 50%,
+  #041323 65%,
+  #03050a 100%
+);
+}
+
+.why-header {
+  text-align: center;
+  max-width: 650px;
+  margin: 0 auto 3rem auto;
+}
+
+.why-header h2 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.brand {
+  color: #14b8a6;
+}
+
+.why-header p {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  color: #94a3b8;
+}
+
+.why-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.why-card {
+  background: #f8fafc; 
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0; 
+  text-align: center;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.why-card:hover {
+  border-color: #14b8a6; 
+  box-shadow: 0 0 12px rgba(20, 184, 166, 0.25); 
+}
+
+.why-icon {
+  margin-bottom: 1rem;
+  color: #14b8a6;
+}
+
+.why-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.why-card p {
+  color: #475569;
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+    .brand{
+    font-size: 2rem;
+  }
+}
+
+
+/*========= Hidden SEO content for Google — invisible to users ===========*/
+.seo-hidden {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
 
 /* === FAQ Section (Dark Theme) === */
 .service-faq {

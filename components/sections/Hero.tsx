@@ -3,8 +3,8 @@
 type Stat = { value: string; label: string };
 
 type Props = {
-  titleLine1: string;
-  titleLine2: string;
+  titleLine1?: string;
+  titleLine2?: string;
   subtitle?: string;
   badgeText?: string;
   primaryCtaText?: string;
@@ -15,32 +15,36 @@ type Props = {
 };
 
 export default function Hero({
-  titleLine1,
-  titleLine2,
-  subtitle,
-  badgeText = "24/7 Professional IT Support",
+  titleLine1 = "Friendly Tech Support",
+  titleLine2 = "for Homes & Seniors",
+  subtitle = "Serving Miami, Pembroke Pines, Broward & Homestead with fast WiFi fixes, computer help, smart-home setups, and patient device support.",
+  badgeText = "Trusted In-Home Tech Support Across South Florida",
   primaryCtaText = "Get Started",
-  primaryCtaHref = "#",
-  secondaryCtaText = "View Services",
-  secondaryCtaHref = "#",
+  primaryCtaHref = "#contact",
+  secondaryCtaText = "See All Services",
+  secondaryCtaHref = "/#services",
   stats = [
-    { value: "500+", label: "Happy Clients" },
-    { value: "99.9%", label: "Uptime Guarantee" },
-    { value: "<15min", label: "Response Time" },
+    { value: "500+", label: "Local Clients Helped" },
+    { value: "4.9/5", label: "Customer Satisfaction" },
+    { value: "Same-Day", label: "Appointments Available" },
   ],
 }: Props) {
   return (
     <section id="hero">
 
+      {/* Badge */}
       {badgeText && <div className="hero-badge">{badgeText}</div>}
 
+      {/* Title */}
       <h1 className="hero-title">
         <span className="hero-title-line1">{titleLine1}</span>
         <span className="hero-title-line2">{titleLine2}</span>
       </h1>
 
+      {/* Subtitle */}
       {subtitle && <p className="hero-sub">{subtitle}</p>}
 
+      {/* CTAs */}
       <div className="hero-ctas">
         {primaryCtaText && primaryCtaHref && (
           <a href={primaryCtaHref} className="btn-cta btn-primary">
