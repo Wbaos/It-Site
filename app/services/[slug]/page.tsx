@@ -6,6 +6,7 @@ import TestimonialsList from "@/components/common/TestimonialsList";
 import ServiceReviewsWrapper from "@/components/ServiceReviewsWrapper";
 import ServiceRating from "@/components/ServiceRating";
 import BookButtonWatcher from "@/components/BookButtonWatcher";
+import FaqAccordion from "@/components/FaqAccordion";
 
 export default async function ServicePage({
   params,
@@ -113,23 +114,9 @@ export default async function ServicePage({
 
         {/* FAQs */}
         {service.faqs && service.faqs.length > 0 && (
-          <div className="service-faq">
-            <h2 className="faq-heading">❓ Frequently Asked Questions</h2>
-            <ul className="faq-list">
-              {service.faqs.map((faq: { q: string; a: string }, i: number) => (
-                <li key={i} className="faq-item">
-                  <details>
-                    <summary className="faq-question">
-                      {faq.q}
-                      <span className="faq-toggle">+</span>
-                    </summary>
-                    <p className="faq-answer">{faq.a}</p>
-                  </details>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <FaqAccordion faqs={service.faqs} />
         )}
+
 
         {/* Testimonials */}
         {service.testimonials && service.testimonials.length > 0 && (
