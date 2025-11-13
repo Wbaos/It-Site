@@ -3498,7 +3498,7 @@ text-decoration: underline;
 @media (max-width: 768px) {
   #floating-book-container {
     top: 60%;
-    right: -120px;
+    right: -150px;
   }
   #floating-book-container .floating-book-btn {
     font-size: 0.8rem;
