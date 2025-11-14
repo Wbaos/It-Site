@@ -77,7 +77,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const orgJsonLd = {
+    const orgJsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: "CallTechCare",
@@ -86,6 +86,7 @@ export default function RootLayout({
     description:
       "Tech support for homes, seniors, home offices, and small businesses across Miami, Pembroke Pines, Broward & Homestead. WiFi fixes, computer repair, smart-home setups & more.",
     telephone: "+1-786-366-2729",
+    priceRange: "$$",
     areaServed: [
       "Miami FL",
       "Pembroke Pines FL",
@@ -97,14 +98,16 @@ export default function RootLayout({
     ],
     address: {
       "@type": "PostalAddress",
+      streetAddress: "Service Area Business",
       addressLocality: "South Florida",
       addressRegion: "FL",
-      addressCountry: "USA",
+      postalCode: "33025",
+      addressCountry: "US",
     },
     openingHours: "Mo-Sa 08:00-21:00",
     sameAs: [
       "https://www.facebook.com/CallTechCare",
-      "https://www.instagram.com/CallTechCare"
+      "https://www.instagram.com/CallTechCare",
     ],
     serviceType: [
       "Home Tech Support",
@@ -117,7 +120,6 @@ export default function RootLayout({
     ],
     paymentAccepted: ["Cash", "Credit Card", "Zelle"],
   };
-
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
