@@ -27,11 +27,14 @@ export default function TestimonialsList({
   const [cols, setCols] = useState(3);
   const [index, setIndex] = useState(cols);
   const [animating, setAnimating] = useState(false);
-  const trackRef = useRef<HTMLDivElement>(null);
 
+  const [expanded, setExpanded] = useState(false); // all cards expand/collapse together
+
+  const trackRef = useRef<HTMLDivElement>(null);
   const startXRef = useRef<number | null>(null);
   const deltaXRef = useRef<number>(0);
 
+  // Responsive columns
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 760) setCols(1);
@@ -60,15 +63,13 @@ export default function TestimonialsList({
 
   const handleTransitionEnd = () => {
     setAnimating(false);
-    if (index >= n + cols) {
-      setIndex(cols);
-    } else if (index < cols) {
-      setIndex(n + cols - 1);
-    }
+    if (index >= n + cols) setIndex(cols);
+    else if (index < cols) setIndex(n + cols - 1);
   };
 
   const translatePercent = -index * cardWidth;
 
+  // Touch swipe
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -86,8 +87,7 @@ export default function TestimonialsList({
 
     const handleTouchEnd = () => {
       if (Math.abs(deltaXRef.current) > 50) {
-        if (deltaXRef.current < 0) goNext(); 
-        else goPrev(); 
+        deltaXRef.current < 0 ? goNext() : goPrev();
       }
       startXRef.current = null;
       deltaXRef.current = 0;
@@ -104,21 +104,27 @@ export default function TestimonialsList({
     };
   }, [cols, index, animating]);
 
+  // Stars
+  const renderStars = (rating = 0) => (
+    <div className="stars">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <SvgIcon
+          key={i}
+          name="star"
+          size={18}
+          color="#facc15"
+          className={i < rating ? "star-filled" : "star-outline"}
+        />
+      ))}
+    </div>
+  );
 
-const renderStars = (rating = 0) => (
-  <div className="stars">
-    {Array.from({ length: 5 }).map((_, i) => (
-      <SvgIcon
-        key={i}
-        name="star"
-        size={18}
-        color="#facc15"
-        className={i < rating ? "star-filled" : "star-outline"}
-      />
-    ))}
-  </div>
-);
-
+  // Truncate text by words
+  function truncateWords(text: string = "", limit = 15) {
+    const words = text.split(" ");
+    if (words.length <= limit) return text;
+    return words.slice(0, limit).join(" ") + "...";
+  }
 
   return (
     <section id="testimonials" className="section testimonials">
@@ -131,9 +137,7 @@ const renderStars = (rating = 0) => (
             <div
               ref={trackRef}
               className={`carousel-track ${animating ? "animating" : "no-anim"}`}
-              style={{
-                transform: `translateX(${translatePercent}%)`,
-              }}
+              style={{ transform: `translateX(${translatePercent}%)` }}
               onTransitionEnd={handleTransitionEnd}
             >
               {extended.map((t, i) => {
@@ -147,21 +151,38 @@ const renderStars = (rating = 0) => (
                       })
                     : "";
 
+                const fullText = t.text ?? "";
+                const isLong = fullText.split(" ").length > 15;
+                const textToShow = expanded
+                  ? fullText
+                  : truncateWords(fullText, 15); 
+
                 return (
                   <div className="carousel-slide" key={i}>
                     <div className="testimonial-card fade-up">
-                      <div className="stars-date-row top-row">
+                      <div className="top-row stars-date-row">
                         {renderStars(t.rating)}
                         {date && <div className="t-date">{date}</div>}
                       </div>
 
-                      <p className="testimonial-text">{t.text}</p>
+                      <div className="testimonial-text">
+                        {textToShow}
+
+                        {isLong && (
+                          <button
+                            className="read-more-btn"
+                            onClick={() => setExpanded((x) => !x)}
+                          >
+                            {expanded ? "Read less" : "Read more"}
+                          </button>
+                        )}
+                      </div>
 
                       <div className="testimonial-footer">
                         <div className="footer-right">
                           {t.name && <span className="t-name">{t.name}</span>}
                           {t.verified && (
-                            <span className="verified-pill below" title="Verified Client">
+                            <span className="verified-pill below">
                               <SvgIcon name="verified-check" size={14} color="#fff" />
                               <span>Verified</span>
                             </span>
