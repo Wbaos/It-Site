@@ -102,7 +102,19 @@ function LoginContent() {
           </Link>
         </p>
 
-        {status && <p className="login-status">{status}</p>}
+        {status && (
+          <p
+            className={`login-status ${
+              status.toLowerCase().includes("invalid") ||
+              status.toLowerCase().includes("error")
+                ? "error"
+                : "success"
+            }`}
+          >
+            {status}
+          </p>
+        )}
+
 
         <p className="signup-wrapper">
           Don’t have an account?{" "}
