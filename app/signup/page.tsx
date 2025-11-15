@@ -113,7 +113,18 @@ export default function SignUpPage() {
           </button>
         </form>
 
-        {status && <p className="login-status">{status}</p>}
+        {status && (
+          <p
+            className={`login-status ${
+              /invalid|error|already|exists|taken|wrong|network/i.test(status)
+                ? "error"
+                : "success"
+            }`}
+          >
+            {status}
+          </p>
+        )}
+
 
         <p className="signup-wrapper">
           Already have an account?{" "}
