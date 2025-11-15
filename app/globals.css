@@ -5460,10 +5460,9 @@ details[open] .faq-toggle {
   line-height: 1.4;
 }
 
-/* Error message */
 .login-status.error {
   background: rgba(220, 38, 38, 0.12); 
-  color: #f87171; /* red-300 */
+  color: #f87171; 
   border: 1px solid rgba(220, 38, 38, 0.25);
 }
 

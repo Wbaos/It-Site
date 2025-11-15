@@ -105,8 +105,7 @@ function LoginContent() {
         {status && (
           <p
             className={`login-status ${
-              status.toLowerCase().includes("invalid") ||
-              status.toLowerCase().includes("error")
+              /invalid|error|already|exists|taken|wrong/i.test(status)
                 ? "error"
                 : "success"
             }`}
@@ -114,6 +113,7 @@ function LoginContent() {
             {status}
           </p>
         )}
+
 
 
         <p className="signup-wrapper">
