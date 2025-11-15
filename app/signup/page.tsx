@@ -1,6 +1,7 @@
 "use client";
+
 import { useState } from "react";
-import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 
@@ -22,7 +23,6 @@ export default function SignUpPage() {
     const password = String(formData.get("password") || "");
 
     try {
-      //  Create user
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -32,7 +32,6 @@ export default function SignUpPage() {
       const data = await res.json();
 
       if (res.ok && data.ok) {
-        //  Auto-login the user
         const loginRes = await signIn("credentials", {
           redirect: false,
           email,
@@ -43,71 +42,85 @@ export default function SignUpPage() {
           setStatus("⚠️ Account created, but login failed. Please log in.");
           router.push("/login");
         } else {
-          setStatus(" Account created and logged in!");
-          //  Redirect to homepage
+          setStatus("Account created and logged in!");
           router.push("/");
         }
       } else {
-        setStatus(` ${data.error || "Something went wrong"}`);
+        setStatus(data.error || "Something went wrong");
       }
     } catch {
-      setStatus(" Network error");
+      setStatus("Network error");
     } finally {
       setBusy(false);
     }
   }
 
   return (
-    <section className="section login">
-      <div className="site-container">
-        <div className="login-card">
+    <section className="login-wrapper">
+      {/* ==== Back Button ==== */}
+      <div className="login-back-container">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="single-blog-back btn-reset"
+        >
+          ← Back
+        </button>
+
+      </div>
+
+      {/* ==== Signup Card ==== */}
+      <div className="login-box">
+        <h2 className="login-title">Create an Account</h2>
+        <p className="login-subtitle">Join us in just a minute</p>
+
+        <form onSubmit={handleSubmit} className="login-form">
+          <label className="input-label">Full Name</label>
+          <input
+            id="name"
+            name="name"
+            placeholder="Your Name"
+            className="input-field"
+            required
+          />
+
+          <label className="input-label">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="your@email.com"
+            className="input-field"
+            required
+          />
+
+          <label className="input-label">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="********"
+            className="input-field"
+            required
+          />
+
           <button
-            type="button"
-            className="back-btn"
-            aria-label="Go back"
-            onClick={() => router.back()}
+            type="submit"
+            className="btn-submit"
+            disabled={busy}
           >
-            <ArrowLeft size={20} />
-            <span>Back</span>
+            {busy ? "Registering..." : "Sign Up"}
           </button>
+        </form>
 
-          <h2 className="login-heading">Sign Up</h2>
+        {status && <p className="login-status">{status}</p>}
 
-          <form onSubmit={handleSubmit} className="login-form">
-            <input
-              id="name"
-              name="name"
-              placeholder="Full Name"
-              className="input"
-              required
-            />
-            <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Email"
-              className="input"
-              required
-            />
-            <input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Password"
-              className="input"
-              required
-            />
-            <button
-              type="submit"
-              className="btn btn-primary wide"
-              disabled={busy}
-            >
-              {busy ? "Registering..." : "Sign Up"}
-            </button>
-          </form>
-
-          {status && <p className="login-status">{status}</p>}
-        </div>
+        <p className="signup-wrapper">
+          Already have an account?{" "}
+          <Link href="/login" className="signup-link">
+            Login
+          </Link>
+        </p>
       </div>
     </section>
   );
