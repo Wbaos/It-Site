@@ -93,6 +93,7 @@ export const homeSections: Section[] = [
       items: HOMEPAGE_TESTIMONIALS,
       title: "What Clients Say",
       subtitle: "Real experiences from satisfied homeowners and families.",
+      variant: "plain", 
     },
   },
 

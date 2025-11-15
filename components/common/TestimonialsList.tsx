@@ -16,31 +16,34 @@ type Props = {
   title?: string;
   subtitle?: string;
   carousel?: boolean;
+  variant?: "card" | "plain";
 };
 
 export default function TestimonialsList({
   items,
   title = "What Clients Say",
   subtitle = "Real experiences from satisfied homeowners and businesses.",
+  variant = "card", // NEW default
 }: Props) {
   const n = items.length;
   const [cols, setCols] = useState(3);
   const [index, setIndex] = useState(cols);
   const [animating, setAnimating] = useState(false);
 
-  const [expanded, setExpanded] = useState(false); // all cards expand/collapse together
+  const [expanded, setExpanded] = useState(false);
 
   const trackRef = useRef<HTMLDivElement>(null);
   const startXRef = useRef<number | null>(null);
   const deltaXRef = useRef<number>(0);
 
-  // Responsive columns
+  /** Responsive columns */
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 760) setCols(1);
       else if (window.innerWidth < 1300) setCols(2);
       else setCols(3);
     };
+
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -69,7 +72,7 @@ export default function TestimonialsList({
 
   const translatePercent = -index * cardWidth;
 
-  // Touch swipe
+  /** Mobile swipe */
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -104,7 +107,7 @@ export default function TestimonialsList({
     };
   }, [cols, index, animating]);
 
-  // Stars
+  /** Render stars */
   const renderStars = (rating = 0) => (
     <div className="stars">
       {Array.from({ length: 5 }).map((_, i) => (
@@ -119,7 +122,7 @@ export default function TestimonialsList({
     </div>
   );
 
-  // Truncate text by words
+  /** Trim words */
   function truncateWords(text: string = "", limit = 15) {
     const words = text.split(" ");
     if (words.length <= limit) return text;
@@ -128,7 +131,7 @@ export default function TestimonialsList({
 
   return (
     <section id="testimonials" className="section testimonials">
-      <div className="site-container-testimonials">
+      <div className={`site-container-testimonials ${variant === "plain" ? "no-container-border" : ""}`}>
         {title && <h2 className="testimonials-heading">{title}</h2>}
         {subtitle && <p className="testimonials-sub">{subtitle}</p>}
 
@@ -155,11 +158,15 @@ export default function TestimonialsList({
                 const isLong = fullText.split(" ").length > 15;
                 const textToShow = expanded
                   ? fullText
-                  : truncateWords(fullText, 15); 
+                  : truncateWords(fullText, 15);
 
                 return (
                   <div className="carousel-slide" key={i}>
-                    <div className="testimonial-card fade-up">
+                    <div
+                      className={`testimonial-card fade-up ${
+                        variant === "plain" ? "no-border" : ""
+                      }`}
+                    >
                       <div className="top-row stars-date-row">
                         {renderStars(t.rating)}
                         {date && <div className="t-date">{date}</div>}
@@ -197,12 +204,8 @@ export default function TestimonialsList({
           </div>
 
           <div className="owl-nav">
-            <button className="owl-prev" onClick={goPrev}>
-              ‹
-            </button>
-            <button className="owl-next" onClick={goNext}>
-              ›
-            </button>
+            <button className="owl-prev" onClick={goPrev}>‹</button>
+            <button className="owl-next" onClick={goNext}>›</button>
           </div>
         </div>
       </div>
