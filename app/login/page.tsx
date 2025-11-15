@@ -3,15 +3,15 @@
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react"; // 👈 ADD THIS
 
 function LoginContent() {
   const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // 👈 state for eye toggle
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   async function onSubmit(formData: FormData) {
@@ -38,60 +38,77 @@ function LoginContent() {
   }
 
   return (
-    <section className="section login">
-      <div className="site-container">
-        <div className="login-card relative">
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="back-btn"
-            aria-label="Go back"
-          >
-            <ArrowLeft size={20} />
-            <span>Back</span>
-          </button>
+    <section className="login-wrapper">
+      <div className="login-back-container">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="single-blog-back btn-reset"
+        >
+          ← Back
+        </button>
+      </div>
 
-          <h2 className="login-heading text-center">Login</h2>
+      {/* ==== LOGIN CARD ==== */}
+      <div className="login-box">
+        <h2 className="login-title">Welcome Back</h2>
+        <p className="login-subtitle">Sign in to your account</p>
 
-          <form action={onSubmit} className="login-form mt-6">
+        <form action={onSubmit} className="login-form">
+          {/* Email */}
+          <label className="input-label">Email</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="your@email.com"
+            className="input-field"
+            required
+          />
+
+          {/* Password */}
+          <label className="input-label">Password</label>
+          <div className="password-wrapper">
             <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              className="input"
-              required
-            />
-            <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
-              placeholder="Password"
-              className="input"
+              placeholder="********"
+              className="input-field password-input"
               required
             />
 
             <button
-              type="submit"
-              className="btn btn-primary wide"
-              disabled={busy}
+              type="button"
+              className="password-toggle-btn btn-reset"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label="Toggle password visibility"
             >
-              {busy ? "Logging in..." : "Login"}
+              {showPassword ? (
+                <EyeOff size={18} strokeWidth={1.8} />
+              ) : (
+                <Eye size={18} strokeWidth={1.8} />
+              )}
             </button>
-          </form>
+          </div>
 
-          <p className="mt-3 text-center">
-            <Link href="/forgot-password" className="forgot-link">
-              Forgot your password?
-            </Link>
-          </p>
+          {/* Submit */}
+          <button type="submit" className="btn-submit" disabled={busy}>
+            {busy ? "Logging in..." : "Login"}
+          </button>
+        </form>
 
-          {status && <p className="login-status">{status}</p>}
-        </div>
+        <p className="forgot-wrapper">
+          <Link href="/forgot-password" className="forgot-link">
+            Forgot your password?
+          </Link>
+        </p>
 
-        <p className="mt-4 text-center">
+        {status && <p className="login-status">{status}</p>}
+
+        <p className="signup-wrapper">
           Don’t have an account?{" "}
-          <a href="/signup" className="sign-up-link">
-            Sign Up
-          </a>
+          <Link href="/signup" className="signup-link">
+            Sign up
+          </Link>
         </p>
       </div>
     </section>
@@ -100,7 +117,7 @@ function LoginContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div>Loading login page...</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
       <LoginContent />
     </Suspense>
   );
