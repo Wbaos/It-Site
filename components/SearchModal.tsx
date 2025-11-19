@@ -11,7 +11,6 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
     const [loading, setLoading] = useState(false);
     const modalRef = useRef<HTMLDivElement>(null);
 
-    // ✅ Close on click outside
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (
@@ -26,7 +25,6 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [onClose]);
 
-    // ✅ Search logic
     useEffect(() => {
         if (!query.trim()) {
             setResults([]);
@@ -55,14 +53,6 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
 
             <div className="search-modal">
                 <div ref={modalRef} className="search-box">
-                    <button
-                        onClick={onClose}
-                        className="close-btn"
-                        aria-label="Close search"
-                    >
-                        <X size={20} />
-                    </button>
-
                     <div className="input-group">
                         <Search size={18} />
                         <input
@@ -72,7 +62,16 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
                             onChange={(e) => setQuery(e.target.value)}
                             autoFocus
                         />
-                    </div>
+
+                        <button
+                            onClick={onClose}
+                            className="close-btn"
+                            aria-label="Close search"
+                        >
+                            <X size={20} />
+                        </button>
+                        </div>
+
 
                     <div className="results">
                         {loading && <p>Searching...</p>}

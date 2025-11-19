@@ -4,153 +4,148 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  Search,
-  Menu,
-  X,
-  ShoppingCart,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
+import { Search, Menu, X, ShoppingCart } from "lucide-react";
+
 import { useCart } from "@/lib/CartContext";
 import { useNav } from "@/lib/NavContext";
+import { useLoading } from "@/lib/LoadingContext";
+
 import NotificationDropdown from "@/components/NotificationDropdown";
 import UserMenu from "@/components/UserMenu";
 import SearchModal from "@/components/SearchModal";
-import { useLoading } from "@/lib/LoadingContext";
 import SvgIcon from "@/components/common/SvgIcons";
+import ServiceGroupList from "./ServiceGroupList";
+import MobileServicesPanel from "./MobileServicesPanel";
 
+/* TYPES */
+type PromoBox = {
+  enabled?: boolean;
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
+  items?: string[];
+  icon?: {
+    asset?: { url: string };
+    alt?: string;
+  };
+};
+
+type ActiveServiceType = {
+  title: string;
+  subservices: any[];
+  slug?: string;
+  promo?: PromoBox;
+};
 
 const NAV = [
-  { href: "/#how", label: "How It Works" },
   { href: "/#pricing", label: "Pricing" },
   { href: "/#contact", label: "Contact" },
   { href: "/blog", label: "Blog" },
 ];
 
 export default function Navbar() {
+  const router = useRouter();
   const { data: session } = useSession();
   const userId = session?.user?.id || "guest";
+  const pathname = usePathname();
+  const { items } = useCart();
+  const { setLoading } = useLoading();
 
-  const [categories, setCategories] = useState<any[]>([]);
-  const [activeService, setActiveService] = useState<string | null>(null);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [loadingServices, setLoadingServices] = useState(true);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
+  const { open, setOpen, notifOpen, dropdownOpen, setDropdownOpen } = useNav();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { items } = useCart();
-  const { open, setOpen, dropdownOpen, setDropdownOpen, notifOpen } = useNav();
-  const { setLoading } = useLoading();
-  const router = useRouter();
-  const pathname = usePathname();
+  const [categories, setCategories] = useState<any[]>([]);
+  const [loadingServices, setLoadingServices] = useState(true);
+  const [searchOpen, setSearchOpen] = useState(false);
 
-  // Hide loader automatically when route changes
-  useEffect(() => {
-    setLoading(false);
-  }, [pathname, setLoading]);
+  const [activeService, setActiveService] =
+    useState<ActiveServiceType | null>(null);
 
-  // Fetch categories/services from API
+  const [mobileServicesPanel, setMobileServicesPanel] = useState(false);
+
+  useEffect(() => setLoading(false), [pathname, setLoading]);
+
   useEffect(() => {
-    async function fetchData() {
+    async function fetchServices() {
       try {
         const res = await fetch("/api/services");
         const data = await res.json();
-        const groupedData = Array.isArray(data)
-          ? data
-          : Object.entries(data).map(([category, items]) => ({
-            category,
-            items,
-          }));
-        setCategories(groupedData);
-      } catch (err) {
-        console.error("Failed to fetch services:", err);
+        setCategories(data);
+      } catch {
+        console.error("SERVICES FETCH ERROR");
       } finally {
         setLoadingServices(false);
       }
     }
-    fetchData();
+    fetchServices();
   }, []);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+    function clickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setDropdownOpen(false);
         setActiveService(null);
       }
     }
 
-    if (dropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    if (dropdownOpen) document.addEventListener("mousedown", clickOutside);
+    return () => document.removeEventListener("mousedown", clickOutside);
   }, [dropdownOpen]);
 
-  // Disable body scroll when overlays open
   useEffect(() => {
-    if (open || dropdownOpen || notifOpen) {
+    if (open || notifOpen || dropdownOpen || mobileServicesPanel) {
       document.body.classList.add("no-scroll");
     } else {
       document.body.classList.remove("no-scroll");
     }
-  }, [open, dropdownOpen, notifOpen]);
+  }, [open, notifOpen, dropdownOpen, mobileServicesPanel]);
 
-  // Close mobile nav when resizing above breakpoint
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth > 900 && open) {
-        setOpen(false);
-        setServicesOpen(false);
-        setActiveCategory(null);
-      }
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [open]);
-
-  // Ensure search or notifications close mobile nav
-  useEffect(() => {
-    if (searchOpen || notifOpen) {
-      setOpen(false);
-      setServicesOpen(false);
-      setActiveCategory(null);
-    }
-  }, [searchOpen, notifOpen]);
+  function closeEverything() {
+    setOpen(false);
+    setDropdownOpen(false);
+    setMobileServicesPanel(false);
+    setActiveService(null);
+    document.body.classList.remove("no-scroll");
+  }
 
   return (
     <>
       <header className="site-header">
         <div className="site-container-var nav-grid">
-          {/* LEFT SECTION */}
+          {/* LEFT SLOT */}
           <div className="left-slot">
             <button
               className="menu-toggle"
-              aria-label="Toggle menu"
-              aria-expanded={open}
-              onClick={() => setOpen(!open)}
+              onClick={() => {
+                if (open) closeEverything();
+                else closeEverything(), setOpen(true);
+              }}
             >
-              {open ? (
-                <X size={30} strokeWidth={1} />
-              ) : (
-                <Menu size={30} strokeWidth={1} />
-              )}
+              {open ? <X size={30} /> : <Menu size={30} />}
             </button>
 
-            <nav className="primary-nav" aria-label="Primary">
-              {/* SERVICES DROPDOWN */}
+            {/* NAV */}
+            <nav className={`primary-nav ${open ? "open" : ""}`}>
               <div className="nav-item dropdown" ref={dropdownRef}>
+                {/* SERVICES BUTTON */}
                 <a
                   href="#"
                   className="nav-link"
                   onClick={(e) => {
                     e.preventDefault();
-                    setDropdownOpen(!dropdownOpen);
-                    setActiveService(null);
+
+                    if (window.innerWidth < 900) {
+                      if (mobileServicesPanel) {
+                        closeEverything();
+                        return;
+                      }
+                      closeEverything();
+                      setMobileServicesPanel(true);
+                      return;
+                    }
+
+                    closeEverything();
+                    setDropdownOpen(true);
                   }}
                 >
                   Services ▾
@@ -158,255 +153,265 @@ export default function Navbar() {
 
                 {dropdownOpen && (
                   <div className="dropdown-panel">
-                    {!activeService ? (
-                      loadingServices ? (
-                        <p className="dropdown-loading">Loading...</p>
-                      ) : (
+                    <div
+                      className={`dropdown-inner ${
+                        activeService ? "two-col" : ""
+                      }`}
+                    >
+                      {!activeService && (
+                        <h3 className="dropdown-main-title">
+                          All Our Services
+                        </h3>
+                      )}
+
+                      {loadingServices ? (
+                        <p className="loading-text">Loading…</p>
+                      ) : activeService ? (
                         <>
-                          {categories.map((cat) => (
-                            <div
-                              key={cat.category}
-                              className="dropdown-category"
+                          <div className="submenu-header">
+                            <button
+                              className="back-btn"
+                              onClick={() => setActiveService(null)}
                             >
-                              <h4>{cat.category}</h4>
-                              <ul>
-                                {cat.items.map((srv: any) => {
-                                  const slug = srv.slug?.current || srv.slug;
-                                  const hasSub =
-                                    srv.subservices?.length > 0;
+                              <SvgIcon
+                                name="chevron-left"
+                                size={18}
+                                color="#14b8a6"
+                              />
+                              Back to Services
+                            </button>
+
+                            <h4 className="submenu-title">
+                              {activeService.title}
+                            </h4>
+                          </div>
+
+                          <div className="submenu-body">
+                            <div className="submenu-columns">
+                              <div className="submenu-left-column">
+                                {(() => {
+                                  const installSubs =
+                                    activeService.subservices.filter(
+                                      (s) => s.serviceType === "installation"
+                                    );
+                                  const supportSubs =
+                                    activeService.subservices.filter(
+                                      (s) => s.serviceType === "support"
+                                    );
 
                                   return (
-                                    <li key={srv._id}>
-                                      {hasSub ? (
-                                        <a
-                                          href="#"
-                                          className="dropdown-link"
-                                          onClick={(e) => {
-                                            e.preventDefault();
-                                            setActiveService(slug);
-                                          }}
-                                        >
-                                          {srv.title}
-                                        </a>
-                                      ) : (
-                                        <Link
-                                          href={`/services/${slug}`}
-                                          className="dropdown-link"
-                                          onClick={(e) => {
-                                            // Prevent infinite loader if clicking same service
-                                            if (pathname === `/services/${slug}`) {
-                                              setLoading(true);
-                                              setTimeout(() => setLoading(false), 800);
-                                            } else {
-                                              setLoading(true);
-                                            }
-                                            setDropdownOpen(false);
-                                          }}
-                                        >
-                                          {srv.title}
-                                        </Link>
+                                    <>
+                                      {installSubs.length > 0 && (
+                                        <ServiceGroupList
+                                          title="Installation & Setup"
+                                          items={installSubs}
+                                          onSelect={closeEverything}
+                                        />
                                       )}
-                                    </li>
+
+                                      {supportSubs.length > 0 && (
+                                        <ServiceGroupList
+                                          title="Support"
+                                          items={supportSubs}
+                                          onSelect={closeEverything}
+                                        />
+                                      )}
+                                    </>
                                   );
-                                })}
-                              </ul>
-                            </div>
-                          ))}
-                        </>
-                      )
-                    ) : (
-                      <div className="dropdown-subpanel">
-                        {(() => {
-                          const parentInfo = categories
-                            .map((cat) => ({
-                              categoryName: cat.category,
-                              service: cat.items.find(
-                                (s: any) => (s.slug?.current || s.slug) === activeService
-                              ),
-                            }))
-                            .find((x) => x.service);
-
-                          const categoryName = parentInfo?.categoryName || "";
-                          const parentName = parentInfo?.service?.title || "";
-
-                          return (
-                            <div className="dropdown-subpanel">
-                              <div className="dropdown-header">
-                                {/* Clickable category breadcrumb */}
-                                <button className="dropdown-back" onClick={() => setActiveService(null)}>
-                                  <SvgIcon name="chevron-left" size={22} className="arrow" />
-                                  {categoryName}
-                                </button>
-
-                                <span className="breadcrumb-sep">/</span>
-                                <span className="dropdown-current">{parentName}</span>
+                                })()}
                               </div>
 
-                              {/* Subservices list */}
-                              <ul className="dropdown-sublist">
-                                {parentInfo?.service?.subservices?.map((sub: any) => (
-                                  <li key={sub._id}>
-                                    <Link
-                                      href={`/services/${sub.slug?.current || sub.slug}`}
-                                      className="dropdown-sublink"
+                              <div className="submenu-right-column">
+                                {activeService.promo?.enabled && (
+                                  <div className="promo-card">
+                                    {activeService.promo.icon?.asset?.url && (
+                                      <div className="promo-icon">
+                                        <img
+                                          src={
+                                            activeService.promo.icon.asset.url
+                                          }
+                                          alt={
+                                            activeService.promo.icon.alt ||
+                                            "promo icon"
+                                          }
+                                        />
+                                      </div>
+                                    )}
+
+                                    <h3 className="promo-title">
+                                      {activeService.promo.title}
+                                    </h3>
+
+                                    <p className="promo-subtitle">
+                                      {activeService.promo.subtitle}
+                                    </p>
+
+                                    <ul className="promo-list">
+                                      {activeService.promo.items?.map(
+                                        (item, i) => <li key={i}>{item}</li>
+                                      )}
+                                    </ul>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        categories.map((cat, i) => (
+                          <div
+                            key={cat.category}
+                            className={`dropdown-category col-${(i % 3) + 1}`}
+                          >
+                            <div className="dropdown-header">
+                              <div className="dropdown-title">
+                                {cat.icon?.url ? (
+                                  <img
+                                    src={cat.icon.url}
+                                    alt={cat.icon.alt || cat.category}
+                                    width={22}
+                                    height={22}
+                                  />
+                                ) : (
+                                  <SvgIcon name="tag" size={22} />
+                                )}
+                                <h4>{cat.category}</h4>
+                              </div>
+                            </div>
+
+                            <ul>
+                              {cat.items?.map((srv: any) => {
+                                const hasSubs =
+                                  srv.subservices?.length > 0;
+
+                                return (
+                                  <li key={srv.slug}>
+                                    <a
+                                      href="#"
+                                      className="dropdown-link"
                                       onClick={(e) => {
-                                        if (
-                                          pathname === `/services/${sub.slug?.current || sub.slug}`
-                                        ) {
-                                          setLoading(true);
-                                          setTimeout(() => setLoading(false), 800);
+                                        e.preventDefault();
+                                        if (hasSubs) {
+                                          setActiveService({
+                                            title: srv.title,
+                                            subservices: srv.subservices,
+                                            slug: srv.slug,
+                                            promo: srv.promo || null,
+                                          });
                                         } else {
-                                          setLoading(true);
+                                          closeEverything();
+                                          router.push(`/services/${srv.slug}`);
                                         }
-                                        setDropdownOpen(false);
                                       }}
                                     >
-                                      {sub.title}
-                                    </Link>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          );
-                        })()}
-                      </div>
+                                      <span className="srv-left">
+                                        <span className="dot"></span>
+                                        {srv.title}
+                                      </span>
 
-                    )}
+                                      {hasSubs && (
+                                        <span className="srv-count">
+                                          ({srv.subservices.length})
+                                        </span>
+                                      )}
+                                    </a>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        ))
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
 
+              {/* NAV LINKS */}
               {NAV.map((i) => (
-                <a key={i.href} href={i.href} className="nav-link">
+                <Link
+                  key={i.href}
+                  href={i.href}
+                  className="nav-link"
+                  onClick={closeEverything}
+                >
                   {i.label}
-                </a>
+                </Link>
               ))}
+
+              {/* LOGIN MOBILE */}
+              <Link
+                href="/login"
+                className="nav-link mobile-only"
+                onClick={closeEverything}
+              >
+                Login
+              </Link>
+
+              {/* GET SUPPORT */}
+              <Link
+                href="/contact"
+                className="support-btn"
+                onClick={closeEverything}
+              >
+                Get Support
+              </Link>
             </nav>
           </div>
 
           {/* BRAND */}
-          <Link
-            href="/"
-            className="brand"
-            aria-label="Home"
-            onClick={() => {
-              setOpen(false);
-              setServicesOpen(false);
-              setActiveCategory(null);
-              setDropdownOpen(false);
-            }}
-          >
+          <Link href="/" className="brand" onClick={closeEverything}>
             <SvgIcon name="calltechcare-logoName" />
           </Link>
 
-
-          {/* ACTIONS */}
+          {/* RIGHT ACTIONS */}
           <div className="actions">
             <button
               className="icon-btn"
               aria-label="Search"
-              onClick={() => setSearchOpen(true)}
+              onClick={() => {
+                closeEverything();
+                setSearchOpen(true);
+              }}
             >
               <Search size={18} />
             </button>
-            <NotificationDropdown userId={userId} />
-            <Link href="/cart" className="icon-btn cart-btn" aria-label="Cart">
+
+            <div onClick={closeEverything}>
+              <NotificationDropdown userId={userId} />
+            </div>
+
+            <Link
+              href="/cart"
+              className="icon-btn cart-btn"
+              onClick={closeEverything}
+            >
               <ShoppingCart size={18} />
-              {Array.isArray(items) && items.length > 0 && (
+              {items?.length > 0 && (
                 <span className="cart-count">{items.length}</span>
               )}
             </Link>
-            <UserMenu />
+
+            <div onClick={closeEverything}>
+              <UserMenu />
+            </div>
           </div>
         </div>
       </header>
 
-      {/* MOBILE NAV */}
-      {open && (
-        <div className="mobile-nav">
-          <div className="mobile-category">
-            <button
-              className="mobile-category-btn"
-              onClick={() => setServicesOpen(!servicesOpen)}
-            >
-              <span>Services</span>
-              {servicesOpen ? (
-                <ChevronUp size={18} />
-              ) : (
-                <ChevronDown size={18} />
-              )}
-            </button>
-
-            {servicesOpen && (
-              <div className="mobile-sublist-wrapper expanded">
-                {categories.map((cat) => {
-                  const isOpen = activeCategory === cat.category;
-                  return (
-                    <div key={cat.category} className="mobile-subcategory">
-                      <button
-                        className="mobile-subcategory-btn"
-                        onClick={() =>
-                          setActiveCategory(isOpen ? null : cat.category)
-                        }
-                      >
-                        <span>{cat.category}</span>
-                        {isOpen ? (
-                          <ChevronUp size={16} />
-                        ) : (
-                          <ChevronDown size={16} />
-                        )}
-                      </button>
-
-                      <div
-                        className={`mobile-sublist-wrapper ${isOpen ? "expanded" : "collapsed"
-                          }`}
-                      >
-                        <ul className="mobile-sublist">
-                          {cat.items.map((srv: any) => {
-                            const slug = srv.slug?.current || srv.slug;
-                            return (
-                              <li key={srv._id}>
-                                <Link
-                                  href={`/services/${slug}`}
-                                  onClick={(e) => {
-                                    if (pathname === `/services/${slug}`) {
-                                      setLoading(true);
-                                      setTimeout(() => setLoading(false), 800);
-                                    } else {
-                                      setLoading(true);
-                                    }
-                                    setOpen(false);
-                                  }}
-                                >
-                                  {srv.title}
-                                </Link>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          {NAV.map((i) => (
-            <a
-              key={i.href}
-              href={i.href}
-              className="mobile-link"
-              onClick={() => setOpen(false)}
-            >
-              {i.label}
-            </a>
-          ))}
-        </div>
+      {searchOpen && (
+        <SearchModal onClose={() => {
+          closeEverything();
+          setSearchOpen(false);
+        }} />
       )}
 
-      {searchOpen && <SearchModal onClose={() => setSearchOpen(false)} />}
-
+      {mobileServicesPanel && (
+        <MobileServicesPanel
+          categories={categories}
+          onClose={closeEverything}
+        />
+      )}
     </>
   );
 }
