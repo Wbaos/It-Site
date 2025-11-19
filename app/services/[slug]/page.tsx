@@ -7,13 +7,27 @@ import ServiceReviewsWrapper from "@/components/ServiceReviewsWrapper";
 import ServiceRating from "@/components/ServiceRating";
 import BookButtonWatcher from "@/components/BookButtonWatcher";
 import FaqAccordion from "@/components/FaqAccordion";
+import ServiceGroupList from "@/components/ServiceGroupList";
+
+type SubService = {
+  title: string;
+  slug: string;
+  price?: number;
+  serviceType?: "installation" | "support";
+  showPrice?: boolean;
+  popular?: boolean;
+  description?: string;
+};
+export const revalidate = 60; 
 
 export default async function ServicePage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;
+  const { slug } = await params;   
+
+
 
   const service = await sanity.fetch(
     `*[_type == "service" && slug.current == $slug][0]{
@@ -33,17 +47,64 @@ export default async function ServicePage({
         text,
         date,
         rating
+      },
+
+      "subservices": *[_type == "service" && parentService._ref == ^._id]{
+        title,
+        "slug": slug.current,
+        price,
+        serviceType,
+        showPrice,
+        popular,
+        description
       }
     }`,
     { slug }
   );
 
-  if (!service) return notFound();
+
+if (!service) {
+  return notFound();
+}
+
+
+  const sub: SubService[] = service.subservices ?? [];
+  const hasSubServices = sub.length > 0;
+
+  const install = sub.filter((s) => s.serviceType === "installation");
+  const support = sub.filter((s) => s.serviceType === "support");
+
+  if (hasSubServices) {
+   
+    return (
+      <section className="service-detail">
+        <div className="site-container">
+
+          <Link href="/services" className="back-btn">
+            ← Back to Services
+          </Link>
+
+
+          <h1>{service.title}</h1>
+
+          {install.length > 0 && (
+            <ServiceGroupList title="Installation & Setup" items={install} />
+          )}
+
+          {support.length > 0 && (
+            <ServiceGroupList title="Support" items={support} />
+          )}
+        </div>
+      </section>
+    );
+  }
+
+ const includedList = service.details || [];
 
   return (
     <section className="service-detail">
       <div className="site-container">
-        {/* === Top Layout: Hero + Info Card === */}
+
         <div className="service-top">
           {service.image?.asset?.url && (
             <div className="service-image">
@@ -93,33 +154,27 @@ export default async function ServicePage({
               </div>
             )}
 
-            {/* Original static button */}
             <Link href={`/services/${slug}/book/step1`} className="btn-book">
               BOOK THIS SERVICE
             </Link>
           </div>
         </div>
 
-        {/* What's Included */}
-        {service.details && service.details.length > 0 && (
+        {includedList.length > 0 && (
           <div className="included-box">
             <h2>What's Included</h2>
+
             <ul className="included-list">
-              {service.details.map((d: string, i: number) => (
-                <li key={i}>{d}</li>
+              {includedList.map((item: string, i: number) => (
+                <li key={i}>{item}</li>
               ))}
             </ul>
           </div>
         )}
 
-        {/* FAQs */}
-        {service.faqs && service.faqs.length > 0 && (
-          <FaqAccordion faqs={service.faqs} />
-        )}
+        {service.faqs && <FaqAccordion faqs={service.faqs} />}
 
-
-        {/* Testimonials */}
-        {service.testimonials && service.testimonials.length > 0 && (
+        {service.testimonials?.length > 0 && (
           <TestimonialsList
             items={service.testimonials.map((t: any) => ({
               name: t.name,
@@ -132,21 +187,15 @@ export default async function ServicePage({
           />
         )}
 
-        {/* Reviews */}
-        <div className="site-container">
-          <ServiceReviewsWrapper slug={slug} />
-        </div>
+        <ServiceReviewsWrapper slug={slug} />
       </div>
 
-      {/* Floating button + observer */}
-      <BookButtonWatcher /> 
+      <BookButtonWatcher />
       <div id="floating-book-container" className="floating-book-hidden">
         <Link href={`/services/${slug}/book/step1`} className="floating-book-btn">
           BOOK THIS SERVICE
         </Link>
-    </div>
-
-
+      </div>
     </section>
   );
 }
