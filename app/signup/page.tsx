@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import SvgIcon from "@/components/common/SvgIcons";
 
 export default function SignUpPage() {
   const [status, setStatus] = useState<string | null>(null);
@@ -64,7 +65,8 @@ export default function SignUpPage() {
           onClick={() => router.back()}
           className="single-blog-back btn-reset"
         >
-          ← Back
+        <SvgIcon name="chevron-left" size={18} color="#14b8a6" />
+        Back
         </button>
 
       </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import SvgIcon from "@/components/common/SvgIcons";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -44,7 +45,8 @@ export default function ForgotPasswordPage() {
           onClick={() => router.back()}
           className="single-blog-back btn-reset"
         >
-          ← Back
+          <SvgIcon name="chevron-left" size={18} color="#14b8a6" />
+          Back
         </button>
       </div>
 

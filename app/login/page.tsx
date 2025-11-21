@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react"; // 👈 ADD THIS
+import SvgIcon from "@/components/common/SvgIcons";
 
 function LoginContent() {
   const [status, setStatus] = useState<string | null>(null);
@@ -45,7 +46,8 @@ function LoginContent() {
           onClick={() => router.back()}
           className="single-blog-back btn-reset"
         >
-          ← Back
+          <SvgIcon name="chevron-left" size={18} color="#14b8a6" />
+          Back
         </button>
       </div>
 
