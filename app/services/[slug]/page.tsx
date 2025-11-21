@@ -18,16 +18,15 @@ type SubService = {
   popular?: boolean;
   description?: string;
 };
-export const revalidate = 60; 
+
+export const revalidate = 60;
 
 export default async function ServicePage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;   
-
-
+  const { slug } = await params;
 
   const service = await sanity.fetch(
     `*[_type == "service" && slug.current == $slug][0]{
@@ -62,11 +61,9 @@ export default async function ServicePage({
     { slug }
   );
 
-
-if (!service) {
-  return notFound();
-}
-
+  if (!service) {
+    return notFound();
+  }
 
   const sub: SubService[] = service.subservices ?? [];
   const hasSubServices = sub.length > 0;
@@ -74,16 +71,22 @@ if (!service) {
   const install = sub.filter((s) => s.serviceType === "installation");
   const support = sub.filter((s) => s.serviceType === "support");
 
+  const modeLabel =
+    service.mode === "in-home"
+      ? "In-Home"
+      : service.mode === "online"
+      ? "Online"
+      : service.mode === "both"
+      ? "Online + In-Home"
+      : null;
+
   if (hasSubServices) {
-   
     return (
       <section className="service-detail">
         <div className="site-container">
-
           <Link href="/services" className="back-btn">
             ← Back to Services
           </Link>
-
 
           <h1>{service.title}</h1>
 
@@ -99,12 +102,11 @@ if (!service) {
     );
   }
 
- const includedList = service.details || [];
+  const includedList = service.details || [];
 
   return (
     <section className="service-detail">
       <div className="site-container">
-
         <div className="service-top">
           {service.image?.asset?.url && (
             <div className="service-image">
@@ -129,16 +131,9 @@ if (!service) {
               />
             )}
 
-            {(service.mode || service.category?.title) && (
+            {modeLabel && (
               <span className="service-tag">
-                {service.mode === "in-home"
-                  ? "In-Home"
-                  : service.mode === "online"
-                  ? "Online"
-                  : service.mode === "both"
-                  ? "Online + In-Home"
-                  : ""}
-                {service.category?.title && ` · ${service.category.title}`}
+                {modeLabel}
               </span>
             )}
 
