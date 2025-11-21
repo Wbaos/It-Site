@@ -32,13 +32,16 @@ export default async function Services() {
           <Link key={s._id} href={`/services/${s.slug}`} className="service-card">
 
             <div className="service-card-icon">
-              <Image
-                src={urlFor(s.icon).width(90).height(90).url()}
-                alt={s.title}
-                width={90}
-                height={90}
-              />
+              {s.icon && (
+                <Image
+                  src={urlFor(s.icon).width(90).height(90).url()}
+                  alt={s.title}
+                  width={90}
+                  height={90}
+                />
+              )}
             </div>
+
 
             <h3 className="service-card-title">{s.title}</h3>
 
