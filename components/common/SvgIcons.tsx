@@ -203,7 +203,7 @@ export default function SvgIcon({
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 240 55"
-                    width="200"
+                    width={size}
                     className={className}
                     role="img"
                     aria-label="CallTechCare"
@@ -217,18 +217,17 @@ export default function SvgIcon({
                         <g transform="translate(8,8) scale(1.45)">
                             <path
                                 d="M16 2C10.25 2 5.5 6.582 5.5 12v4a2.5 2.5 0 0 0 2.5 2.5h1.5a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H8.5C8.65 8.5 12 5.5 16 5.5S23.35 8.5 23.5 13.5H22a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h1.5a2.5 2.5 0 0 0 2.5-2.5v-4C26 6.582 21.25 2 16 2Zm4.8 16.5a.75.75 0 0 0-1.03.28c-.42.8-1.26 1.42-2.27 1.42h-1.5a1 1 0 1 0 0 2h1.5c1.94 0 3.64-1.2 4.35-2.6a.75.75 0 0 0-.28-1.07Z"
-                                fill="#14b8a6"
+                                fill={color || "#14b8a6"}
                             />
                         </g>
 
                         <text
                             x="50"
                             y="38"
-                            fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif"
+                            fontFamily="system-ui"
                             fontSize="30"
                             fontWeight="700"
-                            fill="#14b8a6"
-                            style={{ letterSpacing: "-0.4px" }}
+                            fill={color || "#14b8a6"}
                         >
                             Call
                         </text>
@@ -236,11 +235,10 @@ export default function SvgIcon({
                         <text
                             x="103"
                             y="38"
-                            fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif"
                             fontSize="30"
+                            fontFamily="system-ui"
                             fontWeight="700"
-                            fill="#14b8a6"
-                            style={{ letterSpacing: "-0.4px" }}
+                            fill={color || "#14b8a6"}
                         >
                             TechCare
                         </text>

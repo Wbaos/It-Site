@@ -113,7 +113,14 @@ export default function Navbar() {
       <header className="site-header">
         <div className="site-container-var nav-grid">
           {/* LEFT SLOT */}
-          <div className="left-slot">
+        
+
+          {/* BRAND */}
+          <Link href="/" className="brand" onClick={closeEverything}>
+            <SvgIcon name="calltechcare-logoName" color="#fff" size={180} />
+          </Link>
+
+            <div className="left-slot">
             <button
               className="menu-toggle"
               onClick={() => {
@@ -328,16 +335,21 @@ export default function Navbar() {
               </div>
 
               {/* NAV LINKS */}
-              {NAV.map((i) => (
-                <Link
-                  key={i.href}
-                  href={i.href}
-                  className="nav-link"
-                  onClick={closeEverything}
-                >
-                  {i.label}
-                </Link>
-              ))}
+              {NAV.map((i) => {
+                const isActive = pathname === i.href; 
+
+                return (
+                  <Link
+                    key={i.href}
+                    href={i.href}
+                    className={`nav-link ${isActive ? "active-nav-link" : ""}`} 
+                    onClick={closeEverything}
+                  >
+                    {i.label}
+                  </Link>
+                );
+              })}
+
 
               {/* LOGIN MOBILE */}
               <Link
@@ -358,11 +370,6 @@ export default function Navbar() {
               </Link>
             </nav>
           </div>
-
-          {/* BRAND */}
-          <Link href="/" className="brand" onClick={closeEverything}>
-            <SvgIcon name="calltechcare-logoName" />
-          </Link>
 
           {/* RIGHT ACTIONS */}
           <div className="actions">
