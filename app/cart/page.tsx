@@ -48,7 +48,7 @@ export default function CartPage() {
                 <div className="cart-info">
                   <h2 className="item-title">
                     {item.title} —{" "}
-                    <span className="option-price">${item.basePrice}</span>
+                    {/* <span className="option-price">${item.basePrice}</span> */}
                   </h2>
 
                   {item.options?.length ? (
