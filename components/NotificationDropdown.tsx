@@ -6,6 +6,7 @@ import { useNav } from "@/lib/NavContext";
 
 type Notification = {
   _id: string;
+  title: string;
   message: string;
   type: "success" | "info" | "error";
   createdAt: string;
@@ -13,10 +14,22 @@ type Notification = {
 };
 
 export default function NotificationDropdown({ userId }: { userId: string }) {
-  const { notifOpen, setNotifOpen, setOpen } = useNav();
+  const { notifOpen, setNotifOpen, closeAll } = useNav();
+
   const [notifs, setNotifs] = useState<Notification[]>([]);
-  const [newNotifIds, setNewNotifIds] = useState<Set<string>>(new Set());
+  const [visibleCount, setVisibleCount] = useState(5); // Show first 5
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  function formatTimeAgo(dateString: string) {
+    const now = new Date();
+    const past = new Date(dateString);
+    const diff = Math.floor((now.getTime() - past.getTime()) / 1000);
+
+    if (diff < 60) return "Just now";
+    if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
+    return `${Math.floor(diff / 86400)} days ago`;
+  }
 
   // Fetch notifications
   useEffect(() => {
@@ -26,13 +39,10 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId }),
       });
+
       const data = await res.json();
       if (data.ok) {
         setNotifs(data.notifications);
-        const freshIds = data.notifications
-          .filter((n: Notification) => !n.read)
-          .map((n: Notification) => n._id);
-        setNewNotifIds(new Set(freshIds));
       }
     }
     fetchNotifications();
@@ -41,21 +51,20 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
   const unreadCount = notifs.filter((n) => !n.read).length;
 
   const toggleDropdown = async () => {
-    const newOpen = !notifOpen;
-    setNotifOpen(newOpen);
-
-    if (newOpen) {
-      setOpen(false);
-
-      setNotifs((prev) => prev.map((n) => ({ ...n, read: true })));
-      fetch("/api/notifications/mark-read", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId }),
-      }).catch(console.error);
-    } else {
-      setNewNotifIds(new Set());
+    if (notifOpen) {
+      setNotifOpen(false);
+      return;
     }
+
+    closeAll(); 
+    setNotifOpen(true);
+
+    setNotifs((prev) => prev.map((n) => ({ ...n, read: true })));
+    fetch("/api/notifications/mark-read", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
+    }).catch(console.error);
   };
 
   useEffect(() => {
@@ -65,16 +74,13 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setNotifOpen(false);
-        setNewNotifIds(new Set());
+        closeAll();
       }
     }
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [notifOpen, setNotifOpen]);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [notifOpen, closeAll]);
 
   return (
     <div className="notification-wrapper" ref={dropdownRef}>
@@ -89,23 +95,32 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
 
       {notifOpen && (
         <div className="notification-dropdown">
+          <h3 className="notif-header">Notifications</h3>
+
           <div className="notification-list">
             {notifs.length === 0 && <p className="empty">No notifications</p>}
-            {notifs.map((n) => (
-              <div
-                key={n._id}
-                className={`notification-item ${n.type} ${
-                  newNotifIds.has(n._id) ? "new-notification" : ""
-                }`}
-              >
-                <p>{n.message}</p>
-                <small>
-                  {new Date(n.createdAt).toLocaleDateString()}{" "}
-                  {new Date(n.createdAt).toLocaleTimeString()}
-                </small>
+
+            {notifs.slice(0, visibleCount).map((n) => (
+              <div key={n._id} className="notification-row">
+                <div className="notification-dot"></div>
+
+                <div>
+                  <p className="notification-title">{n.title}</p>
+                  <p className="notification-desc">{n.message}</p>
+                  <p className="notification-time">{formatTimeAgo(n.createdAt)}</p>
+                </div>
               </div>
             ))}
           </div>
+
+          {visibleCount < notifs.length && (
+            <button
+              className="show-more-btn"
+              onClick={() => setVisibleCount((prev) => prev + 5)}
+            >
+              Show more
+            </button>
+          )}
         </div>
       )}
     </div>
