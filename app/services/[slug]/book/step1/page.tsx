@@ -171,13 +171,13 @@ export default function Step1({
   const addOnsTotal = addOns.reduce((sum, o) => sum + (o.price || 0), 0);
   const subtotal = service ? service.price + addOnsTotal : 0;
 
-  // --- Save to cart and go to Step 2
   const handleNext = async () => {
     if (!service) return;
 
     const updatedItem = {
       slug,
       title: service.title,
+      description: service.description,
       basePrice: service.price,
       price: subtotal,
       options: addOns,

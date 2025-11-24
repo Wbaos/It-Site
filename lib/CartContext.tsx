@@ -18,6 +18,7 @@ type CartItem = {
   id: string;
   slug: string;
   title: string;
+  description?: string; 
   basePrice: number;
   price: number;
   options?: CartOption[];

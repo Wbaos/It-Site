@@ -13,6 +13,8 @@ const CartItemSchema = new Schema(
     id: { type: String, required: false },
     slug: { type: String, required: true },
     title: { type: String, required: true },
+    description: { type: String },
+
     basePrice: { type: Number, required: true },
     price: { type: Number, required: true },
     options: [CartOptionSchema],
