@@ -56,7 +56,7 @@ export default function Navbar() {
 
   const [categories, setCategories] = useState<any[]>([]);
   const [loadingServices, setLoadingServices] = useState(true);
-  const [searchOpen, setSearchOpen] = useState(false);
+  const { searchOpen, setSearchOpen, closeAll } = useNav();
 
   const [activeService, setActiveService] =
     useState<ActiveServiceType | null>(null);
@@ -93,12 +93,23 @@ export default function Navbar() {
   }, [dropdownOpen]);
 
   useEffect(() => {
-    if (open || notifOpen || dropdownOpen || mobileServicesPanel) {
+    const isMobile = window.innerWidth <= 900;
+
+    if (
+      isMobile &&
+      (open || notifOpen || dropdownOpen || mobileServicesPanel || searchOpen)
+    ) {
       document.body.classList.add("no-scroll");
     } else {
       document.body.classList.remove("no-scroll");
     }
-  }, [open, notifOpen, dropdownOpen, mobileServicesPanel]);
+  }, [
+    open,
+    notifOpen,
+    dropdownOpen,
+    mobileServicesPanel,
+    searchOpen
+  ]);
 
   function closeEverything() {
     setOpen(false);
@@ -117,7 +128,12 @@ export default function Navbar() {
 
           {/* BRAND */}
           <Link href="/" className="brand" onClick={closeEverything}>
-            <SvgIcon name="calltechcare-logoName" color="#fff" size={180} />
+            <div className="logo-wrapper">
+              <SvgIcon name="calltechcare-logoName" color="#fff" size={180} className="logo-desktop" />
+
+              <SvgIcon name="calltechcare-logoMobile" color="#fff" size={100} className="logo-mobile" />
+            </div>
+
           </Link>
 
             <div className="left-slot">
@@ -376,8 +392,15 @@ export default function Navbar() {
             <button
               className="icon-btn"
               aria-label="Search"
-              onClick={() => {
-                closeEverything();
+              onClick={(e) => {
+                e.stopPropagation();
+
+                if (searchOpen) {
+                  setSearchOpen(false);
+                  return;
+                }
+
+                closeAll();
                 setSearchOpen(true);
               }}
             >

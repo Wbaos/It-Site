@@ -3,6 +3,7 @@ interface SvgIconProps {
     | "user-avatar"
     | "calltechcare-logo"
     | "calltechcare-logoName"
+    | "calltechcare-logoMobile"
     | "facebook"
     | "instagram"
     | "linkedin"
@@ -243,6 +244,50 @@ export default function SvgIcon({
                             TechCare
                         </text>
                     </g>
+                </svg>
+            );
+            
+
+        // ---------------------- Logo Mobile (Stacked) ------------------------
+         
+        case "calltechcare-logoMobile":
+            return (
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 130 52"
+                width={size}
+                className={className}
+                role="img"
+                aria-label="CallTechCare"
+                >
+                <g transform="translate(3,1) scale(1.1)">
+                    <path
+                    d="M16 2C10.25 2 5.5 6.582 5.5 12v4a2.5 2.5 0 0 0 2.5 2.5h1.5a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H8.5C8.65 8.5 12 5.5 16 5.5S23.35 8.5 23.5 13.5H22a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h1.5a2.5 2.5 0 0 0 2.5-2.5v-4C26 6.582 21.25 2 16 2Zm4.8 16.5a.75.75 0 0 0-1.03.28c-.42.8-1.26 1.42-2.27 1.42h-1.5a1 1 0 1 0 0 2h1.5c1.94 0 3.64-1.2 4.35-2.6a.75.75 0 0 0-.28-1.07Z"
+                    fill={color || "#14b8a6"}
+                    />
+                </g>
+
+                <text
+                    x="38"
+                    y="24"
+                    fontFamily="system-ui"
+                    fontSize="23"
+                    fontWeight="700"
+                    fill={color || "#14b8a6"}
+                >
+                    Call
+                </text>
+
+                <text
+                    x="10"
+                    y="50"
+                    fontFamily="system-ui"
+                    fontSize="23"
+                    fontWeight="700"
+                    fill={color || "#14b8a6"}
+                >
+                    TechCare
+                </text>
                 </svg>
             );
 

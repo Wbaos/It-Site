@@ -52,7 +52,7 @@ export default function UserMenu() {
                 <li>
                   <Link
                     href="/login"
-                    className="user-item"
+                    className="login-btn"
                     onClick={() => setUserMenuOpen(false)}
                   >
                     Log In
@@ -61,7 +61,7 @@ export default function UserMenu() {
                 <li>
                   <Link
                     href="/signup"
-                    className="user-item"
+                    className="signup-btn"
                     onClick={() => setUserMenuOpen(false)}
                   >
                     Sign Up
@@ -73,7 +73,7 @@ export default function UserMenu() {
                 <li>
                   <Link
                     href="/account"
-                    className="user-item"
+                    className="user-item account-link"
                     onClick={() => setUserMenuOpen(false)}
                   >
                     My Account
@@ -85,13 +85,14 @@ export default function UserMenu() {
                       setUserMenuOpen(false);
                       signOut({ callbackUrl: "/" });
                     }}
-                    className="logout"
+                    className="logout-btn"
                   >
                     Log Out
                   </button>
                 </li>
               </>
             )}
+
           </ul>
         </div>
       )}

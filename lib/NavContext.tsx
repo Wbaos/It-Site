@@ -5,10 +5,17 @@ import { createContext, useContext, useState, ReactNode } from "react";
 type NavContextType = {
   dropdownOpen: boolean;
   setDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  open: boolean;
+
+  open: boolean;   
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  notifOpen: boolean;
+
+  notifOpen: boolean; 
   setNotifOpen: React.Dispatch<React.SetStateAction<boolean>>;
+
+  searchOpen: boolean;
+  setSearchOpen: React.Dispatch<React.SetStateAction<boolean>>;
+
+  closeAll: () => void;
 };
 
 const NavContext = createContext<NavContextType | undefined>(undefined);
@@ -17,6 +24,14 @@ export function NavProvider({ children }: { children: ReactNode }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  const closeAll = () => {
+    setDropdownOpen(false);
+    setOpen(false);
+    setNotifOpen(false);
+    setSearchOpen(false);
+  };
 
   return (
     <NavContext.Provider
@@ -27,6 +42,9 @@ export function NavProvider({ children }: { children: ReactNode }) {
         setOpen,
         notifOpen,
         setNotifOpen,
+        searchOpen,
+        setSearchOpen,
+        closeAll,
       }}
     >
       {children}

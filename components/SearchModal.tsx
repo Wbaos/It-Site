@@ -2,116 +2,124 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Search, X } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function SearchModal({ onClose }: { onClose: () => void }) {
-    const [query, setQuery] = useState("");
-    const [results, setResults] = useState<any[]>([]);
-    const [loading, setLoading] = useState(false);
-    const modalRef = useRef<HTMLDivElement>(null);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<any[]>([]);
+  const [popular, setPopular] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (
-                modalRef.current &&
-                !modalRef.current.contains(event.target as Node)
-            ) {
-                onClose();
-            }
-        }
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    }
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
     }, [onClose]);
 
-    useEffect(() => {
-        if (!query.trim()) {
-            setResults([]);
-            return;
-        }
+  useEffect(() => {
+    fetch("/api/popular-searches")
+      .then((res) => res.json())
+      .then((data) => setPopular(data.results || []))
+      .catch(() => setPopular([]));
+  }, []);
 
-        const delay = setTimeout(async () => {
-            setLoading(true);
-            try {
-                const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-                const data = await res.json();
-                setResults(data.results || []);
-            } catch (err) {
-                console.error("Search error:", err);
-            } finally {
-                setLoading(false);
-            }
-        }, 400);
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      return;
+    }
 
-        return () => clearTimeout(delay);
-    }, [query]);
+    const delay = setTimeout(async () => {
+      setLoading(true);
 
-    return (
-        <>
-            <div className="overlay" />
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        const data = await res.json();
+        setResults(data.results || []);
+      } catch (err) {
+        console.error("Search error:", err);
+      } finally {
+        setLoading(false);
+      }
+    }, 400);
 
-            <div className="search-modal">
-                <div ref={modalRef} className="search-box">
-                    <div className="input-group">
-                        <Search size={18} />
-                        <input
-                            type="text"
-                            placeholder="Search for a service..."
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            autoFocus
-                        />
+    return () => clearTimeout(delay);
+  }, [query]);
 
-                        <button
-                            onClick={onClose}
-                            className="close-btn"
-                            aria-label="Close search"
+  return (
+    <>
+      <div className="overlay" onClick={onClose} />
+
+      <div className="search-modal">
+        <div ref={modalRef} className="search-box" onClick={(e) => e.stopPropagation()}>
+          
+          <h3 className="search-title">Search Services</h3>
+
+          <div className="input-group">
+            <Search size={18} />
+            <input
+              type="text"
+              placeholder="Search for a service..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              autoFocus
+            />
+            <button className="close-btn" onClick={onClose}>
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="results">
+            {!query && popular.length > 0 && (
+              <div className="popular-section">
+                <p className="popular-title">Popular Searches</p>
+
+                {popular.map((item: any) => (
+                  <Link
+                    key={item._id}
+                    href={`/services/${item.slug}`}
+                    className="popular-item"
+                    onClick={onClose}
+                  >
+                    <span className="icon">{item.emoji || "⭐"}</span>
+                    <span>{item.title}</span>
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            {loading && <p>Searching...</p>}
+
+            {!loading && query && results.length > 0 && (
+              <>
+                {results.map((r) => {
+                    const slug = typeof r.slug === "string" ? r.slug : r.slug?.current;
+
+                    return (
+                        <Link
+                        key={r._id}
+                        href={`/services/${slug}`}
+                        className="result-item"
+                        onClick={onClose}
                         >
-                            <X size={20} />
-                        </button>
+                        <div>
+                            <p className="title">{r.title}</p>
                         </div>
+                        </Link>
+                    );
+                    })}
+              </>
+            )}
 
-
-                    <div className="results">
-                        {loading && <p>Searching...</p>}
-
-                        {!loading && results.length > 0 && (
-                            <>
-                                {results.map((r) => {
-                                    const slug = r.slug?.current || r.slug;
-                                    return (
-                                        <Link
-                                            href={`/services/${slug}`}
-                                            key={r._id}
-                                            className="result-item"
-                                            onClick={onClose}
-                                        >
-                                            {r.image?.asset?.url && (
-                                                <Image
-                                                    src={r.image.asset.url}
-                                                    alt={r.title}
-                                                    width={50}
-                                                    height={50}
-                                                />
-                                            )}
-                                            <div>
-                                                <p className="title">{r.title}</p>
-                                                {r.category && <p className="category">{r.category}</p>}
-                                            </div>
-                                        </Link>
-                                    );
-                                })}
-
-                            </>
-                        )}
-
-                        {!loading && query && results.length === 0 && (
-                            <p>No results found.</p>
-                        )}
-                    </div>
-                </div>
-            </div>
-        </>
-    );
+            {!loading && query && results.length === 0 && <p>No results found.</p>}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
