@@ -19,7 +19,7 @@ export default function Hero({
   titleLine2 = "for Homes & Seniors",
   subtitle = "Serving Miami, Pembroke Pines, Broward & Homestead with fast WiFi fixes, computer help, smart-home setups, and patient device support.",
   badgeText = "Trusted In-Home Tech Support Across South Florida",
-  primaryCtaText = "Get Started",
+  primaryCtaText = "Contact Us",
   primaryCtaHref = "#contact",
   secondaryCtaText = "See All Services",
   secondaryCtaHref = "/#services",
@@ -48,7 +48,7 @@ export default function Hero({
       <div className="hero-ctas">
         {primaryCtaText && primaryCtaHref && (
           <a href={primaryCtaHref} className="btn-cta btn-primary">
-            {primaryCtaText} →
+            {primaryCtaText}
           </a>
         )}
 
