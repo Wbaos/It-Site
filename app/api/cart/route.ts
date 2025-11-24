@@ -27,13 +27,15 @@ export async function POST(req: Request) {
   try {
     await connectDB();
     const sessionId = await getSessionId();
-    const { slug, title, basePrice, options } = await req.json();
+
+    const { slug, title, description, basePrice, options } = await req.json();
 
     const addonsTotal =
       options?.reduce(
         (sum: number, opt: { price?: number }) => sum + (opt.price || 0),
         0
       ) || 0;
+
     const totalPrice = (basePrice || 0) + addonsTotal;
 
     let cart = await CartModel.findOne({ sessionId });
@@ -46,6 +48,7 @@ export async function POST(req: Request) {
         id: randomUUID(),
         slug,
         title,
+        description,
         basePrice,
         price: totalPrice,
         options,
@@ -66,6 +69,7 @@ export async function PUT(req: Request) {
     await connectDB();
     const sessionId = await getSessionId();
     const body = await req.json();
+
     const { id, quantity, contact, address, schedule, ...updates } = body;
 
     const cart = await CartModel.findOne({ sessionId });
@@ -77,16 +81,18 @@ export async function PUT(req: Request) {
       const itemIndex = cart.items.findIndex((i: any) => i.id === id);
       if (itemIndex !== -1) {
         const current = cart.items[itemIndex];
+
         cart.items[itemIndex] = {
           ...current,
-          ...updates,
+          ...updates,      
           id: current.id,
           slug: current.slug,
           title: current.title,
+          description: updates.description ?? current.description, 
           basePrice: updates.basePrice ?? current.basePrice,
           price: updates.price ?? current.price,
           options: updates.options ?? current.options,
-          quantity: quantity ?? current.quantity,
+          quantity: Math.max(1, quantity ?? current.quantity),
         };
       }
     }
@@ -112,8 +118,10 @@ export async function PUT(req: Request) {
 export async function DELETE(req: Request) {
   await connectDB();
   const sessionId = await getSessionId();
+
   const cart = await CartModel.findOne({ sessionId });
-  if (!cart) return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+  if (!cart)
+    return NextResponse.json({ error: "Cart not found" }, { status: 404 });
 
   const body = await req.json().catch(() => null);
   const id = body?.id;
