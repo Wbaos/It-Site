@@ -62,7 +62,7 @@ export const homeSections: Section[] = [
 
         badgeText: "Trusted Tech Support for Homes & Small Businesses in South Florida",
 
-        primaryCtaText: "Get Started",
+        primaryCtaText: "Contact Us",
         primaryCtaHref: "#contact",
 
         secondaryCtaText: "See All Services",

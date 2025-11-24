@@ -792,7 +792,7 @@ main {
 
 .notification-dropdown h3 {
   margin: 0;
-  padding: 0 16px 12px 16px;
+  padding: 30px 16px 12px 16px;
   font-size: 18px;
   font-weight: 600;
   color: white;
@@ -1898,7 +1898,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: start;
-  padding-top: 63px;
+  padding-top: 66px;
 }
 
 .search-box {
@@ -2059,6 +2059,9 @@ main {
     border-radius: 0;
     border: none;
   }
+  .search-modal{
+    padding-top: 63px;
+  }
 }
 /*=====Navbar Drop Down=====*/
 .svc-card {
@@ -2163,9 +2166,6 @@ main {
 
 @media(min-width : 900px){
   .support-btn{
-    display: none;
-  }
-  .mobile-only{
     display: none;
   }
 }
@@ -2470,9 +2470,7 @@ main {
     pointer-events: auto;
   }
 
-  /* .actions{
-    display: none;
-  } */
+
   .primary-nav .nav-link {
     font-size: 1.25rem;
     font-weight: 600;
@@ -2486,9 +2484,7 @@ main {
     color: #14b8a6;
   }
 
-  .mobile-only {
-    display: block !important;
-  }
+
 
   .desktop-only {
     display: none !important;

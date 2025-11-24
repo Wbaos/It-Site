@@ -153,10 +153,11 @@ export default function Navbar() {
                 {/* SERVICES BUTTON */}
                 <a
                   href="#"
-                  className="nav-link"
+                  className={`nav-link ${dropdownOpen ? "active-nav-link" : ""}`}
                   onClick={(e) => {
                     e.preventDefault();
 
+                    // MOBILE
                     if (window.innerWidth < 900) {
                       if (mobileServicesPanel) {
                         closeEverything();
@@ -167,6 +168,7 @@ export default function Navbar() {
                       return;
                     }
 
+                    // DESKTOP
                     closeEverything();
                     setDropdownOpen(true);
                   }}
@@ -352,29 +354,20 @@ export default function Navbar() {
 
               {/* NAV LINKS */}
               {NAV.map((i) => {
-                const isActive = pathname === i.href; 
+                const isActive =
+                  !dropdownOpen && pathname === i.href; 
 
                 return (
                   <Link
                     key={i.href}
                     href={i.href}
-                    className={`nav-link ${isActive ? "active-nav-link" : ""}`} 
+                    className={`nav-link ${isActive ? "active-nav-link" : ""}`}
                     onClick={closeEverything}
                   >
                     {i.label}
                   </Link>
                 );
               })}
-
-
-              {/* LOGIN MOBILE */}
-              <Link
-                href="/login"
-                className="nav-link mobile-only"
-                onClick={closeEverything}
-              >
-                Login
-              </Link>
 
               {/* GET SUPPORT */}
               <Link
