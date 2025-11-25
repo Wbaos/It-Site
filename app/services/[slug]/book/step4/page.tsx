@@ -57,37 +57,35 @@ export default function Step4({
   }, [scheduleParam, setSchedule]);
 
   const handleFinish = async () => {
-    if (!validateRequired()) {
-      alert("Please select both date and time before continuing.");
-      return;
-    }
+  if (!validateRequired()) {
+    alert("Please select both date and time before continuing.");
+    return;
+  }
 
-    setLoading(true);
-    try {
-      // save schedule in cart
-      await fetch("/api/cart", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ schedule }),
-        credentials: "include",
-      });
+  setLoading(true);
+  try {
+    await fetch("/api/cart", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ schedule }),
+    });
 
-      // start checkout
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
 
-      const { url } = await res.json();
-      if (url) window.location.href = url;
-    } catch (err) {
-      console.error("Checkout error:", err);
-      alert("Something went wrong with checkout.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    const { url } = await res.json();
+    if (url) router.push(url); 
+  } catch (err) {
+    console.error("Checkout error:", err);
+    alert("Something went wrong with checkout.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (!slug) return null;
 
