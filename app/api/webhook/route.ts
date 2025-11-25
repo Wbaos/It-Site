@@ -7,6 +7,7 @@ import { connectDB } from "@/lib/mongodb";
 import { Order } from "@/app/models/Order";
 import { Notification } from "@/app/models/Notification";
 import { Cart } from "@/app/models/Cart";
+import { User } from "@/app/models/User"; // ⭐ REQUIRED
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-08-27.basil",
@@ -21,6 +22,7 @@ function getNextPaymentDate(sub: Stripe.Subscription): string | null {
     s.current_period_end ??
     s.items?.data?.[0]?.current_period_end ??
     null;
+
   return end ? new Date(end * 1000).toISOString() : null;
 }
 
@@ -55,14 +57,9 @@ export async function POST(req: Request) {
       }
 
       // Skip if order already exists
-      const existingOrder = await Order.findOne({
-        stripeSessionId: session.id,
-      });
-      if (existingOrder) {
-        return NextResponse.json({ received: true });
-      }
+      const existingOrder = await Order.findOne({ stripeSessionId: session.id });
+      if (existingOrder) return NextResponse.json({ received: true });
 
-      // Extract data
       const userId = session.metadata?.userId || null;
       const email =
         session.metadata?.email ||
@@ -75,6 +72,7 @@ export async function POST(req: Request) {
       const cart = sessionId ? await Cart.findOne({ sessionId }) : null;
 
       // Create order
+
       const order = await Order.create({
         stripeSessionId: session.id,
         userId,
@@ -89,48 +87,16 @@ export async function POST(req: Request) {
         schedule: cart?.schedule || {},
       });
 
-      //  Send confirmation email via your own API route
-      try {
-        console.log(` Sending confirmation email to ${email}...`);
-
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/send-order-email`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              customerEmail: email,
-              serviceTitle:
-                cart?.items?.[0]?.title || "CallTechCare Service Booking",
-              basePrice: cart?.items?.[0]?.basePrice || total,
-              addOns: cart?.items?.[0]?.options || [],
-              total,
-            }),
-          }
-        );
-
-        const data = await res.json();
-        if (data?.success) {
-          console.log(` Order confirmation email sent to ${email}`);
-        } else {
-          console.warn(
-            `⚠️ Failed to send confirmation email: ${data?.error || "Unknown error"}`
-          );
-        }
-      } catch (emailErr) {
-        console.error(" Error while sending confirmation email:", emailErr);
-      }
-
-      // Empty cart after successful payment
+      // Clear cart
       if (sessionId) {
         await Cart.findOneAndUpdate({ sessionId }, { items: [] });
       }
 
-      // Create in-app notification
+      // Notification
       if (userId) {
         await Notification.create({
           userId,
-          message: `Your payment of $${order.total} has been completed successfully.`,
+          message: `Your payment of $${order.total} has been completed.`,
           type: "success",
           read: false,
         });
@@ -139,7 +105,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ received: true });
     }
 
-    // ================================================================
+   // ================================================================
     // SUBSCRIPTION CREATED
     // ================================================================
     if (event.type === "customer.subscription.created") {
@@ -160,13 +126,27 @@ export async function POST(req: Request) {
       const userId = (sub.metadata as any)?.userId || null;
       const email = (sub.metadata as any)?.email || "unknown";
 
+      /*  SAVE STRIPE CUSTOMER ID TO USER  */
+      if (sub.customer && userId) {
+        try {
+          await User.findByIdAndUpdate(
+            userId,
+            { stripeCustomerId: sub.customer as string },
+            { new: true }
+          );
+          console.log(" Saved stripeCustomerId to user:", sub.customer);
+        } catch (err) {
+          console.error(" Failed to save stripeCustomerId:", err);
+        }
+      }
+
+      // Skip duplicates
       const existingOrder = await Order.findOne({
         stripeSubscriptionId: sub.id,
       });
-      if (existingOrder) {
-        return NextResponse.json({ received: true });
-      }
+      if (existingOrder) return NextResponse.json({ received: true });
 
+      // Create order
       await Order.create({
         stripeSubscriptionId: sub.id,
         userId,
@@ -184,7 +164,7 @@ export async function POST(req: Request) {
       if (userId) {
         await Notification.create({
           userId,
-          message: `Your ${planName} subscription ($${planPrice}/${planInterval}) has been created.`,
+          message: `Your ${planName} subscription ($${planPrice}/${planInterval}) has started.`,
           type: "success",
           read: false,
         });
@@ -201,10 +181,10 @@ export async function POST(req: Request) {
         subscription?: string;
       };
 
-      if (!invoice.subscription) {
+      if (!invoice.subscription)
         return NextResponse.json({ received: true });
-      }
 
+      // If new subscription invoice
       if (invoice.billing_reason === "subscription_create") {
         const sub = await stripe.subscriptions.retrieve(invoice.subscription, {
           expand: ["items.data.price.product"],
@@ -225,12 +205,24 @@ export async function POST(req: Request) {
         const email = invoice.customer_email || "unknown";
         const userId = (invoice.metadata as any)?.userId || null;
 
+        /*  SAVE CUSTOMER ID IN CREATION INVOICE TOO  */
+        if (sub.customer && userId) {
+          try {
+            await User.findByIdAndUpdate(
+              userId,
+              { stripeCustomerId: sub.customer as string },
+              { new: true }
+            );
+            console.log("🔐 Saved stripeCustomerId (invoice) to user:", sub.customer);
+          } catch (err) {
+            console.error("❌ Failed to save stripeCustomerId (invoice):", err);
+          }
+        }
+
         const existingOrder = await Order.findOne({
           stripeSubscriptionId: sub.id,
         });
-        if (existingOrder) {
-          return NextResponse.json({ received: true });
-        }
+        if (existingOrder) return NextResponse.json({ received: true });
 
         await Order.create({
           stripeSubscriptionId: sub.id,
@@ -249,7 +241,7 @@ export async function POST(req: Request) {
         if (userId) {
           await Notification.create({
             userId,
-            message: `Your ${planName} subscription ($${planPrice}/${planInterval}) has started successfully.`,
+            message: `Your ${planName} subscription has started.`,
             type: "success",
             read: false,
           });
@@ -299,11 +291,11 @@ export async function POST(req: Request) {
           const customer = (await stripe.customers.retrieve(
             sub.customer
           )) as Stripe.Customer;
-          if (!("deleted" in customer) && "email" in customer) {
+          if (!("deleted" in customer)) {
             email = (customer as any).email || "unknown";
           }
-        } catch (e) {
-          console.error(" Failed to fetch customer email:", e);
+        } catch {
+          console.log("Could not fetch customer email.");
         }
       }
 
@@ -315,7 +307,7 @@ export async function POST(req: Request) {
       if (userId) {
         await Notification.create({
           userId,
-          message: `Your subscription (${email}) has been canceled.`,
+          message: `Your subscription has been canceled.`,
           type: "info",
           read: false,
         });
