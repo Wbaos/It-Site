@@ -112,22 +112,39 @@ export default function Step1({
   useEffect(() => {
     if (isEdit && editId && service) {
       const itemToEdit = items.find((i: any) => i.id === editId);
-      if (itemToEdit && Array.isArray(itemToEdit.options) && service.questions) {
-        const prefilled: Record<string, any> = {};
-        service.questions.forEach((q) => {
-          const match = itemToEdit.options?.find((opt: any) =>
-            opt.name.includes(q.shortLabel || q.label)
-          );
-          if (match) {
-            if (q.type === "checkbox") prefilled[q.id] = true;
-            else if (q.type === "select") prefilled[q.id] = match.name.split(": ")[1];
-            else if (q.type === "text") prefilled[q.id] = match.name.split(": ")[1];
+      if (!itemToEdit || !service.questions) return;
+
+      const prefilled: Record<string, any> = {};
+
+      service.questions.forEach((q) => {
+        if (q.type === "multi-select") {
+          const selected = itemToEdit.options
+            ?.filter((opt: any) =>
+              opt.name.startsWith((q.shortLabel || q.label) + ":")
+            )
+            .map((opt: any) => opt.name.split(": ")[1]);
+
+          if (selected && selected.length > 0) {
+            prefilled[q.id] = selected;
           }
-        });
-        setResponses(prefilled);
-      }
+          return;
+        }
+
+        const match = itemToEdit.options?.find((opt: any) =>
+          opt.name.includes(q.shortLabel || q.label)
+        );
+
+        if (!match) return;
+
+        if (q.type === "checkbox") prefilled[q.id] = true;
+        else if (q.type === "select") prefilled[q.id] = match.name.split(": ")[1];
+        else if (q.type === "text") prefilled[q.id] = match.name.split(": ")[1];
+      });
+
+      setResponses(prefilled);
     }
   }, [isEdit, editId, items, service]);
+
 
   // --- Compute Add-ons and totals
   const addOns: AddOn[] =
@@ -170,6 +187,33 @@ export default function Step1({
 
   const addOnsTotal = addOns.reduce((sum, o) => sum + (o.price || 0), 0);
   const subtotal = service ? service.price + addOnsTotal : 0;
+  
+  const handleAddToCart = async () => {
+    if (!service) return;
+
+    const itemToEdit = items.find((i: any) => i.id === editId);
+
+    const updatedItem = {
+      id: editId || itemToEdit?.id,         
+      slug,
+      title: service.title,
+      description: service.description,
+      basePrice: service.price,
+      price: subtotal,
+      options: addOns,
+      quantity: itemToEdit?.quantity ?? 1,  
+    };
+
+    if (isEdit && editId) {
+      updateItem(editId, updatedItem);      
+    } else {
+      addItem(updatedItem);
+    }
+
+    router.push("/cart");
+  };
+
+
 
   const handleNext = async () => {
     if (!service) return;
@@ -384,11 +428,12 @@ export default function Step1({
 
           <button
             type="button"
-            onClick={handleNext}
+            onClick={handleAddToCart}
             className="btn-primary2"
           >
-            Continue → Contact Info
+            Add to Cart
           </button>
+
         </form>
       </div>
     </section>

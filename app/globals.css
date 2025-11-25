@@ -2758,6 +2758,7 @@ main {
   padding: 10px 12px;
   font-size: 0.95rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 10px;
 }
 
 .option-input::placeholder {
@@ -2848,6 +2849,7 @@ main {
 .multi-select-wrapper {
   position: relative;
   width: 100%;
+  margin-top: 10px;
 }
 
 .multi-select-button {
