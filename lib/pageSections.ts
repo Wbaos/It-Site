@@ -65,7 +65,7 @@ export const homeSections: Section[] = [
         primaryCtaText: "Contact Us",
         primaryCtaHref: "#contact",
 
-        secondaryCtaText: "See All Services",
+        secondaryCtaText: "Popular Services",
         secondaryCtaHref: "/#services",
 
         stats: [

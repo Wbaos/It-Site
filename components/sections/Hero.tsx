@@ -21,7 +21,7 @@ export default function Hero({
   badgeText = "Trusted In-Home Tech Support Across South Florida",
   primaryCtaText = "Contact Us",
   primaryCtaHref = "#contact",
-  secondaryCtaText = "See All Services",
+  secondaryCtaText = "Popular Services",
   secondaryCtaHref = "/#services",
   stats = [
     { value: "500+", label: "Local Clients Helped" },

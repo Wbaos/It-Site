@@ -17,13 +17,17 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
   const { notifOpen, setNotifOpen, closeAll } = useNav();
 
   const [notifs, setNotifs] = useState<Notification[]>([]);
-  const [visibleCount, setVisibleCount] = useState(5); // Show first 5
+  const [visibleCount, setVisibleCount] = useState(5);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+
   function formatTimeAgo(dateString: string) {
-    const now = new Date();
     const past = new Date(dateString);
-    const diff = Math.floor((now.getTime() - past.getTime()) / 1000);
+    const now = new Date();
+    const pastUTC = past.getTime();
+    const nowUTC = now.getTime();
+
+    const diff = Math.floor((nowUTC - pastUTC) / 1000);
 
     if (diff < 60) return "Just now";
     if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
@@ -31,7 +35,7 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
     return `${Math.floor(diff / 86400)} days ago`;
   }
 
-  // Fetch notifications
+
   useEffect(() => {
     async function fetchNotifications() {
       const res = await fetch("/api/notifications", {
@@ -48,6 +52,15 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
     fetchNotifications();
   }, [userId]);
 
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNotifs((prev) => [...prev]); 
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const unreadCount = notifs.filter((n) => !n.read).length;
 
   const toggleDropdown = async () => {
@@ -56,7 +69,7 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
       return;
     }
 
-    closeAll(); 
+    closeAll();
     setNotifOpen(true);
 
     setNotifs((prev) => prev.map((n) => ({ ...n, read: true })));

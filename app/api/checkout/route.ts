@@ -180,37 +180,26 @@ export async function POST(req: Request) {
       };
     });
 
-    // Metadata for webhook
     const metadata: Record<string, string> = {
       sessionId,
-      items: JSON.stringify(
-        updatedItems.map((i) => ({
-          slug: i.slug || "unknown",
-          title: i.title || "Tech Service",
-          basePrice: i.basePrice,
-          price: i.price,
-          quantity: i.quantity || 1,
-          ...(i.options?.length ? { options: i.options } : {}),
-        }))
-      ),
-      contact: JSON.stringify({
-        name: cart.contact?.name,
-        email: cart.contact?.email,
-        phone: cart.contact?.phone,
-      }),
-      address: JSON.stringify({
-        city: cart.address?.city,
-        state: cart.address?.state,
-      }),
-      schedule: JSON.stringify({
-        date: cart.schedule?.date,
-        time: cart.schedule?.time,
-      }),
+
+      itemSlugs: updatedItems.map((i) => i.slug).join(","),
+      itemCount: updatedItems.length.toString(),
+
+      contactName: cart.contact?.name || "",
+      contactEmail: cart.contact?.email || "",
+      contactPhone: cart.contact?.phone || "",
+
+      city: cart.address?.city || "",
+      state: cart.address?.state || "",
+
+      date: cart.schedule?.date || "",
+      time: cart.schedule?.time || "",
+
       email,
       ...(session?.user?.id ? { userId: session.user.id } : {}),
     };
 
-    // Create one-time Checkout session
     const stripeSession = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
