@@ -117,7 +117,6 @@ export default function Step1({
       const prefilled: Record<string, any> = {};
 
       service.questions.forEach((q) => {
-        // MULTI-SELECT FIX
         if (q.type === "multi-select") {
           const selected = itemToEdit.options
             ?.filter((opt: any) =>

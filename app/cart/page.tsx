@@ -114,8 +114,13 @@ export default function CartPage() {
                       <ul className="item-options">
                         {(item.options || []).map((opt, i) => (
                           <li key={i} className="item-option-line">
-                            {opt.name} —{" "}
-                            <span className="item-option-price">${opt.price}</span>
+                            {opt.name}
+                            {opt.price > 0 && (
+                              <>
+                                {" — "}
+                                <span className="item-option-price">${opt.price}</span>
+                              </>
+                            )}
                           </li>
                         ))}
                       </ul>
