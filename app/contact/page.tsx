@@ -37,7 +37,7 @@ export default function ContactPage() {
             <section className="contact-footer">
                 <p>
                     Prefer to book online?{" "}
-                    <a href="/#booking" className="contact-link">
+                    <a href="/#contact" className="contact-link">
                         Schedule a service
                     </a>{" "}
                     anytime.
