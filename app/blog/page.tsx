@@ -3,18 +3,22 @@ import Image from "next/image";
 import Link from "next/link";
 import SvgIcon from "@/components/common/SvgIcons";
 
+export const revalidate = 0;
+
 export default async function BlogPage() {
-  const posts = await sanity.fetch(`*[_type == "post"] | order(publishedAt desc) {
-    _id,
-    title,
-    slug,
-    mainImage { asset->{url} },
-    excerpt,
-    "authorName": author->name,
-    publishedAt,
-    "categories": categories[]->title,
-    tags
-  }`);
+  const posts = await sanity.fetch(`
+    *[_type == "post"] | order(publishedAt desc) {
+      _id,
+      title,
+      slug,
+      mainImage { asset->{url} },
+      excerpt,
+      "authorName": author->name,
+      publishedAt,
+      "categories": categories[]->title,
+      tags
+    }
+  `);
 
   return (
     <section className="blog-page">
