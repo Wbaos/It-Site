@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { homeSections } from "@/lib/pageSections";
 
 export default function Page() {
