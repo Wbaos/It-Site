@@ -34,10 +34,10 @@ export default async function Services() {
             <div className="service-card-icon">
               {s.icon && (
                 <Image
-                  src={urlFor(s.icon).width(90).height(90).url()}
-                  alt={s.title}
-                  width={90}
-                  height={90}
+                  src={urlFor(s.icon).url()}
+                  alt={s.icon?.alt || s.title}
+                  width={40}
+                  height={40}
                 />
               )}
             </div>

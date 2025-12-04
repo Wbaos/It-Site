@@ -19,6 +19,7 @@ type Question = {
   label: string;
   shortLabel?: string;
   type?: "checkbox" | "select" | "multi-select" | "text";
+  required?: boolean;
   extraCost?: number;
   options?: QuestionOption[];
   placeholder?: string;
@@ -61,6 +62,8 @@ export default function Step1({
   const [slug, setSlug] = useState("");
   const [responses, setResponses] = useState<Record<string, any>>({});
   const [customInputs, setCustomInputs] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
+
 
   // --- Get slug from params
   useEffect(() => {
@@ -88,6 +91,7 @@ export default function Step1({
             label,
             shortLabel,
             type,
+            required,
             placeholder,
             extraCost,
             allowOther,
@@ -185,35 +189,59 @@ export default function Step1({
       .flat()
       .filter(Boolean) as AddOn[] || [];
 
-  const addOnsTotal = addOns.reduce((sum, o) => sum + (o.price || 0), 0);
-  const subtotal = service ? service.price + addOnsTotal : 0;
-  
-  const handleAddToCart = async () => {
-    if (!service) return;
+    const addOnsTotal = addOns.reduce((sum, o) => sum + (o.price || 0), 0);
+    const subtotal = service ? service.price + addOnsTotal : 0;
+    
+    const handleAddToCart = () => {
+      if (!service) return;
 
-    const itemToEdit = items.find((i: any) => i.id === editId);
+    const newErrors: Record<string, boolean> = {};
+
+      service.questions?.forEach((q) => {
+        if (!q.required) return;
+
+        const value = responses[q.id];
+
+        const isMissing =
+          (q.type === "text" && (!value || value.trim() === "")) ||
+          (q.type === "select" && (!value || value === "")) ||
+          (q.type === "multi-select" && (!value || value.length === 0)) ||
+          (q.type === "checkbox" && value !== true);
+
+        if (isMissing) newErrors[q.id] = true;
+      });
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+
+        const firstErrorId = Object.keys(newErrors)[0];
+        const el = document.getElementById(firstErrorId);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+
+        return;
+      }
+
+      setErrors({});
+
 
     const updatedItem = {
-      id: editId || itemToEdit?.id,         
+      id: editId || undefined,
       slug,
       title: service.title,
       description: service.description,
       basePrice: service.price,
       price: subtotal,
       options: addOns,
-      quantity: itemToEdit?.quantity ?? 1,  
+      quantity: 1,
     };
 
-    if (isEdit && editId) {
-      updateItem(editId, updatedItem);      
-    } else {
-      addItem(updatedItem);
-    }
+    if (isEdit && editId) updateItem(editId, updatedItem);
+    else addItem(updatedItem);
 
     router.push("/cart");
   };
-
-
 
   const handleNext = async () => {
     if (!service) return;
@@ -270,53 +298,82 @@ export default function Step1({
           </div>
 
           {service.questions?.map((q) => (
-            <div key={q.id} className="option-item extra-option">
+            <div
+              key={q.id}
+              id={q.id}
+              className={`option-item extra-option ${errors[q.id] ? "error" : ""}`}
+            >
               {q.type === "checkbox" && (
                 <label className="option-control checkbox-inline">
                   <input
                     type="checkbox"
                     checked={!!responses[q.id]}
-                    onChange={(e) =>
-                      setResponses({
-                        ...responses,
-                        [q.id]: e.target.checked,
-                      })
-                    }
+                    onChange={(e) => {
+                      const value = e.target.checked;
+                      setResponses({ ...responses, [q.id]: value });
+
+                      if (errors[q.id] && value === true) {
+                        setErrors({ ...errors, [q.id]: false });
+                      }
+                    }}
                     className="option-checkbox"
                   />
+
                   <span className="option-label">
                     {q.label}
+                    {q.required && <span className="required-marker">*</span>}
                     {q.extraCost && (
-                      <span className="option-extra">
-                        {" "}
-                        (+${q.extraCost.toFixed(2)})
-                      </span>
+                      <span className="option-extra"> (+${q.extraCost.toFixed(2)})</span>
                     )}
                   </span>
+
+                  {errors[q.id] && <p className="error-text">This field is required.</p>}
                 </label>
               )}
 
+
               {q.type === "text" && (
                 <div className="option-left">
-                  <label className="option-label">{q.label}</label>
+                  <label className="option-label">
+                    {q.label}
+                    {q.required && <span className="required-marker">*</span>}
+                  </label>
                   <input
                     type="text"
                     placeholder={q.placeholder || "Enter your answer"}
                     value={responses[q.id] || ""}
-                    onChange={(e) =>
-                      setResponses({ ...responses, [q.id]: e.target.value })
-                    }
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setResponses({ ...responses, [q.id]: value });
+
+                      if (errors[q.id] && value.trim() !== "") {
+                        setErrors({ ...errors, [q.id]: false });
+                      }
+                    }}
+
                     className="option-input"
                   />
+                  {errors[q.id] && <p className="error-text">This field is required.</p>}
                 </div>
               )}
 
               {q.type === "select" && (
                 <div className="option-left">
-                  <label className="option-label">{q.label}</label>
+                  <label className="option-label">
+                  {q.label}
+                  {q.required && <span className="required-marker">*</span>}
+                </label>
+
                   <select
                     value={responses[q.id] || ""}
-                    onChange={(e) => setResponses({ ...responses, [q.id]: e.target.value })}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setResponses({ ...responses, [q.id]: value });
+
+                      if (errors[q.id] && value !== "") {
+                        setErrors({ ...errors, [q.id]: false });
+                      }
+                    }}
                     className="option-input option-select"
                   >
                     <option value="">Select an option...</option>
@@ -327,15 +384,25 @@ export default function Step1({
                       </option>
                     ))}
                   </select>
+                  {errors[q.id] && <p className="error-text">This field is required.</p>}
                 </div>
               )}
 
               {q.type === "multi-select" && (
                 <div className="option-left">
-                  <label className="option-label">{q.label}</label>
+                  <label className="option-label">
+                  {q.label}
+                  {q.required && <span className="required-marker">*</span>}
+                </label>
                  <Listbox
               value={responses[q.id] || []}
-              onChange={(selected) => setResponses({ ...responses, [q.id]: selected })}
+              onChange={(selected) => {
+                setResponses({ ...responses, [q.id]: selected });
+
+                if (errors[q.id] && selected.length > 0) {
+                  setErrors({ ...errors, [q.id]: false });
+                }
+              }}
               multiple
             >
               {({ open }) => (
@@ -412,6 +479,7 @@ export default function Step1({
                 </div>
               )}
             </Listbox>
+              {errors[q.id] && <p className="error-text">This field is required.</p>}
 
                 </div>
               )}

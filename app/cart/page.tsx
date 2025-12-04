@@ -10,13 +10,12 @@ export default function CartPage() {
   const { setDropdownOpen, setOpen } = useNav();
   const router = useRouter();
 
-
   const subtotal = Array.isArray(items)
     ? items.reduce((sum, i) => sum + (i.price || 0) * (i.quantity || 1), 0)
     : 0;
 
   /* ================================
-     PROMO CODE LOGIC
+      PROMO CODE LOGIC
   ================================ */
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState<any>(null);
@@ -52,14 +51,14 @@ export default function CartPage() {
     }
   }
 
-  const tax = subtotal * 0.07;
-  const total = subtotal + tax - discountAmount;
+  const total = subtotal - discountAmount;
+
+  const [showDetails, setShowDetails] = useState<Record<string, boolean>>({});
 
 
   if (items.length === 0)
     return (
       <section className="cart-page">
-
         <div className="cart-header">
           <h1 className="cart-title">Shopping Cart</h1>
           <p className="cart-subtitle">Review your items before checkout</p>
@@ -82,105 +81,164 @@ export default function CartPage() {
             </div>
           </div>
         </div>
-
       </section>
     );
 
+  /* ---------------------------------------------------
+     MAIN CART UI
+  --------------------------------------------------- */
   return (
     <section className="cart-page">
-
       <div className="cart-header">
         <h1 className="cart-title">Shopping Cart</h1>
         <p className="cart-subtitle">Review your items before checkout</p>
       </div>
 
       <div className="cart-container">
-
+        {/* =============================== */}
+        {/* LEFT SIDE — CART ITEMS */}
+        {/* =============================== */}
         <div className="cart-left">
           <ul className="cart-list">
-            {items.map((item) => (
-              <li key={item.id} className="cart-item card">
-                <div className="cart-item-wrapper">
+            {items.map((item) => {
+              const pricedOptions = (item.options || []).filter(
+                (o) => o.price > 0
+              );
+              const nonPricedOptions = (item.options || []).filter(
+                (o) => o.price === 0
+              );
 
-                  <div className="cart-item-left">
+              return (
+                <li key={item.id} className="cart-item card">
+                  <div className="cart-item-wrapper">
+                    <div className="cart-item-left">
+                      <h2 className="item-title">{item.title}</h2>
+                      {item.description && (
+                        <p className="item-description">{item.description}</p>
+                      )}
+                      {item.basePrice && (
+                        <div className="item-base-price">
+                          Base Price:{" "}
+                          <span className="base-price-value">
+                            ${item.basePrice?.toFixed(2)}
+                          </span>
+                        </div>
+                      )}
 
-                    <h2 className="item-title">{item.title}</h2>
+                      {/* ------------------------
+                          PRICED OPTIONS ALWAYS SHOW
+                      ------------------------- */}
+                      {pricedOptions.length > 0 && (
+                        <ul className="item-options">
+                          {pricedOptions.map((opt, i) => (
+                            <li key={i} className="item-option-line">
+                              {opt.name}
+                              <span className="item-option-price">
+                                {" — "} ${opt.price}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
 
-                    {item.description && (
-                      <p className="item-description">{item.description}</p>
-                    )}
+                      {/* ------------------------
+                          NON-PRICED OPTIONS COLLAPSIBLE
+                      ------------------------- */}
+                      {nonPricedOptions.length > 0 && (
+                        <div className="item-details-collapsible">
+                          <button
+                            className="details-toggle"
+                            onClick={() =>
+                              setShowDetails((prev) => ({
+                                ...prev,
+                                [item.id]: !prev[item.id],
+                              }))
+                            }
+                          >
+                            {showDetails[item.id]
+                              ? "Hide Details ▲"
+                              : "View All Details ▼"}
+                          </button>
 
-                    {(item.options ?? []).length > 0 && (
-                      <ul className="item-options">
-                        {(item.options || []).map((opt, i) => (
-                          <li key={i} className="item-option-line">
-                            {opt.name}
-                            {opt.price > 0 && (
-                              <>
-                                {" — "}
-                                <span className="item-option-price">${opt.price}</span>
-                              </>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                          {showDetails[item.id] && (
+                            <ul className="item-options details-list">
+                              {nonPricedOptions.map((opt, i) => (
+                                <li
+                                  key={i}
+                                  className="item-option-line small"
+                                >
+                                  {opt.name}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      )}
 
-                    <div className="item-actions">
-                      <button
-                        className="modify-btn"
-                        onClick={() =>
-                          router.push(
-                            `/services/${item.slug}/book/step1?edit=true&id=${item.id}`
-                          )
-                        }
-                      >
-                        Modify
-                      </button>
-
-                      <button
-                        className="remove-btn"
-                        onClick={() => removeItem(item.id)}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="cart-item-right">
-
-                    <div className="quantity-control-wrapper">
-                      <span className="quantity-label">Quantity:</span>
-
-                      <div className="quantity-control">
+                      {/* ------------------------
+                          MODIFY + REMOVE BUTTONS
+                      ------------------------- */}
+                      <div className="item-actions">
                         <button
-                          className="quantity-btn"
+                          className="modify-btn"
                           onClick={() =>
-                            updateItemQuantity(item.id, Math.max(1, item.quantity - 1))
+                            router.push(
+                              `/services/${item.slug}/book/step1?edit=true&id=${item.id}`
+                            )
                           }
                         >
-                          –
+                          Modify
                         </button>
 
-                        <span className="quantity-number">{item.quantity}</span>
-
                         <button
-                          className="quantity-btn"
-                          onClick={() =>
-                            updateItemQuantity(item.id, item.quantity + 1)
-                          }
+                          className="remove-btn"
+                          onClick={() => removeItem(item.id)}
                         >
-                          +
+                          Remove
                         </button>
                       </div>
                     </div>
 
-                    <div className="unit-price">${item.price.toFixed(2)}</div>
+                    <div className="cart-item-right">
+                      <div className="quantity-control-wrapper">
+                        <span className="quantity-label">Quantity:</span>
 
+                        <div className="quantity-control">
+                          <button
+                            className="quantity-btn"
+                            onClick={() =>
+                              updateItemQuantity(
+                                item.id,
+                                Math.max(1, item.quantity - 1)
+                              )
+                            }
+                          >
+                            –
+                          </button>
+
+                          <span className="quantity-number">
+                            {item.quantity}
+                          </span>
+
+                          <button
+                            className="quantity-btn"
+                            onClick={() =>
+                              updateItemQuantity(item.id, item.quantity + 1)
+                            }
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="unit-price">
+                        ${item.price.toFixed(2)}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
 
           <button
@@ -188,6 +246,7 @@ export default function CartPage() {
             onClick={() => {
               if (window.innerWidth < 900) setOpen(true);
               else setDropdownOpen(true);
+
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           >
@@ -195,8 +254,10 @@ export default function CartPage() {
           </button>
         </div>
 
+        {/* =============================== */}
+        {/* RIGHT SIDE — ORDER SUMMARY */}
+        {/* =============================== */}
         <aside className="cart-summary">
-
           <h2>Order Summary</h2>
 
           <div className="summary-row">
@@ -204,11 +265,7 @@ export default function CartPage() {
             <span>${subtotal.toFixed(2)}</span>
           </div>
 
-          <div className="summary-row">
-            <span>Tax (7%)</span>
-            <span>${tax.toFixed(2)}</span>
-          </div>
-
+          {/* PROMO CODE */}
           <div className="promo-section">
             <label className="promo-label">Promo Code</label>
 
@@ -226,9 +283,7 @@ export default function CartPage() {
               </button>
             </div>
 
-            {promoError && (
-              <p className="promo-error">{promoError}</p>
-            )}
+            {promoError && <p className="promo-error">{promoError}</p>}
           </div>
 
           {appliedPromo && (
@@ -256,13 +311,17 @@ export default function CartPage() {
           </button>
 
           <div className="summary-icons">
-            <div><span>🔒</span> Secure Payment</div>
-            <div><span>✔</span> Licensed</div>
-            <div><span>⭐</span> Top Rated</div>
+            <div>
+              <span>🔒</span> Secure Payment
+            </div>
+            <div>
+              <span>✔</span> Licensed
+            </div>
+            <div>
+              <span>⭐</span> Top Rated
+            </div>
           </div>
-
         </aside>
-
       </div>
     </section>
   );
