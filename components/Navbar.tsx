@@ -90,26 +90,21 @@ export default function Navbar() {
 
     if (dropdownOpen) document.addEventListener("mousedown", clickOutside);
     return () => document.removeEventListener("mousedown", clickOutside);
-  }, [dropdownOpen]);
+    }, [dropdownOpen]);
 
-  useEffect(() => {
-    const isMobile = window.innerWidth <= 900;
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        const isMobile = window.innerWidth <= 900;
 
-    if (
-      isMobile &&
-      (open || notifOpen || dropdownOpen || mobileServicesPanel || searchOpen)
-    ) {
-      document.body.classList.add("no-scroll");
-    } else {
-      document.body.classList.remove("no-scroll");
-    }
-  }, [
-    open,
-    notifOpen,
-    dropdownOpen,
-    mobileServicesPanel,
-    searchOpen
-  ]);
+        if (isMobile && (open || notifOpen || mobileServicesPanel || searchOpen)) {
+          document.body.classList.add("no-scroll");
+        } else {
+          document.body.classList.remove("no-scroll");
+        }
+      }
+    }, [open, notifOpen, mobileServicesPanel, searchOpen]);
+
+
 
   function closeEverything() {
     setOpen(false);
@@ -122,9 +117,7 @@ export default function Navbar() {
   return (
     <>
       <header className="site-header">
-        <div className="site-container-var nav-grid">
-          {/* LEFT SLOT */}
-        
+        <div className="site-container-var nav-grid">        
 
           {/* BRAND */}
           <Link href="/" className="brand" onClick={closeEverything}>

@@ -2173,6 +2173,7 @@ main {
   font-size: 1rem;
   font-weight: 700;
   color: white;
+  white-space: normal;
 }
 
 .svc-desc {
@@ -2180,6 +2181,7 @@ main {
   color: #94a3b8;
   opacity: 0.8;
   margin: 3px 0 0;
+  white-space: normal;
 }
 
 .svc-price {
@@ -2208,7 +2210,7 @@ main {
   font-size: 1.25rem;
   font-weight: 700;
   color: white;
-  padding: 20px 0px 0;
+  margin-top: 2rem;
 }
 
 .svc-list {
@@ -2229,26 +2231,30 @@ main {
   left: 0;
   width: 100%;
   background: #0f172a;
-  padding: 3.5rem 0;
   border-top: 1px solid rgba(255,255,255,0.05);
   box-shadow: 0 30px 70px rgba(0,0,0,0.55);
-  display: flex;
-  justify-content: center;
-  gap: 3rem 2rem;
-  max-height: calc(100vh - 90px);
+
+  max-height: calc(100vh - 64px);
   overflow-y: auto;
+  overflow-x: hidden;
+
   animation: dropdownFade 0.28s ease;
   z-index: 9999;
+  padding: 0 2rem;
 }
+
 
 .dropdown-inner {
   width: 100%;
   max-width: 1280px;
   display: grid;
   gap: 0 2rem;
-  grid-template-columns: repeat(3, minmax(320px, 1fr));
+  grid-template-columns: repeat(3, minmax(250px, 1fr));
   margin: 0 auto;
+  padding: 3.5rem 2rem;      
+  box-sizing: border-box;    
 }
+
 .dropdown-inner.two-col {
   grid-template-columns: repeat(2,1fr);
 }
@@ -2363,6 +2369,7 @@ main {
   color: #cbd5e1;
   opacity: .9;
   margin-bottom: 1.2rem;
+  white-space: normal;
 }
 
 .promo-list {
@@ -2496,6 +2503,9 @@ main {
   .dropdown-panel {
     display: none !important;
   }
+  .svc-group-heading {
+    margin-top: 0 ;
+  }
 }
 
 @media (max-width: 900px) {
@@ -2606,7 +2616,7 @@ main {
   bottom: 0;
   background: #0b1220;
   color: white;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 3rem 1.5rem;
   border-left: 1px solid rgba(255,255,255,0.1);
   z-index: 10001 !important;
 }
@@ -2633,6 +2643,7 @@ main {
   overflow-y: auto;
   height: calc(100% - 100px);
   -webkit-overflow-scrolling: touch; 
+  padding-bottom: 4rem;
 }
 
 .mobile-services-body::-webkit-scrollbar {
