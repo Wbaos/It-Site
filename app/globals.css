@@ -2240,7 +2240,7 @@ main {
 
   animation: dropdownFade 0.28s ease;
   z-index: 9999;
-  padding: 0 2rem;
+  /* padding: 0 2rem; */
 }
 
 
@@ -3067,6 +3067,9 @@ main {
   .multi-select-button {
     font-size: 0.85rem;
   }
+  .section.booking {
+    padding: 5rem 0;
+  }
 }
 
 
@@ -3079,15 +3082,16 @@ main {
     width: 100px;
     object-fit: cover;
    }
-.review-action-footer{
+/* .review-action-footer{
   padding-bottom: 20px;
-}
+} */
 .reviews-section {
-  background: #fafafa;
+  background: linear-gradient(180deg, #040a15, #060f1f);
   border-radius: 12px;
   padding: 2rem;
   margin-top: 3rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  border: 1px solid #1e293b;
 }
 
 .reviews-header {
@@ -3100,19 +3104,20 @@ main {
 .reviews-title {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #111;
+  color: #f8fafc;
 }
 
 .btn-write-review {
-    background: #E2E8EE;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    padding: 0.7rem 1.2rem;
-    font-size: 0.85rem;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
+  background: linear-gradient(135deg, #0b7568, #0c8274);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 10px rgba(13, 164, 143, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.85rem;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
 }
 
 .btn-write-reviewy:hover {
@@ -4360,16 +4365,17 @@ main {
 .read-more-btn {
   background: none;
   border: none;
-  color: #0ea5e9;
+  color: #13afa1;
   font-size: 14px;
   margin-top: 8px;
   cursor: pointer;
   padding: 0;
   font-weight: 500;
+  padding-left: 5px;
 }
 
 .read-more-btn:hover {
-  color: #0284c7;
+  color: #0f897e;
 }
 
 .testimonial-footer {
