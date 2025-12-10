@@ -60,6 +60,7 @@ export default function WriteReviewPage() {
 
     return (
         <div className="review-write-page">
+            <div className="review-write-page-inside">
             <h2>How was the service?</h2>
 
             <div className="review-header">
@@ -119,6 +120,7 @@ export default function WriteReviewPage() {
                 <button className="btn-cancel" onClick={() => router.back()}>
                     Cancel
                 </button>
+            </div>
             </div>
         </div>
     );

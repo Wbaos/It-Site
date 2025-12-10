@@ -3074,17 +3074,15 @@ main {
 
 
 /* =========================================================
-   CUSTOMER REVIEWS SECTION (LIST PAGE)
-   ========================================================= */
+CUSTOMER REVIEWS SECTION (LIST PAGE)
+========================================================= */
 
-   .review-media img{
-    height: 100px;
-    width: 100px;
-    object-fit: cover;
-   }
-/* .review-action-footer{
-  padding-bottom: 20px;
-} */
+.review-media img{
+height: 100px;
+width: 100px;
+object-fit: cover;
+}
+
 .reviews-section {
   background: linear-gradient(180deg, #040a15, #060f1f);
   border-radius: 12px;
@@ -3151,8 +3149,8 @@ main {
 
 .review-top {
   display: flex;
-  flex-direction: column; /* stacks vertically */
-  align-items: flex-start; /* left-align everything */
+  flex-direction: column; 
+  align-items: flex-start; 
   gap: 0.4rem;
   margin-bottom: 0.8rem;
 }
@@ -3245,17 +3243,23 @@ main {
 .review-actions button:hover {
   background: #e7e9eb;
 }
+@media (max-width: 700px) {
+  .reviews-section {
+    margin-top: 2rem;
+  }
+}
 
 /* =========================================================
    WRITE REVIEW PAGE (FORM PAGE)
    ========================================================= */
 .review-write-page {
-  max-width: 700px;
-  margin: 3rem auto;
-  background: #fff;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    padding: 9rem 0;
+    display: flex;
+    justify-content: center;
+}
+.review-write-page-inside{
+  max-width: 600px;
+  width: 100%;
 }
 
 .review-write-page h2 {
@@ -3267,13 +3271,14 @@ main {
 
 .review-header {
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   align-items: center;
   gap: 0.5rem 1rem;
 }
 
 .review-header img {
   border-radius: 10px;
+  object-fit: none;
 }
 
 .review-header h3 {
@@ -3314,6 +3319,7 @@ main {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 0.75rem;
+  box-sizing: border-box;
   font-size: 1rem;
   margin-bottom: 1rem;
   font-family: var(--font-family-main, sans-serif);
@@ -3431,7 +3437,7 @@ main {
   }
 
   .review-write-page {
-    padding: 1.5rem;
+    padding: 5rem 1rem;
   }
 
   .btn-primary {
@@ -3794,7 +3800,11 @@ main {
   box-shadow:     
   0 4px 10px rgba(0, 0, 0, 0.4),     
   0 0 0 1px rgba(0, 0, 0, 0.25);    
-  transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; 
+}
+.service-card h1{
+  margin-top: 0;
+}
 
 .service-card:hover {
   border-color: #14b8a6;
@@ -3940,6 +3950,7 @@ main {
   font-weight: 700;
   color: #fff;
   margin-bottom: 1.25rem;
+  margin-top: 0;
   text-align: left;
 }
 
@@ -3976,6 +3987,13 @@ main {
   }
   .service-detail {
     padding: 6rem 0;
+  }
+  .service-top{
+    margin-bottom: 2rem;
+    gap: 1rem;
+  }
+  .included-box {
+   margin: 0 auto 2rem;
   }
 }
 
@@ -5750,7 +5768,7 @@ box-shadow:
   background: #0b1220;
   border: 1px solid #1e293b;
   border-radius: 16px;
-  padding: 2rem 2.5rem;
+  padding: 2rem;
   margin: 3rem auto;
   max-width: 1200px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
@@ -5762,6 +5780,7 @@ box-shadow:
   color: #f8fafc;
   text-align: left;
   margin-bottom: 1.75rem;
+  margin-top: 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -5849,7 +5868,7 @@ details[open] .faq-toggle {
 @media (max-width: 768px) {
   .service-faq {
     padding: 1.5rem;
-    /* margin: 2rem 1rem; */
+    margin: 2rem auto;
   }
 
   .faq-heading {
