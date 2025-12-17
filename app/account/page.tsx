@@ -111,7 +111,7 @@ export default function AccountPage() {
     );
 }
 
-/* */
+
 /* -------------------------------------------
    OVERVIEW TAB (with Manage Subscription)
 ------------------------------------------- */
@@ -119,11 +119,13 @@ function OverviewTab({
     orders,
     loading,
 }: {
+    user: any;
     orders: Order[];
     loading: boolean;
 }) {
     const [loadingPortal, setLoadingPortal] = useState(false);
     const [hasSubscription, setHasSubscription] = useState<boolean | null>(null);
+    const [localLoading, setLocalLoading] = useState(false);
     const recent = orders[0];
 
     useEffect(() => {
@@ -446,7 +448,7 @@ function OrdersTab({
 /* -------------------------------------------
    PROFILE TAB
 ------------------------------------------- */
-function ProfileTab({ user }: { user: { name?: string; email?: string; phone?: string } }) {
+function ProfileTab({ user }: { user: any }) {
     const { update } = useSession();
     const [name, setName] = useState(user?.name || "");
     const [email, setEmail] = useState(user?.email || "");
