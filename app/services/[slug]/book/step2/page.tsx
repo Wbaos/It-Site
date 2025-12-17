@@ -97,7 +97,6 @@ export default function Step2({
         credentials: "include",
       });
     } catch (err) {
-      console.error("Failed to save contact info:", err);
     }
 
     const query = new URLSearchParams({

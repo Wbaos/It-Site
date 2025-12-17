@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
     title: "Contact Us – CallTechCare | Tech Support for Seniors & Homes",
@@ -37,9 +38,9 @@ export default function ContactPage() {
             <section className="contact-footer">
                 <p>
                     Prefer to book online?{" "}
-                    <a href="/#contact" className="contact-link">
+                    <Link href="/#contact" className="contact-link">
                         Schedule a service
-                    </a>{" "}
+                    </Link>{" "}
                     anytime.
                 </p>
             </section>

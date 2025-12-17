@@ -5,6 +5,7 @@ import { Providers } from "./Providers";
 import { LoadingProvider } from "@/lib/LoadingContext";
 import type { Metadata } from "next";
 import ChatWidget from "@/components/ChatWidget";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.calltechcare.com"),
@@ -130,12 +131,12 @@ export default function RootLayout({
         />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
 
-        <link
+        {/* <link
           rel="preload"
           as="image"
           href="/helping2.jpg"
           fetchPriority="high"
-        />
+        /> */}
 
         <meta name="apple-mobile-web-app-title" content="CallTechCare" />
         <link rel="canonical" href="https://www.calltechcare.com" />
@@ -158,14 +159,16 @@ export default function RootLayout({
       </head>
 
       <body>
-        <Providers>
-          <LoadingProvider>
-            <Navbar />
-            <main className="main-content">{children}</main>
-            <Footer />
-            <ChatWidget />
-          </LoadingProvider>
-        </Providers>
+        <ErrorBoundary>
+          <Providers>
+            <LoadingProvider>
+              <Navbar />
+              <main className="main-content">{children}</main>
+              <Footer />
+              <ChatWidget />
+            </LoadingProvider>
+          </Providers>
+        </ErrorBoundary>
       </body>
     </html>
   );

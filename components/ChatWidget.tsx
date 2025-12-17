@@ -56,10 +56,8 @@ export default function ChatWidget() {
             setPending(false);
 
             if (data.booking) {
-                console.log("🟢 Booking intent detected. Awaiting payment confirmation...");
             }
         } catch (error) {
-            console.error(error);
             setMessages((prev) => [
                 ...prev,
                 {

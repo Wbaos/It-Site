@@ -40,7 +40,6 @@ export default function WriteReviewPage() {
             if (res.ok) setStatus("success");
             else setStatus("error");
         } catch (err) {
-            console.error("Error submitting review:", err);
             setStatus("error");
         }
     };

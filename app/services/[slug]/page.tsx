@@ -157,7 +157,7 @@ export default async function ServicePage({
 
         {includedList.length > 0 && (
           <div className="included-box">
-            <h2>What's Included</h2>
+            <h2>What&apos;s Included</h2>
 
             <ul className="included-list">
               {includedList.map((item: string, i: number) => (

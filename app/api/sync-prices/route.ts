@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { sanity } from "@/lib/sanity";
+import { logger } from "@/lib/logger";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: "2025-08-27.basil",
@@ -20,7 +21,7 @@ export async function POST(req: Request) {
       }
     `);
 
-        let updates: string[] = [];
+        const updates: string[] = [];
 
         for (const plan of plans) {
             if (!plan.stripeProductId) continue;
@@ -63,7 +64,7 @@ export async function POST(req: Request) {
                         default_price: newPrice.id,
                     });
 
-                    console.log(`✅ Updated monthly price for ${plan.title}: $${plan.price}`);
+                    logger.info(`Updated monthly price for ${plan.title}`, { price: plan.price });
                     updates.push(`${plan.title} (month)`);
                 }
             }
@@ -101,7 +102,7 @@ export async function POST(req: Request) {
                         default_price: newYearPrice.id,
                     });
 
-                    console.log(` Updated yearly price for ${plan.title}: $${plan.annualPrice}`);
+                    logger.info(`Updated yearly price for ${plan.title}`, { price: plan.annualPrice });
                     updates.push(`${plan.title} (year)`);
                 }
             }
@@ -116,7 +117,7 @@ export async function POST(req: Request) {
             updated: updates,
         });
     } catch (err: any) {
-        console.error(" Sync error:", err.message);
+        logger.error("Price sync error", err);
         return NextResponse.json({ error: err.message }, { status: 500 });
     }
 }

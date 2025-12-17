@@ -77,7 +77,7 @@ export async function POST(req: Request) {
         // ===========================================================
         // ENSURE STRIPE CUSTOMER EXISTS
         // ===========================================================
-        let customerId = dbUser.stripeCustomerId as string | undefined;
+        const customerId = dbUser.stripeCustomerId as string | undefined;
 
         async function ensureStripeCustomer(): Promise<string> {
             if (customerId) {
@@ -85,7 +85,6 @@ export async function POST(req: Request) {
                     const existing = await stripe.customers.retrieve(customerId);
                     if (!("deleted" in existing)) return existing.id;
                 } catch {
-                    console.warn(" Invalid Stripe customer, recreating...");
                 }
             }
 
@@ -122,7 +121,6 @@ export async function POST(req: Request) {
         );
 
         if (!matchingPrice) {
-            console.log(`Creating new ${planInterval}ly recurring price for $${planPrice}`);
 
             await Promise.all(
                 allPrices.data
@@ -192,7 +190,6 @@ export async function POST(req: Request) {
         // ===========================================================
         return NextResponse.json({ url: stripeSession.url });
     } catch (error) {
-        console.error("Subscribe error:", error);
         return NextResponse.json(
             { error: "Failed to create subscription" },
             { status: 500 }

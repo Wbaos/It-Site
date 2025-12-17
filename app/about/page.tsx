@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
     title: "About Us – CallTechCare | Tech Support for Seniors & Homes",
@@ -65,9 +66,9 @@ export default function AboutPage() {
                     Let’s make technology work for you — not against you. Book a trusted
                     in-home or remote support session with our experts.
                 </p>
-                <a href="/#booking" className="about-button">
+                <Link href="/#booking" className="about-button">
                     Book a Service
-                </a>
+                </Link>
             </section>
         </main>
     );

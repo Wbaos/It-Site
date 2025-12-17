@@ -25,7 +25,6 @@ export default function AddToCartButton({ slug, title, price }: AddToCartButtonP
 
             router.push("/cart");
         } catch (err) {
-            console.error("Add to cart failed:", err);
             alert("Something went wrong while adding to cart.");
         }
     };
