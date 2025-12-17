@@ -1,11 +1,15 @@
 import { sanity } from "@/lib/sanity";
 import { PlanDetails } from "@/components/PlanDetails";
 
-export default async function PlanPage(props: { params: { slug: string } }) {
-    const { slug } = await Promise.resolve(props.params);
+export default async function PlanPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
 
-    const plan = await sanity.fetch(
-        `*[_type == "pricingPlan" && slug.current == $slug][0]{
+  const plan = await sanity.fetch(
+    `*[_type == "pricingPlan" && slug.current == $slug][0]{
       _id,
       title,
       slug,
@@ -16,18 +20,18 @@ export default async function PlanPage(props: { params: { slug: string } }) {
       stripeProductId,
       description
     }`,
-        { slug }
+    { slug }
+  );
+
+  if (!plan) {
+    return (
+      <section className="section">
+        <div className="site-container">
+          <h2>Plan not found</h2>
+        </div>
+      </section>
     );
+  }
 
-    if (!plan) {
-        return (
-            <section className="section">
-                <div className="site-container">
-                    <h2>Plan not found</h2>
-                </div>
-            </section>
-        );
-    }
-
-    return <PlanDetails plan={{ ...plan, features: plan.features || [] }} />;
+  return <PlanDetails plan={{ ...plan, features: plan.features || [] }} />;
 }
