@@ -7,6 +7,7 @@ import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Transition } fro
 import { Check, ChevronDown, X } from "lucide-react";
 import { useCart } from "@/lib/CartContext";
 import { sanity } from "@/lib/sanity";
+import BookingSteps from "@/components/BookingSteps";
 
 // ==== TYPES ====
 type QuestionOption = {
@@ -290,6 +291,7 @@ export default function Step1({
         <h1 className="service-title">
           {isEdit ? "Modify Service" : "Customize"}: {service.title}
         </h1>
+        <BookingSteps currentStep={1} />
 
         <form className="booking-card" onSubmit={(e) => e.preventDefault()}>
           <div className="base-price">
