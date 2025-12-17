@@ -4,6 +4,7 @@ import { use, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useFormValidation } from "@/lib/useFormValidation";
+import BookingSteps from "@/components/BookingSteps";
 
 type User = {
   name?: string;
@@ -120,6 +121,7 @@ export default function Step2({
       </Link>
     </div>
 
+    <BookingSteps currentStep={2} />
     <h1 className="service-title">Contact Information</h1>
 
     <form className="booking-card" onSubmit={(e) => e.preventDefault()}>

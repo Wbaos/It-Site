@@ -10,6 +10,8 @@ interface SvgIconProps {
     | "youtube"
     | "blog-author"
     | "calendar"
+    | "clock"
+    | "check"
     | "chevron-right"
     | "chevron-left"
     | "book-open"
@@ -333,6 +335,47 @@ export default function SvgIcon({
                     <path d="M8 7V3m8 4V3" />
                     <rect x="3" y="5" width="18" height="16" rx="2" />
                     <path d="M3 11h18" />
+                </svg>
+            );
+        // ------------------------------------------------------------------------
+        // Clock Icon
+        // ------------------------------------------------------------------------
+        case "clock":
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={className}
+                >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            );
+        // ------------------------------------------------------------------------
+        // Check Icon
+        // ------------------------------------------------------------------------
+        case "check":
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={className}
+                >
+                    <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
             );
         // ------------------------------------------------------------------------

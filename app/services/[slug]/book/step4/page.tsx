@@ -4,6 +4,8 @@ import { use, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useFormValidation } from "@/lib/useFormValidation";
+import SvgIcon from "@/components/common/SvgIcons";
+import BookingSteps from "@/components/BookingSteps";
 
 export default function Step4({
   params,
@@ -43,7 +45,38 @@ export default function Step4({
 
   const [loading, setLoading] = useState(false);
 
-  // Prefill if user navigates back
+  const timeRanges = [
+    { label: "8:00 AM - 11:00 AM", value: "08:00-11:00", startHour: 8 },
+    { label: "11:00 AM - 2:00 PM", value: "11:00-14:00", startHour: 11 },
+    { label: "2:00 PM - 5:00 PM", value: "14:00-17:00", startHour: 14 },
+    { label: "5:00 PM - 8:00 PM", value: "17:00-20:00", startHour: 17 },
+  ];
+
+  const isTimeSlotAvailable = (startHour: number): boolean => {
+    if (!schedule.date) return true;
+    
+    const selectedDate = new Date(schedule.date + "T00:00:00");
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const selectedDateOnly = new Date(selectedDate);
+    selectedDateOnly.setHours(0, 0, 0, 0);
+    
+    if (selectedDateOnly.getTime() > today.getTime()) return true;
+    
+    if (selectedDateOnly.getTime() === today.getTime()) {
+      const now = new Date();
+      const currentHour = now.getHours();
+      const currentMinutes = now.getMinutes();
+      const currentTimeInHours = currentHour + currentMinutes / 60;
+      const minimumBookingTime = currentTimeInHours + 3;
+      
+      return startHour >= minimumBookingTime;
+    }
+    
+    return false;
+  };
+
   useEffect(() => {
     try {
       const parsed = JSON.parse(scheduleParam);
@@ -55,6 +88,16 @@ export default function Step4({
       setSchedule({ date: "", time: "" });
     }
   }, [scheduleParam, setSchedule]);
+
+  // Clear time selection if it becomes invalid when date changes
+  useEffect(() => {
+    if (schedule.date && schedule.time) {
+      const selectedRange = timeRanges.find(r => r.value === schedule.time);
+      if (selectedRange && !isTimeSlotAvailable(selectedRange.startHour)) {
+        setSchedule({ ...schedule, time: "" });
+      }
+    }
+  }, [schedule.date]);
 
   const handleFinish = async () => {
   if (!validateRequired()) {
@@ -105,30 +148,90 @@ export default function Step4({
             ← Back to Address Info
           </Link>
         </p>
-        <h1 className="service-title">Availability</h1>
+        <BookingSteps currentStep={4} />
+        <h1 className="service-title">Select Your Preferred Date & Time</h1>
+        <p className="availability-subtitle">Choose when you'd like us to provide the service</p>
 
-        <form className="booking-card" onSubmit={(e) => e.preventDefault()}>
-          <input
-            type="date"
-            className={getInputClass("date")}
-            value={schedule.date}
-            onChange={(e) => handleChange("date", e.target.value)}
-          />
+        <form className="booking-card availability-form" onSubmit={(e) => e.preventDefault()}>
+          <div className="availability-section">
+            <label className="availability-label">
+              <SvgIcon name="calendar" size={20} className="label-icon" />
+              Select Date
+            </label>
+            <input
+              type="date"
+              className={`availability-input ${getInputClass("date")}`}
+              value={schedule.date}
+              onChange={(e) => handleChange("date", e.target.value)}
+              onClick={(e) => {
+                try {
+                  (e.target as HTMLInputElement).showPicker?.();
+                } catch (err) {
+                  // showPicker not supported in some browsers
+                }
+              }}
+              min={new Date().toISOString().split('T')[0]}
+            />
+          </div>
 
-          <input
-            type="time"
-            className={getInputClass("time")}
-            value={schedule.time}
-            onChange={(e) => handleChange("time", e.target.value)}
-          />
+          <div className="availability-section">
+            <label className="availability-label">
+              <SvgIcon name="clock" size={20} className="label-icon" />
+              Select Time Range
+            </label>
+            
+            <div className="time-slots-grid">
+              {timeRanges.map((range) => {
+                const isAvailable = isTimeSlotAvailable(range.startHour);
+                return (
+                  <button
+                    key={range.value}
+                    type="button"
+                    className={`time-slot time-range-slot ${
+                      schedule.time === range.value ? "selected" : ""
+                    } ${!isAvailable ? "disabled" : ""}`}
+                    onClick={() => isAvailable && handleChange("time", range.value)}
+                    disabled={!isAvailable}
+                    title={!isAvailable ? "Not available - must be at least 3 hours from now" : ""}
+                  >
+                    {range.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="availability-summary">
+            {schedule.date && schedule.time ? (
+              <div className="selected-datetime">
+                <SvgIcon name="verified-check" size={20} />
+                <span>
+                  Scheduled for: <strong>{new Date(schedule.date + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</strong> between <strong>{timeRanges.find(r => r.value === schedule.time)?.label || schedule.time}</strong>
+                </span>
+              </div>
+            ) : schedule.date && timeRanges.every(range => !isTimeSlotAvailable(range.startHour)) ? (
+              <span className="placeholder-text" style={{ color: "#e53e3e" }}>
+                ⚠️ No time slots available for this date. Please select a different date.
+              </span>
+            ) : (
+              <span className="placeholder-text">Select a date and time above</span>
+            )}
+          </div>
 
           <button
             type="button"
             onClick={handleFinish}
-            className="btn-primary2"
+            className="btn-primary2 availability-submit"
             disabled={loading}
           >
-            {loading ? "Redirecting..." : "Confirm & Pay →"}
+            {loading ? (
+              <>
+                <span className="spinner-small"></span>
+                Redirecting...
+              </>
+            ) : (
+              "Confirm & Pay →"
+            )}
           </button>
         </form>
       </div>

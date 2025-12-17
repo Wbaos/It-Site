@@ -4,6 +4,7 @@ import { use, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useFormValidation } from "@/lib/useFormValidation";
+import BookingSteps from "@/components/BookingSteps";
 
 export default function Step3({
   params,
@@ -95,6 +96,7 @@ export default function Step3({
             ← Back to Contact Info
           </Link>
         </p>
+        <BookingSteps currentStep={3} />
         <h1 className="service-title">Address Information</h1>
 
         <form className="booking-card" onSubmit={(e) => e.preventDefault()}>
