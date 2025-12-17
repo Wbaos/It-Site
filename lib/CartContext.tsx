@@ -8,6 +8,7 @@ import {
   ReactNode,
   useCallback,
 } from "react";
+import { logger } from "./logger";
 
 type CartOption = {
   name: string;
@@ -45,7 +46,7 @@ type CartContextType = {
   addItem: (item: Omit<CartItem, "quantity" | "id">) => Promise<void>;
   removeItem: (id: string) => Promise<void>;
   updateItemQuantity: (id: string, quantity: number) => Promise<void>;
-  updateItem: (id: string, updates: Partial<CartItem>) => void; // ✅ new
+  updateItem: (id: string, updates: Partial<CartItem>) => void; 
   clearCart: () => Promise<void>;
   clearCartFrontend: () => void;
   setItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
@@ -56,7 +57,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
-  const normalizeItems = (data: any): CartItem[] =>
+  const normalizeItems = (data: { items?: CartItem[] }): CartItem[] =>
     Array.isArray(data?.items) ? data.items : [];
 
   useEffect(() => {
@@ -86,10 +87,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
         const data = await res.json();
         setItems(normalizeItems(data));
       } catch (err) {
-        console.error("Error adding item:", err);
+        logger.error("Error adding item to cart", err);
       }
     },
-    [items]
+    []
   );
 
   const removeItem = useCallback(async (id: string) => {
@@ -130,7 +131,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const data = await res.json();
       setItems(normalizeItems(data));
     } catch (err) {
-      console.error("Error updating cart item:", err);
+      logger.error("Error updating cart item", err);
     }
   }, []);
 

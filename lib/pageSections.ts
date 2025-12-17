@@ -52,7 +52,7 @@ export const homeSections: Section[] = [
     key: "hero",
     Component: Hero,
     props: {
-        imageSrc: "/helping2.jpg",
+        // imageSrc: "/helping2.jpg",
 
         titleLine1: "Friendly Tech Support",
         titleLine2: "for Homes & Small Businesses",

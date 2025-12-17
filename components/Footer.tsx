@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowUp } from "lucide-react";
 import SvgIcon from "./common/SvgIcons";
 
@@ -32,10 +33,10 @@ export default function Footer() {
 
         {/* Navigation */}
         <nav className="footer-nav" aria-label="Footer Navigation">
-          <a href="/#services">Services</a>
-          <a href="/#how">How It Works</a>
-          <a href="/#pricing">Pricing</a>
-          <a href="/#contact">Contact</a>
+          <Link href="/#services">Services</Link>
+          <Link href="/#how">How It Works</Link>
+          <Link href="/#pricing">Pricing</Link>
+          <Link href="/#contact">Contact</Link>
           <a href="/about">About Us</a>
           <a href="/faq">FAQ</a>
         </nav>

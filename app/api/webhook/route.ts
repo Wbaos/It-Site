@@ -8,6 +8,7 @@ import { Order } from "@/app/models/Order";
 import { Notification } from "@/app/models/Notification";
 import { Cart } from "@/app/models/Cart";
 import { User } from "@/app/models/User"; // ⭐ REQUIRED
+import { logger } from "@/lib/logger";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-08-27.basil",
@@ -134,9 +135,9 @@ export async function POST(req: Request) {
             { stripeCustomerId: sub.customer as string },
             { new: true }
           );
-          console.log(" Saved stripeCustomerId to user:", sub.customer);
+          logger.info("Saved stripeCustomerId to user", { customerId: sub.customer });
         } catch (err) {
-          console.error(" Failed to save stripeCustomerId:", err);
+          logger.error("Failed to save stripeCustomerId", err);
         }
       }
 
@@ -213,9 +214,9 @@ export async function POST(req: Request) {
               { stripeCustomerId: sub.customer as string },
               { new: true }
             );
-            console.log("🔐 Saved stripeCustomerId (invoice) to user:", sub.customer);
+            logger.info("Saved stripeCustomerId from invoice to user", { customerId: sub.customer });
           } catch (err) {
-            console.error("❌ Failed to save stripeCustomerId (invoice):", err);
+            logger.error("Failed to save stripeCustomerId from invoice", err);
           }
         }
 
@@ -295,7 +296,7 @@ export async function POST(req: Request) {
             email = (customer as any).email || "unknown";
           }
         } catch {
-          console.log("Could not fetch customer email.");
+          logger.warn("Could not fetch customer email for deleted subscription");
         }
       }
 
@@ -321,7 +322,7 @@ export async function POST(req: Request) {
     // ================================================================
     return NextResponse.json({ received: true });
   } catch (err: any) {
-    console.error(" Webhook error:", err.message);
+    logger.error("Webhook error", err);
     return new NextResponse(`Webhook error: ${err.message}`, {
       status: 400,
     });

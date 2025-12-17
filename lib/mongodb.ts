@@ -7,7 +7,12 @@ if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable");
 }
 
-let cached = (global as any).mongoose || { conn: null, promise: null };
+interface CachedConnection {
+  conn: typeof import("mongoose") | null;
+  promise: Promise<typeof import("mongoose")> | null;
+}
+
+const cached: CachedConnection = (global as { mongoose?: CachedConnection }).mongoose || { conn: null, promise: null };
 
 export async function connectDB() {
   if (cached.conn) return cached.conn;
