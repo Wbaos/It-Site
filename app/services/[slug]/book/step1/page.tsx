@@ -288,10 +288,11 @@ export default function Step1({
   return (
     <section className="section booking">
       <div className="site-container booking-wrapper">
+        <BookingSteps currentStep={1} />
+
         <h1 className="service-title">
           {isEdit ? "Modify Service" : "Customize"}: {service.title}
         </h1>
-        <BookingSteps currentStep={1} />
 
         <form className="booking-card" onSubmit={(e) => e.preventDefault()}>
           <div className="base-price">
