@@ -116,11 +116,9 @@ export default function AccountPage() {
    OVERVIEW TAB (with Manage Subscription)
 ------------------------------------------- */
 function OverviewTab({
-    user,
     orders,
     loading,
 }: {
-    user: any;
     orders: Order[];
     loading: boolean;
 }) {
