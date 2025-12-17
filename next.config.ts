@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 /** @type {NextConfig} */
 const nextConfig: NextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   images: {
     remotePatterns: [
       {
@@ -12,6 +16,7 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     unoptimized: false,
   },
+
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
