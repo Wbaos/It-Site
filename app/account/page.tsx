@@ -124,7 +124,6 @@ function OverviewTab({
 }) {
     const [loadingPortal, setLoadingPortal] = useState(false);
     const [hasSubscription, setHasSubscription] = useState<boolean | null>(null);
-    const [localLoading, setLocalLoading] = useState(false);
     const recent = orders[0];
 
     useEffect(() => {
@@ -447,7 +446,7 @@ function OrdersTab({
 /* -------------------------------------------
    PROFILE TAB
 ------------------------------------------- */
-function ProfileTab({ user }: { user: any }) {
+function ProfileTab({ user }: { user: { name?: string; email?: string; phone?: string } }) {
     const { update } = useSession();
     const [name, setName] = useState(user?.name || "");
     const [email, setEmail] = useState(user?.email || "");
