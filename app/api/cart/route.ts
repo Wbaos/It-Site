@@ -1,10 +1,24 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { Cart as CartModel } from "../../models/Cart";
 import { getSessionId } from "@/lib/sessionId";
 import { randomUUID } from "crypto";
 
-export async function GET(req: Request) {
+type CartItem = {
+  id: string;
+  slug: string;
+  title: string;
+  description?: string;
+  basePrice?: number;
+  price: number;
+  options?: { price?: number }[];
+  quantity: number;
+};
+
+/* -------------------------------------------
+   GET CART
+------------------------------------------- */
+export async function GET(req: NextRequest) {
   await connectDB();
 
   const { searchParams } = new URL(req.url);
@@ -12,7 +26,10 @@ export async function GET(req: Request) {
   const sessionId = querySessionId || (await getSessionId());
 
   if (!sessionId) {
-    return NextResponse.json({ error: "No sessionId provided" }, { status: 400 });
+    return NextResponse.json(
+      { error: "No sessionId provided" },
+      { status: 400 }
+    );
   }
 
   let cart = await CartModel.findOne({ sessionId });
@@ -23,25 +40,39 @@ export async function GET(req: Request) {
   return NextResponse.json({ items: cart.items });
 }
 
-export async function POST(req: Request) {
+/* -------------------------------------------
+   ADD ITEM TO CART
+------------------------------------------- */
+export async function POST(req: NextRequest) {
   try {
     await connectDB();
     const sessionId = await getSessionId();
 
-    const { slug, title, description, basePrice, options } = await req.json();
+    const {
+      slug,
+      title,
+      description,
+      basePrice,
+      options,
+    }: {
+      slug: string;
+      title: string;
+      description?: string;
+      basePrice?: number;
+      options?: { price?: number }[];
+    } = await req.json();
 
     const addonsTotal =
-      options?.reduce(
-        (sum: number, opt: { price?: number }) => sum + (opt.price || 0),
-        0
-      ) || 0;
+      options?.reduce((sum, opt) => sum + (opt.price || 0), 0) || 0;
 
     const totalPrice = (basePrice || 0) + addonsTotal;
 
     let cart = await CartModel.findOne({ sessionId });
-    if (!cart) cart = await CartModel.create({ sessionId, items: [] });
+    if (!cart) {
+      cart = await CartModel.create({ sessionId, items: [] });
+    }
 
-    const existing = cart.items.find((i: any) => i.slug === slug);
+    const existing = cart.items.find((i: CartItem) => i.slug === slug);
 
     if (!existing) {
       cart.items.push({
@@ -60,35 +91,58 @@ export async function POST(req: Request) {
     return NextResponse.json({ items: cart.items });
   } catch (err) {
     console.error("POST /api/cart error:", err);
-    return NextResponse.json({ error: "Failed to add item" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to add item" },
+      { status: 500 }
+    );
   }
 }
 
-export async function PUT(req: Request) {
+/* -------------------------------------------
+   UPDATE CART
+------------------------------------------- */
+export async function PUT(req: NextRequest) {
   try {
     await connectDB();
     const sessionId = await getSessionId();
-    const body = await req.json();
+
+    const body: {
+      id?: string;
+      quantity?: number;
+      contact?: unknown;
+      address?: unknown;
+      schedule?: unknown;
+      description?: string;
+      basePrice?: number;
+      price?: number;
+      options?: unknown;
+    } = await req.json();
 
     const { id, quantity, contact, address, schedule, ...updates } = body;
 
     const cart = await CartModel.findOne({ sessionId });
     if (!cart) {
-      return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Cart not found" },
+        { status: 404 }
+      );
     }
 
     if (id) {
-      const itemIndex = cart.items.findIndex((i: any) => i.id === id);
+      const itemIndex = cart.items.findIndex(
+        (i: CartItem) => i.id === id
+      );
+
       if (itemIndex !== -1) {
         const current = cart.items[itemIndex];
 
         cart.items[itemIndex] = {
           ...current,
-          ...updates,      
+          ...updates,
           id: current.id,
           slug: current.slug,
           title: current.title,
-          description: updates.description ?? current.description, 
+          description: updates.description ?? current.description,
           basePrice: updates.basePrice ?? current.basePrice,
           price: updates.price ?? current.price,
           options: updates.options ?? current.options,
@@ -111,25 +165,37 @@ export async function PUT(req: Request) {
     });
   } catch (err) {
     console.error("PUT /api/cart error:", err);
-    return NextResponse.json({ error: "Failed to update cart" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update cart" },
+      { status: 500 }
+    );
   }
 }
 
-export async function DELETE(req: Request) {
+/* -------------------------------------------
+   CLEAR / REMOVE FROM CART
+------------------------------------------- */
+export async function DELETE(req: NextRequest) {
   await connectDB();
   const sessionId = await getSessionId();
 
   const cart = await CartModel.findOne({ sessionId });
-  if (!cart)
-    return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+  if (!cart) {
+    return NextResponse.json(
+      { error: "Cart not found" },
+      { status: 404 }
+    );
+  }
 
-  const body = await req.json().catch(() => null);
+  const body = (await req.json().catch(() => null)) as { id?: string } | null;
   const id = body?.id;
 
   if (!id) {
     cart.items = [];
   } else {
-    cart.items = cart.items.filter((i: any) => i.id !== id);
+    cart.items = cart.items.filter(
+      (i: CartItem) => i.id !== id
+    );
   }
 
   await cart.save();
