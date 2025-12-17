@@ -5,6 +5,11 @@ import { useSession } from "next-auth/react";
 import clsx from "clsx";
 import { redirect } from "next/navigation";
 import Loader from "@/components/common/Loader";
+type SessionUser = {
+    name?: string | null;
+    email?: string | null;
+    phone?: string | null;
+};
 
 type Order = {
     _id: string;
@@ -72,7 +77,7 @@ export default function AccountPage() {
         redirect("/");
     }
 
-    const user = session?.user;
+    const user: SessionUser | undefined = session?.user as SessionUser | undefined;
     const tabs: Array<"overview" | "orders" | "profile"> = [
         "overview",
         "orders",
@@ -102,7 +107,7 @@ export default function AccountPage() {
                 </div>
 
                 {tab === "overview" && (
-                    <OverviewTab user={user} orders={orders} loading={loading} />
+                    <OverviewTab orders={orders} loading={loading} />
                 )}
                 {tab === "orders" && <OrdersTab orders={orders} loading={loading} />}
                 {tab === "profile" && <ProfileTab user={user} />}
@@ -119,13 +124,11 @@ function OverviewTab({
     orders,
     loading,
 }: {
-    user: any;
     orders: Order[];
     loading: boolean;
 }) {
     const [loadingPortal, setLoadingPortal] = useState(false);
     const [hasSubscription, setHasSubscription] = useState<boolean | null>(null);
-    const [localLoading, setLocalLoading] = useState(false);
     const recent = orders[0];
 
     useEffect(() => {
@@ -448,7 +451,7 @@ function OrdersTab({
 /* -------------------------------------------
    PROFILE TAB
 ------------------------------------------- */
-function ProfileTab({ user }: { user: any }) {
+function ProfileTab({ user }: { user: SessionUser | undefined }) {
     const { update } = useSession();
     const [name, setName] = useState(user?.name || "");
     const [email, setEmail] = useState(user?.email || "");
