@@ -4,6 +4,17 @@ import { Cart as CartModel } from "../../models/Cart";
 import { getSessionId } from "@/lib/sessionId";
 import { randomUUID } from "crypto";
 
+interface CartItem {
+  id: string;
+  slug: string;
+  title: string;
+  description?: string;
+  basePrice: number;
+  price: number;
+  options?: Array<{ name: string; price: number }>;
+  quantity?: number;
+}
+
 export async function GET(req: Request) {
   await connectDB();
 
@@ -41,7 +52,7 @@ export async function POST(req: Request) {
     let cart = await CartModel.findOne({ sessionId });
     if (!cart) cart = await CartModel.create({ sessionId, items: [] });
 
-    const existing = cart.items.find((i: any) => i.slug === slug);
+    const existing = cart.items.find((i: CartItem) => i.slug === slug);
 
     if (!existing) {
       cart.items.push({
@@ -78,7 +89,7 @@ export async function PUT(req: Request) {
     }
 
     if (id) {
-      const itemIndex = cart.items.findIndex((i: any) => i.id === id);
+      const itemIndex = cart.items.findIndex((i: CartItem) => i.id === id);
       if (itemIndex !== -1) {
         const current = cart.items[itemIndex];
 
@@ -129,7 +140,7 @@ export async function DELETE(req: Request) {
   if (!id) {
     cart.items = [];
   } else {
-    cart.items = cart.items.filter((i: any) => i.id !== id);
+    cart.items = cart.items.filter((i: CartItem) => i.id !== id);
   }
 
   await cart.save();
