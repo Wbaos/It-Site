@@ -6,10 +6,10 @@ import { client } from "@/lib/sanity.client";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { shareId: string } }
+  { params }: { params: Promise<{ shareId: string }> }
 ) {
   try {
-    const { shareId } = params;
+    const { shareId } = await params;
 
     await connectDB();
     
