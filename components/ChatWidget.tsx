@@ -9,18 +9,39 @@ export default function ChatWidget() {
     const [pending, setPending] = useState(false);
     const [input, setInput] = useState("");
     const [language, setLanguage] = useState<"en" | "es">("en");
-    const [messages, setMessages] = useState<Msg[]>([
-        {
-            from: "bot",
-            text: "Hi 👋 I'm **Sofía** from CallTechCare. Which device do you need help with today? (computer, printer, Wi-Fi, TV, etc.)",
-        },
-    ]);
+    const [suggestions, setSuggestions] = useState<string[]>([]);
+    const [messages, setMessages] = useState<Msg[]>(() => {
+        // Load messages from localStorage
+        if (typeof window !== "undefined") {
+            const saved = localStorage.getItem("ctc-chat-messages");
+            if (saved) {
+                try {
+                    return JSON.parse(saved);
+                } catch (e) {
+                    console.error("Failed to parse saved messages");
+                }
+            }
+        }
+        return [
+            {
+                from: "bot",
+                text: "Hi 👋 I'm **Sofía** from CallTechCare. Which device do you need help with today? (computer, printer, Wi-Fi, TV, etc.)",
+            },
+        ];
+    });
 
     const chatEndRef = useRef<HTMLDivElement | null>(null);
 
     // Auto-scroll to last message
     useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
+    // Save messages to localStorage
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            localStorage.setItem("ctc-chat-messages", JSON.stringify(messages));
+        }
     }, [messages]);
 
     // Send message to API
@@ -47,6 +68,7 @@ export default function ChatWidget() {
             const data = await res.json();
 
             setLanguage(data.language);
+            setSuggestions(data.suggestions || []);
 
             setMessages((prev) => [
                 ...prev,
@@ -56,6 +78,9 @@ export default function ChatWidget() {
             setPending(false);
 
             if (data.booking) {
+                // Handle booking flow - could redirect to booking page or open modal
+                console.log("User wants to book a service!");
+                // Example: window.location.href = "/contact";
             }
         } catch (error) {
             setMessages((prev) => [
@@ -130,11 +155,37 @@ export default function ChatWidget() {
 
                         {pending && (
                             <div className="ctc-chat-msg from-bot">
-                                {language === "es" ? "Escribiendo…" : "Typing…"}
+                                <div className="ctc-chat-typing-indicator">
+                                    <span className="ctc-chat-typing-dot"></span>
+                                    <span className="ctc-chat-typing-dot"></span>
+                                    <span className="ctc-chat-typing-dot"></span>
+                                </div>
                             </div>
                         )}
                         <div ref={chatEndRef} />
                     </div>
+
+                    {/* Quick Reply Suggestions */}
+                    {suggestions.length > 0 && !pending && (
+                        <div className="ctc-chat-suggestions">
+                            {suggestions.map((suggestion, i) => (
+                                <button
+                                    key={i}
+                                    className="ctc-chat-suggestion-btn"
+                                    onClick={async () => {
+                                        setInput(suggestion);
+                                        // Wait for state to update, then send
+                                        setTimeout(() => {
+                                            const btn = document.querySelector('.ctc-chat-sendBtn') as HTMLButtonElement;
+                                            btn?.click();
+                                        }, 50);
+                                    }}
+                                >
+                                    {suggestion}
+                                </button>
+                            ))}
+                        </div>
+                    )}
 
                     {/* Input */}
                     <div className="ctc-chat-inputRow">
