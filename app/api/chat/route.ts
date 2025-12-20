@@ -18,22 +18,41 @@ interface Service {
     faqs?: FAQ[] | null;
 }
 
+// Cache for services and homepage (5 minute duration)
+let cachedServices: Service[] | null = null;
+let cachedHomepage: string | null = null;
+let cacheTime = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 export async function POST(req: Request) {
+    let detectedLang = "en"; // Track language throughout the request
+    
     try {
         const { message, history } = await req.json();
 
-        //  Fetch services (with FAQs)
-        const services: Service[] = await sanity.fetch(`*[_type=="service"]{
-      title,
-      slug,
-      price,
-      shortDescription,
-      faqs[]->{question, answer}
-    }`);
+        // Limit conversation history to prevent token overflow
+        const recentHistory = Array.isArray(history) ? history.slice(-10) : [];
 
-        //  Load homepage HTML
-        const homepageRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}`);
-        const homepageText = await homepageRes.text();
+        // Check cache validity
+        const now = Date.now();
+        const isCacheValid = cachedServices && cachedHomepage && (now - cacheTime) < CACHE_DURATION;
+
+        // Fetch or use cached data
+        if (!isCacheValid) {
+            cachedServices = await sanity.fetch(`*[_type=="service"]{
+        title,
+        slug,
+        price,
+        shortDescription,
+        faqs[]->{question, answer}
+      }`);
+            const homepageRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}`);
+            cachedHomepage = await homepageRes.text();
+            cacheTime = now;
+        }
+
+        const services = cachedServices!;
+        const homepageText = cachedHomepage!;
 
         //  Detect language
         const langDetect = await openai.chat.completions.create({
@@ -43,7 +62,7 @@ export async function POST(req: Request) {
                 { role: "user", content: message },
             ],
         });
-        const detectedLang = langDetect.choices[0].message.content?.trim() || "en";
+        detectedLang = langDetect.choices[0].message.content?.trim() || "en";
         const lang = detectedLang === "es" ? "es" : "en";
 
         //  Safely build the service info block
@@ -71,7 +90,7 @@ ${faqSection}URL: ${process.env.NEXT_PUBLIC_BASE_URL}/services/${s.slug?.current
 
         //  Build global context
         const knowledgeContext = `
-You are Sofía, CallTechCare’s intelligent virtual assistant.
+You are Sofía, CallTechCare's friendly and intelligent virtual assistant.
 Use the following company and service information to answer clearly and conversationally.
 
 --- COMPANY INFO ---
@@ -81,43 +100,87 @@ ${homepageText.slice(0, 7000)}
 ${serviceInfo}
 
 Guidelines:
-- Always answer in the same language as the user.
-- Include the matching service’s description, price, and clickable URL.
-- If FAQs exist, include the most relevant one(s).
-- For general questions (coverage, about, prices), summarize from context.
-- If question is unrelated (e.g. weather, cooking), politely say you only assist with CallTechCare topics.
-- Never ask for names or personal data.
+- Always answer in the same language as the user (you speak both English and Spanish fluently).
+- Be warm and conversational - acknowledge questions about your capabilities, greet users naturally, and build rapport.
+- For service questions: Format services as a clean list with each service on a new line. Use this format:
+  • **Service Name** — **$Price**
+  Description here
+  [View Service](URL)
+  
+- When listing multiple services, separate them clearly with line breaks.
+- For questions about your abilities (e.g., "Do you speak Spanish?"): Answer directly and positively, then offer to help with services.
+- For general questions (coverage area, business hours, contact info): Answer using the company info provided.
+- For completely unrelated topics (weather, recipes, sports): Politely redirect to CallTechCare services but remain friendly.
+- Never ask for personal data like full names, addresses, or payment information - that's handled securely during booking.
+- Use emojis occasionally to be friendly, but don't overuse them.
+- Make links clickable using markdown format: [Link Text](URL)
 `;
 
-        //  Combine conversation history
-        const convoText = [
-            ...history.map((h: Msg) => `${h.from}: ${h.text}`),
-            `user: ${message}`,
-        ].join("\n");
+        // Build proper message array for OpenAI
+        const conversationMessages = [
+            { role: "system" as const, content: knowledgeContext },
+            ...recentHistory.map((h: Msg) => ({
+                role: (h.from === "user" ? "user" : "assistant") as "user" | "assistant",
+                content: h.text,
+            })),
+            { role: "user" as const, content: message },
+        ];
 
         //  Generate AI response
         const response = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             temperature: 0.5,
-            messages: [
-                { role: "system", content: knowledgeContext },
-                { role: "user", content: convoText },
-            ],
+            messages: conversationMessages,
         });
 
         const aiReply = response.choices[0].message.content?.trim() || "...";
 
+        // Detect booking intent
+        const bookingKeywords = /\b(book|schedule|appointment|reserve|set up|install|agendar|reservar|programar|cita)\b/i;
+        const wantsToBook = bookingKeywords.test(message) || bookingKeywords.test(aiReply);
+
+        // Generate contextual quick reply suggestions
+        const suggestions = lang === "es"
+            ? ["📋 Ver todos los servicios", "💬 Hablar con soporte", "❓ Preguntas frecuentes"]
+            : ["📋 View all services", "💬 Contact support", "❓ Frequently asked questions"];
+
         return NextResponse.json({
             reply: aiReply,
             language: lang,
+            booking: wantsToBook,
+            suggestions,
         });
     } catch (err) {
         console.error("Error in /api/chat:", err);
+        
+        // Detect error type for better user feedback
+        const isRateLimit = err instanceof Error && err.message.includes('rate_limit');
+        const isNetworkError = err instanceof Error && (err.message.includes('fetch') || err.message.includes('network'));
+        
+        // Use the detected language from the request (default to English if detection failed)
+        const lang = detectedLang;
+        const isSpanish = lang === "es";
+        
+        let errorMsg = "Sorry 😔, something went wrong while processing your request. Please try again later or contact support@calltechcare.com.";
+        
+        if (isSpanish) {
+            if (isRateLimit) {
+                errorMsg = "Demasiadas solicitudes 😔. Por favor espera un momento e intenta nuevamente.";
+            } else if (isNetworkError) {
+                errorMsg = "Problema de conexión 😔. Por favor verifica tu internet e intenta nuevamente.";
+            } else {
+                errorMsg = "Lo siento 😔, hubo un problema al procesar tu solicitud. Intenta nuevamente más tarde o contacta support@calltechcare.com.";
+            }
+        } else {
+            if (isRateLimit) {
+                errorMsg = "Too many requests 😔. Please wait a moment and try again.";
+            } else if (isNetworkError) {
+                errorMsg = "Connection problem 😔. Please check your internet and try again.";
+            }
+        }
+        
         return NextResponse.json(
-            {
-                reply:
-                    "Sorry 😔, something went wrong while processing your request. Please try again later or contact support@calltechcare.com.",
-            },
+            { reply: errorMsg },
             { status: 500 }
         );
     }
