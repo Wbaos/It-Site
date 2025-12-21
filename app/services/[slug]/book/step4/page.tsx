@@ -120,6 +120,10 @@ export default function Step4({
       credentials: "include",
     });
 
+    if (!res.ok) {
+      throw new Error(`Checkout failed with status ${res.status}`);
+    }
+
     const { url } = await res.json();
     if (url) router.push(url); 
   } catch (err) {
