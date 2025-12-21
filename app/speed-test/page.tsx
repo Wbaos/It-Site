@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Wifi, Download, Upload, Activity, Zap, CheckCircle, Info } from "lucide-react";
 
@@ -11,7 +11,7 @@ interface SpeedTestResult {
     jitter: number;
 }
 
-export default function SpeedTestPage() {
+function SpeedTestContent() {
     const searchParams = useSearchParams();
     const autostart = searchParams.get('autostart') === 'true';
     const [testing, setTesting] = useState(autostart);
@@ -558,5 +558,25 @@ export default function SpeedTestPage() {
                 </p>
             </div>
         </div>
+    );
+}
+
+export default function SpeedTestPage() {
+    return (
+        <Suspense fallback={
+            <div className="speed-test-page-new">
+                <div className="speed-test-container-new">
+                    <div className="test-header">
+                        <div className="wifi-icon">
+                            <Wifi size={48} />
+                        </div>
+                        <h1 className="test-title">Internet Speed Test</h1>
+                        <p className="test-subtitle">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        }>
+            <SpeedTestContent />
+        </Suspense>
     );
 }
