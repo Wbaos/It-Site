@@ -57,7 +57,6 @@ export async function middleware(request: NextRequest) {
   // Protected Routes - Require Authentication
   const protectedPaths = [
     '/account',
-    '/cart',
     '/services/[slug]/book',
     '/reviews/write'
   ];
@@ -81,8 +80,6 @@ export async function middleware(request: NextRequest) {
 
   // API Route Protection
   const protectedApiPaths = [
-    '/api/cart',
-    '/api/checkout',
     '/api/orders',
     '/api/profile',
     '/api/notifications',
