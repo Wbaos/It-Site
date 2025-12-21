@@ -38,7 +38,6 @@ type ActiveServiceType = {
 };
 
 const NAV = [
-  { href: "/#pricing", label: "Pricing" },
   { href: "/assessment", label: "Free Assessment" },
   { href: "/#contact", label: "Contact" },
   { href: "/blog", label: "Blog" },

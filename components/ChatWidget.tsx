@@ -173,8 +173,22 @@ export default function ChatWidget() {
                                     key={i}
                                     className="ctc-chat-suggestion-btn"
                                     onClick={async () => {
+                                        // Handle special actions
+                                        if (suggestion.includes("Speed Test") || suggestion.includes("velocidad")) {
+                                            window.location.href = "/speed-test";
+                                            return;
+                                        }
+                                        if (suggestion.includes("Contact") || suggestion.includes("soporte")) {
+                                            window.location.href = "/contact";
+                                            return;
+                                        }
+                                        if (suggestion.includes("services") || suggestion.includes("servicios")) {
+                                            window.location.href = "/services";
+                                            return;
+                                        }
+                                        
+                                        // Default: send as message
                                         setInput(suggestion);
-                                        // Wait for state to update, then send
                                         setTimeout(() => {
                                             const btn = document.querySelector('.ctc-chat-sendBtn') as HTMLButtonElement;
                                             btn?.click();

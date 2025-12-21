@@ -141,8 +141,8 @@ Guidelines:
 
         // Generate contextual quick reply suggestions
         const suggestions = lang === "es"
-            ? ["📋 Ver todos los servicios", "💬 Hablar con soporte", "❓ Preguntas frecuentes"]
-            : ["📋 View all services", "💬 Contact support", "❓ Frequently asked questions"];
+            ? ["📋 Ver todos los servicios", "⚡ Prueba de velocidad", "💬 Hablar con soporte"]
+            : ["📋 View all services", "⚡ Speed Test", "💬 Contact support"];
 
         return NextResponse.json({
             reply: aiReply,
