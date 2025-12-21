@@ -8,6 +8,7 @@ import Contact from "@/components/sections/Contact";
 import HighlightsServer from "@/components/sections/HighLigthsServer";
 import SEOIntro from "@/components/sections/SEOIntro";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
+import SpeedTestCTA from "@/components/sections/SpeedTestCTA";
 type Section = {
   key:
     | "hero"
@@ -18,6 +19,7 @@ type Section = {
     | "why"
     | "testimonials"
     | "pricing"
+    | "speed-test-cta"
     | "contact";
   Component: ComponentType<any>;
   props?: any;
@@ -80,6 +82,8 @@ export const homeSections: Section[] = [
 
   { key: "services", Component: Services },
 
+  { key: "speed-test-cta", Component: SpeedTestCTA, props: {} },
+
   { key: "seo-intro", Component: SEOIntro, props: {}, },
   { key: "why", Component: WhyChooseUs },
 
@@ -98,7 +102,6 @@ export const homeSections: Section[] = [
   },
 
   { key: "pricing", Component: Pricing, props: {} },
-
   {
     key: "contact",
     Component: Contact,
