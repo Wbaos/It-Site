@@ -5,6 +5,20 @@ import { Search, X } from "lucide-react";
 import Link from "next/link";
 
 export default function SearchModal({ onClose }: { onClose: () => void }) {
+  // Save and restore scroll position for mobile
+  const scrollPositionRef = useRef<number>(0);
+  useEffect(() => {
+    if (window.innerWidth < 900) {
+      scrollPositionRef.current = window.scrollY;
+    }
+    document.body.classList.add("no-scroll");
+    return () => {
+      document.body.classList.remove("no-scroll");
+      if (window.innerWidth < 900) {
+        window.scrollTo(0, scrollPositionRef.current);
+      }
+    };
+  }, []);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [popular, setPopular] = useState<any[]>([]);
@@ -22,10 +36,27 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
     }, [onClose]);
 
   useEffect(() => {
+    const cached = localStorage.getItem("popular-searches");
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed)) {
+          setPopular(parsed);
+        }
+      } catch {}
+    }
+
     fetch("/api/popular-searches")
       .then((res) => res.json())
-      .then((data) => setPopular(data.results || []))
-      .catch(() => setPopular([]));
+      .then((data) => {
+        setPopular(data.results || []);
+        if (Array.isArray(data.results)) {
+          localStorage.setItem("popular-searches", JSON.stringify(data.results));
+        }
+      })
+      .catch(() => {
+        if (!cached) setPopular([]);
+      });
   }, []);
 
   useEffect(() => {
@@ -67,7 +98,6 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
               placeholder="Search for a service..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              autoFocus
             />
             <button className="close-btn" onClick={onClose}>
               <X size={20} />
