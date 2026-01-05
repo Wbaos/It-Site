@@ -2,10 +2,12 @@ import type { NextConfig } from "next";
 
 /** @type {NextConfig} */
 const nextConfig: NextConfig = {
+  // ESLint
   eslint: {
     ignoreDuringBuilds: true,
   },
 
+  // Images
   images: {
     remotePatterns: [
       {
@@ -15,6 +17,37 @@ const nextConfig: NextConfig = {
     ],
     formats: ["image/avif", "image/webp"],
     unoptimized: false,
+  },
+
+  // 🔹 REDIRECTS (FIXES GOOGLE SMART TV ISSUE)
+  async redirects() {
+    return [
+      {
+        source: "/services/smart-tv",
+        destination: "/services/tv-mounting-and-setup",
+        permanent: true,
+      },
+      {
+        source: "/services/tv-mounting",
+        destination: "/services/tv-mounting-and-setup",
+        permanent: true,
+      },
+      {
+        source: "/services/large-tv",
+        destination: "/services/tv-mounting-and-setup",
+        permanent: true,
+      },
+      {
+        source: "/services/small-tv",
+        destination: "/services/tv-mounting-and-setup",
+        permanent: true,
+      },
+      {
+        source: "/services/standard-tv",
+        destination: "/services/tv-mounting-and-setup",
+        permanent: true,
+      },
+    ];
   },
 
   // Security Headers
@@ -52,12 +85,11 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Disable powered-by header
+  // Misc
   poweredByHeader: false,
-
-  // Enable strict mode
   reactStrictMode: true,
 
+  // SVG Support
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
