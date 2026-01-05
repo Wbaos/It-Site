@@ -15,13 +15,14 @@ export default function ServiceGroupList({
       <h2 className="svc-group-heading">{title}</h2>
 
       <div className="svc-list">
-        {items.map((s) => {
+        {items.map((s, i) => {
           const subs = s.subservices ?? [];
           const hasSubs = subs.length > 0;
 
+          const key = typeof s.slug === "object" ? s.slug.current : s.slug || i;
           return (
             <Link
-              key={s.slug}
+              key={key}
               href="#"
               className={`svc-card ${s.popular ? "popular-service" : ""}`}
               onClick={(e) => {
