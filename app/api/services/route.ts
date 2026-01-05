@@ -67,11 +67,14 @@ export async function GET() {
 
     for (const parent of parents) {
       const cat = parent.category?.title ?? "Other";
+      const catSlug = parent.category?.slug;
+      if (!catSlug) continue; // skip categories with no slug
 
       let bucket = grouped.find((g) => g.category === cat);
       if (!bucket) {
         bucket = {
           category: cat,
+          categorySlug: catSlug,
           icon: parent.category?.icon ?? "tag",
           items: [],
         };

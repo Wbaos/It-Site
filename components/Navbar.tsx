@@ -282,19 +282,40 @@ export default function Navbar() {
                             className={`dropdown-category col-${(i % 3) + 1}`}
                           >
                             <div className="dropdown-header">
-                              <div className="dropdown-title">
-                                {cat.icon?.url ? (
-                                  <img
-                                    src={cat.icon.url}
-                                    alt={cat.icon.alt || cat.category}
-                                    width={22}
-                                    height={22}
-                                  />
-                                ) : (
-                                  <SvgIcon name="tag" size={22} />
-                                )}
-                                <h4>{cat.category}</h4>
-                              </div>
+                              {cat.categorySlug ? (
+                                <Link
+                                  href={`/services/${cat.categorySlug}`}
+                                  className="dropdown-title"
+                                  onClick={closeEverything}
+                                  style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                                >
+                                  {cat.icon?.url ? (
+                                    <img
+                                      src={cat.icon.url}
+                                      alt={cat.icon.alt || cat.category}
+                                      width={22}
+                                      height={22}
+                                    />
+                                  ) : (
+                                    <SvgIcon name="tag" size={22} />
+                                  )}
+                                  <h4 style={{ marginLeft: 8 }}>{cat.category}</h4>
+                                </Link>
+                              ) : (
+                                <div className="dropdown-title" style={{ display: 'flex', alignItems: 'center', opacity: 0.5 }}>
+                                  {cat.icon?.url ? (
+                                    <img
+                                      src={cat.icon.url}
+                                      alt={cat.icon.alt || cat.category}
+                                      width={22}
+                                      height={22}
+                                    />
+                                  ) : (
+                                    <SvgIcon name="tag" size={22} />
+                                  )}
+                                  <h4 style={{ marginLeft: 8 }}>{cat.category}</h4>
+                                </div>
+                              )}
                             </div>
 
                             <ul>
