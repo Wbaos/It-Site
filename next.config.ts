@@ -38,8 +38,8 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/services/small-tv",
-        destination: "/services/tv-mounting-and-setup",
+        source: "/services/small-tv-mounting-up-to-32",
+        destination: "/services/small-tv-up-to-32",
         permanent: true,
       },
       {
