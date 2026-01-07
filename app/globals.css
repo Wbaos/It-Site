@@ -6323,7 +6323,7 @@ main {
     color: #e5edf7;
     font-size: 1rem;
     padding: .5rem 1rem;
-    /* box-sizing: border-box; */
+    box-sizing: border-box;
     outline: none;
     transition: border-color .25s 
     ease, box-shadow .25s 
@@ -8682,8 +8682,8 @@ object-fit: cover;
 /* Mobile responsiveness */
 @media (max-width: 480px) {
   .ctc-chat-wrapper {
-    bottom: 10px;
-    right: 10px;
+    bottom: 16px;
+    right: 15px;
   }
 
   .ctc-chat-bubbleButton {
