@@ -6705,6 +6705,9 @@ object-fit: cover;
   font-weight: 700;
   color: #f8fafc;
 }
+.review-action-footer{
+  padding-top: 20px;
+}
 
 .btn-write-review {
   background: linear-gradient(135deg, #0b7568, #0c8274);
@@ -7646,6 +7649,11 @@ object-fit: cover;
   padding:6px 12px;
   cursor:pointer;
   animation:flash-pulse 2s infinite;
+  transition: opacity 0.2s;
+}
+#floating-book-container:hover::before {
+  opacity: 0;
+  pointer-events: none;
 }
 #floating-book-container:hover::before{
   background:linear-gradient(135deg,#14b8a6,#10b981);
@@ -7881,7 +7889,7 @@ object-fit: cover;
 .site-container-testimonials {
   max-width: 1250px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 60px 0; 
   border: 1px solid #1e293b;
   border-radius: 16px;
 }
@@ -9906,7 +9914,7 @@ details[open] .faq-toggle {
 /* Speed Test CTA Section on Homepage */
 .speed-test-cta-section {
   padding: 80px 20px;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  background: #093139;
   position: relative;
   overflow: hidden;
 }
