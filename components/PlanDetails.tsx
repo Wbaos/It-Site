@@ -81,12 +81,12 @@ export function PlanDetails({ plan }: PlanDetailsProps) {
         <section className="plan-section">
             <div className="plan-container">
                 <header className="plan-header">
-                    <h1 className="plan-title">{plan.title}</h1>
+                    <h1 className="plan-title-inside">{plan.title}</h1>
 
                     {displayPrice !== null ? (
-                        <p className="plan-price">
+                        <p className="plan-price-inside">
                             ${displayPrice.toFixed(2)}
-                            <span className="plan-duration">{durationDisplay}</span>
+                            <span className="plan-duration-inside">{durationDisplay}</span>
                         </p>
                     ) : (
                         <p className="plan-price missing">
@@ -97,7 +97,7 @@ export function PlanDetails({ plan }: PlanDetailsProps) {
                 </header>
 
                 {plan.features?.length > 0 && (
-                    <div className="plan-features">
+                    <div className="plan-features-inside">
                         <h2>What’s included:</h2>
                         <ul>
                             {plan.features.map((f, i) => (
