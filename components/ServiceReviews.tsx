@@ -59,8 +59,9 @@ export default function ServiceReviews({ slug }: { slug: string }) {
             </div>
 
             {/* Existing Reviews */}
-            <div className="existing-reviews">
-                {/* {reviews.length === 0 && <p>No reviews yet — be the first to share your experience!</p>} */}
+            {/* {reviews.length === 0 && <p>No reviews yet — be the first to share your experience!</p>} */}
+
+            {/* <div className="existing-reviews">
                 <ul className="review-list">
                     {reviews.map((r) => (
                         <li key={r._id} className="review-card">
@@ -111,7 +112,7 @@ export default function ServiceReviews({ slug }: { slug: string }) {
                         </li>
                     ))}
                 </ul>
-            </div>
+            </div> */}
 
 
         </div>

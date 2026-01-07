@@ -204,8 +204,12 @@ export default function TestimonialsList({
           </div>
 
           <div className="owl-nav">
-            <button className="owl-prev" onClick={goPrev}>‹</button>
-            <button className="owl-next" onClick={goNext}>›</button>
+            <button className="owl-prev" onClick={goPrev} aria-label="Previous testimonial">
+              <SvgIcon name="chevron-left" size={28} color="#d6d6ddff" />
+            </button>
+            <button className="owl-next" onClick={goNext} aria-label="Next testimonial">
+              <SvgIcon name="chevron-right" size={28} color="#d6d6ddff" />
+            </button>
           </div>
         </div>
       </div>
