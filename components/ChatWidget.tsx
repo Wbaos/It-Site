@@ -99,16 +99,17 @@ export default function ChatWidget() {
 
     return (
         <div className="ctc-chat-wrapper">
-            {/* Floating chat button */}
+            {/* Floating chat button - always mounted */}
             <button
                 className="ctc-chat-bubbleButton"
                 onClick={() => setIsOpen(!isOpen)}
-                aria-label="Open chat support"
+                aria-label={isOpen ? "Close chat support" : "Open chat support"}
+                style={{ zIndex: isOpen ? 9998 : 9999 }}
             >
                 💬
             </button>
 
-            {/* Chat window */}
+            {/* Chat window - toggled only */}
             {isOpen && (
                 <div className="ctc-chat-window">
                     {/* Header */}
