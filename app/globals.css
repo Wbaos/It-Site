@@ -5065,7 +5065,7 @@ main {
 
 @media (max-width: 760px) {
   .account-page {
-    padding: 6rem 35px;
+    padding: 6rem 1rem;
   }
 }
 
@@ -5160,6 +5160,12 @@ main {
 .availability-section {
   margin-bottom: 1rem;
 }
+.availability-section {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;          /* prevents bleed */
+}
+
 
 .availability-label {
   display: flex;
@@ -5178,15 +5184,17 @@ main {
 
 .availability-input {
   width: 100%;
-  /* max-width: 100%; */
+  min-width: 0;
+  max-width: 100%;
   padding: 0.875rem 1rem;
-  font-size: 1rem;
+  font-size: 16px;
   border: 2px solid #e0e0e0;
   box-sizing: border-box;
   border-radius: 8px;
   transition: all 0.2s;
   font-family: inherit;
   cursor: pointer;
+  -webkit-text-size-adjust: 100%
 }
 
 .availability-input::-webkit-calendar-picker-indicator {
@@ -5337,6 +5345,13 @@ main {
   .time-slots-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  input[type="date"].availability-input {
+    appearance: none;
+    -webkit-appearance: none;
+    max-width: 100%;
+    min-width: 0;
+  }
   
   .time-range-slot {
     font-size: 0.85rem;
@@ -5364,7 +5379,7 @@ main {
     grid-template-columns: 1fr;
   }
   .availability-input {
-    font-size: 0.85rem;
+    font-size: 16px;
     padding: 0.6rem 0.5rem;
   }
 }
