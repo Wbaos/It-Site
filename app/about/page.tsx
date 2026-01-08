@@ -9,7 +9,8 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
     return (
-        <main className="about-page">
+        <main className=" about-page-container">
+            <div className="about-page">
             <section className="about-hero">
                 <h1 className="about-title">About CallTechCare</h1>
                 <p className="about-subtitle">
@@ -70,6 +71,7 @@ export default function AboutPage() {
                     Book a Service
                 </Link>
             </section>
+            </div>
         </main>
     );
 }

@@ -39,7 +39,8 @@ export default function FAQPage() {
     ];
 
     return (
-        <main className="faq-page">
+        <main className="faq-page-container">
+            <div className="faq-page">
             <h1 className="faq-title">Frequently Asked Questions</h1>
             <p className="faq-intro">
                 Here are answers to some of the most common questions about our
@@ -68,6 +69,7 @@ export default function FAQPage() {
                     and we’ll be happy to help.
                 </p>
             </section>
+            </div>
         </main>
     );
 }
