@@ -378,11 +378,6 @@
     max-width: 98vw;
     gap: 1.5rem;
   }
-  .styled-stats-row {
-    flex-direction: column;
-    gap: 1.5rem;
-    align-items: stretch;
-  }
   .styled-about-features-row {
     flex-direction: column;
     gap: 1.5rem;
@@ -492,7 +487,6 @@
 .category-service-arrow.rotated {
   transform: rotate(90deg);
 }
-/* === CATEGORY SERVICE PRICE COLUMN & ARROW === */
 .category-service-price-row {
   display: flex;
   align-items: center;
@@ -512,7 +506,6 @@
   margin-top: 0.1rem;
   line-height: 1rem;
 }
-/* === CATEGORY SERVICE PRICE ROW & CHECK ICON === */
 .category-service-title-row {
   display: flex;
   align-items: center;
@@ -565,7 +558,6 @@
   scrollbar-color: #14b8a6 #10182a;
   scrollbar-width: thin;
 }
-/* === SUBSERVICE CARD GROUP TITLES === */
 .dropdown-group-title {
   font-size: 1.18rem;
   font-weight: 700;
@@ -574,7 +566,6 @@
   margin-top: 0.5rem;
   margin-left: 0.2rem;
 }
-/* === SUBSERVICE CARD DROPDOWN STYLING === */
 .dropdown-subservices-cards {
   display: flex;
   flex-direction: row;
@@ -773,6 +764,38 @@
   background: #38bdf8;
   color: #0f172a;
 }
+@media (max-width: 700px) {
+  .category-service-dropdown {
+    padding: 1.5rem 1rem;
+  }
+  .subservice-card-header{
+    margin-bottom: 0;
+  }
+  .styled-stats-row {
+    gap: .7rem;
+  }
+  .styled-stat{
+    padding: .7rem 0.5rem;
+  }
+  .styled-stat-value{
+    font-size: 1rem;
+  }
+  .styled-stat-label{
+    font-size: 0.75rem;
+  }
+  .styled-about-box{
+    padding: 1rem;
+  }
+  .styled-about-box{
+    flex: none;
+  }
+  .styled-about-features-row {
+    gap: 0.5rem;
+  }
+  .styled-features-box{
+    padding: 1rem;
+  }
+}
 /* CATEGORY PAGE POLISH: SIDEBAR, MAIN, CARDS */
 .category-header {
   display: flex;
@@ -872,6 +895,12 @@
   margin-left: 0.5rem;
   letter-spacing: 0.5px;
 }
+@media (max-width: 800px) {
+  .category-header-inner {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
 
 /* CATEGORY PAGE SIDEBAR & LAYOUT (HOME SECURITY STYLE) */
 .category-service-title-block {
@@ -908,7 +937,7 @@
   flex-direction: row;
   gap: 1.1rem;
   overflow-x: auto;
-  padding: 1rem 0;
+  padding: 1rem 5px;
   scrollbar-width: thin;
   justify-content: center;
   align-items: center;
@@ -927,10 +956,10 @@
 }
 
 .category-list-item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.7rem;
-  padding: 0.6rem 1.6rem 0.6rem 1.1rem;
+  padding: 0.6rem 2.2rem 0.6rem 1.7rem;
   border-radius: 999px;
   background: #1e293b80;
   color: #94a3b8;
@@ -938,13 +967,11 @@
   font-size: 1.08rem;
   border: 2px solid transparent;
   transition: background 0.2s, color 0.2s, border 0.2s;
-  min-width: 140px;
-  max-width: 320px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   align-items: center;
+  justify-content: center;
 }
+
 .category-list-item span{
   font-size: .875rem;
   line-height: 1.25rem;
@@ -976,7 +1003,8 @@
     min-width: 0;
     flex-direction: row;
     gap: 1rem;
-    padding: 1rem 0.5rem;
+    padding: 0;
+    /* padding: 1rem 0.5rem; */
     overflow-x: auto;
   }
 }
@@ -986,16 +1014,16 @@
     gap: 1.2rem;
   }
   .category-sidebar {
-    width: 100%;
-    min-width: 0;
-    flex-direction: row;
     gap: 0.5rem;
-    padding: 0.7rem 0.2rem;
-    overflow-x: auto;
+    top: 64px;
+    /* padding: 0 0.2rem 0.7rem; */
   }
   .category-list-item {
     font-size: 0.95rem;
-    padding: 0.5rem 0.7rem;
+    padding: 0.5rem 1.7rem;
+  }
+  .category-desc {
+    line-height: 1.2rem;
   }
 }
 /* =========================================================
@@ -1114,15 +1142,12 @@
   width: 1.5rem !important;
   height: 1.5rem !important;
 }
-/* Ensure opacity/disabled look is NOT applied in category view */
 .category-detail .svc-card[aria-disabled],
 .category-detail .svc-card[disabled] {
   opacity: 1 !important;
   filter: none !important;
 }
-/* =========================================================
-   CATEGORY PAGE - PIXEL PERFECT (MATCHES SCREENSHOT)
-   ========================================================= */
+
 .category-detail {
   background: #020617;
   color: #e2e8f0;
@@ -1339,6 +1364,22 @@
     flex-direction: column;
     gap: 1.2rem;
   }
+  .category-header{
+    padding: 3rem 0;
+  }
+  .category-service-price-label{
+    text-align: right;
+  }
+  .category-service-check {
+    color: #34d399;
+    width: 20px;
+    height: 20px;
+    padding: 0.3rem;
+  }
+  .category-service-item,
+  .category-detail .category-service-item {
+    padding: 0.5rem;
+  }
 }
 @media (max-width: 600px) {
   .category-detail {
@@ -1346,6 +1387,7 @@
   }
   .category-header .category-title {
     font-size: 1.3rem;
+    padding-bottom: 5px;
   }
   .category-services {
     padding: 1rem 0.3rem;
@@ -1354,7 +1396,7 @@
     padding: 1.1rem 0.7rem;
   }
 }
-/* ========== CATEGORY PAGE (REVAMPED) ========== */
+/* ========== CATEGORY PAGE ========== */
 
 
 .category-header .category-title {
@@ -1364,6 +1406,7 @@
   margin: 0;
   line-height: 1;
 }
+
 .category-header .category-sub {
   font-size: 1.1rem;
   color: #38bdf8;
@@ -1548,6 +1591,20 @@
   .category-side {
     flex-direction: row;
     gap: 1.5rem;
+  }
+}
+@media (max-width: 600px) {
+  .category-detail {
+    padding: 4.5rem 0 2rem 0;
+  }
+  .category-header .category-title {
+    font-size: 1.3rem;
+  }
+  .category-services {
+    padding: 1rem 0.3rem;
+  }
+  .category-info-card, .category-cta-card {
+    padding: 1.1rem 0.7rem;
   }
 }
 
