@@ -72,9 +72,12 @@ export default async function ServicePage({
           title,
           description,
           tagline,
-          jobsCompleted,
-          customerRating,
-          yearsExperience,
+          "jobsCompletedValue": jobsCompleted.value,
+          "jobsCompletedIconUrl": jobsCompleted.icon.asset->url,
+          "customerRatingValue": customerRating.value,
+          "customerRatingIconUrl": customerRating.icon.asset->url,
+          "yearsExperienceValue": yearsExperience.value,
+          "yearsExperienceIconUrl": yearsExperience.icon.asset->url,
           about,
           features,
           badges[]{
@@ -158,27 +161,54 @@ export default async function ServicePage({
               ) : (
                 <p className="category-no-services">No services found in this category.</p>
               )}
+
+              <hr className="category-section-divider" />
+
+              <div className="category-header-stats">
+                {category.icon?.asset?.url && (
+                  <Image
+                    src={category.icon.asset.url}
+                    alt={category.icon.alt || category.title}
+                    width={64}
+                    height={64}
+                    className="category-icon"
+                  />
+                )}
+                <div>
+                  <h1 className="category-title-below">{category.title}</h1>
+                  {category.tagline && (
+                    <p className="category-desc">{category.tagline}</p>
+                  )}
+                </div>
+              </div>
+
               {/* --- Extra Category Info Section --- */}
               <div className="styled-extra-info">
                 <div className="styled-stats-row">
-                  {category.jobsCompleted && (
+                  {category.jobsCompletedValue && (
                     <div className="styled-stat">
-                      <SvgIcon name="user-avatar" size={32} color="#10b981" className="styled-stat-icon" />
-                      <div className="styled-stat-value">{category.jobsCompleted}</div>
+                      {category.jobsCompletedIconUrl && (
+                        <img src={category.jobsCompletedIconUrl} alt="Jobs Completed" className="styled-stat-icon" width={32} height={32} />
+                      )}
+                      <div className="styled-stat-value">{category.jobsCompletedValue}</div>
                       <div className="styled-stat-label">Jobs Completed</div>
                     </div>
                   )}
-                  {category.customerRating && (
+                  {category.customerRatingValue && (
                     <div className="styled-stat">
-                      <SvgIcon name="star" size={32} color="#fbbf24" className="styled-stat-icon" />
-                      <div className="styled-stat-value">{category.customerRating}</div>
+                      {category.customerRatingIconUrl && (
+                        <img src={category.customerRatingIconUrl} alt="Customer Rating" className="styled-stat-icon" width={32} height={32} />
+                      )}
+                      <div className="styled-stat-value">{category.customerRatingValue}</div>
                       <div className="styled-stat-label">Customer Rating</div>
                     </div>
                   )}
-                  {category.yearsExperience && (
+                  {category.yearsExperienceValue && (
                     <div className="styled-stat">
-                      <SvgIcon name="verified-check" size={32} color="#38bdf8" className="styled-stat-icon" />
-                      <div className="styled-stat-value">{category.yearsExperience}</div>
+                      {category.yearsExperienceIconUrl && (
+                        <img src={category.yearsExperienceIconUrl} alt="Years Experience" className="styled-stat-icon" width={32} height={32} />
+                      )}
+                      <div className="styled-stat-value">{category.yearsExperienceValue}</div>
                       <div className="styled-stat-label">Experience</div>
                     </div>
                   )}
