@@ -55,9 +55,9 @@ export default function CategoryServicesAccordion({ services }: Props) {
                     <SvgIcon name="checkmark-circle" size={40} color="#34d399" className="category-service-check" />
                     <span className="category-service-title-block">
                       <span className="category-service-title">{s.title}</span>
-                      {s.description && (
+                      {/* {s.description && (
                         <span className="category-service-desc">{s.description}</span>
-                      )}
+                      )} */}
                     </span>
                   </span>
                   {/* Description now inside .category-service-title-block for alignment */}
