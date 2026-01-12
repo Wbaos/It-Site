@@ -6402,7 +6402,7 @@ main {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.45);
+  background: #0b1220;
   z-index: 1000; 
   display: flex;
   justify-content: flex-end;
@@ -6419,7 +6419,6 @@ main {
   color: white;
   padding: 1.5rem 1.5rem 3rem 1.5rem;
   border-left: 1px solid rgba(255,255,255,0.1);
-  /* z-index: 10001 !important; */
 }
 
 
