@@ -25,5 +25,5 @@ export default async function PricingServer() {
     annualPrice: Number(p.annualPrice) || 0,
   }));
 
-  return <PricingClient plans={normalizedPlans} />;
+  return <PricingClient />;
 }
