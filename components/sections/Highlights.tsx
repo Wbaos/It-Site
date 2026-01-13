@@ -56,7 +56,7 @@ export default function HighlightsClient({ highlights }: { highlights: any[] }) 
                     "--shadowHoverColor": shadowHoverColor,
                   } as React.CSSProperties}
                 >
-                  <img src={h.iconUrl} alt={h.title} className="highlight-svg" />
+                  <img src={h.iconUrl} alt={h.title} className="highlight-svg" referrerPolicy="no-referrer"/>
                 </div>
 
                 <div>
