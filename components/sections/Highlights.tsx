@@ -1,7 +1,19 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export default function HighlightsClient({ highlights }: { highlights: any[] }) {
+type Highlight = {
+  _id: string;
+  title: string;
+  desc: string;
+  color: string;
+  icon: string;
+};
+
+export default function HighlightsClient({
+  highlights,
+}: {
+  highlights: Highlight[];
+}) {
   const [isSmall, setIsSmall] = useState(false);
   const [index, setIndex] = useState(0);
 
@@ -20,7 +32,7 @@ export default function HighlightsClient({ highlights }: { highlights: any[] }) 
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [isSmall, highlights]);
+  }, [isSmall, highlights.length]);
 
   const normalizeHex = (hex: string = "#000000") => {
     let c = hex.trim();
@@ -50,13 +62,20 @@ export default function HighlightsClient({ highlights }: { highlights: any[] }) 
               <div key={h._id} className={`highlight ${positionClass}`}>
                 <div
                   className="highlight-icon"
-                  style={{
-                    "--iconColor": iconColor,
-                    "--shadowColor": shadowColor,
-                    "--shadowHoverColor": shadowHoverColor,
-                  } as React.CSSProperties}
+                  style={
+                    {
+                      "--iconColor": iconColor,
+                      "--shadowColor": shadowColor,
+                      "--shadowHoverColor": shadowHoverColor,
+                    } as React.CSSProperties
+                  }
                 >
-                  <img src={h.iconUrl} alt={h.title} className="highlight-svg" referrerPolicy="no-referrer"/>
+                  <img
+                    src={h.icon}
+                    alt={h.title}
+                    className="highlight-svg"
+                    loading="lazy"
+                  />
                 </div>
 
                 <div>
