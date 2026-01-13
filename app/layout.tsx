@@ -86,7 +86,7 @@ export const metadata: Metadata = {
   /* Icons */
   icons: {
     icon: [
-      { url: "/logo.svg", type: "image/svg+xml" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
     ],
     apple: ["/apple-touch-icon.png"],
@@ -156,7 +156,6 @@ export default function RootLayout({
       "WiFi Troubleshooting",
       "New Device Setup",
       "Smart Home Device Setup",
-      "Remote Tech Support",
     ],
     paymentAccepted: ["Cash", "Credit Card", "Zelle"],
   };

@@ -9738,12 +9738,14 @@ box-shadow:
 
 .footer-brand {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
   font-size: 1.2rem;
   color: #fff;
   text-decoration: none;
+  padding-bottom: 20px;
 }
 
 .footer-tagline {

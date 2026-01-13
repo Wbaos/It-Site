@@ -18,11 +18,12 @@ export default function Footer() {
             aria-label="CallTechCare – back to top"
           >
             <Image
-              src="/logo.svg"
+              src="/logo-simple.png"
               alt="CallTechCare Logo"
-              width={40}
-              height={40}
+              width={80}
+              height={80}
               className="footer-logo"
+              style={{ objectFit: "contain", objectPosition: "center" }}
             />
             <span>CallTechCare</span>
           </a>
