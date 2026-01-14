@@ -11978,6 +11978,12 @@ details[open] .faq-toggle {
   font-size: 0.75rem;
   color: #9ca3af;
 }
+.locations-services-link{
+  color: white;
+}
+.locations-services-view{
+  padding: 15px 0;
+}
 
 /* Responsive */
 @media (min-width: 768px) {
@@ -11995,7 +12001,7 @@ details[open] .faq-toggle {
   }
 
   .location-stat-value {
-    font-size: 2.25rem;
+    font-size: 1.4rem;
   }
 
   .location-hero-title {
