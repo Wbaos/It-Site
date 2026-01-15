@@ -6431,7 +6431,7 @@ main {
   background: #0b1220;
   color: white;
   padding: 1.5rem 1.5rem 3rem 1.5rem;
-  border-left: 1px solid rgba(255,255,255,0.1);
+  /* border-left: 1px solid rgba(255,255,255,0.1); */
 }
 
 
@@ -6456,7 +6456,7 @@ main {
   overflow-y: auto;
   height: calc(100% - 100px);
   -webkit-overflow-scrolling: touch; 
-  padding-bottom: 4rem;
+  padding-bottom: 1rem;
 }
 
 .mobile-services-body::-webkit-scrollbar {
