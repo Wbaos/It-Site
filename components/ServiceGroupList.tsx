@@ -18,7 +18,6 @@ export default function ServiceGroupList({
         {items.map((s, i) => {
           const subs = s.subservices ?? [];
           const hasSubs = subs.length > 0;
-
           const key = typeof s.slug === "object" ? s.slug.current : s.slug || i;
           return (
             <Link
@@ -52,10 +51,7 @@ export default function ServiceGroupList({
                   return;
                 }
               }}
-
-
             >
-
               <div className="svc-left">
                 <div className="svc-check">
                   <svg
@@ -76,7 +72,14 @@ export default function ServiceGroupList({
               </div>
 
               <div className="svc-mid">
-                <span className="svc-title">{s.title}</span>
+                <span className="svc-title">
+                  {s.title}
+                  {hasSubs && (
+                    <span className="srv-count">
+                      ({subs.length})
+                    </span>
+                  )}
+                </span>
 
                 {s.description && <p className="svc-desc">{s.description}</p>}
 

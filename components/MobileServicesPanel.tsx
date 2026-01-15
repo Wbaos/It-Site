@@ -12,12 +12,12 @@ export default function MobileServicesPanel({
   categories: any[];
   onClose: () => void;
 }) {
-  const [activeService, setActiveService] = useState<any | null>(null);
+  const [activeGroup, setActiveGroup] = useState<{ group: any, cat: any } | null>(null);
   const [isBack, setIsBack] = useState(false);
 
   return (
     <>
-      {!activeService && (
+      {!activeGroup && (
         <div className="mobile-services-overlay">
           <div
             className={`mobile-services-panel ${
@@ -85,42 +85,30 @@ export default function MobileServicesPanel({
                       </div>
                     )}
                   </div>
-
                   <ul>
-                    {cat.items?.map((srv: any) => {
-                      const hasSubs = srv.subservices?.length > 0;
-
-                      return (
-                        <li key={srv.slug}>
-                          <a
-                            href="#"
-                            className="dropdown-link"
-                            onClick={(e) => {
-                              e.preventDefault();
-
-                              if (hasSubs) {
-                                setIsBack(false); 
-                                setActiveService(srv);
-                              } else {
-                                onClose();
-                                window.location.href = `/services/${srv.slug}`;
-                              }
-                            }}
-                          >
-                            <span className="srv-left">
-                              <span className="dot"></span>
-                              {srv.title}
+                    {cat.groups?.map((group: any) => (
+                      <li key={group.slug}>
+                        <a
+                          href="#"
+                          className="dropdown-link"
+                          onClick={e => {
+                            e.preventDefault();
+                            setIsBack(false);
+                            setActiveGroup({ group, cat });
+                          }}
+                        >
+                          <span className="srv-left">
+                            <span className="dot"></span>
+                            {group.title}
+                          </span>
+                          {group.services && (
+                            <span className="srv-count">
+                              ({group.services.length})
                             </span>
-
-                            {hasSubs && (
-                              <span className="srv-count">
-                                ({srv.subservices.length})
-                              </span>
-                            )}
-                          </a>
-                        </li>
-                      );
-                    })}
+                          )}
+                        </a>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               ))}
@@ -129,12 +117,13 @@ export default function MobileServicesPanel({
         </div>
       )}
 
-      {activeService && (
+      {activeGroup && (
         <MobileServiceListPanel
-          service={activeService}
+          group={activeGroup.group}
+          cat={activeGroup.cat}
           onBack={() => {
-            setIsBack(true); 
-            setActiveService(null);
+            setIsBack(true);
+            setActiveGroup(null);
           }}
           onClose={onClose}
         />

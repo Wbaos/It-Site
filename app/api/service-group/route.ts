@@ -4,9 +4,14 @@ import { sanity } from "@/lib/sanity";
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const slug = searchParams.get("slug");
-  if (!slug) return NextResponse.json([]);
-  const subservices = await sanity.fetch(
-    `*[_type == "service" && parentService->slug.current == $slug]{
+
+  if (!slug) {
+    return NextResponse.json([]);
+  }
+
+  const services = await sanity.fetch(
+    `
+    *[_type == "service" && group->slug.current == $slug && enabled == true]{
       title,
       "slug": slug.current,
       price,
@@ -14,8 +19,10 @@ export async function GET(req: NextRequest) {
       description,
       serviceType,
       popular
-    }`,
+    }
+    `,
     { slug }
   );
-  return NextResponse.json(subservices || []);
+
+  return NextResponse.json(services || []);
 }
