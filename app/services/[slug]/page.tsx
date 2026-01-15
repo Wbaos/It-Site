@@ -66,7 +66,34 @@ export default async function ServicePage({
 
 
   if (!service) {
-    const [category, allCategories] = await Promise.all([
+    // Fetch serviceGroups for the category and their services
+    const [serviceGroups, allCategories, category] = await Promise.all([
+      sanity.fetch(
+        `*[_type == "serviceGroup" && category->slug.current == $slug]|order(order asc){
+          title,
+          slug,
+          description,
+          "services": *[_type == "service" && group._ref == ^._id]{
+            title,
+            slug,
+            description,
+            price,
+            showPrice,
+            popular
+          }
+        }`,
+        { slug }
+      ),
+      sanity.fetch(
+        `*[_type == "category"]|order(title asc){
+          title,
+          slug,
+          icon {
+            asset->{url},
+            alt
+          }
+        }`
+      ),
       sanity.fetch(
         `*[_type == "category" && slug.current == $slug][0]{
           title,
@@ -88,45 +115,12 @@ export default async function ServicePage({
           icon {
             asset->{url},
             alt
-          },
-          "services": *[
-            _type == "service" &&
-            references(^._id) &&
-            !defined(parentService)
-          ]|order(title asc){
-            title,
-            slug,
-            description,
-            price,
-            showPrice,
-            popular,
-            serviceType,
-            "subservices": *[_type == "service" && parentService._ref == ^._id]{
-              title,
-              "slug": slug.current,
-              price,
-              serviceType,
-              showPrice,
-              popular,
-              description
-            }
           }
         }`,
         { slug }
-      ),
-      sanity.fetch(
-        `*[_type == "category"]|order(title asc){
-          title,
-          slug,
-          icon {
-            asset->{url},
-            alt
-          }
-        }`
       )
     ]);
     if (category) {
-      const categoryServices = category.services || [];
       return (
         <section className="category-detail">
           {/* Category Header - full width, above sidebar */}
@@ -156,10 +150,10 @@ export default async function ServicePage({
           <div className="category-main-layout">
             {/* Main Content */}
             <main className="category-main-content">
-              {categoryServices.length > 0 ? (
-                <CategoryServicesAccordion services={categoryServices} />
+              {serviceGroups.length > 0 ? (
+                <CategoryServicesAccordion serviceGroups={serviceGroups} />
               ) : (
-                <p className="category-no-services">No services found in this category.</p>
+                <p className="category-no-services">No service groups found in this category.</p>
               )}
 
               <hr className="category-section-divider" />

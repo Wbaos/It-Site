@@ -363,7 +363,7 @@
 }
 
 .styled-stat-value {
-  font-size: 2.3rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: #fff;
   margin-top: 0.6rem;
@@ -1495,6 +1495,16 @@
   gap: 0.15rem;
   width: 70%;
 }
+.category-service-title-row-flex{
+  gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  color: rgb(148 163 184);
+}
+.category-service-count{
+  font-size: 0.875rem;
+}
+
 .category-service-title {
   font-size: 1.25rem;
   font-weight: 600;
