@@ -6015,13 +6015,13 @@ main {
   font-size: 0.75rem;
 }
 
-.svc-group-heading {
+/* .svc-group-heading {
   font-size: 1.25rem;
   font-weight: 700;
   color: white;
   margin-top: 2rem;
   margin-bottom: 1rem;
-}
+} */
 
 .svc-list {
   display: flex;
@@ -6085,6 +6085,7 @@ main {
   flex-direction: column;
   gap: 1.25rem;
   padding: 0 2rem;
+  padding-bottom: 1rem;
 }
 
 .submenu-title {
@@ -6315,11 +6316,11 @@ main {
   .dropdown-panel {
     display: none !important;
   }
-  .svc-group-heading {
+  /* .svc-group-heading {
     margin-top: 20px ;
     margin-bottom: 1rem;
 
-  }
+  } */
 }
 
 @media (max-width: 900px) {
@@ -6444,7 +6445,7 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.2rem;
+  margin-bottom: 2.2rem;
 }
 .mobile-services-close {
   background: none;

@@ -12,7 +12,7 @@ export default function ServiceGroupList({
 }) {
   return (
     <>
-      <h2 className="svc-group-heading">{title}</h2>
+      {/* <h2 className="svc-group-heading">{title}</h2> */}
 
       <div className="svc-list">
         {items.map((s, i) => {
