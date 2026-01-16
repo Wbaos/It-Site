@@ -256,8 +256,24 @@ export default function Navbar() {
                               </ul>
                             </div>
                           ))}
+                           
                         </>
                       )}
+                    </div>
+                    <div className="custom-service-box-separator-wrapper">
+                      <hr className="custom-service-box-separator" />
+                      <div className="custom-service-box">
+                        <div className="custom-service-icon">
+                          <span role="img" aria-label="chat">💬</span>
+                        </div>
+                        <h2 className="custom-service-title">Need Something Custom?</h2>
+                        <p className="custom-service-desc">
+                          Can't find what you're looking for? We offer customized services tailored to your specific needs.
+                        </p>
+                        <a href="/contact" className="custom-service-btn-grey">
+                          Contact Us for Custom Services
+                        </a>
+                      </div>
                     </div>
                   </div>
                 )}

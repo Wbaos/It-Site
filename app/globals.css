@@ -1,3 +1,87 @@
+
+/* === Custom Service Box Styles === */
+.custom-service-box-separator-wrapper {
+  max-width: 42rem;
+  margin: 32px auto 0 auto;
+}
+.custom-service-box-separator {
+  border: none;
+  border-top: 1px solid #334155;
+  margin: 0 0 0 0;
+  width: 100%;
+  height: 0;
+  box-sizing: border-box;
+}
+.custom-service-box {
+  background: #182134;
+  border: 2px dashed #475569;
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  color: #fff;
+  margin-top: 24px;
+  margin-bottom: 3rem;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.custom-service-box:hover {
+  border-color: #17c3a7;
+}
+
+.custom-service-icon {
+  display: inline-block;
+  background: #242f43;
+  border-radius: 50%;
+  padding: 6px;
+  margin-bottom: 16px;
+  font-size: 2.2rem;
+}
+.custom-service-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  margin-bottom: 12px;
+}
+.custom-service-desc {
+  margin-bottom: 24px;
+  color: #94a3b8;
+  white-space: normal;
+}
+.custom-service-btn {
+  background: #3dd6c1;
+  color: #23283b;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s;
+}
+.custom-service-btn-grey {
+  background: linear-gradient(180deg, #5a6473 0%, #3b4250 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s;
+}
+.custom-service-btn-grey:hover {
+  background: linear-gradient(90deg, #17c3a7 0%, #1abc9c 100%);
+  color: #fff;
+}
+.custom-service-btn:hover {
+  background: #2bb6a3;
+}
 /* === ABOUT PAGE STYLES === */
 .about-page {
   max-width: 64rem;
@@ -6082,7 +6166,7 @@ main {
   gap: 0 2rem;
   grid-template-columns: repeat(3, minmax(250px, 1fr));
   margin: 0 auto;
-  padding: 3.5rem 2rem;      
+  padding: 3.5rem 2rem 1rem;      
   box-sizing: border-box;    
 }
 
