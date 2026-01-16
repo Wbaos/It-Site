@@ -1009,7 +1009,6 @@
     flex-direction: row;
     gap: 1rem;
     padding: 0;
-    /* padding: 1rem 0.5rem; */
     overflow-x: auto;
   }
 }
@@ -1021,18 +1020,15 @@
   .category-sidebar {
     gap: 0.5rem;
     top: 64px;
-    /* padding: 0 0.2rem 0.7rem; */
   }
   .category-list-item {
     font-size: 0.95rem;
-    padding: 0.5rem 1.7rem;
+    padding: 0.5rem 1.5rem;
+    gap: 0.3rem;
+
   }
   .category-desc {
     line-height: 1.2rem;
-  }
-  .category-list-item{
-    padding: 0.5rem;
-    gap: 0.3rem;
   }
   .category-list{
     gap: .6rem;
@@ -6287,14 +6283,18 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #959ca5;
+  color: #c4d1e1;
   font-size: 1rem;
   text-decoration: none;
-  background-color: #1e293b4d;
-  padding: 5px;
+  /* background-color: #1e293b4d; */
+  /* padding: 5px; */
 }
 .dropdown-link:hover {
   color: #14b8a6;
+}
+/* Make dot match text color on hover */
+.dropdown-link:hover .dot {
+  background: currentColor;
 }
 @keyframes slideInRight {
   from { transform: translateX(100%); }
@@ -6319,6 +6319,8 @@ main {
   display: flex;
   align-items: center;
   gap: 6px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .dot {
@@ -6341,11 +6343,7 @@ main {
   .dropdown-panel {
     display: none !important;
   }
-  /* .svc-group-heading {
-    margin-top: 20px ;
-    margin-bottom: 1rem;
 
-  } */
 }
 
 @media (max-width: 900px) {
@@ -9745,10 +9743,11 @@ box-shadow:
 
 /*FOOTER*/
 .site-footer {
-  background-color: #0d0d0d;
+  background-color: #020617;
   color: #fff;
   font-size: 0.9rem;
   padding: 3rem 0 1rem;
+  border-top: 1px solid #1e293b;
 }
 
 .site-container {
@@ -9764,7 +9763,7 @@ box-shadow:
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 2rem;
   align-items: flex-start;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #1e293b;
   padding-bottom: 2rem;
 }
 
@@ -9848,7 +9847,7 @@ box-shadow:
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #1e293b;
   padding: 1.5rem;
 }
 
@@ -9876,7 +9875,7 @@ box-shadow:
 }
 
 .to-top {
-  background: #222;
+  background: #13b5a4;
   color: #fff;
   padding: 0.6rem;
   border-radius: 50%;
@@ -9887,7 +9886,7 @@ box-shadow:
 }
 
 .to-top:hover {
-  background: #444;
+  background: #0cc5b2;
 }
 
 /* ===== Bottom Section ===== */
