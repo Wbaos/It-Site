@@ -15,7 +15,10 @@ export default async function Services() {
       showPrice,
       description,
       mode,
-      icon
+      icon {
+        asset->{url},
+        alt
+      }
     }
   `);
 
@@ -32,7 +35,7 @@ export default async function Services() {
           <Link key={s._id} href={`/services/${s.slug}`} className="service-card">
 
             <div className="service-card-icon">
-              {s.icon && (
+              {s.icon?.asset && (
                 <Image
                   src={urlFor(s.icon).url()}
                   alt={s.icon?.alt || s.title}
