@@ -585,14 +585,14 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.18);
   margin-bottom: 0.5rem;
 }
-.subservice-card-header {
+/* .subservice-card-header {
   margin-bottom: 1.2rem;
-}
+} */
 .subservice-card-title-row {
   display: flex;
   align-items: center;
   gap: 0.7rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   justify-content: space-between;
 }
 .subservice-card-title {
@@ -619,7 +619,7 @@
   align-items: center;
   gap: 1.2rem;
   justify-content: space-between;
-  margin-top: 1.2rem;
+  margin-top: .5rem;
 }
 .subservice-card-price {
   color: #10b981;
@@ -763,7 +763,7 @@
 }
 @media (max-width: 700px) {
   .category-service-dropdown {
-    padding: 1.5rem 1rem;
+    padding: .5rem 1rem;
   }
   .subservice-card-header{
     margin-bottom: 0;
@@ -1030,6 +1030,14 @@
   .category-desc {
     line-height: 1.2rem;
   }
+  .category-list-item{
+    padding: 0.5rem;
+    gap: 0.3rem;
+  }
+  .category-list{
+    gap: .6rem;
+  }
+  
 }
 /* =========================================================
    CATEGORY PAGE SERVICE LIST 
@@ -1395,10 +1403,7 @@
   .category-detail {
     padding: 4.5rem 0 2rem 0;
   }
-  .category-header .category-title {
-    font-size: 1.3rem;
-    padding-bottom: 5px;
-  }
+
   .category-services {
     padding: 1rem 0.3rem;
   }
@@ -1627,6 +1632,16 @@
   .category-side {
     flex-direction: row;
     gap: 1.5rem;
+  }
+}
+
+@media (max-width: 800px) {
+  .category-header .category-title {
+    font-size: 1.7rem;
+    padding-bottom: 5px;
+  }
+  .category-title-below{
+    font-size: 1.5rem;
   }
 }
 
