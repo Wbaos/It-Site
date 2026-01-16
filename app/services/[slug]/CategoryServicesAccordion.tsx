@@ -24,7 +24,7 @@ interface Props {
 }
 
 export default function CategoryServicesAccordion({ serviceGroups }: { serviceGroups: any[] }) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(serviceGroups && serviceGroups.length > 0 ? 0 : null);
   const handleToggle = (idx: number) => {
     setOpenIndex(openIndex === idx ? null : idx);
   };
@@ -81,32 +81,43 @@ export default function CategoryServicesAccordion({ serviceGroups }: { serviceGr
             </button>
             {isOpen && (
               <div className="category-service-dropdown">
-                <div className="dropdown-subservices-cards">
-                  {(group.services ?? []).map((service: Service, sidx: number) => {
-                    let serviceSlug = typeof service.slug === 'string' ? service.slug : service.slug.current;
-                    return (
-                      <div key={serviceSlug} className="subservice-card">
-                        <div className="subservice-card-header">
-                          <div className="subservice-card-title-row">
-                            <span className="subservice-card-title">{service.title}</span>
-                            {service.popular && (
-                              <span className="subservice-card-badge">Popular</span>
-                            )}
+                {group.services && group.services.length === 1 ? (
+                  <div className="single-service-option" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: 64 }}>
+                    <span className="single-service-title">{group.services[0].title}</span>
+                    <div className="single-service-actions" style={{ marginLeft: 'auto' }}>
+                      <Link href={`/services/${typeof group.services[0].slug === 'string' ? group.services[0].slug : group.services[0].slug.current}`} className="subservice-card-book-btn">
+                        Book Now
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="dropdown-subservices-cards">
+                    {(group.services ?? []).map((service: Service, sidx: number) => {
+                      let serviceSlug = typeof service.slug === 'string' ? service.slug : service.slug.current;
+                      return (
+                        <div key={serviceSlug} className="subservice-card">
+                          <div className="subservice-card-header">
+                            <div className="subservice-card-title-row">
+                              <span className="subservice-card-title">{service.title}</span>
+                              {service.popular && (
+                                <span className="subservice-card-badge">Popular</span>
+                              )}
+                            </div>
+                            <div className="subservice-card-desc">{service.description}</div>
                           </div>
-                          <div className="subservice-card-desc">{service.description}</div>
+                          <div className="subservice-card-bottom">
+                            {service.showPrice && service.price && (
+                              <span className="subservice-card-price">${service.price}</span>
+                            )}
+                            <Link href={`/services/${serviceSlug}`} className="subservice-card-book-btn">
+                              Book
+                            </Link>
+                          </div>
                         </div>
-                        <div className="subservice-card-bottom">
-                          {service.showPrice && service.price && (
-                            <span className="subservice-card-price">${service.price}</span>
-                          )}
-                          <Link href={`/services/${serviceSlug}/book/step1`} className="subservice-card-book-btn">
-                            Book
-                          </Link>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             )}
           </div>
