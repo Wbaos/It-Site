@@ -379,7 +379,7 @@ export default async function ServicePage({
               verified: true,
               date: t.date,
             }))}
-            title={`What Clients Say About ${service.title}`}
+            title="Customer Reviews"
           />
         )}
 
