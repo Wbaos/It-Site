@@ -34,6 +34,11 @@ export default function Navbar() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [mobileServicesPanel, setMobileServicesPanel] = useState(false);
 
+  const closeAllMenus = () => {
+    closeAll();
+    setMobileServicesPanel(false);
+  };
+
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (dropdownOpen && dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -70,7 +75,7 @@ export default function Navbar() {
       <header className="site-header">
         <div className="site-container-var nav-grid">
           {/* BRAND */}
-          <Link href="/" className="brand" onClick={closeAll}>
+          <Link href="/" className="brand" onClick={closeAllMenus}>
             <div className="logo-wrapper">
               <SvgIcon name="calltechcare-logoName" color="#fff" size={180} className="logo-desktop" />
               <SvgIcon name="calltechcare-logoMobile" color="#fff" size={100} className="logo-mobile" />
@@ -83,8 +88,9 @@ export default function Navbar() {
                 if (open) {
                   setMobileServicesPanel(false);
                   setOpen(false);
-                  closeAll();
+                  closeAllMenus();
                 } else {
+                  closeAllMenus();
                   setOpen(true);
                 }
               }}
@@ -105,15 +111,16 @@ export default function Navbar() {
                       if (mobileServicesPanel) {
                         setMobileServicesPanel(false);
                         setOpen(false);
-                        closeAll();
+                        closeAllMenus();
                         return;
                       }
+                      closeAllMenus();
                       setOpen(true);
                       setMobileServicesPanel(true);
                       return;
                     }
                     // DESKTOP
-                    closeAll();
+                    closeAllMenus();
                     setDropdownOpen(true);
                   }}
                 >
@@ -153,7 +160,7 @@ export default function Navbar() {
                                       title={group.title}
                                       items={group.services}
                                       onSelect={(srv) => {
-                                        closeAll();
+                                        closeAllMenus();
                                         if (srv?.slug) router.push(`/services/${srv.slug}`);
                                       }}
                                     />
@@ -199,7 +206,7 @@ export default function Navbar() {
                                   <Link
                                     href={`/services/${cat.categorySlug}`}
                                     className="dropdown-title"
-                                    onClick={closeAll}
+                                    onClick={closeAllMenus}
                                     style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
                                   >
                                     {cat.icon?.url ? (
@@ -286,7 +293,7 @@ export default function Navbar() {
                     key={i.href}
                     href={i.href}
                     className={`nav-link ${isActive ? "active-nav-link" : ""}`}
-                    onClick={closeAll}
+                    onClick={closeAllMenus}
                   >
                     {i.label}
                   </Link>
@@ -296,7 +303,7 @@ export default function Navbar() {
               <Link
                 href="/contact"
                 className="support-btn"
-                onClick={closeAll}
+                onClick={closeAllMenus}
               >
                 Get Support
               </Link>
@@ -311,28 +318,29 @@ export default function Navbar() {
                 e.stopPropagation();
                 if (searchOpen) {
                   setSearchOpen(false);
+                  closeAllMenus();
                   return;
                 }
-                closeAll();
+                closeAllMenus();
                 setSearchOpen(true);
               }}
             >
               <Search size={18} />
             </button>
-            <div onClick={closeAll}>
+            <div onClick={closeAllMenus}>
               <NotificationDropdown userId={session?.user?.id || "guest"} />
             </div>
             <Link
               href="/cart"
               className="icon-btn cart-btn"
-              onClick={closeAll}
+              onClick={closeAllMenus}
             >
               <ShoppingCart size={18} />
               {items?.length > 0 && (
                 <span className="cart-count">{items.length}</span>
               )}
             </Link>
-            <div onClick={closeAll}>
+            <div onClick={closeAllMenus}>
               <UserMenu />
             </div>
           </div>
@@ -340,7 +348,7 @@ export default function Navbar() {
       </header>
       {searchOpen && (
         <SearchModal onClose={() => {
-          closeAll();
+          closeAllMenus();
           setSearchOpen(false);
         }} />
       )}

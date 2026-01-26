@@ -1,5 +1,7 @@
 "use client";
+
 import Link from "next/link";
+import { useState, useRef } from "react";
 
 export default function ServiceGroupList({
   title,
@@ -10,11 +12,33 @@ export default function ServiceGroupList({
   items: any[];
   onSelect?: (service?: any) => void;
 }) {
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [boxPos, setBoxPos] = useState<{top: number, left: number} | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseEnter = (idx: number, e: React.MouseEvent) => {
+    setHoveredIdx(idx);
+    const card = e.currentTarget as HTMLElement;
+    const parent = containerRef.current;
+    if (parent) {
+      const parentRect = parent.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      setBoxPos({
+        top: cardRect.top - parentRect.top,
+        left: cardRect.right - parentRect.left + 12,
+      });
+    } else {
+      setBoxPos(null);
+    }
+  };
+  const handleMouseLeave = () => {
+    setHoveredIdx(null);
+    setBoxPos(null);
+  };
+
   return (
     <>
-      {/* <h2 className="svc-group-heading">{title}</h2> */}
-
-      <div className="svc-list">
+      <div className="svc-list submenu-left-column" ref={containerRef} style={{position: 'relative'}}>
         {items.map((s, i) => {
           const subs = s.subservices ?? [];
           const hasSubs = subs.length > 0;
@@ -51,6 +75,8 @@ export default function ServiceGroupList({
                   return;
                 }
               }}
+              onMouseEnter={s.description ? (e) => handleMouseEnter(i, e) : undefined}
+              onMouseLeave={s.description ? handleMouseLeave : undefined}
             >
               <div className="svc-left">
                 <div className="svc-check">
@@ -81,8 +107,6 @@ export default function ServiceGroupList({
                   )}
                 </span>
 
-                {s.description && <p className="svc-desc">{s.description}</p>}
-
                 {s.showPrice && (
                   <span className="svc-price">
                     ${s.price}
@@ -97,6 +121,25 @@ export default function ServiceGroupList({
             </Link>
           );
         })}
+        {hoveredIdx !== null && items[hoveredIdx]?.description && boxPos && (
+          <div
+            className="floating-description-box custom-floating-desc"
+            style={{
+              position: "absolute",
+              top: boxPos.top,
+              left: boxPos.left,
+              opacity: hoveredIdx !== null ? 1 : 0,
+            }}
+          >
+            <span className="floating-desc-arrow" />
+            <strong className="floating-desc-title">
+              {items[hoveredIdx].title}
+            </strong>
+            <span className="floating-desc-text">
+              {items[hoveredIdx].description}
+            </span>
+          </div>
+        )}
       </div>
     </>
   );

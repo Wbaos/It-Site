@@ -1,3 +1,51 @@
+.actions {
+  z-index: 1201 !important;
+  position: relative;
+}
+/* === FLOATING SERVICE DESCRIPTION BOX === */
+.floating-description-box {
+  z-index: 1000;
+  min-width: 220px;
+  max-width: 340px;
+  min-height: 48px;
+  background: #1e293b;
+  color: #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 1rem 1.2rem;
+  font-size: 15px;
+  line-height: 1.5;
+  border: 1px solid #10b98180;
+  word-break: break-word;
+  transition: opacity 0.18s cubic-bezier(.4,0,.2,1);
+  opacity: 1;
+  position: absolute;
+  display: block;
+}
+.floating-desc-arrow {
+  position: absolute;
+  left: -16px;
+  top: 18px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 12px solid #fff;
+  filter: drop-shadow(-1px 0 1px #94a3b8);
+  content: "";
+  display: block;
+}
+.floating-desc-title {
+  display: block;
+  color: #fff;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+.floating-desc-text {
+  white-space: normal;
+  word-break: break-word;
+  display: block;
+}
 
 /* === Custom Service Box Styles === */
 .custom-service-box-separator-wrapper {
@@ -6102,7 +6150,6 @@ main {
   font-size: 1.125rem;
   font-weight: 700;
   color: #34d399;
-  margin-top: 6px;
 }
 
 .svc-right {
@@ -6119,14 +6166,6 @@ main {
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
 }
-
-/* .svc-group-heading {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: white;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-} */
 
 .svc-list {
   display: flex;
