@@ -121,7 +121,7 @@ export default function ServiceGroupList({
             </Link>
           );
         })}
-        {hoveredIdx !== null && items[hoveredIdx]?.description && boxPos && (
+        {typeof window !== "undefined" && window.innerWidth >= 900 && hoveredIdx !== null && items[hoveredIdx]?.description && boxPos && (
           <div
             className="floating-description-box custom-floating-desc"
             style={{
