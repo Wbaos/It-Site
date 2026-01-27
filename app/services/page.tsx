@@ -22,6 +22,7 @@ export default async function ServicesPage() {
     slug,
     category->{ title, slug },
     description,
+    navDescription,
     price,
     image
   }`);

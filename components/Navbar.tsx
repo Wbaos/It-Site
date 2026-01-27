@@ -149,7 +149,7 @@ export default function Navbar() {
                                     size={18}
                                     color="#14b8a6"
                                   />
-                                  Back to Groups
+                                  Back to All Services
                                 </button>
                                 <h4 className="submenu-title">{group.title}</h4>
                               </div>
