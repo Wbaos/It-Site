@@ -3,6 +3,17 @@ import { urlFor } from "@/lib/sanityImage";
 import Image from "next/image";
 import Link from "next/link";
 import { Briefcase } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Our Services",
+  description:
+    "Explore CallTechCare services including TV mounting, security camera installation, WiFi troubleshooting, and in-home IT support across South Florida.",
+  alternates: {
+    canonical: "https://www.calltechcare.com/services",
+  },
+};
+
 
 export default async function ServicesPage() {
     const services = await sanity.fetch(`*[_type == "service" && enabled == true] | order(title asc) {
