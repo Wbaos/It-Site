@@ -8,56 +8,43 @@ import ChatWidget from "@/components/ChatWidget";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 /* =========================
-   SEO + SEARCH CONSOLE META
+   GLOBAL METADATA (FALLBACK)
    ========================= */
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.calltechcare.com"),
 
-  /*  Google Search Console verification */
+  /* Google Search Console */
   verification: {
     google: "PLd4xezyspNUbzAlLg-ZvFvrLK0W6aZjccA-m8EMbIY",
   },
 
-  /*  Primary SEO title */
+  /* Fallback title only (pages override this) */
   title: {
-    default:
-      "TV Mounting, Camera Installation & IT Support | CallTechCare",
+    default: "CallTechCare | In-Home IT & Tech Support",
     template: "%s | CallTechCare",
   },
 
-  /*  Description (software-only IT) */
+  /* Fallback description */
   description:
-    "Professional TV mounting, security camera installation, and software-based IT support for homes and small businesses across Miami, Broward, Pembroke Pines & Homestead. Device setup, WiFi troubleshooting, and new tech installation.",
+    "Professional TV mounting, security camera installation, and software-based IT support for homes and small businesses across South Florida.",
 
-  /*  Focused keywords (NO hardware repair terms) */
+  /* Keywords (harmless fallback) */
   keywords: [
     "TV mounting service",
-    "TV wall mounting near me",
     "Security camera installation",
-    "Home camera installation",
     "IT support for homes",
     "Small business IT support",
-    "Software troubleshooting",
-    "Computer software support",
-    "New device setup",
     "WiFi troubleshooting",
     "Smart home setup",
     "Miami tech support",
-    "Broward IT services",
-    "Pembroke Pines TV mounting",
-    "South Florida IT support",
+    "South Florida IT services",
   ],
 
-  alternates: {
-    canonical: "https://www.calltechcare.com",
-  },
-
-  /*  Open Graph */
+  /* Open Graph fallback */
   openGraph: {
-    title:
-      "TV Mounting, Camera Installation & IT Support | CallTechCare",
+    title: "CallTechCare | In-Home IT & Tech Support",
     description:
-      "Expert TV mounting, security camera installation, and software-based IT support for homes and small businesses in South Florida.",
+      "TV mounting, camera installation, and software-based IT support across South Florida.",
     url: "https://www.calltechcare.com",
     siteName: "CallTechCare",
     locale: "en_US",
@@ -67,19 +54,17 @@ export const metadata: Metadata = {
         url: "/logo-og.png",
         width: 1200,
         height: 630,
-        alt:
-          "CallTechCare – TV Mounting, Camera Installation & IT Support",
+        alt: "CallTechCare – In-Home IT & Tech Support",
       },
     ],
   },
 
-  /*  Twitter */
+  /* Twitter fallback */
   twitter: {
     card: "summary_large_image",
-    title:
-      "TV Mounting, Camera Installation & IT Support | CallTechCare",
+    title: "CallTechCare | In-Home IT & Tech Support",
     description:
-      "TV mounting, camera installs, and software-based IT support for homes and small businesses across South Florida.",
+      "TV mounting, camera installation, and IT support for homes and small businesses in South Florida.",
     images: ["/logo-og.png"],
   },
 
@@ -116,15 +101,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  /* LocalBusiness schema (software-only IT clarified) */
+  /* ITService schema (service-area business) */
   const orgJsonLd = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "ITService",
     name: "CallTechCare",
     url: "https://www.calltechcare.com",
     image: "https://www.calltechcare.com/logo-og.png",
     description:
-      "TV mounting, security camera installation, and software-based IT support for homes and small businesses across Miami, Broward, Pembroke Pines & Homestead.",
+      "TV mounting, security camera installation, and software-based IT support for homes and small businesses across South Florida.",
     telephone: "+1-786-366-2729",
     priceRange: "$$",
     areaServed: [
@@ -138,7 +123,6 @@ export default function RootLayout({
     ],
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Service Area Business",
       addressLocality: "South Florida",
       addressRegion: "FL",
       postalCode: "33025",
@@ -163,6 +147,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
+        {/* Performance */}
         <link
           rel="preconnect"
           href="https://cdn.sanity.io"
@@ -170,18 +155,20 @@ export default function RootLayout({
         />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
 
+        {/* App meta */}
         <meta name="apple-mobile-web-app-title" content="CallTechCare" />
         <meta name="theme-color" content="#0891b2" />
         <meta name="author" content="CallTechCare" />
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+          content="width=device-width, initial-scale=1"
         />
         <meta
           name="copyright"
           content="© 2025 CallTechCare. All rights reserved."
         />
 
+        {/* Structured data */}
         <script
           type="application/ld+json"
           suppressHydrationWarning

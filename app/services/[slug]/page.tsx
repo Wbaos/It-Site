@@ -11,6 +11,8 @@ import ServiceRating from "@/components/ServiceRating";
 import BookButtonWatcher from "@/components/BookButtonWatcher";
 import FaqAccordion from "@/components/FaqAccordion";
 import ServiceGroupList from "@/components/ServiceGroupList";
+import type { Metadata } from "next";
+
 
 type SubService = {
   title: string;
@@ -23,6 +25,70 @@ type SubService = {
 };
 
 export const revalidate = 60;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const url = `https://www.calltechcare.com/services/${slug}`;
+
+
+  // Try service first
+  const service = await sanity.fetch(
+    `*[_type == "service" && slug.current == $slug][0]{
+      title,
+      description
+    }`,
+    { slug }
+  );
+
+    if (service) {
+    return {
+      title: service.title,
+      description:
+        service.description ||
+        "Professional in-home service provided by CallTechCare across South Florida.",
+      alternates: { canonical: url },
+      openGraph: {
+        title: service.title,
+        description: service.description,
+        url,
+      },
+      twitter: {
+        title: service.title,
+        description: service.description,
+      },
+    };
+  }
+
+  // Otherwise category
+  const category = await sanity.fetch(
+    `*[_type == "category" && slug.current == $slug][0]{
+      title,
+      description
+    }`,
+    { slug }
+  );
+
+    if (category) {
+    const title = `${category.title} Services`;
+    const description =
+      category.description ||
+      `Explore ${category.title} services offered by CallTechCare across South Florida.`;
+
+    return {
+      title,
+      description,
+      alternates: { canonical: url },
+      openGraph: { title, description, url },
+      twitter: { title, description },
+    };
+  }
+
+  return {};
+}
 
 export default async function ServicePage({
   params,
@@ -63,6 +129,50 @@ export default async function ServicePage({
     }`,
     { slug }
   );
+
+ const serviceBreadcrumbSchema = service
+  ? {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://www.calltechcare.com",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Services",
+          item: "https://www.calltechcare.com/services",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: service.title,
+          item: `https://www.calltechcare.com/services/${slug}`,
+        },
+      ],
+    }
+  : null;
+
+
+  const faqSchema =
+    service?.faqs?.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: service.faqs.map((faq: any) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: faq.answer,
+            },
+          })),
+        }
+      : null;
 
 
   if (!service) {
@@ -121,8 +231,42 @@ export default async function ServicePage({
       )
     ]);
     if (category) {
+      const categoryBreadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://www.calltechcare.com",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Services",
+      item: "https://www.calltechcare.com/services",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: category.title,
+      item: `https://www.calltechcare.com/services/${slug}`,
+    },
+  ],
+};
+
       return (
-        <section className="category-detail">
+        <>
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify(categoryBreadcrumbSchema),
+    }}
+  />
+
+  <section className="category-detail">
+
           {/* Category Header - full width, above sidebar */}
           <div className="category-header category-header-full">
             <div className="category-header-inner">
@@ -261,6 +405,7 @@ export default async function ServicePage({
             </main>
           </div>
         </section>
+        </>
       );
     }
     return notFound();
@@ -282,7 +427,27 @@ export default async function ServicePage({
       : null;
 
   if (hasSubServices) {
-    return (
+  return (
+    <>
+      {/* Breadcrumb schema */}
+      {serviceBreadcrumbSchema && (
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify(serviceBreadcrumbSchema),
+    }}
+  />
+)}
+
+
+      {/* FAQ schema (only if FAQs exist) */}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+
       <section className="service-detail">
         <div className="site-container">
           <Link href="/services" className="back-btn">
@@ -300,13 +465,26 @@ export default async function ServicePage({
           )}
         </div>
       </section>
-    );
-  }
+    </>
+  );
+}
+
 
   const includedList = service.details || [];
 
   return (
+  <>
+    {serviceBreadcrumbSchema && (
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(serviceBreadcrumbSchema),
+        }}
+      />
+    )}
+
     <section className="service-detail">
+
       <div className="site-container">
         <div className="service-top">
           {service.image?.asset?.url && (
@@ -393,5 +571,6 @@ export default async function ServicePage({
         </Link>
       </div>
     </section>
+  </>
   );
 }
