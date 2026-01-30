@@ -65,7 +65,7 @@ export default function SignUpPage() {
           onClick={() => router.back()}
           className="single-blog-back btn-reset"
         >
-        <SvgIcon name="chevron-left" size={18} color="#14b8a6" />
+        <SvgIcon name="chevron-left" size={18} color="var(--brand-teal)" />
         Back
         </button>
 

@@ -25,7 +25,7 @@ export default async function BlogPage() {
       <div className="blog-container">
 
         <div className="blog-header-icon">
-        <SvgIcon name="book-open" size={70} color="#14b8a6" />
+        <SvgIcon name="book-open" size={70} color="var(--brand-teal)" />
         </div>
 
         <h1 className="blog-title">Tech Insights & Updates</h1>
@@ -83,9 +83,25 @@ export default async function BlogPage() {
                 </div>
 
                 <div className="blog-tags">
-                  {post.tags?.map((tag: string) => (
-                    <span key={tag} className="blog-tag">{tag}</span>
-                  ))}
+                  {(() => {
+                    const rawTags =
+                      Array.isArray(post.tags) ? (post.tags as unknown[]) : [];
+
+                    const uniqueTags: string[] = Array.from(
+                      new Set(
+                        rawTags
+                          .filter((t: unknown): t is string => typeof t === "string")
+                          .map((t) => t.trim())
+                          .filter((t) => t.length > 0)
+                      )
+                    );
+
+                    return uniqueTags.map((tag) => (
+                      <span key={tag} className="blog-tag">
+                        {tag}
+                      </span>
+                    ));
+                  })()}
                 </div>
 
               </div>
@@ -96,7 +112,7 @@ export default async function BlogPage() {
                   name="chevron-right"
                   size={18}
                   className="blog-arrow"
-                  color="#14b8a6"
+                  color="var(--brand-teal)"
                 />
               </div>
 

@@ -14,7 +14,7 @@ export default function PrivacyPolicyPage() {
       <div className="legal-container">
 
         <Link href="/" className="legal-back">
-          <SvgIcon name="chevron-left" size={18} color="#14b8a6" />
+          <SvgIcon name="chevron-left" size={18} color="var(--brand-teal)" />
           Back to Home
         </Link>
 

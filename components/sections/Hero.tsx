@@ -1,4 +1,5 @@
 "use client";
+import SvgIcon from "@/components/common/SvgIcons";
 
 type Stat = { value: string; label: string };
 
@@ -21,8 +22,8 @@ export default function Hero({
   badgeText = "Trusted In-Home Tech Support Across South Florida",
   primaryCtaText = "Contact Us",
   primaryCtaHref = "#contact",
-  secondaryCtaText = "Popular Services",
-  secondaryCtaHref = "/#services",
+  secondaryCtaText = "Request a Quote",
+  secondaryCtaHref = "/request-quote",
   stats = [
     { value: "500+", label: "Local Clients Helped" },
     { value: "4.9/5", label: "Customer Satisfaction" },
@@ -53,7 +54,9 @@ export default function Hero({
         )}
 
         {secondaryCtaText && secondaryCtaHref && (
-          <a href={secondaryCtaHref} className="btn-cta btn-secondary">
+          <a href={secondaryCtaHref} className="btn-cta btn-secondary flex items-center gap-2">
+            {/* Show document icon only for 'Request a Quote' */}
+            <SvgIcon name="document" size={20} />
             {secondaryCtaText}
           </a>
         )}

@@ -285,7 +285,7 @@ export default function AssessmentResults({
           </div>
           <h3 className="results-cta-title">Ready to Improve Your IT Infrastructure?</h3>
           <p className="results-cta-description">
-            Let's discuss how we can help you implement these recommendations and optimize your IT operations.
+            Let&apos;s discuss how we can help you implement these recommendations and optimize your IT operations.
           </p>
           <Link
             href={recommendation.ctaLink || '/contact'}

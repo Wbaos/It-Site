@@ -32,7 +32,7 @@ export default async function BlogPost({
       <div className="single-blog-container">
 
      <Link href="/blog" className="single-blog-back">
-        <SvgIcon name="chevron-left" size={18} color="#14b8a6" />
+        <SvgIcon name="chevron-left" size={18} color="var(--brand-teal)" />
         Back to Blogs
     </Link>
 
@@ -65,16 +65,31 @@ export default async function BlogPost({
         {post.tags?.length > 0 && (
           <div className="single-blog-tags-box">
             <span className="single-blog-tags-label">
-              <SvgIcon name="tag" size={17} color="#14b8a6" />
+              <SvgIcon name="tag" size={17} color="var(--brand-teal)" />
               Tags
             </span>
 
             <div className="single-blog-tags">
-              {post.tags.map((tag: string) => (
-                <span key={tag} className="single-blog-tag">
-                  {tag}
-                </span>
-              ))}
+              {(() => {
+                const rawTags = Array.isArray(post.tags)
+                  ? (post.tags as unknown[])
+                  : [];
+
+                const uniqueTags: string[] = Array.from(
+                  new Set(
+                    rawTags
+                      .filter((t: unknown): t is string => typeof t === "string")
+                      .map((t) => t.trim())
+                      .filter((t) => t.length > 0)
+                  )
+                );
+
+                return uniqueTags.map((tag) => (
+                  <span key={tag} className="single-blog-tag">
+                    {tag}
+                  </span>
+                ));
+              })()}
             </div>
           </div>
         )}

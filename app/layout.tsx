@@ -180,6 +180,7 @@ export default function RootLayout({
         <ErrorBoundary>
           <Providers>
             <LoadingProvider>
+              <div id="top" />
               <Navbar />
               <main className="main-content">{children}</main>
               <Footer />

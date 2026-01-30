@@ -154,7 +154,7 @@ export default function Step4({
         </p>
         <BookingSteps currentStep={4} />
         <h1 className="service-title">Select Your Preferred Date & Time</h1>
-        <p className="availability-subtitle">Choose when you'd like us to provide the service</p>
+        <p className="availability-subtitle">Choose when you&apos;d like us to provide the service</p>
 
         <form className="booking-card availability-form" onSubmit={(e) => e.preventDefault()}>
           <div className="availability-section">
@@ -171,7 +171,6 @@ export default function Step4({
                 try {
                   (e.target as HTMLInputElement).showPicker?.();
                 } catch (err) {
-                  // showPicker not supported in some browsers
                 }
               }}
               min={new Date().toISOString().split('T')[0]}

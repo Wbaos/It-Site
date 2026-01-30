@@ -14,7 +14,7 @@ export default function AboutPage() {
             <section className="about-hero">
                 <h1 className="about-title">About CallTechCare</h1>
                 <p className="about-subtitle">
-                    Reliable Tech Support for Seniors & Homes in South Florida
+                    Reliable Tech Support for Homes & Businesses in South Florida
                 </p>
             </section>
 

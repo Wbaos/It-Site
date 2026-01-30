@@ -93,7 +93,7 @@ export default function CategoryServicesAccordion({ serviceGroups }: { serviceGr
                 ) : (
                   <div className="dropdown-subservices-cards">
                     {(group.services ?? []).map((service: Service, sidx: number) => {
-                      let serviceSlug = typeof service.slug === 'string' ? service.slug : service.slug.current;
+                      const serviceSlug = typeof service.slug === 'string' ? service.slug : service.slug.current;
                       return (
                         <div key={serviceSlug} className="subservice-card">
                           <div className="subservice-card-header">

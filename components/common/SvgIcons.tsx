@@ -30,6 +30,8 @@ interface SvgIconProps {
     | "privacy-changes"
     | "privacy-questions"
     | "star"
+    | "star-outline"
+    | "shield"
     | "verified-check"
     | "camera"
     | "wifi"
@@ -41,7 +43,13 @@ interface SvgIconProps {
     | "dollar-circle"
     | "lightning"
     | "lock"
-    | "time-clock";
+    | "time-clock"
+    | "paper-plane"
+    | "phone"
+    | "mail"
+    | "search"
+    | "document"
+    | "x";
     size?: number;
     color?: string;
     className?: string;
@@ -54,6 +62,151 @@ export default function SvgIcon({
     className = "",
 }: SvgIconProps) {
     switch (name) {
+        // ------------------------------------------------------------------------
+        // Shield (outline)
+        // ------------------------------------------------------------------------
+        case "shield":
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={className}
+                >
+                    <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z" />
+                </svg>
+            );
+        // ------------------------------------------------------------------------
+        // Phone
+        // ------------------------------------------------------------------------
+        case "phone":
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={className}
+                >
+                    <path d="M22 16.92V21a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 5.18 2 2 0 0 1 4.11 3h4.08a2 2 0 0 1 2 1.72c.12.86.31 1.7.57 2.5a2 2 0 0 1-.45 2.11L8.09 11.91a16 16 0 0 0 6 6l2.58-2.22a2 2 0 0 1 2.11-.45c.8.26 1.64.45 2.5.57A2 2 0 0 1 22 16.92z" />
+                </svg>
+            );
+
+        // ------------------------------------------------------------------------
+        // Mail
+        // ------------------------------------------------------------------------
+        case "mail":
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={className}
+                >
+                    <rect x="3" y="5" width="18" height="14" rx="2" />
+                    <path d="M3 7l9 6 9-6" />
+                </svg>
+            );
+
+        // ------------------------------------------------------------------------
+        // Paper plane / Send
+        // ------------------------------------------------------------------------
+        case "paper-plane":
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={className}
+                >
+                    <path d="M22 2L11 13" />
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z" />
+                </svg>
+            );
+
+        // ------------------------------------------------------------------------
+        // Search (magnifier)
+        // ------------------------------------------------------------------------
+        case "search":
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={className}
+                >
+                    <path d="M21 21L16.65 16.65" />
+                    <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" />
+                </svg>
+            );
+
+        // Document icon for Request a Quote
+        case "document":
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke={color}
+                    strokeWidth={1.5}
+                    className={className}
+                >
+                    <rect x="5" y="3" width="14" height="18" rx="2" stroke={color} strokeWidth="1.5" />
+                    <path d="M9 7h6M9 11h6M9 15h3" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+            );
+
+        // Close / X
+        case "x":
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={className}
+                >
+                    <path d="M18 6L6 18" />
+                    <path d="M6 6l12 12" />
+                </svg>
+            );
+    
         // ------------------------------------------------------------------------
         // Arrow  Right
         // ------------------------------------------------------------------------
@@ -277,7 +430,7 @@ export default function SvgIcon({
                         <g transform="translate(8,8) scale(1.45)">
                             <path
                                 d="M16 2C10.25 2 5.5 6.582 5.5 12v4a2.5 2.5 0 0 0 2.5 2.5h1.5a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H8.5C8.65 8.5 12 5.5 16 5.5S23.35 8.5 23.5 13.5H22a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h1.5a2.5 2.5 0 0 0 2.5-2.5v-4C26 6.582 21.25 2 16 2Zm4.8 16.5a.75.75 0 0 0-1.03.28c-.42.8-1.26 1.42-2.27 1.42h-1.5a1 1 0 1 0 0 2h1.5c1.94 0 3.64-1.2 4.35-2.6a.75.75 0 0 0-.28-1.07Z"
-                                fill={color || "#14b8a6"}
+                                fill={color || "var(--brand-teal)"}
                             />
                         </g>
 
@@ -287,7 +440,7 @@ export default function SvgIcon({
                             fontFamily="system-ui"
                             fontSize="30"
                             fontWeight="700"
-                            fill={color || "#14b8a6"}
+                            fill={color || "var(--brand-teal)"}
                         >
                             Call
                         </text>
@@ -298,7 +451,7 @@ export default function SvgIcon({
                             fontSize="30"
                             fontFamily="system-ui"
                             fontWeight="700"
-                            fill={color || "#14b8a6"}
+                            fill={color || "var(--brand-teal)"}
                         >
                             TechCare
                         </text>
@@ -322,7 +475,7 @@ export default function SvgIcon({
                 <g transform="translate(3,1) scale(1.1)">
                     <path
                     d="M16 2C10.25 2 5.5 6.582 5.5 12v4a2.5 2.5 0 0 0 2.5 2.5h1.5a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H8.5C8.65 8.5 12 5.5 16 5.5S23.35 8.5 23.5 13.5H22a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h1.5a2.5 2.5 0 0 0 2.5-2.5v-4C26 6.582 21.25 2 16 2Zm4.8 16.5a.75.75 0 0 0-1.03.28c-.42.8-1.26 1.42-2.27 1.42h-1.5a1 1 0 1 0 0 2h1.5c1.94 0 3.64-1.2 4.35-2.6a.75.75 0 0 0-.28-1.07Z"
-                    fill={color || "#14b8a6"}
+                    fill={color || "var(--brand-teal)"}
                     />
                 </g>
 
@@ -332,7 +485,7 @@ export default function SvgIcon({
                     fontFamily="system-ui"
                     fontSize="23"
                     fontWeight="700"
-                    fill={color || "#14b8a6"}
+                    fill={color || "var(--brand-teal)"}
                 >
                     Call
                 </text>
@@ -343,7 +496,7 @@ export default function SvgIcon({
                     fontFamily="system-ui"
                     fontSize="23"
                     fontWeight="700"
-                    fill={color || "#14b8a6"}
+                    fill={color || "var(--brand-teal)"}
                 >
                     TechCare
                 </text>
@@ -780,6 +933,27 @@ export default function SvgIcon({
             />
             </svg>
         );
+
+        // ------------------------------------------------------------------------
+        // star-outline (stroke, color controlled)
+        // ------------------------------------------------------------------------
+        case "star-outline":
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={className}
+                >
+                    <polygon points="12 2 15 8.5 22 9.3 17 14 18.5 21 12 17.8 5.5 21 7 14 2 9.3 9 8.5 12 2" />
+                </svg>
+            );
         // ------------------------------------------------------------------------
         // verified-check
         // ------------------------------------------------------------------------
