@@ -22,6 +22,10 @@ const requiredEnvVars = [
 const optionalEnvVars = [
   'FROM_EMAIL',
   'OPENAI_API_KEY',
+  'MAILCHIMP_API_KEY',
+  'MAILCHIMP_SERVER_PREFIX',
+  'MAILCHIMP_AUDIENCE_ID',
+  'MAILCHIMP_SYNC_BASIC_AUTH',
 ] as const;
 
 export function validateEnv() {
