@@ -80,7 +80,7 @@ export default function RequestQuoteClient(props: {
   const [zipCode, setZipCode] = useState("");
 
   const [projectDetails, setProjectDetails] = useState("");
-  const [wantsTechnicianVisitFirst, setWantsTechnicianVisitFirst] = useState(false);
+  const [wantsTechnicianVisitFirst, setWantsTechnicianVisitFirst] = useState(true);
   const [preferredDate, setPreferredDate] = useState("");
   const [preferredTime, setPreferredTime] = useState("");
   const [heardAbout, setHeardAbout] = useState("");
