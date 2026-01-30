@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useFormValidation } from "@/lib/useFormValidation";
 import SvgIcon from "@/components/common/SvgIcons";
 import BookingSteps from "@/components/BookingSteps";
+import { isTimeSlotAvailableForDate, STANDARD_TIME_SLOTS } from "@/lib/time-slots";
 
 export default function Step4({
   params,
@@ -45,36 +46,10 @@ export default function Step4({
 
   const [loading, setLoading] = useState(false);
 
-  const timeRanges = [
-    { label: "8:00 AM - 11:00 AM", value: "08:00-11:00", startHour: 8 },
-    { label: "11:00 AM - 2:00 PM", value: "11:00-14:00", startHour: 11 },
-    { label: "2:00 PM - 5:00 PM", value: "14:00-17:00", startHour: 14 },
-    { label: "5:00 PM - 8:00 PM", value: "17:00-20:00", startHour: 17 },
-  ];
+  const timeRanges = STANDARD_TIME_SLOTS;
 
   const isTimeSlotAvailable = (startHour: number): boolean => {
-    if (!schedule.date) return true;
-    
-    const selectedDate = new Date(schedule.date + "T00:00:00");
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    const selectedDateOnly = new Date(selectedDate);
-    selectedDateOnly.setHours(0, 0, 0, 0);
-    
-    if (selectedDateOnly.getTime() > today.getTime()) return true;
-    
-    if (selectedDateOnly.getTime() === today.getTime()) {
-      const now = new Date();
-      const currentHour = now.getHours();
-      const currentMinutes = now.getMinutes();
-      const currentTimeInHours = currentHour + currentMinutes / 60;
-      const minimumBookingTime = currentTimeInHours + 3;
-      
-      return startHour >= minimumBookingTime;
-    }
-    
-    return false;
+    return isTimeSlotAvailableForDate({ dateIso: schedule.date, startHour });
   };
 
   useEffect(() => {
