@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { QuoteRequest } from "@/app/models/QuoteRequest";
+import { syncCustomerToMailchimp } from "@/lib/mailchimp";
+import { logger } from "@/lib/logger";
+
+function getMailchimpEnabled(): boolean {
+  return Boolean(
+    process.env.MAILCHIMP_API_KEY &&
+      process.env.MAILCHIMP_SERVER_PREFIX &&
+      process.env.MAILCHIMP_AUDIENCE_ID
+  );
+}
 
 function generateReferenceNumber() {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -89,10 +99,37 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    console.log("Received quote request:", { referenceNumber, id: created?._id });
+    // Best-effort Mailchimp sync (lead capture)
+    try {
+      const email = doc.contact.email;
+      if (getMailchimpEnabled() && email) {
+        const serviceType =
+          doc.service?.service ||
+          doc.service?.group ||
+          doc.service?.category ||
+          doc.other ||
+          undefined;
+
+        await syncCustomerToMailchimp({
+          email,
+          firstName: doc.contact.firstName,
+          lastName: doc.contact.lastName,
+          phone: doc.contact.phone,
+          serviceType,
+        });
+      }
+    } catch (err) {
+      logger.error("Mailchimp sync failed during quote request", err, {
+        email: doc.contact.email,
+        referenceNumber,
+        source: "quote-request",
+      });
+    }
+
+    logger.info("Received quote request", { referenceNumber, id: created?._id });
     return NextResponse.json({ success: true, referenceNumber, id: created?._id }, { status: 201 });
   } catch (err: unknown) {
-    console.error("❌ quote-request API error:", err);
+    logger.error("quote-request API error", err);
     const isSyntax = err instanceof SyntaxError;
     return NextResponse.json(
       { success: false, error: isSyntax ? "Invalid JSON" : "Server error" },

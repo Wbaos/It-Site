@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { User } from "@/app/models/User";
 import { sanityWriteClient } from "@/lib/sanityWriteClient";
+import { syncCustomerToMailchimp } from "@/lib/mailchimp";
+import { logger } from "@/lib/logger";
 
 export async function POST(req: Request) {
   try {
@@ -21,7 +23,32 @@ export async function POST(req: Request) {
       );
     }
 
-    const user = await User.create({ name, email, password });
+    await User.create({ name, email, password });
+
+    // Best-effort Mailchimp sync (do not block signup on marketing platform failures)
+    try {
+      const fullName = String(name ?? "").trim();
+      const parts = fullName ? fullName.split(/\s+/) : [];
+      const firstName = parts[0] || undefined;
+      const lastName = parts.length > 1 ? parts.slice(1).join(" ") : undefined;
+
+      if (
+        process.env.MAILCHIMP_API_KEY &&
+        process.env.MAILCHIMP_SERVER_PREFIX &&
+        process.env.MAILCHIMP_AUDIENCE_ID
+      ) {
+        await syncCustomerToMailchimp({
+          email: String(email),
+          firstName,
+          lastName,
+        });
+      }
+    } catch (err) {
+      logger.error("Mailchimp sync failed during signup", err, {
+        email,
+        source: "signup",
+      });
+    }
 
     try {
       await sanityWriteClient.create({
@@ -32,12 +59,12 @@ export async function POST(req: Request) {
         source: "website-signup",
       });
     } catch (err) {
-      console.error("Sanity archive error:", err);
+      logger.error("Sanity archive error", err, { email });
     }
 
     return NextResponse.json({ ok: true, redirect: "/login" });
   } catch (err) {
-    console.error("Signup API error:", err);
+    logger.error("Signup API error", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

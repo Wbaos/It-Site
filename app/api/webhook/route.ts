@@ -9,6 +9,28 @@ import { Notification } from "@/app/models/Notification";
 import { Cart } from "@/app/models/Cart";
 import { User } from "@/app/models/User"; // ⭐ REQUIRED
 import { logger } from "@/lib/logger";
+import { syncCustomerToMailchimp } from "@/lib/mailchimp";
+
+function getMailchimpEnabled(): boolean {
+  return Boolean(
+    process.env.MAILCHIMP_API_KEY &&
+      process.env.MAILCHIMP_SERVER_PREFIX &&
+      process.env.MAILCHIMP_AUDIENCE_ID
+  );
+}
+
+function splitName(fullName?: string | null): {
+  firstName?: string;
+  lastName?: string;
+} {
+  const name = String(fullName ?? "").trim();
+  if (!name) return {};
+  const parts = name.split(/\s+/);
+  return {
+    firstName: parts[0] || undefined,
+    lastName: parts.length > 1 ? parts.slice(1).join(" ") : undefined,
+  };
+}
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-08-27.basil",
@@ -103,6 +125,33 @@ export async function POST(req: Request) {
         });
       }
 
+      // Best-effort Mailchimp sync (do not fail webhook on marketing sync)
+      try {
+        if (getMailchimpEnabled() && email && email !== "unknown") {
+          const contactName = session.metadata?.contactName || cart?.contact?.name;
+          const { firstName, lastName } = splitName(contactName);
+          const phone = session.metadata?.contactPhone || cart?.contact?.phone;
+          const serviceType =
+            (cart?.items?.[0] as any)?.title ||
+            session.metadata?.itemSlugs?.split(",")?.[0] ||
+            undefined;
+
+          await syncCustomerToMailchimp({
+            email,
+            firstName,
+            lastName,
+            phone: phone ? String(phone) : undefined,
+            serviceType: serviceType ? String(serviceType) : undefined,
+          });
+        }
+      } catch (err) {
+        logger.error("Mailchimp sync failed during checkout webhook", err, {
+          email,
+          source: "webhook.checkout.session.completed",
+          stripeSessionId: session.id,
+        });
+      }
+
       return NextResponse.json({ received: true });
     }
 
@@ -168,6 +217,22 @@ export async function POST(req: Request) {
           message: `Your ${planName} subscription ($${planPrice}/${planInterval}) has started.`,
           type: "success",
           read: false,
+        });
+      }
+
+      // Best-effort Mailchimp sync for subscriptions
+      try {
+        if (getMailchimpEnabled() && email && email !== "unknown") {
+          await syncCustomerToMailchimp({
+            email,
+            serviceType: planName,
+          });
+        }
+      } catch (err) {
+        logger.error("Mailchimp sync failed during subscription webhook", err, {
+          email,
+          source: "webhook.customer.subscription.created",
+          stripeSubscriptionId: sub.id,
         });
       }
 

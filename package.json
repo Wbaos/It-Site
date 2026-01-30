@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.9",
     "@headlessui/tailwindcss": "^0.2.2",
+    "@mailchimp/mailchimp_marketing": "^3.0.80",
     "@portabletext/react": "^4.0.3",
     "@react-email/components": "^0.5.7",
     "@react-email/html": "^0.0.11",
