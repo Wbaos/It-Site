@@ -110,12 +110,22 @@ export async function POST(req: NextRequest) {
           doc.other ||
           undefined;
 
+        const address = doc.location
+          ? {
+              addr1: doc.location.streetAddress,
+              city: doc.location.city,
+              zip: doc.location.zipCode,
+              country: 'US',
+            }
+          : undefined;
+
         await syncCustomerToMailchimp({
           email,
           firstName: doc.contact.firstName,
           lastName: doc.contact.lastName,
           phone: doc.contact.phone,
           serviceType,
+          address,
         });
       }
     } catch (err) {
