@@ -131,6 +131,15 @@ export async function POST(req: Request) {
           const contactName = session.metadata?.contactName || cart?.contact?.name;
           const { firstName, lastName } = splitName(contactName);
           const phone = session.metadata?.contactPhone || cart?.contact?.phone;
+          const address = cart?.address
+            ? {
+                addr1: cart.address.street,
+                city: cart.address.city,
+                state: cart.address.state,
+                zip: cart.address.zip,
+                country: 'US',
+              }
+            : undefined;
           const serviceType =
             (cart?.items?.[0] as any)?.title ||
             session.metadata?.itemSlugs?.split(",")?.[0] ||
@@ -142,6 +151,7 @@ export async function POST(req: Request) {
             lastName,
             phone: phone ? String(phone) : undefined,
             serviceType: serviceType ? String(serviceType) : undefined,
+            address,
           });
         }
       } catch (err) {

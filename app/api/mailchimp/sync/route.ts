@@ -73,6 +73,31 @@ function validatePayload(body: unknown): { ok: true; customer: MailchimpCustomer
   const phone = isNonEmptyString(anyBody.phone) ? anyBody.phone.trim() : undefined;
   const serviceType = isNonEmptyString(anyBody.serviceType) ? anyBody.serviceType.trim() : undefined;
 
+  const addressRaw = anyBody.address;
+  const address =
+    addressRaw && typeof addressRaw === 'object'
+      ? {
+          addr1: isNonEmptyString((addressRaw as Record<string, unknown>).addr1)
+            ? String((addressRaw as Record<string, unknown>).addr1).trim()
+            : undefined,
+          addr2: isNonEmptyString((addressRaw as Record<string, unknown>).addr2)
+            ? String((addressRaw as Record<string, unknown>).addr2).trim()
+            : undefined,
+          city: isNonEmptyString((addressRaw as Record<string, unknown>).city)
+            ? String((addressRaw as Record<string, unknown>).city).trim()
+            : undefined,
+          state: isNonEmptyString((addressRaw as Record<string, unknown>).state)
+            ? String((addressRaw as Record<string, unknown>).state).trim()
+            : undefined,
+          zip: isNonEmptyString((addressRaw as Record<string, unknown>).zip)
+            ? String((addressRaw as Record<string, unknown>).zip).trim()
+            : undefined,
+          country: isNonEmptyString((addressRaw as Record<string, unknown>).country)
+            ? String((addressRaw as Record<string, unknown>).country).trim()
+            : undefined,
+        }
+      : undefined;
+
   if (errors.length) return { ok: false, errors };
 
   return {
@@ -83,6 +108,7 @@ function validatePayload(body: unknown): { ok: true; customer: MailchimpCustomer
       lastName,
       phone,
       serviceType,
+      address,
     },
   };
 }

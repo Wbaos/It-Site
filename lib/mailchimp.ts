@@ -10,6 +10,18 @@ export type MailchimpCustomer = {
   lastName?: string;
   phone?: string;
   serviceType?: string;
+  /**
+   * Optional structured address for an "Address" merge field in Mailchimp.
+   * Mailchimp expects: { addr1, addr2, city, state, zip, country }
+   */
+  address?: {
+    addr1?: string;
+    addr2?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    country?: string;
+  };
 };
 
 type MailchimpConfig = {
@@ -141,6 +153,39 @@ function toMergeFieldValue(value?: string): string {
   return value.trim();
 }
 
+function toAddressMergeFieldValue(customer: MailchimpCustomer):
+  | {
+      addr1?: string;
+      addr2?: string;
+      city?: string;
+      state?: string;
+      zip?: string;
+      country?: string;
+    }
+  | undefined {
+  const address = customer.address;
+  if (!address) return undefined;
+
+  const addr1 = toMergeFieldValue(address.addr1);
+  const addr2 = toMergeFieldValue(address.addr2);
+  const city = toMergeFieldValue(address.city);
+  const state = toMergeFieldValue(address.state);
+  const zip = toMergeFieldValue(address.zip);
+  const country = toMergeFieldValue(address.country) || 'US';
+
+  const hasAny = Boolean(addr1 || addr2 || city || state || zip);
+  if (!hasAny) return undefined;
+
+  return {
+    ...(addr1 ? { addr1 } : {}),
+    ...(addr2 ? { addr2 } : {}),
+    ...(city ? { city } : {}),
+    ...(state ? { state } : {}),
+    ...(zip ? { zip } : {}),
+    ...(country ? { country } : {}),
+  };
+}
+
 /**
  * Adds or updates a customer in your Mailchimp audience.
  * - Upserts via lists.setListMember
@@ -170,6 +215,8 @@ export async function syncCustomerToMailchimp(customer: MailchimpCustomer): Prom
     PHONE: toMergeFieldValue(customer.phone),
   };
 
+  const addressMerge = toAddressMergeFieldValue(customer);
+
   try {
     await client.lists.setListMember(audienceId, subscriberHash, {
       email_address: email,
@@ -177,6 +224,25 @@ export async function syncCustomerToMailchimp(customer: MailchimpCustomer): Prom
       status: 'subscribed',
       merge_fields,
     });
+
+    // Optional: update ADDRESS merge field without risking the primary sync.
+    // Some lists may not have the ADDRESS merge field configured.
+    if (addressMerge) {
+      try {
+        await client.lists.setListMember(audienceId, subscriberHash, {
+          email_address: email,
+          merge_fields: {
+            ADDRESS: addressMerge,
+          },
+        });
+      } catch (err) {
+        logger.warn('Mailchimp address merge update failed', {
+          email,
+          subscriberHash,
+        });
+        logger.error('Mailchimp address merge update error detail', err);
+      }
+    }
 
     const tagName = customer.serviceType?.trim();
     if (tagName) {
