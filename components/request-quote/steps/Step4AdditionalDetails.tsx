@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import SvgIcon from "@/components/common/SvgIcons";
+import { isTimeSlotAvailableForDate, STANDARD_TIME_SLOTS } from "@/lib/time-slots";
 
 export default function Step4AdditionalDetails(props: {
   projectDetails: string;
@@ -25,6 +26,22 @@ export default function Step4AdditionalDetails(props: {
   const todayIso = new Date(Date.now() - new Date().getTimezoneOffset() * 60_000)
     .toISOString()
     .slice(0, 10);
+
+  useEffect(() => {
+    if (!props.wantsTechnicianVisitFirst) return;
+    if (!props.preferredDate || !props.preferredTime) return;
+
+    const selected = STANDARD_TIME_SLOTS.find((t) => t.value === props.preferredTime);
+    if (!selected) return;
+    if (
+      !isTimeSlotAvailableForDate({
+        dateIso: props.preferredDate,
+        startHour: selected.startHour,
+      })
+    ) {
+      props.setPreferredTime("");
+    }
+  }, [props.wantsTechnicianVisitFirst, props.preferredDate]);
 
   return (
     <div className="rq-step4">
@@ -61,7 +78,7 @@ export default function Step4AdditionalDetails(props: {
             <div className="rq-step4__cardContent">
               <div className="rq-step4__cardTitleRow">
                 <div className="rq-step4__cardTitleIcon">
-                  <SvgIcon name="calendar" size={18} color="#10b981" />
+                  <SvgIcon name="calendar" size={22} color="#10b981" />
                 </div>
                 <div className="rq-step4__cardTitle">I’d like a technician to visit first</div>
                 <span className="rq-step4__badge">FREE</span>
@@ -138,9 +155,20 @@ export default function Step4AdditionalDetails(props: {
                     className="rq-step4__select"
                   >
                     <option value="">Select a time</option>
-                    <option value="8AM - 12PM">Morning (8AM - 12PM)</option>
-                    <option value="12PM - 5PM">Afternoon (12PM - 5PM)</option>
-                    <option value="5PM - 8PM">Evening (5PM - 8PM)</option>
+                    {STANDARD_TIME_SLOTS.map((slot) => (
+                      <option
+                        key={slot.value}
+                        value={slot.value}
+                        disabled={
+                          !isTimeSlotAvailableForDate({
+                            dateIso: props.preferredDate,
+                            startHour: slot.startHour,
+                          })
+                        }
+                      >
+                        {slot.label}
+                      </option>
+                    ))}
                   </select>
                   <span className="rq-step4__selectIcon" aria-hidden="true">
                     <SvgIcon name="chevron-down" size={18} color="currentColor" />

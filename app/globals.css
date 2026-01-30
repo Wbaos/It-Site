@@ -793,13 +793,13 @@ color: #fff;
 .rq-client__stepTitle {
   color: #fff;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.2rem;
   margin-bottom: 0.5rem;
 }
 
 .rq-client__stepDesc {
   color: #94a3b8;
-  font-size: 0.875rem;
+  font-size: 1rem;
   line-height: 1.55;
 }
 
@@ -840,7 +840,7 @@ color: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.875rem;
+  font-size: 1.2rem;
   color: #94a3b8;
   margin-bottom: 0.75rem;
   padding: 0 0.25rem;
@@ -909,6 +909,7 @@ color: #fff;
   margin: 0 0 1rem;
   color: #fff;
   font-weight: 700;
+  font-size: 1.1rem;
 }
 
 .rq-sidebar__title--tight {
@@ -917,12 +918,12 @@ color: #fff;
 
 .rq-sidebar__subtitle {
   margin: 0 0 1rem;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: #94a3b8;
 }
 
 .rq-sidebar__muted {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: #94a3b8;
 }
 
@@ -959,14 +960,14 @@ color: #fff;
 }
 
 .rq-sidebar__benefitTitle {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #fff;
 }
 
 .rq-sidebar__benefitDesc {
   margin-top: 0.125rem;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: #94a3b8;
 }
 
@@ -1024,7 +1025,7 @@ color: #fff;
 
 .rq-sidebar__reviewsText {
   margin-top: 0.25rem;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: #94a3b8;
 }
 
@@ -1083,7 +1084,7 @@ color: #fff;
 
 .rq-sidebar__actionSublabel {
   margin-top: 0.125rem;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: #94a3b8;
 }
 
@@ -1154,19 +1155,19 @@ color: #fff;
 }
 @media (min-width: 768px) {
   .rq-thankyou__subtitle {
-    font-size: 1rem;
+    font-size: 1.3rem;
   }
 }
 
 .rq-thankyou__refRow {
   margin-top: 0.5rem;
-  font-size: 0.75rem;
+  font-size: 1.1rem;
   color: #94a3b8;
 }
 
 .rq-thankyou__visitRow {
   margin-top: 0.75rem;
-  font-size: 0.75rem;
+  font-size: 1.1rem;
   color: #94a3b8;
 }
 
@@ -1209,7 +1210,7 @@ color: #fff;
 }
 @media (min-width: 768px) {
   .rq-thankyou__cardTitle {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
   }
 }
 
@@ -1244,17 +1245,19 @@ color: #fff;
 .rq-thankyou__stepTitle {
   color: #fff;
   font-weight: 600;
+  font-size: 1.1rem;
 }
 
 .rq-thankyou__stepDesc {
   margin-top: 0.25rem;
   color: #94a3b8;
-  font-size: 0.75rem;
+  font-size: 1rem;
 }
 
 .rq-thankyou__helpTitle {
   color: #cbd5e1;
   font-weight: 600;
+  font-size: 1.1rem;
 }
 
 .rq-thankyou__helpRow {
@@ -1264,7 +1267,7 @@ color: #fff;
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 @media (min-width: 640px) {
   .rq-thankyou__helpRow {
@@ -1329,6 +1332,7 @@ color: #fff;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: .9rem;
 }
 
 /* ================================
@@ -1347,7 +1351,7 @@ color: #fff;
 
 .rq-step1__subtitle {
   margin-top: 0.25rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #94a3b8;
 }
 
@@ -1399,7 +1403,7 @@ color: #fff;
   white-space: nowrap;
   border-radius: 999px;
   padding: 0.5rem 1rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
   border: 1px solid #1e293b;
   background: rgba(30, 41, 59, 0.5);
@@ -1422,7 +1426,7 @@ color: #fff;
 
 .rq-step1__resultsHeader {
   margin-top: 1.25rem;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   color: #64748b;
@@ -1546,17 +1550,17 @@ color: #fff;
 }
 
 .rq-step1__serviceTitle {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #fff;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .rq-step1__servicePrice {
   margin-top: 0.25rem;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: #94a3b8;
 }
 
@@ -1625,14 +1629,14 @@ color: #fff;
 }
 
 .rq-step1__otherTitle {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #fff;
 }
 
 .rq-step1__otherDesc {
   margin-top: 0.25rem;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: #94a3b8;
 }
 
@@ -1665,7 +1669,7 @@ color: #fff;
 
 .rq-step1__urgencyTitle {
   margin-bottom: 0.5rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #cbd5e1;
 }
@@ -1685,7 +1689,7 @@ color: #fff;
   border-radius: 0.5rem;
   border: 1px solid #1e293b;
   padding: 0.75rem 1rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
   transition: border-color 0.2s, background 0.2s, color 0.2s;
   cursor: pointer;
@@ -1748,7 +1752,7 @@ color: #fff;
 
 .rq-step2__subtitle {
   margin-top: 0.25rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #94a3b8;
 }
 
@@ -1761,20 +1765,20 @@ color: #fff;
 }
 
 .rq-step2__summaryLabel {
-  font-size: 0.75rem;
-  color: #94a3b8;
+  font-size: 1rem;
+  color: #fff;
 }
 
 .rq-step2__summaryValue {
   margin-top: 0.25rem;
-  font-size: 0.875rem;
-  color: #fff;
+  font-size: 0.9rem;
+  color: #94a3b8;
   font-weight: 600;
 }
 
 .rq-step2__summaryMeta {
   margin-top: 0.25rem;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: #94a3b8;
 }
 
@@ -1793,7 +1797,7 @@ color: #fff;
 .rq-step2__label {
   display: block;
   margin-bottom: 0.5rem;
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #cbd5e1;
 }
@@ -1804,7 +1808,7 @@ color: #fff;
   background: #101a2b;
   border: 1px solid #1e293b;
   padding: 0.75rem 1rem;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: #fff;
   outline: none;
 }
@@ -1870,7 +1874,7 @@ color: #fff;
 
 .rq-step2__hint {
   margin-top: 0.75rem;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: #94a3b8;
 }
 
@@ -1890,7 +1894,7 @@ color: #fff;
 
 .rq-step3__subtitle {
   margin-top: 0.25rem;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: #94a3b8;
 }
 
@@ -1903,20 +1907,20 @@ color: #fff;
 }
 
 .rq-step3__summaryLabel {
-  font-size: 0.75rem;
-  color: #94a3b8;
+  font-size: 1rem;
+  color: #fff;
 }
 
 .rq-step3__summaryValue {
   margin-top: 0.25rem;
-  font-size: 0.875rem;
-  color: #fff;
+  font-size: 0.9rem;
+  color: #94a3b8;
   font-weight: 600;
 }
 
 .rq-step3__summaryMeta {
   margin-top: 0.25rem;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: #94a3b8;
 }
 
@@ -1939,7 +1943,7 @@ color: #fff;
 .rq-step3__label {
   display: block;
   margin-bottom: 0.5rem;
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #cbd5e1;
 }
@@ -2010,7 +2014,7 @@ color: #fff;
 
 .rq-step3__hint {
   margin-top: 0.75rem;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: #94a3b8;
 }
 
@@ -2030,7 +2034,7 @@ color: #fff;
 
 .rq-step4__subtitle {
   margin-top: 0.25rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #94a3b8;
 }
 
@@ -2041,7 +2045,7 @@ color: #fff;
 .rq-step4__label {
   display: block;
   margin-bottom: 0.5rem;
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #cbd5e1;
 }
@@ -2053,7 +2057,7 @@ color: #fff;
   background: #101a2b;
   border: 1px solid #1e293b;
   padding: 0.75rem 1rem;
-  font-size: 0.875rem;
+  font-size: 0.94rem;
   color: #fff;
   outline: none;
 }
@@ -2122,6 +2126,7 @@ color: #fff;
   color: #fff;
   font-weight: 700;
   line-height: 1.2;
+  font-size: 1.4rem;
 }
 
 .rq-step4__badge {
@@ -2137,7 +2142,7 @@ color: #fff;
 
 .rq-step4__cardDescription {
   margin-top: 0.5rem;
-  font-size: 0.75rem;
+  font-size: 1.1rem;
   color: #b9c4d4;
 }
 
@@ -2148,7 +2153,7 @@ color: #fff;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  font-size: 0.75rem;
+  font-size: 1rem;
   color: #94a3b8;
 }
 
@@ -2164,7 +2169,7 @@ color: #fff;
 
 .rq-step4__cardNote {
   margin-top: 0.5rem;
-  font-size: 11px;
+  font-size: .9rem;
   font-style: italic;
   color: #64748b;
 }
@@ -2200,12 +2205,16 @@ color: #fff;
 
 .rq-step4__input,
 .rq-step4__select {
+  box-sizing: border-box;
+  display: block;
   width: 100%;
   border-radius: 0.75rem;
   background: #101a2b;
   border: 1px solid #1e293b;
   padding: 0.75rem 1rem;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
+  line-height: 1.25;
+  min-height: 52px;
   color: #fff;
   outline: none;
 }
@@ -2216,6 +2225,8 @@ color: #fff;
 }
 
 .rq-step4__input--date {
+  -webkit-appearance: none;
+  appearance: none;
   padding-right: 3rem;
   cursor: pointer;
 }
@@ -11511,7 +11522,6 @@ box-shadow:
   font-size: 1.2rem;
   color: #fff;
   text-decoration: none;
-  padding-bottom: 20px;
 }
 
 .footer-tagline {
