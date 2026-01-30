@@ -166,12 +166,13 @@ function toAddressMergeFieldValue(customer: MailchimpCustomer):
   const address = customer.address;
   if (!address) return undefined;
 
-  const addr1 = toMergeFieldValue(address.addr1);
-  const addr2 = toMergeFieldValue(address.addr2);
-  const city = toMergeFieldValue(address.city);
-  const state = toMergeFieldValue(address.state);
-  const zip = toMergeFieldValue(address.zip);
-  const country = toMergeFieldValue(address.country) || 'US';
+const addr1 = toMergeFieldValue(address.addr1);
+const addr2 = toMergeFieldValue(address.addr2);
+const city = toMergeFieldValue(address.city);
+const state = toMergeFieldValue(address.state) || 'FL';
+const zip = toMergeFieldValue(address.zip);
+const country = toMergeFieldValue(address.country) || 'US';
+
 
   const hasAny = Boolean(addr1 || addr2 || city || state || zip);
   if (!hasAny) return undefined;
