@@ -14076,3 +14076,30 @@ details[open] .faq-toggle {
   .services-list-container {
     padding: 1.5rem;
   }
+
+/* ================================
+   iOS Safari – Prevent Input Focus Zoom
+   iOS Safari zooms when focused form controls have font-size < 16px.
+   This enforces a minimum without affecting desktop.
+   ================================ */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 768px) {
+    input:not([type]),
+    input[type="text"],
+    input[type="search"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="password"],
+    input[type="number"],
+    input[type="date"],
+    input[type="time"],
+    input[type="datetime-local"],
+    input[type="month"],
+    input[type="week"],
+    select,
+    textarea {
+      font-size: max(16px, 1em);
+    }
+  }
+}
