@@ -54,7 +54,7 @@ export default function ResultsPageClient({ shareId }: ResultsPageClientProps) {
           <div className="results-client-error-icon">😕</div>
           <h2 className="results-client-error-title">Results Not Found</h2>
           <p className="results-client-error-message">
-            We couldn't find the assessment results you're looking for. The link may be invalid or expired.
+            We couldn&apos;t find the assessment results you&apos;re looking for. The link may be invalid or expired.
           </p>
           <button
             onClick={() => router.push('/assessment')}

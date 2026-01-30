@@ -18,17 +18,16 @@ export default function Footer() {
             aria-label="CallTechCare – back to top"
           >
             <Image
-              src="/logo-simple.png"
+              src="/Print_Transparent.svg"
               alt="CallTechCare Logo"
-              width={80}
-              height={80}
+              width={250}
+              height={250}
               className="footer-logo"
               style={{ objectFit: "contain", objectPosition: "center" }}
             />
-            <span>CallTechCare</span>
           </a>
           <p className="footer-tagline">
-            Reliable Tech Support for Seniors & Homes in South Florida
+              Reliable Tech Support for Homes & Businesses in South Florida
           </p>
         </div>
 
@@ -108,7 +107,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <a className="to-top" href="#hero" aria-label="Back to top">
+        <a className="to-top" href="#top" aria-label="Back to top">
           <ArrowUp size={18} />
         </a>
       </div>

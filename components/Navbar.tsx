@@ -147,7 +147,7 @@ export default function Navbar() {
                                   <SvgIcon
                                     name="chevron-left"
                                     size={18}
-                                    color="#14b8a6"
+                                    color="var(--brand-teal)"
                                   />
                                   Back to All Services
                                 </button>
@@ -275,7 +275,7 @@ export default function Navbar() {
                         </div>
                         <h2 className="custom-service-title">Need Something Custom?</h2>
                         <p className="custom-service-desc">
-                          Can't find what you're looking for? We offer customized services tailored to your specific needs.
+                          Can&apos;t find what you&apos;re looking for? We offer customized services tailored to your specific needs.
                         </p>
                         <a href="/contact" className="custom-service-btn-grey">
                           Contact Us for Custom Services

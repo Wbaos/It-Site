@@ -361,7 +361,7 @@ export default async function ServicePage({
                     )}
                     {category.features && category.features.length > 0 && (
                       <div className="styled-features-box">
-                        <div className="styled-features-title">What's Included</div>
+                        <div className="styled-features-title">What&apos;s Included</div>
                         <ul className="styled-features-list">
                           {category.features.map((f: string, i: number) => (
                             <li key={i} className="styled-feature-item">
