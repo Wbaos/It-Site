@@ -17,8 +17,8 @@
   box-sizing: border-box;
 }
 .custom-service-box {
-  background: #182134;
-  border: 2px dashed #475569;
+  background: #14b8a61a;
+  border: 1px solid #10b98133;
   border-radius: 16px;
   padding: 2rem;
   text-align: center;
@@ -31,7 +31,7 @@
 }
 
 .custom-service-box:hover {
-  border-color: var(--brand-teal);
+  border-color: #10b98166;
 }
 
 .custom-service-icon {
@@ -6016,7 +6016,7 @@ main {
 
 /* ===== NAVBAR ===== */
 .active-nav-link {
-  color: #61cec2 !important;
+  color: var(--brand-teal) !important;
 }
 
 .actions {
