@@ -49,6 +49,7 @@ interface SvgIconProps {
     | "mail"
     | "search"
     | "document"
+    | "alert-circle"
     | "x";
     size?: number;
     color?: string;
@@ -62,6 +63,28 @@ export default function SvgIcon({
     className = "",
 }: SvgIconProps) {
     switch (name) {
+        // ------------------------------------------------------------------------
+        // Alert Circle (exclamation)
+        // ------------------------------------------------------------------------
+        case "alert-circle":
+            return (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={size}
+                    height={size}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={className}
+                >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 7v6" />
+                    <path d="M12 17h.01" />
+                </svg>
+            );
         // ------------------------------------------------------------------------
         // Shield (outline)
         // ------------------------------------------------------------------------

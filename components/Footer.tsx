@@ -57,7 +57,7 @@ export default function Footer() {
               support@calltechcare.com
             </a>
           </p>
-          <p>Mon–Sat: 8 AM – 9 PM</p>
+          <p>Mon–Sat: 8 AM – 7 PM</p>
 
           <div className="footer-areas">
             <p className="areas-title">📍 Service Areas</p>
@@ -84,7 +84,7 @@ export default function Footer() {
               <SvgIcon name="facebook" size={28} color="#ffffff" className="social-icon" />
             </a>
             <a
-              href="https://instagram.com"
+              href="https://instagram.com/calltechcare"
               aria-label="Instagram"
               target="_blank"
               rel="noopener noreferrer"
