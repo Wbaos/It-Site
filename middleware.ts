@@ -28,6 +28,16 @@ function checkRateLimit(ip: string): boolean {
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
+  const contentSecurityPolicy = [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://js.stripe.com blob:",
+    "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://api.stripe.com https://cdn.sanity.io https://*.sanity.io https://speed.cloudflare.com",
+    "img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https:",
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self' data:",
+    "frame-src https://js.stripe.com https://www.googletagmanager.com",
+  ].join('; ');
+
   // Security Headers
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-Content-Type-Options', 'nosniff');
@@ -40,7 +50,7 @@ export async function middleware(request: NextRequest) {
   );
   response.headers.set(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:; connect-src 'self' https://api.stripe.com https://*.sanity.io https://speed.cloudflare.com; frame-src https://js.stripe.com;"
+    contentSecurityPolicy
   );
 
   // Rate Limiting
