@@ -121,6 +121,7 @@ export default function CartPage() {
                           Base Price:{" "}
                           <span className="base-price-value">
                             ${item.basePrice?.toFixed(2)}
+                            {item.pricingModel === "hourly" ? "/hr" : ""}
                           </span>
                         </div>
                       )}

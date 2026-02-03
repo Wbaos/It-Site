@@ -8,6 +8,12 @@ export type ApiService = {
   icon?: { alt?: string; asset?: { url?: string } };
   price?: number;
   showPrice?: boolean;
+  pricingModel?: "flat" | "hourly";
+  hourlyConfig?: {
+    minimumHours?: number;
+    maximumHours?: number;
+    billingIncrement?: number;
+  };
   popular?: boolean;
   serviceType?: string;
 };
@@ -104,6 +110,8 @@ export async function getServiceCategories(): Promise<ApiCategory[]> {
     },
     price,
     showPrice,
+    pricingModel,
+    hourlyConfig{minimumHours, maximumHours, billingIncrement},
     popular,
     group->{_id}
   }`;
@@ -127,6 +135,8 @@ export async function getServiceCategories(): Promise<ApiCategory[]> {
       icon: srv.icon,
       price: srv.price,
       showPrice: srv.showPrice,
+      pricingModel: srv.pricingModel,
+      hourlyConfig: srv.hourlyConfig,
       popular: srv.popular,
       serviceType: srv.serviceType,
     });
