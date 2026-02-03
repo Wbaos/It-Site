@@ -6,6 +6,8 @@ import { LoadingProvider } from "@/lib/LoadingContext";
 import type { Metadata } from "next";
 import ChatWidget from "@/components/ChatWidget";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import Script from "next/script";
+
 
 /* =========================
    GLOBAL METADATA (FALLBACK)
@@ -147,6 +149,19 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-R1HZ7W3YL9"
+          strategy="afterInteractive"
+        />
+
+        <Script id="ga4" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-R1HZ7W3YL9');
+          `}
+        </Script>
         {/* Performance */}
         <link
           rel="preconnect"
