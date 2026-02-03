@@ -20,6 +20,12 @@ type SubService = {
   price?: number;
   serviceType?: "installation" | "support";
   showPrice?: boolean;
+  pricingModel?: "flat" | "hourly";
+  hourlyConfig?: {
+    minimumHours?: number;
+    maximumHours?: number;
+    billingIncrement?: number;
+  };
   popular?: boolean;
   description?: string;
 };
@@ -102,6 +108,8 @@ export default async function ServicePage({
       title,
       price,
       showPrice,
+      pricingModel,
+      hourlyConfig{minimumHours, maximumHours, billingIncrement},
       description,
       mode,
       category-> { title },
@@ -123,6 +131,8 @@ export default async function ServicePage({
         price,
         serviceType,
         showPrice,
+        pricingModel,
+        hourlyConfig{minimumHours, maximumHours, billingIncrement},
         popular,
         description
       }
@@ -189,6 +199,7 @@ export default async function ServicePage({
             description,
             price,
             showPrice,
+            pricingModel,
             popular
           }
         }`,
@@ -524,7 +535,8 @@ export default async function ServicePage({
 
             {service.showPrice && service.price && (
               <div className="service-price">
-                <span>${service.price}</span> <small>/ setup</small>
+                <span>${service.price}</span>{" "}
+                <small>{service.pricingModel === "hourly" ? "/ hr" : "/ setup"}</small>
               </div>
             )}
 

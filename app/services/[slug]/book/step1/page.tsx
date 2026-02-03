@@ -41,6 +41,12 @@ type Service = {
   title: string;
   slug: string;
   price: number;
+  pricingModel?: "flat" | "hourly";
+  hourlyConfig?: {
+    minimumHours?: number;
+    maximumHours?: number;
+    billingIncrement?: number;
+  };
   description?: string;
   details?: string[];
   faqs?: { q: string; a: string }[];
@@ -82,6 +88,8 @@ export default function Step1({
           title,
           "slug": slug.current,
           price,
+          pricingModel,
+          hourlyConfig{minimumHours, maximumHours, billingIncrement},
           description,
           details,
           faqs,
@@ -191,7 +199,15 @@ export default function Step1({
       .filter(Boolean) as AddOn[] || [];
 
     const addOnsTotal = addOns.reduce((sum, o) => sum + (o.price || 0), 0);
-    const subtotal = service ? service.price + addOnsTotal : 0;
+
+    const pricingModel = service?.pricingModel ?? "flat";
+    const minimumHours = service?.hourlyConfig?.minimumHours ?? 1;
+    const baseAmount = service
+      ? pricingModel === "hourly"
+        ? service.price * Math.max(1, minimumHours)
+        : service.price
+      : 0;
+    const subtotal = baseAmount + addOnsTotal;
     
     const handleAddToCart = () => {
       if (!service) return;
@@ -233,6 +249,8 @@ export default function Step1({
       title: service.title,
       description: service.description,
       basePrice: service.price,
+      pricingModel: service.pricingModel,
+      hourlyConfig: service.hourlyConfig,
       price: subtotal,
       options: addOns,
       quantity: 1,
@@ -252,6 +270,8 @@ export default function Step1({
       title: service.title,
       description: service.description,
       basePrice: service.price,
+      pricingModel: service.pricingModel,
+      hourlyConfig: service.hourlyConfig,
       price: subtotal,
       options: addOns,
     };
@@ -298,6 +318,10 @@ export default function Step1({
           <div className="base-price">
             <strong>Included:</strong> {service.title} —{" "}
             <span className="price-main">${service.price}</span>
+            {pricingModel === "hourly" ? " /hr" : ""}
+            {pricingModel === "hourly" && minimumHours > 1
+              ? ` (min ${minimumHours} hr)`
+              : ""}
           </div>
 
           {service.questions?.map((q) => (

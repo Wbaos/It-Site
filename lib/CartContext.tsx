@@ -22,6 +22,12 @@ type CartItem = {
   description?: string; 
   basePrice: number;
   price: number;
+  pricingModel?: "flat" | "hourly";
+  hourlyConfig?: {
+    minimumHours?: number;
+    maximumHours?: number;
+    billingIncrement?: number;
+  };
   options?: CartOption[];
   quantity: number;
   contact?: {

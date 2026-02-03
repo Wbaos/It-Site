@@ -9,6 +9,7 @@ interface Service {
   description?: string;
   price?: number;
   showPrice?: boolean;
+  pricingModel?: "flat" | "hourly";
   popular?: boolean;
 }
 
@@ -35,11 +36,14 @@ export default function CategoryServicesAccordion({ serviceGroups }: { serviceGr
         const groupSlug = typeof group.slug === 'string' ? group.slug : group.slug.current;
         const isOpen = openIndex === idx;
         let displayPrice = null;
+        let displayIsHourly = false;
         if (group.services && group.services.length > 0) {
-          const allPrices = group.services.filter((s: Service) => s.showPrice && typeof s.price === 'number').map((s: Service) => s.price);
-          if (allPrices.length > 0) {
-            displayPrice = Math.min(...allPrices);
-          }
+          const priced = group.services.filter((s: Service) => s.showPrice && typeof s.price === 'number');
+          const allPrices = priced.map((s: Service) => s.price);
+          if (allPrices.length > 0) displayPrice = Math.min(...allPrices);
+
+          const hourlyOnly = priced.length > 0 && priced.every((s: Service) => s.pricingModel === "hourly");
+          displayIsHourly = hourlyOnly;
         }
         return (
           <div className="category-service-accordion" key={groupSlug}>
@@ -67,10 +71,15 @@ export default function CategoryServicesAccordion({ serviceGroups }: { serviceGr
                 <span className="category-service-price-row">
                   <span className="category-service-price-col">
                     {displayPrice && (
-                      <span className="category-service-price green">${displayPrice}</span>
+                      <span className="category-service-price green">
+                        ${displayPrice}
+                        {displayIsHourly ? "/hr" : ""}
+                      </span>
                     )}
                     {displayPrice && (
-                      <span className="category-service-price-label">starting price</span>
+                      <span className="category-service-price-label">
+                        {displayIsHourly ? "starting hourly rate" : "starting price"}
+                      </span>
                     )}
                   </span>
                   <span className="category-service-arrow-wrap">
@@ -106,8 +115,11 @@ export default function CategoryServicesAccordion({ serviceGroups }: { serviceGr
                             <div className="subservice-card-desc">{service.description}</div>
                           </div>
                           <div className="subservice-card-bottom">
-                            {service.showPrice && service.price && (
-                              <span className="subservice-card-price">${service.price}</span>
+                            {service.showPrice && typeof service.price === "number" && (
+                              <span className="subservice-card-price">
+                                ${service.price}
+                                {service.pricingModel === "hourly" ? "/hr" : ""}
+                              </span>
                             )}
                             <Link href={`/services/${serviceSlug}`} className="subservice-card-book-btn">
                               Book

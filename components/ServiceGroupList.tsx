@@ -19,6 +19,9 @@ export default function ServiceGroupList({
         const key =
           typeof s.slug === "object" ? s.slug.current : s.slug || i;
 
+        const isHourly = s?.pricingModel === "hourly";
+        const hasNumericPrice = typeof s?.price === "number";
+
         return (
           <Link
             key={key}
@@ -83,8 +86,11 @@ export default function ServiceGroupList({
               )}
             </div>
  </div>
-            {s.showPrice && (
-              <span className="svc-price">${s.price}</span>
+            {s.showPrice && hasNumericPrice && (
+              <span className="svc-price">
+                ${s.price}
+                {isHourly ? "/hr" : ""}
+              </span>
             )}
 
            
