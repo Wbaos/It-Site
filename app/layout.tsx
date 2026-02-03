@@ -103,6 +103,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+
   /* ITService schema (service-area business) */
   const orgJsonLd = {
     "@context": "https://schema.org",
@@ -149,19 +151,6 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-R1HZ7W3YL9"
-          strategy="afterInteractive"
-        />
-
-        <Script id="ga4" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-R1HZ7W3YL9');
-          `}
-        </Script>
         {/* Performance */}
         <link
           rel="preconnect"
@@ -192,6 +181,23 @@ export default function RootLayout({
       </head>
 
       <body>
+        {GA_ID ? (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_ID}');
+              `}
+            </Script>
+          </>
+        ) : null}
+     
         <ErrorBoundary>
           <Providers>
             <LoadingProvider>
