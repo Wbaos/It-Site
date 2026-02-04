@@ -20,6 +20,7 @@ import {
   Wifi,
 } from "lucide-react";
 
+
 // Icon mapping function
 const getIcon = (iconName?: string) => {
   const icons: Record<string, any> = {
@@ -72,7 +73,7 @@ export default async function LocationPage({ params }: Props) {
   if (!location) {
     notFound();
   }
-
+  const isPrimaryOffice = location.slug?.current === "miami";
   return (
     <div className="location-detail-page">
       {/* Hero Section with Background Image */}
@@ -255,26 +256,27 @@ export default async function LocationPage({ params }: Props) {
           {/* Right Column - Contact Card (Sticky) */}
           <div>
             <div className="location-sidebar">
-              <h3 className="location-sidebar-title">
-                Contact {location.city} Office
+             <h3 className="location-sidebar-title">
+                {isPrimaryOffice
+                  ? `Contact ${location.city} Office`
+                  : ` ${location.city} Service Team`}
               </h3>
 
+
               <div className="location-sidebar-info">
-                {location.address && (
+               {location.address && location.slug?.current === "miami" && (
                   <div className="location-sidebar-info-item">
                     <MapPin />
                     <div>
                       <p className="location-sidebar-info-label">Address</p>
                       <p className="location-sidebar-info-value">
                         {location.address.street}
-                        {location.address.suite && `, ${location.address.suite}`},
-                        {" "}{location.city}, {location.state}{" "}
-                        {location.address.zipCode}
+                        {location.address.suite && `, ${location.address.suite}`},{" "}
+                        {location.city}, {location.state} {location.address.zipCode}
                       </p>
                     </div>
                   </div>
                 )}
-
                 {location.phone && (
                   <div className="location-sidebar-info-item">
                     <Phone />
