@@ -16,10 +16,10 @@ type Props = {
 };
 
 export default function Hero({
-  titleLine1 = "Friendly Tech Support",
-  titleLine2 = "for Homes & Seniors",
-  subtitle = "Serving Miami, Pembroke Pines, Broward & Homestead with fast WiFi fixes, computer help, smart-home setups, and patient device support.",
-  badgeText = "Trusted In-Home Tech Support Across South Florida",
+  titleLine1 = "Local IT & Tech Support",
+  titleLine2 = "for Homes & Small Businesses in South Florida",
+  subtitle =   "Serving homes, seniors, home offices, and small businesses across Miami, Pembroke Pines, Broward County, and Homestead with TV mounting, security camera installation, Wi-Fi troubleshooting, computer support, smart-home setup, and reliable on-site tech services.",
+  badgeText = "Trusted Local IT & Tech Services in South Florida",
   primaryCtaText = "Contact Us",
   primaryCtaHref = "#contact",
   secondaryCtaText = "Request a Quote",

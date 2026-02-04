@@ -52,18 +52,18 @@ export async function generateMetadata({
 
     if (service) {
     return {
-      title: service.title,
+      title: `${service.title} | CallTechCare`,
       description:
         service.description ||
         "Professional in-home service provided by CallTechCare across South Florida.",
       alternates: { canonical: url },
       openGraph: {
-        title: service.title,
+        title: `${service.title} | CallTechCare`,
         description: service.description,
         url,
       },
       twitter: {
-        title: service.title,
+        title: `${service.title} | CallTechCare`,
         description: service.description,
       },
     };
@@ -292,7 +292,9 @@ export default async function ServicePage({
                   />
                 )}
                 <div>
-                  <h1 className="category-title">{category.title}</h1>
+                  <h1 className="category-title">
+                    {category.title} Services in South Florida
+                  </h1>
                   {category.tagline && (
                     <p className="category-desc">{category.tagline}</p>
                   )}
@@ -324,7 +326,7 @@ export default async function ServicePage({
                   />
                 )}
                 <div>
-                  <h1 className="category-title-below">{category.title}</h1>
+                  <h2 className="category-title-below">{category.title}</h2>
                   {category.tagline && (
                     <p className="category-desc">{category.tagline}</p>
                   )}
@@ -465,7 +467,7 @@ export default async function ServicePage({
             ← Back to Services
           </Link>
 
-          <h1>{service.title}</h1>
+          <h1>{service.title} in South Florida</h1>
 
           {install.length > 0 && (
             <ServiceGroupList title="Installation & Setup" items={install} />
@@ -512,7 +514,7 @@ export default async function ServicePage({
           )}
 
           <div className="service-card">
-            <h1>{service.title}</h1>
+            <h1>{service.title} in South Florida</h1>
 
             {service.rating && (
               <ServiceRating

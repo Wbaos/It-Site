@@ -1,12 +1,12 @@
 import type { ComponentType } from "react";
 import Hero from "@/components/sections/Hero";
+import SEOIntro from "@/components/sections/SEOIntro";
 import Services from "@/components/sections/Services";
 import HowItWorks from "@/components/sections/HowItWorks";
 import TestimonialsList, { Testimonial } from "@/components/common/TestimonialsList";
 import Pricing from "@/components/sections/PricingServer";
 import Contact from "@/components/sections/Contact";
 import HighlightsServer from "@/components/sections/HighLigthsServer";
-import SEOIntro from "@/components/sections/SEOIntro";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import SpeedTestCTA from "@/components/sections/SpeedTestCTA";
 type Section = {
@@ -56,13 +56,12 @@ export const homeSections: Section[] = [
     props: {
         // imageSrc: "/helping2.jpg",
 
-        titleLine1: "Friendly Tech Support",
-        titleLine2: "for Homes & Small Businesses",
+        titleLine1: "Local IT & Tech Support",
+        titleLine2: "for Homes & Small Businesses in South Florida",
 
         subtitle:
-            "Serving homes, seniors, home offices, and small businesses across Miami, Pembroke Pines, Broward & Homestead with fast WiFi fixes, computer help, smart-home setups, and reliable IT support.",
-
-        badgeText: "Trusted Tech Support for Homes & Small Businesses in South Florida",
+          "Serving homes, seniors, home offices, and small businesses across Miami, Pembroke Pines, Broward County, and Homestead with TV mounting, security camera installation, Wi-Fi troubleshooting, computer support, smart-home setup, and reliable on-site tech services.",
+        badgeText: "Trusted Local IT & Tech Services in South Florida",
 
         primaryCtaText: "Contact Us",
         primaryCtaHref: "#contact",

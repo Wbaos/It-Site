@@ -25,9 +25,12 @@ export default async function Services() {
   return (
     <section id="services" className="section services">
       <div className="site-container-services">
-        <h2 className="services-heading">Popular Tech Services</h2>
+        <h2 className="services-heading">Local IT & Tech Services in South Florida</h2>
         <p className="services-sub">
-          Helping customers stay connected, safe, and confident with technology.
+          Professional in-home and remote IT and tech services for homes, seniors,
+          and small businesses across South Florida, including TV mounting, Wi-Fi
+          troubleshooting, security camera installation, smart home setup, and
+          device support.
         </p>
 
        <div className="services-grid">
@@ -38,7 +41,7 @@ export default async function Services() {
               {s.icon?.asset && (
                 <Image
                   src={urlFor(s.icon).url()}
-                  alt={s.icon?.alt || s.title}
+                  alt={s.icon?.alt || `${s.title} service icon`}
                   width={40}
                   height={40}
                 />
@@ -53,8 +56,9 @@ export default async function Services() {
             )}
 
             <div className="service-card-bottom">
-              <p className="service-card-price">${s.price}</p>
-
+              {s.showPrice && s.price && (
+                <p className="service-card-price">${s.price}</p>
+              )}
               {s.mode && (
                 <span className="service-card-mode">
                   {s.mode === "in-home" && "In-Home"}
