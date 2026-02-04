@@ -22,13 +22,13 @@ export const metadata: Metadata = {
 
   /* Fallback title only (pages override this) */
   title: {
-    default: "CallTechCare | In-Home IT & Tech Support",
+    default: "CallTechCare | Local IT & Tech Support in South Florida",
     template: "%s | CallTechCare",
   },
 
   /* Fallback description */
   description:
-    "Professional TV mounting, security camera installation, and software-based IT support for homes and small businesses across South Florida.",
+    "Local IT and in-home tech support for homes, seniors, and small businesses across South Florida. We provide TV mounting, WiFi troubleshooting, home security, smart home setup, and device support.",
 
   /* Keywords (harmless fallback) */
   keywords: [
@@ -44,9 +44,9 @@ export const metadata: Metadata = {
 
   /* Open Graph fallback */
   openGraph: {
-    title: "CallTechCare | In-Home IT & Tech Support",
+    title: "CallTechCare | Local IT & Tech Support in South Florida",
     description:
-      "TV mounting, camera installation, and software-based IT support across South Florida.",
+      "Local IT and in-home tech support for homes, seniors, and small businesses across South Florida. We provide TV mounting, WiFi troubleshooting, home security, smart home setup, and device support.",
     url: "https://www.calltechcare.com",
     siteName: "CallTechCare",
     locale: "en_US",
@@ -64,9 +64,9 @@ export const metadata: Metadata = {
   /* Twitter fallback */
   twitter: {
     card: "summary_large_image",
-    title: "CallTechCare | In-Home IT & Tech Support",
+    title: "CallTechCare | Local IT & Tech Support in South Florida",
     description:
-      "TV mounting, camera installation, and IT support for homes and small businesses in South Florida.",
+      "Local IT and in-home tech support for homes, seniors, and small businesses across South Florida. We provide TV mounting, WiFi troubleshooting, home security, smart home setup, and device support.",
     images: ["/logo-og.png"],
   },
 
@@ -111,7 +111,7 @@ export default function RootLayout({
     url: "https://www.calltechcare.com",
     image: "https://www.calltechcare.com/logo-og.png",
     description:
-      "TV mounting, security camera installation, and software-based IT support for homes and small businesses across South Florida.",
+    "Local IT and in-home tech support for homes, seniors, and small businesses across South Florida, including TV mounting, WiFi troubleshooting, home security, smart home setup, and device support.",
     telephone: "+1-786-366-2729",
     priceRange: "$$",
     areaServed: [
@@ -130,18 +130,22 @@ export default function RootLayout({
       postalCode: "33025",
       addressCountry: "US",
     },
-    openingHours: "Mo-Sa 08:00-21:00",
+    openingHours: [
+      "Mo-Sa 08:00-19:00",
+      "Su 09:00-18:00",
+    ],
     sameAs: [
       "https://www.facebook.com/CallTechCare",
       "https://www.instagram.com/CallTechCare",
     ],
     serviceType: [
-      "TV Mounting",
-      "Security Camera Installation",
-      "Software-Based IT Support",
-      "WiFi Troubleshooting",
-      "New Device Setup",
-      "Smart Home Device Setup",
+      "Local IT Support",
+      "TV Mounting & Setup",
+      "WiFi & Internet Support",
+      "Home Security Systems",
+      "Smart Home Installation",
+      "Device Setup & Configuration",
+      "Senior-Friendly Tech Help",
     ],
     paymentAccepted: ["Cash", "Credit Card", "Zelle"],
   };
