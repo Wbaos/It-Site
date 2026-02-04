@@ -3,14 +3,68 @@ import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 import SvgIcon from "@/components/common/SvgIcons";
+import type { Metadata } from "next";
 
+/* =========================
+   SEO METADATA
+========================= */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await sanity.fetch(
+    `*[_type == "post" && slug.current == $slug][0]{
+      title,
+      metaTitle,
+      metaDescription,
+      mainImage { asset->{url} },
+      ogImage { asset->{url} }
+    }`,
+    { slug }
+  );
+
+  if (!post) {
+    return {};
+  }
+
+  const title = post.metaTitle || post.title;
+  const description =
+    post.metaDescription ||
+    "Professional IT support, Wi-Fi setup, TV mounting, and tech help in South Florida.";
+
+  const image =
+    post.ogImage?.asset?.url || post.mainImage?.asset?.url;
+
+  const url = `https://www.calltechcare.com/blog/${slug}`;
+
+  return {
+    title,
+    description,
+
+    alternates: {
+      canonical: url,
+    },
+
+    openGraph: {
+      title,
+      description,
+      url,
+      images: image ? [{ url: image }] : [],
+    },
+  };
+}
+
+/* =========================
+   PAGE COMPONENT
+========================= */
 export default async function BlogPost({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-
   const post = await sanity.fetch(
     `*[_type == "post" && slug.current == $slug][0]{
       title,
@@ -27,15 +81,22 @@ export default async function BlogPost({
     return <p className="no-posts">Post not found.</p>;
   }
 
+  const tags: string[] = Array.isArray(post.tags)
+    ? (post.tags as string[])
+    : [];
+
+  const uniqueTags = Array.from(
+    new Set(tags.map(tag => tag.trim()).filter(Boolean))
+  );
+
   return (
     <article className="single-blog-page">
       <div className="single-blog-container">
 
-     <Link href="/blog" className="single-blog-back">
-        <SvgIcon name="chevron-left" size={18} color="var(--brand-teal)" />
-        Back to Blogs
-    </Link>
-
+        <Link href="/blog" className="single-blog-back">
+          <SvgIcon name="chevron-left" size={18} color="var(--brand-teal)" />
+          Back to Blogs
+        </Link>
 
         <h1 className="single-blog-title">{post.title}</h1>
 
@@ -62,7 +123,7 @@ export default async function BlogPost({
           <PortableText value={post.body} />
         </div>
 
-        {post.tags?.length > 0 && (
+        {uniqueTags.length > 0 && (
           <div className="single-blog-tags-box">
             <span className="single-blog-tags-label">
               <SvgIcon name="tag" size={17} color="var(--brand-teal)" />
@@ -70,26 +131,11 @@ export default async function BlogPost({
             </span>
 
             <div className="single-blog-tags">
-              {(() => {
-                const rawTags = Array.isArray(post.tags)
-                  ? (post.tags as unknown[])
-                  : [];
-
-                const uniqueTags: string[] = Array.from(
-                  new Set(
-                    rawTags
-                      .filter((t: unknown): t is string => typeof t === "string")
-                      .map((t) => t.trim())
-                      .filter((t) => t.length > 0)
-                  )
-                );
-
-                return uniqueTags.map((tag) => (
-                  <span key={tag} className="single-blog-tag">
-                    {tag}
-                  </span>
-                ));
-              })()}
+              {uniqueTags.map((tag) => (
+                <span key={tag} className="single-blog-tag">
+                  {tag}
+                </span>
+              ))}
             </div>
           </div>
         )}
@@ -104,6 +150,7 @@ export default async function BlogPost({
             Get in Touch
           </Link>
         </div>
+
       </div>
     </article>
   );
