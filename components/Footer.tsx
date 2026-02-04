@@ -119,6 +119,10 @@ export default function Footer() {
             Privacy Policy
           </a>
           <span>•</span>
+          <a href="#cookie-settings" aria-label="Cookie Settings">
+            Cookie Settings
+          </a>
+          <span>•</span>
           <a href="/terms-and-conditions" aria-label="Terms and Conditions">
             Terms & Conditions
           </a>
