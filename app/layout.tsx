@@ -106,7 +106,8 @@ export default function RootLayout({
   /* ITService schema (service-area business) */
   const orgJsonLd = {
     "@context": "https://schema.org",
-    "@type": "ITService",
+    "@type": "LocalBusiness",
+    "@id": "https://www.calltechcare.com/#business",
     name: "CallTechCare",
     url: "https://www.calltechcare.com",
     image: "https://www.calltechcare.com/logo-og.png",
@@ -114,25 +115,38 @@ export default function RootLayout({
     "Local IT and in-home tech support for homes, seniors, and small businesses across South Florida, including TV mounting, WiFi troubleshooting, home security, smart home setup, and device support.",
     telephone: "+1-786-366-2729",
     priceRange: "$$",
-    areaServed: [
-      "Miami FL",
-      "Pembroke Pines FL",
-      "Broward County FL",
-      "Homestead FL",
-      "Miramar FL",
-      "Hollywood FL",
-      "Fort Lauderdale FL",
-    ],
+    areaServed: {
+      "@type": "AdministrativeArea",
+      name: "South Florida",
+    },
     address: {
       "@type": "PostalAddress",
-      addressLocality: "South Florida",
+      streetAddress: "18730 SW 122nd Ave",
+      addressLocality: "Miami",
       addressRegion: "FL",
-      postalCode: "33025",
+      postalCode: "33177",
       addressCountry: "US",
     },
-    openingHours: [
-      "Mo-Sa 08:00-19:00",
-      "Su 09:00-18:00",
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        opens: "08:00",
+        closes: "19:00",
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: "Sunday",
+        opens: "09:00",
+        closes: "18:00",
+      },
     ],
     sameAs: [
       "https://www.facebook.com/CallTechCare",
