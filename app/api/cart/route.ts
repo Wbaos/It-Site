@@ -11,6 +11,12 @@ type CartItem = {
   description?: string;
   basePrice?: number;
   price: number;
+  pricingModel?: "flat" | "hourly";
+  hourlyConfig?: {
+    minimumHours?: number;
+    maximumHours?: number;
+    billingIncrement?: number;
+  };
   options?: { price?: number }[];
   quantity: number;
 };
@@ -49,43 +55,59 @@ export async function POST(req: NextRequest) {
     const sessionId = await getSessionId();
 
     const {
+      id,
       slug,
       title,
       description,
       basePrice,
+      price,
+      pricingModel,
+      hourlyConfig,
       options,
     }: {
+      id?: string;
       slug: string;
       title: string;
       description?: string;
       basePrice?: number;
+      price?: number;
+      pricingModel?: "flat" | "hourly";
+      hourlyConfig?: {
+        minimumHours?: number;
+        maximumHours?: number;
+        billingIncrement?: number;
+      };
       options?: { price?: number }[];
     } = await req.json();
+
+    const itemId = id || randomUUID();
 
     const addonsTotal =
       options?.reduce((sum, opt) => sum + (opt.price || 0), 0) || 0;
 
-    const totalPrice = (basePrice || 0) + addonsTotal;
+    const totalPrice = typeof price === "number" ? price : (basePrice || 0) + addonsTotal;
 
     let cart = await CartModel.findOne({ sessionId });
     if (!cart) {
       cart = await CartModel.create({ sessionId, items: [] });
     }
 
-    const existing = cart.items.find((i: CartItem) => i.slug === slug);
+    const existingIndex = cart.items.findIndex((i: CartItem) => i.id === itemId);
+    const nextItem = {
+      id: itemId,
+      slug,
+      title,
+      description,
+      basePrice,
+      price: totalPrice,
+      pricingModel,
+      hourlyConfig,
+      options,
+      quantity: 1,
+    };
 
-    if (!existing) {
-      cart.items.push({
-        id: randomUUID(),
-        slug,
-        title,
-        description,
-        basePrice,
-        price: totalPrice,
-        options,
-        quantity: 1,
-      });
-    }
+    if (existingIndex >= 0) cart.items[existingIndex] = { ...cart.items[existingIndex], ...nextItem };
+    else cart.items.push(nextItem);
 
     await cart.save();
     return NextResponse.json({ items: cart.items });

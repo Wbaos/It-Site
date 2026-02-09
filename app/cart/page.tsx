@@ -184,7 +184,7 @@ export default function CartPage() {
                           className="modify-btn"
                           onClick={() =>
                             router.push(
-                              `/services/${item.slug}/book/step1?edit=true&id=${item.id}`
+                              `/book/${item.slug}?edit=true&id=${item.id}`
                             )
                           }
                         >
@@ -302,10 +302,7 @@ export default function CartPage() {
           <button
             className="checkout-btn"
             onClick={() => {
-              const firstItem = items[0];
-              if (firstItem) {
-                router.push(`/services/${firstItem.slug}/book/step2`);
-              }
+              router.push("/checkout");
             }}
           >
             Proceed to Checkout

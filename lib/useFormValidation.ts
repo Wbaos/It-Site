@@ -1,7 +1,14 @@
 "use client";
 import { useState } from "react";
 
-export function useFormValidation<T extends Record<string, string>>(initialValues: T) {
+type UseFormValidationOptions<T> = {
+    requiredKeys?: (keyof T)[];
+};
+
+export function useFormValidation<T extends Record<string, string>>(
+    initialValues: T,
+    options: UseFormValidationOptions<T> = {}
+) {
     const [values, setValues] = useState<T>(initialValues);
 
     const [errors, setErrors] = useState<Record<keyof T, boolean>>({} as Record<keyof T, boolean>);
@@ -13,9 +20,11 @@ export function useFormValidation<T extends Record<string, string>>(initialValue
 
     const validateRequired = () => {
         const newErrors = {} as Record<keyof T, boolean>;
-        for (const key in values) {
-            if (!values[key].trim()) {
-                newErrors[key as keyof T] = true;
+        const requiredKeys = options.requiredKeys ?? (Object.keys(values) as (keyof T)[]);
+
+        for (const key of requiredKeys) {
+            if (!values[key]?.trim()) {
+                newErrors[key] = true;
             }
         }
         setErrors(newErrors);
