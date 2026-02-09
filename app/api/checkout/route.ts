@@ -194,27 +194,53 @@ export async function POST(req: Request) {
     /* -------------------------------------------
        STRIPE LINE ITEMS
     ------------------------------------------- */
-    const line_items = updatedItems.map((item) => {
-      const name =
-        item.title?.trim() || item.slug || "Tech Service";
+    const getPaidAddons = (options: CartOption[] | undefined) => {
+      const paidAddons: { name: string; price: number }[] = [];
 
-      const description =
-        item.options?.length
-          ? item.options
-              .map(
-                (opt) => `${opt.name ?? "Addon"} (+$${opt.price ?? 0})`
-              )
-              .join(", ")
-          : "Tech service booking";
+      for (const opt of options ?? []) {
+        const name = (opt.name ?? "").trim();
+        if (!name) continue;
 
-      return {
+        const price = typeof opt.price === "number" ? opt.price : 0;
+        if (price > 0) paidAddons.push({ name, price });
+      }
+
+      return paidAddons;
+    };
+
+    const line_items = updatedItems.flatMap((item) => {
+      const serviceName = item.title?.trim() || item.slug || "Tech Service";
+      const quantity = item.quantity ?? 1;
+
+      const paidAddons = getPaidAddons(item.options);
+
+      const baseUnitAmount = Math.round(
+        ((item.basePrice ?? item.price ?? 0) as number) * 100
+      );
+
+      const baseLineItem = {
         price_data: {
           currency: "usd",
-          unit_amount: Math.round((item.price ?? 0) * 100),
-          product_data: { name, description },
+          unit_amount: baseUnitAmount,
+          product_data: {
+            name: serviceName,
+          },
         },
-        quantity: item.quantity ?? 1,
+        quantity,
       };
+
+      const addonLineItems = paidAddons.map((addon) => ({
+        price_data: {
+          currency: "usd",
+          unit_amount: Math.round(addon.price * 100),
+          product_data: {
+            name: `• ${addon.name}`,
+          },
+        },
+        quantity,
+      }));
+
+      return [baseLineItem, ...addonLineItems];
     });
 
     const metadata: Record<string, string> = {

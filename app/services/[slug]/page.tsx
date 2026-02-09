@@ -219,13 +219,11 @@ export default async function ServicePage({
         `*[_type == "category" && slug.current == $slug][0]{
           title,
           description,
-          tagline,
           "jobsCompletedValue": jobsCompleted.value,
           "jobsCompletedIconUrl": jobsCompleted.icon.asset->url,
           "customerRatingValue": customerRating.value,
           "customerRatingIconUrl": customerRating.icon.asset->url,
           "yearsExperienceValue": yearsExperience.value,
-          "yearsExperienceIconUrl": yearsExperience.icon.asset->url,
           about,
           features,
           badges[]{
@@ -542,8 +540,8 @@ export default async function ServicePage({
               </div>
             )}
 
-            <Link href={`/services/${slug}/book/step1`} className="btn-book">
-              BOOK THIS SERVICE
+            <Link href={`/book/${slug}`} className="btn-book">
+              Book Now
             </Link>
           </div>
         </div>
@@ -580,8 +578,8 @@ export default async function ServicePage({
 
       <BookButtonWatcher />
       <div id="floating-book-container" className="floating-book-hidden">
-        <Link href={`/services/${slug}/book/step1`} className="floating-book-btn">
-          BOOK THIS SERVICE
+        <Link href={`/book/${slug}`} className="floating-book-btn">
+          Book Service
         </Link>
       </div>
     </section>

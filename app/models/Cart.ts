@@ -17,6 +17,12 @@ const CartItemSchema = new Schema(
 
     basePrice: { type: Number, required: true },
     price: { type: Number, required: true },
+    pricingModel: { type: String, enum: ["flat", "hourly"], required: false },
+    hourlyConfig: {
+      minimumHours: { type: Number, required: false },
+      maximumHours: { type: Number, required: false },
+      billingIncrement: { type: Number, required: false },
+    },
     options: [CartOptionSchema],
     quantity: { type: Number, default: 1 },
   },
@@ -37,6 +43,7 @@ const CartSchema = new Schema({
     city: String,
     state: String,
     zip: String,
+    notes: String,
   },
   schedule: {
     date: String,
