@@ -536,9 +536,14 @@ export default async function ServicePage({
             {service.showPrice && service.price && (
               <div className="service-price">
                 <span>${service.price}</span>{" "}
-                <small>{service.pricingModel === "hourly" ? "/ hr" : "/ setup"}</small>
+                <small>
+                  / {service.pricingModel === "hourly" ? "hr (starting)" : "starting price"}
+                </small>
               </div>
             )}
+
+
+
 
             <Link href={`/book/${slug}`} className="btn-book">
               Book Now

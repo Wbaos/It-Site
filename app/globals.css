@@ -5813,10 +5813,35 @@ main {
 .single-blog-meta {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.4rem;
   color: #9fb3c8;
   margin-bottom: 1.5rem;
   font-size: 0.95rem;
+}
+
+.single-blog-metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.single-blog-metaDate::before,
+.single-blog-metaReading::before {
+  content: "•";
+  margin: 0 0.55rem;
+  color: #9fb3c8;
+}
+
+@media (max-width: 600px) {
+  .single-blog-metaReading {
+    flex-basis: 100%;
+  }
+
+  .single-blog-metaReading::before {
+    content: none;
+    display: none;
+  }
 }
 
 .single-blog-hero {
