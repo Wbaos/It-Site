@@ -14,13 +14,17 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+
   const post = await sanity.fetch(
     `*[_type == "post" && slug.current == $slug][0]{
       title,
       metaTitle,
       metaDescription,
-      mainImage { asset->{url} },
-      ogImage { asset->{url} }
+      excerpt,
+      canonicalUrl,
+      seoNoIndex,
+      mainImage { asset->{url}, alt },
+      ogImage { asset->{url}, alt }
     }`,
     { slug }
   );
@@ -32,12 +36,14 @@ export async function generateMetadata({
   const title = post.metaTitle || post.title;
   const description =
     post.metaDescription ||
+    post.excerpt ||
     "Professional IT support, Wi-Fi setup, TV mounting, and tech help in South Florida.";
 
   const image =
     post.ogImage?.asset?.url || post.mainImage?.asset?.url;
 
-  const url = `https://www.calltechcare.com/blog/${slug}`;
+  const url =
+    post.canonicalUrl || `https://www.calltechcare.com/blog/${slug}`;
 
   return {
     title,
@@ -47,11 +53,22 @@ export async function generateMetadata({
       canonical: url,
     },
 
+    robots: post.seoNoIndex
+      ? { index: false, follow: false }
+      : { index: true, follow: true },
+
     openGraph: {
       title,
       description,
       url,
       images: image ? [{ url: image }] : [],
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: image ? [image] : [],
     },
   };
 }
@@ -65,17 +82,20 @@ export default async function BlogPost({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+
   const post = await sanity.fetch(
     `*[_type == "post" && slug.current == $slug][0]{
       title,
-      mainImage { asset->{url} },
+      mainImage { asset->{url}, alt },
       "authorName": author->name,
       publishedAt,
+      readingTime,
       body,
       tags
     }`,
     { slug }
   );
+
 
   if (!post) {
     return <p className="no-posts">Post not found.</p>;
@@ -101,17 +121,31 @@ export default async function BlogPost({
         <h1 className="single-blog-title">{post.title}</h1>
 
         <p className="single-blog-meta">
-          <SvgIcon name="blog-author" size={16} color="#9fb3c8" />{" "}
-          <span>{post.authorName}</span> &nbsp; • &nbsp;
-          <SvgIcon name="calendar" size={16} color="#9fb3c8" />{" "}
-          {new Date(post.publishedAt).toLocaleDateString()}
+          <span className="single-blog-metaItem single-blog-metaAuthor">
+            <SvgIcon name="blog-author" size={16} color="#9fb3c8" />
+            <span>{post.authorName}</span>
+          </span>
+
+          <span className="single-blog-metaItem single-blog-metaDate">
+            <SvgIcon name="calendar" size={16} color="#9fb3c8" />
+            <time dateTime={post.publishedAt}>
+              {new Date(post.publishedAt).toLocaleDateString()}
+            </time>
+          </span>
+
+          {post.readingTime ? (
+            <span className="single-blog-metaItem single-blog-metaReading">
+              <SvgIcon name="clock" size={16} color="#9fb3c8" />
+              <span>{post.readingTime} min read</span>
+            </span>
+          ) : null}
         </p>
 
         {post.mainImage?.asset?.url && (
           <div className="single-blog-hero">
             <Image
               src={post.mainImage.asset.url}
-              alt={post.title}
+              alt={post.mainImage.alt || post.title}
               width={1200}
               height={600}
               priority

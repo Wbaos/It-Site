@@ -7,11 +7,11 @@ export const revalidate = 0;
 
 export default async function BlogPage() {
   const posts = await sanity.fetch(`
-    *[_type == "post"] | order(publishedAt desc) {
+    *[_type == "post" && publishedAt <= now()] | order(publishedAt desc) {
       _id,
       title,
       slug,
-      mainImage { asset->{url} },
+      mainImage { asset->{url}, alt },
       excerpt,
       "authorName": author->name,
       publishedAt,
@@ -25,7 +25,7 @@ export default async function BlogPage() {
       <div className="blog-container">
 
         <div className="blog-header-icon">
-        <SvgIcon name="book-open" size={70} color="var(--brand-teal)" />
+          <SvgIcon name="book-open" size={70} color="var(--brand-teal)" />
         </div>
 
         <h1 className="blog-title">Tech Insights & Updates</h1>
@@ -41,15 +41,16 @@ export default async function BlogPage() {
               href={`/blog/${post.slug.current}`}
               className="blog-card"
             >
-
               <div className="blog-image-wrapper">
-                <Image
-                  src={post.mainImage?.asset?.url}
-                  alt={post.title}
-                  width={500}
-                  height={300}
-                  className="blog-image"
-                />
+                {post.mainImage?.asset?.url && (
+                  <Image
+                    src={post.mainImage.asset.url}
+                    alt={post.mainImage.alt || post.title}
+                    width={500}
+                    height={300}
+                    className="blog-image"
+                  />
+                )}
 
                 {post.categories?.[0] && (
                   <span className="blog-badge">{post.categories[0]}</span>
@@ -57,7 +58,6 @@ export default async function BlogPage() {
               </div>
 
               <div className="blog-content">
-
                 <h2 className="blog-card-title">{post.title}</h2>
 
                 <p className="blog-excerpt">
@@ -67,7 +67,6 @@ export default async function BlogPage() {
                 </p>
 
                 <div className="blog-meta-row">
-
                   <div className="blog-meta-left">
                     <SvgIcon name="blog-author" size={18} color="#9fb3c8" />
                     <span className="blog-author-name">{post.authorName}</span>
@@ -79,18 +78,18 @@ export default async function BlogPage() {
                       {new Date(post.publishedAt).toLocaleDateString()}
                     </span>
                   </div>
-
                 </div>
 
                 <div className="blog-tags">
                   {(() => {
-                    const rawTags =
-                      Array.isArray(post.tags) ? (post.tags as unknown[]) : [];
+                    const rawTags = Array.isArray(post.tags)
+                      ? (post.tags as unknown[])
+                      : [];
 
                     const uniqueTags: string[] = Array.from(
                       new Set(
                         rawTags
-                          .filter((t: unknown): t is string => typeof t === "string")
+                          .filter((t): t is string => typeof t === "string")
                           .map((t) => t.trim())
                           .filter((t) => t.length > 0)
                       )
@@ -103,7 +102,6 @@ export default async function BlogPage() {
                     ));
                   })()}
                 </div>
-
               </div>
 
               <div className="blog-readmore">
@@ -115,7 +113,6 @@ export default async function BlogPage() {
                   color="var(--brand-teal)"
                 />
               </div>
-
             </Link>
           ))}
         </div>
