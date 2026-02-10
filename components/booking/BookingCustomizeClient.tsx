@@ -296,24 +296,26 @@ export default function BookingCustomizeClient({ slug }: { slug: string }) {
         <div className={styles.grid}>
           <div>
             <div className={`${styles.card} ${styles.serviceCard}`}>
-              <div className={styles.serviceLeft}>
                 <div className={styles.serviceIcon} aria-hidden>
                   <Package size={20} />
                 </div>
+              <div className={styles.serviceLeft}>
+              
                 <div>
                   <h1 className={styles.serviceTitle}>{service.title}</h1>
                   {service.description && (
                     <p className={styles.serviceDesc}>{service.description}</p>
                   )}
                 </div>
-              </div>
-
-              <div className={styles.servicePrice}>
+                 <div className={styles.servicePrice}>
                 ${service.price.toFixed(2)}
                 {pricingModel === "hourly" ? (
                   <span className={styles.servicePriceSmall}>/hr</span>
                 ) : null}
               </div>
+              </div>
+
+             
             </div>
 
             <div className={styles.card}>
@@ -416,29 +418,80 @@ export default function BookingCustomizeClient({ slug }: { slug: string }) {
                           <label className={styles.label}>{q.label}</label>
                           {requiredPill}
                         </div>
-                        <select
+                        <Listbox
                           value={responses[q.id] || ""}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            setResponses({ ...responses, [q.id]: value });
-                            if (isErrored && value !== "") {
+                          onChange={(selected) => {
+                            setResponses({ ...responses, [q.id]: selected });
+                            if (isErrored && selected !== "") {
                               setErrors({ ...errors, [q.id]: false });
                             }
                           }}
-                          className={`${styles.select} ${
-                            isErrored ? styles.errorBorder : ""
-                          }`}
                         >
-                          <option value="">Select an option...</option>
-                          {q.options?.map((opt) => (
-                            <option key={opt.label} value={opt.label}>
-                              {opt.label}
-                              {opt.extraCost
-                                ? ` (+$${opt.extraCost.toFixed(2)})`
-                                : ""}
-                            </option>
-                          ))}
-                        </select>
+                          {({ open }) => (
+                            <div className={styles.multiSelectWrapper}>
+                              <ListboxButton
+                                as="div"
+                                className={`${styles.multiSelectButton} ${
+                                  isErrored ? styles.errorBorder : ""
+                                }`}
+                                role="button"
+                                tabIndex={0}
+                              >
+                                {responses[q.id] ? (
+                                  <span>{responses[q.id]}</span>
+                                ) : (
+                                  <span className={styles.multiSelectPlaceholder}>
+                                    Select an option...
+                                  </span>
+                                )}
+                                <ChevronDown
+                                  className={`${styles.multiSelectIcon} w-4 h-4`}
+                                />
+                              </ListboxButton>
+
+                              <Transition
+                                as={Fragment}
+                                show={open}
+                                leave="transition ease-in duration-100"
+                                leaveFrom="opacity-100"
+                                leaveTo="opacity-0"
+                              >
+                                <ListboxOptions className={styles.multiSelectOptions}>
+                                  {q.options?.map((opt) => (
+                                    <ListboxOption
+                                      key={opt.label}
+                                      value={opt.label}
+                                      className={({ active, selected }) => {
+                                        const classes = [styles.multiSelectOption];
+                                        if (active)
+                                          classes.push(styles.multiSelectOptionActive);
+                                        if (selected)
+                                          classes.push(styles.multiSelectOptionSelected);
+                                        return classes.join(" ");
+                                      }}
+                                    >
+                                      {({ selected }) => (
+                                        <>
+                                          <span>{opt.label}</span>
+                                          {opt.extraCost ? (
+                                            <span className={styles.optionPrice}>
+                                              (+${opt.extraCost.toFixed(2)})
+                                            </span>
+                                          ) : null}
+                                          {selected ? (
+                                            <span className={styles.checkmark}>
+                                              <Check />
+                                            </span>
+                                          ) : null}
+                                        </>
+                                      )}
+                                    </ListboxOption>
+                                  ))}
+                                </ListboxOptions>
+                              </Transition>
+                            </div>
+                          )}
+                        </Listbox>
                         {isErrored ? (
                           <div className={styles.errorText}>
                             This field is required.
