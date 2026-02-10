@@ -14257,7 +14257,7 @@ details[open] .faq-toggle {
 
 .services-list-hero {
   padding-top: 8rem;
-  padding-bottom: 4rem;
+  padding-bottom: 2rem;
   padding-left: 1rem;
   padding-right: 1rem;
   background: #060b1d;
@@ -14306,7 +14306,7 @@ details[open] .faq-toggle {
 }
 
 .services-list-content {
-  padding: 3rem 1rem 4rem;
+  padding: 0 1rem 4rem;
   background: #060b1d;
   min-height: 100vh;
 }
@@ -14334,7 +14334,7 @@ details[open] .faq-toggle {
 .services-list-category-section {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .services-list-category-title {
@@ -14430,9 +14430,6 @@ details[open] .faq-toggle {
   transition: all 0.3s ease;
 }
 
-.services-list-card:hover .services-list-card-link {
-  color: #10d9bd;
-}
 
 /* Responsive Design */
 @media (min-width: 640px) {
@@ -14915,7 +14912,7 @@ details[open] .faq-toggle {
 
 .checkoutSteps .labelActive {
   color: #10b981;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .checkoutSteps .labelCompleted {
@@ -15086,7 +15083,6 @@ details[open] .faq-toggle {
 
 .checkoutClient .label {
   color: #e2e8f0;
-  font-weight: 700;
   font-size: 0.92rem;
 }
 
@@ -15171,7 +15167,7 @@ details[open] .faq-toggle {
   border: none;
   cursor: pointer;
   font-size: 16px;
-  font-weight: 900;
+  font-weight: 700;
   color: white;
   background: linear-gradient(90deg, var(--brand-teal), #059669);
   display: inline-flex;
@@ -15369,8 +15365,8 @@ details[open] .faq-toggle {
 
 .checkoutClient .summaryTotalValue {
   color: var(--brand-teal);
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.3rem;
+  font-weight: 600;
 }
 
 .checkoutClient .perksCard {
@@ -15572,7 +15568,7 @@ details[open] .faq-toggle {
 }
 
 .bookingCustomize .card {
-  background: #0b1220;
+  background: #0f172a80;
   border: 1px solid #1e293b;
   border-radius: 16px;
   padding: 1.5rem;
@@ -15589,6 +15585,7 @@ details[open] .faq-toggle {
 
 .bookingCustomize .serviceLeft {
   display: flex;
+  flex-direction: column;
   gap: 14px;
   min-width: 0;
 }
@@ -15624,7 +15621,7 @@ details[open] .faq-toggle {
   white-space: nowrap;
   color: #34d399;
   font-weight: 900;
-  font-size: 1.55rem;
+  font-size: 1.5rem;
   line-height: 1;
 }
 
@@ -15638,7 +15635,7 @@ details[open] .faq-toggle {
 .bookingCustomize .formTitle {
   margin: 0;
   font-size: 1.25rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #ffffff;
 }
 
@@ -15670,8 +15667,8 @@ details[open] .faq-toggle {
 
 .bookingCustomize .label {
   font-size: 0.98rem;
-  font-weight: 650;
-  color: #e2e8f0;
+  font-weight: 500;
+  color: #fff;
 }
 
 .bookingCustomize .helpText {
@@ -15683,12 +15680,10 @@ details[open] .faq-toggle {
 
 .bookingCustomize .requiredPill {
   font-size: 0.72rem;
-  font-weight: 800;
-  border-radius: 999px;
+  border-radius: 5px;
   padding: 3px 10px;
-  color: #fb7185;
+  color: #f87171;
   border: 1px solid rgba(251, 113, 133, 0.35);
-  background: rgba(251, 113, 133, 0.08);
   white-space: nowrap;
 }
 
@@ -15699,7 +15694,7 @@ details[open] .faq-toggle {
   background: #141d2f;
   border: 1px solid rgba(203, 213, 225, 0.16);
   border-radius: 12px;
-  color: #e5edf7;
+  color: #ffffff;
   font-size: 1rem;
   padding: 0.85rem 1rem;
   box-sizing: border-box;
@@ -15709,6 +15704,7 @@ details[open] .faq-toggle {
 
 .bookingCustomize .select {
   padding: 10px 36px 10px 12px;
+  color: #fff;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -15716,6 +15712,11 @@ details[open] .faq-toggle {
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 16px 16px;
+}
+
+.bookingCustomize .select option {
+  color: #fff;
+  background: #141d2f;
 }
 
 .bookingCustomize .textarea {
@@ -15820,7 +15821,7 @@ details[open] .faq-toggle {
   align-items: baseline;
   margin-top: 14px;
   font-size: 1.05rem;
-  font-weight: 900;
+  font-weight: 600;
   color: #f8fafc;
 }
 
@@ -15836,7 +15837,7 @@ details[open] .faq-toggle {
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  font-weight: 900;
+  font-weight: 700;
   color: #ffffff;
   background: linear-gradient(90deg, var(--brand-teal), #059669);
   display: inline-flex;
@@ -15854,7 +15855,6 @@ details[open] .faq-toggle {
   flex-direction: column;
   gap: 10px;
   color: #cbd5e1;
-  font-weight: 650;
 }
 
 .bookingCustomize .perkItem {
@@ -15873,8 +15873,8 @@ details[open] .faq-toggle {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  align-self: center;
   color: var(--brand-teal);
-  font-weight: 900;
   text-decoration: none;
 }
 
@@ -15889,7 +15889,7 @@ details[open] .faq-toggle {
   border: 1px solid rgba(203, 213, 225, 0.16);
   background-color: #141d2f;
   padding: 10px 36px 10px 12px;
-  color: #f8fafc;
+  /* color: #f8fafc; */
   font-size: 0.95rem;
   display: flex;
   flex-wrap: wrap;
@@ -15946,14 +15946,12 @@ details[open] .faq-toggle {
 .bookingCustomize .multiSelectOptions {
   position: absolute;
   z-index: 40;
-  margin-top: 0.5rem;
   width: 100%;
   max-height: 15rem;
   overflow-y: auto;
   border-radius: 12px;
   background-color: #0b1220;
   border: 1px solid rgba(203, 213, 225, 0.16);
-  padding: 0.5rem 0;
   font-size: 0.95rem;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
 }
@@ -15962,25 +15960,20 @@ details[open] .faq-toggle {
   position: relative;
   cursor: pointer;
   user-select: none;
-  padding: 0.7rem 2.75rem 0.7rem 2.25rem;
+  padding: 0.7rem 2.75rem;
   color: #f1f5f9;
 }
 
 .bookingCustomize .multiSelectOptionActive {
   background-color: rgba(13, 148, 136, 0.25);
-  color: #5eead4;
 }
 
-.bookingCustomize .multiSelectOptionSelected {
-  color: #2dd4bf;
-  font-weight: 700;
-}
 
 .bookingCustomize .optionPrice {
   position: absolute;
   right: 0.95rem;
   font-size: 0.85rem;
-  color: #9ca3af;
+  color: #10b981;
 }
 
 .bookingCustomize .checkmark {
