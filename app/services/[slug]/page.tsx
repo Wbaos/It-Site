@@ -52,19 +52,23 @@ export async function generateMetadata({
 
     if (service) {
     return {
-      title: `${service.title} | CallTechCare`,
+      title: `${service.title} in Miami & Broward | CallTechCare`,
       description:
         service.description ||
-        "Professional in-home service provided by CallTechCare across South Florida.",
+        `Professional ${service.title} service in Miami, Homestead, Fort Lauderdale, and Broward County.`,
       alternates: { canonical: url },
       openGraph: {
-        title: `${service.title} | CallTechCare`,
-        description: service.description,
+        title: `${service.title} in Miami & Broward | CallTechCare`,
+        description:
+          service.description ||
+          `Professional ${service.title} service in Miami, Homestead, Fort Lauderdale, and Broward County.`,
         url,
       },
       twitter: {
-        title: `${service.title} | CallTechCare`,
-        description: service.description,
+        title: `${service.title} in Miami & Broward | CallTechCare`,
+        description:
+          service.description ||
+          `Professional ${service.title} service in Miami, Homestead, Fort Lauderdale, and Broward County.`,
       },
     };
   }
@@ -73,23 +77,39 @@ export async function generateMetadata({
   const category = await sanity.fetch(
     `*[_type == "category" && slug.current == $slug][0]{
       title,
-      description
+      seoTitle,
+      metaDescription,
+      description,
+      tagline
+
     }`,
     { slug }
   );
 
-    if (category) {
-    const title = `${category.title} Services`;
+  if (category) {
+    const title =
+      category.seoTitle ||
+      `${category.title} in Miami & Broward | CallTechCare`;
+
     const description =
+      category.metaDescription ||
+      category.tagline ||
       category.description ||
-      `Explore ${category.title} services offered by CallTechCare across South Florida.`;
+      `Professional ${category.title} services in Miami, Homestead, Fort Lauderdale, and Broward County.`;
 
     return {
       title,
       description,
       alternates: { canonical: url },
-      openGraph: { title, description, url },
-      twitter: { title, description },
+      openGraph: {
+        title,
+        description,
+        url,
+      },
+      twitter: {
+        title,
+        description,
+      },
     };
   }
 
@@ -102,6 +122,63 @@ export default async function ServicePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+
+  const serviceAreasRaw = await sanity.fetch<
+    Array<{ city?: string; slug?: { current?: string } }>
+  >(
+    `*[_type == "location" && isActive == true] | order(city asc) { city, slug }`
+  );
+
+  const serviceAreas = Array.from(
+    new Map(
+      (serviceAreasRaw ?? [])
+        .map((loc) => {
+          const city = loc.city?.trim();
+          const locationSlug = loc.slug?.current?.trim();
+          if (!city || !locationSlug) return null;
+          return [locationSlug, { city, slug: locationSlug }] as const;
+        })
+        .filter(
+          (
+            item
+          ): item is readonly [string, { city: string; slug: string }] =>
+            Boolean(item)
+        )
+    ).values()
+  );
+
+  const ServiceAreasSection = () => (
+    serviceAreas.length > 0 ? (
+    <section className="service-areas-section">
+      <div className="site-container">
+        <div className="service-areas-inner">
+          <h2 className="service-areas-title">Service Areas</h2>
+          <p className="service-areas-subtitle">
+            Serving communities across Miami-Dade and Broward County.
+          </p>
+          <div className="service-areas-pills">
+            {serviceAreas.map((area) => (
+              <Link
+                key={area.slug}
+                href={`/locations/${area.slug}`}
+                className="service-area-pill"
+                aria-label={`View services in ${area.city}`}
+              >
+                <SvgIcon
+                  name="map-pin"
+                  size={14}
+                  color="var(--brand-teal)"
+                  className="service-area-icon"
+                />
+                {area.city}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+    ) : null
+  );
 
   const service = await sanity.fetch(
     `*[_type == "service" && slug.current == $slug][0]{
@@ -183,7 +260,25 @@ export default async function ServicePage({
           })),
         }
       : null;
-
+        const serviceSchema = service
+          ? {
+              "@context": "https://schema.org",
+              "@type": "Service",
+              name: service.title,
+              description:
+                service.description ||
+                `Professional ${service.title} service in Miami, Homestead, Fort Lauderdale, and Broward County.`,
+              areaServed: {
+                "@type": "Place",
+                name: "Miami, Homestead, Fort Lauderdale, Broward County",
+              },
+              provider: {
+                "@type": "LocalBusiness",
+                name: "CallTechCare",
+                url: "https://www.calltechcare.com",
+              },
+            }
+          : null;
 
   if (!service) {
     // Fetch serviceGroups for the category and their services
@@ -219,13 +314,26 @@ export default async function ServicePage({
         `*[_type == "category" && slug.current == $slug][0]{
           title,
           description,
+          seoTitle,
+          metaDescription,
+          tagline,
           "jobsCompletedValue": jobsCompleted.value,
           "jobsCompletedIconUrl": jobsCompleted.icon.asset->url,
           "customerRatingValue": customerRating.value,
           "customerRatingIconUrl": customerRating.icon.asset->url,
           "yearsExperienceValue": yearsExperience.value,
+          "yearsExperienceIconUrl": yearsExperience.icon.asset->url,
           about,
           features,
+          faqs[]{
+            question,
+            answer
+          },
+          whyChoose[]{
+            title,
+            description,
+            "iconUrl": icon.asset->url
+          },
           badges[]{
             title,
             description,
@@ -241,30 +349,77 @@ export default async function ServicePage({
     ]);
     if (category) {
       const categoryBreadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Home",
-      item: "https://www.calltechcare.com",
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Services",
-      item: "https://www.calltechcare.com/services",
-    },
-    {
-      "@type": "ListItem",
-      position: 3,
-      name: category.title,
-      item: `https://www.calltechcare.com/services/${slug}`,
-    },
-  ],
-};
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://www.calltechcare.com",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Services",
+            item: "https://www.calltechcare.com/services",
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: category.title,
+            item: `https://www.calltechcare.com/services/${slug}`,
+          },
+        ],
+      };
+      const categoryServiceSchema = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        name: `${category.title} in Miami & Broward`,
+        description:
+          category.metaDescription ||
+          category.tagline ||
+          category.description ||
+          `Professional ${category.title} services in Miami, Homestead, Fort Lauderdale, and Broward County.`,
 
+        areaServed: {
+          "@type": "Place",
+          name: "Miami, Homestead, Fort Lauderdale, Broward County",
+        },
+
+        provider: {
+          "@type": "LocalBusiness",
+          name: "CallTechCare",
+          url: "https://www.calltechcare.com",
+        },
+
+        ...(category.customerRatingValue && {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: category.customerRatingValue,
+            reviewCount:
+              category.jobsCompletedValue
+                ? category.jobsCompletedValue.replace("+", "")
+                : "1",
+          },
+        }),
+      };
+
+      const categoryFaqSchema =
+        category?.faqs?.length > 0
+          ? {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: category.faqs.map((faq: any) => ({
+                "@type": "Question",
+                name: faq.question,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: faq.answer,
+                },
+              })),
+            }
+          : null;
       return (
         <>
   <script
@@ -273,6 +428,21 @@ export default async function ServicePage({
       __html: JSON.stringify(categoryBreadcrumbSchema),
     }}
   />
+   <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify(categoryServiceSchema),
+    }}
+  />
+
+  {categoryFaqSchema && (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(categoryFaqSchema),
+      }}
+    />
+  )}
 
   <section className="category-detail">
 
@@ -291,7 +461,7 @@ export default async function ServicePage({
                 )}
                 <div>
                   <h1 className="category-title">
-                    {category.title} Services in South Florida
+                    {category.title} in Miami, Broward & South Florida
                   </h1>
                   {category.tagline && (
                     <p className="category-desc">{category.tagline}</p>
@@ -400,6 +570,47 @@ export default async function ServicePage({
                     ))}
                   </div>
                 )}
+
+                {category.faqs && category.faqs.length > 0 && (
+                  <div className="styled-category-faq">
+                    <FaqAccordion
+                      faqs={category.faqs.map((faq: any) => ({
+                        q: faq.question,
+                        a: faq.answer,
+                      }))}
+                    />
+                  </div>
+                )}
+                {category.whyChoose && category.whyChoose.length > 0 && (
+                  <div className="styled-whychoose-section">
+                    <div className="styled-whychoose-title">
+                      Why Choose CallTechCare?
+                    </div>
+                    <div className="styled-whychoose-grid">
+                      {category.whyChoose.map((item: any, i: number) => (
+                        <div className="styled-whychoose-card" key={i}>
+                          {item.iconUrl && (
+                            <img
+                              src={item.iconUrl}
+                              alt={item.title}
+                              className="styled-whychoose-icon"
+                              width={40}
+                              height={40}
+                            />
+                          )}
+                          <div className="styled-whychoose-content">
+                            <div className="styled-whychoose-cardTitle">
+                              {item.title}
+                            </div>
+                            <div className="styled-whychoose-cardDesc">
+                              {item.description}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 {/* CTA Section */}
                 <div className="category-cta-section">
                   <div className="category-cta-title">
@@ -409,13 +620,50 @@ export default async function ServicePage({
                     Our expert technicians are ready to help. Book your service today and experience the difference professional installation makes.
                   </div>
                   <div className="category-cta-btn-row">
-                    <Link href="/#contact" className="category-cta-btn">Contact Us</Link>
+                    <Link href="/request-quote" className="category-cta-btn">
+                      Get Your Free Quote
+                      <SvgIcon
+                        name="arrow-right-simple"
+                        size={16}
+                        color="#fff"
+                        className="category-cta-btn-icon"
+                      />
+                    </Link>
+                    <a
+                      href="tel:+17863662729"
+                      className="category-cta-btn"
+                      aria-label="Call CallTechCare now"
+                    >
+                      <SvgIcon
+                        name="phone"
+                        size={16}
+                        color="#fff"
+                        className="category-cta-btn-icon"
+                      />
+                      Call Now: (786) 366-2729
+                    </a>
+                  </div>
+                  <div className="category-cta-trust-row">
+                    <div className="category-cta-trust-item">
+                      <SvgIcon name="check" size={16} color="var(--brand-teal)" />
+                      No obligation
+                    </div>
+                    <div className="category-cta-trust-item">
+                      <SvgIcon name="check" size={16} color="var(--brand-teal)" />
+                      Free estimates
+                    </div>
+                    <div className="category-cta-trust-item">
+                      <SvgIcon name="check" size={16} color="var(--brand-teal)" />
+                      Same-day service available
+                    </div>
                   </div>
                 </div>
               </div>
             </main>
           </div>
         </section>
+
+        <ServiceAreasSection />
         </>
       );
     }
@@ -442,13 +690,23 @@ export default async function ServicePage({
     <>
       {/* Breadcrumb schema */}
       {serviceBreadcrumbSchema && (
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(serviceBreadcrumbSchema),
+        }}
+      />
+    )}
+    {/* Service schema */}
+{serviceSchema && (
   <script
     type="application/ld+json"
     dangerouslySetInnerHTML={{
-      __html: JSON.stringify(serviceBreadcrumbSchema),
+      __html: JSON.stringify(serviceSchema),
     }}
   />
 )}
+
 
 
       {/* FAQ schema (only if FAQs exist) */}
@@ -465,7 +723,8 @@ export default async function ServicePage({
             ← Back to Services
           </Link>
 
-          <h1>{service.title} in South Florida</h1>
+          <h1>{service.title} in Miami, Broward & South Florida</h1>
+
 
           {install.length > 0 && (
             <ServiceGroupList title="Installation & Setup" items={install} />
@@ -476,6 +735,8 @@ export default async function ServicePage({
           )}
         </div>
       </section>
+
+      <ServiceAreasSection />
     </>
   );
 }
@@ -486,6 +747,7 @@ export default async function ServicePage({
   return (
   <>
     {serviceBreadcrumbSchema && (
+      
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -493,6 +755,16 @@ export default async function ServicePage({
         }}
       />
     )}
+
+        {serviceSchema && (
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(serviceSchema),
+        }}
+      />
+    )}
+
 
     <section className="service-detail">
 
@@ -512,7 +784,8 @@ export default async function ServicePage({
           )}
 
           <div className="service-card">
-            <h1>{service.title} in South Florida</h1>
+            <h1>{service.title} in Miami, Broward & South Florida</h1>
+
 
             {service.rating && (
               <ServiceRating
@@ -541,12 +814,13 @@ export default async function ServicePage({
                 </small>
               </div>
             )}
+            
 
 
 
 
             <Link href={`/book/${slug}`} className="btn-book">
-              Book Now
+              Book Service Now
             </Link>
           </div>
         </div>
@@ -588,6 +862,8 @@ export default async function ServicePage({
         </Link>
       </div>
     </section>
+
+    <ServiceAreasSection />
   </>
   );
 }
