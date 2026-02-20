@@ -50,26 +50,6 @@ export default function CookieConsent() {
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
-  useEffect(() => {
-    if (!hydrated) return;
-
-    // Block scrolling & signal a UI gate while the banner is visible.
-    if (showBanner) {
-      const prevOverflow = document.documentElement.style.overflow;
-      document.documentElement.style.overflow = "hidden";
-      document.documentElement.dataset.consentGate = "1";
-
-      return () => {
-        document.documentElement.style.overflow = prevOverflow;
-        delete document.documentElement.dataset.consentGate;
-      };
-    }
-
-    // Ensure cleanup when banner goes away.
-    document.documentElement.style.overflow = "";
-    delete document.documentElement.dataset.consentGate;
-  }, [hydrated, showBanner]);
-
   function closeModal() {
     setIsOpen(false);
     // If we opened via hash, clear it so refresh doesn't reopen.
@@ -105,7 +85,6 @@ export default function CookieConsent() {
 
   return (
     <>
-      {showBanner && <div className="cookie-gate" aria-hidden="true" />}
       {showBanner && (
         <div className="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie consent">
           <div className="cookie-banner__inner">

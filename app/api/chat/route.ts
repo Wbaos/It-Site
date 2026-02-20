@@ -18,26 +18,69 @@ interface Service {
     faqs?: FAQ[] | null;
 }
 
-// Cache for services and homepage (5 minute duration)
 let cachedServices: Service[] | null = null;
 let cachedHomepage: string | null = null;
 let cacheTime = 0;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+const CACHE_DURATION = 5 * 60 * 1000; 
+
+function stripHtmlToText(html: string): string {
+    return html
+        .replace(/<script[\s\S]*?<\/script>/gi, " ")
+        .replace(/<style[\s\S]*?<\/style>/gi, " ")
+        .replace(/<!--([\s\S]*?)-->/g, " ")
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function pickRelevantServices(message: string, services: Service[], limit = 6): Service[] {
+    const q = (message || "").toLowerCase();
+    const tokens = q
+        .split(/[^a-z0-9áéíóúñü]+/i)
+        .map((t) => t.trim())
+        .filter((t) => t.length >= 3)
+        .slice(0, 24);
+
+    if (tokens.length === 0) return services.slice(0, limit);
+
+    const scored = services
+        .map((service) => {
+            const faqsArray = Array.isArray(service.faqs) ? service.faqs : [];
+            const haystack = [
+                service.title,
+                service.shortDescription,
+                ...faqsArray.flatMap((f) => [f?.question, f?.answer]),
+            ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+            let score = 0;
+            for (const t of tokens) {
+                if (!t) continue;
+                if (service.title?.toLowerCase().includes(t)) score += 6;
+                if (haystack.includes(t)) score += 2;
+            }
+
+            return { service, score };
+        })
+        .sort((a, b) => b.score - a.score);
+
+    const top = scored.filter((x) => x.score > 0).slice(0, limit).map((x) => x.service);
+    return top.length ? top : services.slice(0, limit);
+}
 
 export async function POST(req: Request) {
-    let detectedLang = "en"; // Track language throughout the request
+    let detectedLang = "en"; 
     
     try {
         const { message, history } = await req.json();
 
-        // Limit conversation history to prevent token overflow
         const recentHistory = Array.isArray(history) ? history.slice(-10) : [];
 
-        // Check cache validity
         const now = Date.now();
         const isCacheValid = cachedServices && cachedHomepage && (now - cacheTime) < CACHE_DURATION;
 
-        // Fetch or use cached data
         if (!isCacheValid) {
             cachedServices = await sanity.fetch(`*[_type=="service"]{
         title,
@@ -65,8 +108,9 @@ export async function POST(req: Request) {
         detectedLang = langDetect.choices[0].message.content?.trim() || "en";
         const lang = detectedLang === "es" ? "es" : "en";
 
-        //  Safely build the service info block
-        const serviceInfo = services
+        const relevantServices = pickRelevantServices(message, services, 6);
+
+        const serviceInfo = relevantServices
             .map((s) => {
                 const faqsArray = Array.isArray(s.faqs) ? s.faqs : [];
                 const cleanFaqs = faqsArray
@@ -82,41 +126,41 @@ export async function POST(req: Request) {
                 const faqSection = cleanFaqs ? `FAQs:\n${cleanFaqs}\n` : "";
 
                 return `• ${s.title} — $${s.price || "?"}
-${s.shortDescription || ""}
-${faqSection}URL: ${process.env.NEXT_PUBLIC_BASE_URL}/services/${s.slug?.current || ""}
-`;
-            })
-            .join("\n");
+                ${s.shortDescription || ""}
+                ${faqSection}URL: ${process.env.NEXT_PUBLIC_BASE_URL}/services/${s.slug?.current || ""}
+                `;
+                            })
+                            .join("\n");
 
-        //  Build global context
-        const knowledgeContext = `
-You are Sofía, CallTechCare's friendly and intelligent virtual assistant.
-Use the following company and service information to answer clearly and conversationally.
+                        const homepagePlainText = stripHtmlToText(homepageText);
+                        const knowledgeContext = `
+                You are Sofía, CallTechCare's friendly and intelligent virtual assistant.
+                Use the following company and service information to answer clearly and conversationally.
 
---- COMPANY INFO ---
-${homepageText.slice(0, 7000)}
+                --- COMPANY INFO ---
+                ${homepagePlainText.slice(0, 3500)}
 
---- SERVICES (from CMS) ---
-${serviceInfo}
+                --- SERVICES (from CMS) ---
+                ${serviceInfo}
 
-Guidelines:
-- Always answer in the same language as the user (you speak both English and Spanish fluently).
-- Be warm and conversational - acknowledge questions about your capabilities, greet users naturally, and build rapport.
-- For service questions: Format services as a clean list with each service on a new line. Use this format:
-  • **Service Name** — **$Price**
-  Description here
-  [View Service](URL)
-  
-- When listing multiple services, separate them clearly with line breaks.
-- For questions about your abilities (e.g., "Do you speak Spanish?"): Answer directly and positively, then offer to help with services.
-- For general questions (coverage area, business hours, contact info): Answer using the company info provided.
-- For completely unrelated topics (weather, recipes, sports): Politely redirect to CallTechCare services but remain friendly.
-- Never ask for personal data like full names, addresses, or payment information - that's handled securely during booking.
-- Use emojis occasionally to be friendly, but don't overuse them.
-- Make links clickable using markdown format: [Link Text](URL)
-`;
+                Guidelines:
+                - Always answer in the same language as the user (you speak both English and Spanish fluently).
+                - Be warm and conversational - acknowledge questions about your capabilities, greet users naturally, and build rapport.
+                - If the user's request is ambiguous, ask 1-2 quick clarifying questions before recommending a service.
+                - For service questions: Format services as a clean list with each service on a new line. Use this format:
+                • **Service Name** — **$Price**
+                Description here
+                [View Service](URL)
+                
+                - When listing multiple services, separate them clearly with line breaks.
+                - For questions about your abilities (e.g., "Do you speak Spanish?"): Answer directly and positively, then offer to help with services.
+                - For general questions (coverage area, business hours, contact info): Answer using the company info provided.
+                - For completely unrelated topics (weather, recipes, sports): Politely redirect to CallTechCare services but remain friendly.
+                - Never ask for personal data like full names, addresses, or payment information - that's handled securely during booking.
+                - Use emojis occasionally to be friendly, but don't overuse them.
+                - Make links clickable using markdown format: [Link Text](URL)
+                `;
 
-        // Build proper message array for OpenAI
         const conversationMessages = [
             { role: "system" as const, content: knowledgeContext },
             ...recentHistory.map((h: Msg) => ({
@@ -126,7 +170,6 @@ Guidelines:
             { role: "user" as const, content: message },
         ];
 
-        //  Generate AI response
         const response = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             temperature: 0.5,
@@ -135,11 +178,9 @@ Guidelines:
 
         const aiReply = response.choices[0].message.content?.trim() || "...";
 
-        // Detect booking intent
         const bookingKeywords = /\b(book|schedule|appointment|reserve|set up|install|agendar|reservar|programar|cita)\b/i;
         const wantsToBook = bookingKeywords.test(message) || bookingKeywords.test(aiReply);
 
-        // Generate contextual quick reply suggestions
         const suggestions = lang === "es"
             ? ["📋 Ver todos los servicios", "⚡ Prueba de velocidad", "💬 Hablar con soporte"]
             : ["📋 View all services", "⚡ Speed Test", "💬 Contact support"];
@@ -153,11 +194,9 @@ Guidelines:
     } catch (err) {
         console.error("Error in /api/chat:", err);
         
-        // Detect error type for better user feedback
         const isRateLimit = err instanceof Error && err.message.includes('rate_limit');
         const isNetworkError = err instanceof Error && (err.message.includes('fetch') || err.message.includes('network'));
         
-        // Use the detected language from the request (default to English if detection failed)
         const lang = detectedLang;
         const isSpanish = lang === "es";
         
