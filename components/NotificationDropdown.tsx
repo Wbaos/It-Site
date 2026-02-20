@@ -1,19 +1,25 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Bell } from "lucide-react";
 import { useNav } from "@/lib/NavContext";
 
 type Notification = {
   _id: string;
-  title: string;
+  title?: string;
   message: string;
   type: "success" | "info" | "error";
   createdAt: string;
   read?: boolean;
 };
 
-export default function NotificationDropdown({ userId }: { userId: string }) {
+export default function NotificationDropdown({
+  userId,
+  onOpen,
+}: {
+  userId: string;
+  onOpen?: () => void;
+}) {
   const { notifOpen, setNotifOpen, closeAll } = useNav();
 
   const [notifs, setNotifs] = useState<Notification[]>([]);
@@ -35,9 +41,15 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
     return `${Math.floor(diff / 86400)} days ago`;
   }
 
+  const getTitle = (n: Notification) => {
+    if (n.title && n.title.trim()) return n.title;
+    if (n.type === "success") return "Success";
+    if (n.type === "error") return "Error";
+    return "Update";
+  };
 
-  useEffect(() => {
-    async function fetchNotifications() {
+  const fetchNotifications = useCallback(async () => {
+    try {
       const res = await fetch("/api/notifications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -45,12 +57,18 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
       });
 
       const data = await res.json();
-      if (data.ok) {
-        setNotifs(data.notifications);
+      if (data?.ok) {
+        setNotifs(data.notifications || []);
       }
+    } catch (err) {
+      console.error("Fetch notifications failed:", err);
     }
-    fetchNotifications();
   }, [userId]);
+
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
 
 
   useEffect(() => {
@@ -63,14 +81,18 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
 
   const unreadCount = notifs.filter((n) => !n.read).length;
 
-  const toggleDropdown = async () => {
+  const toggleDropdown = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (notifOpen) {
       setNotifOpen(false);
       return;
     }
 
+    onOpen?.();
     closeAll();
     setNotifOpen(true);
+
+    await fetchNotifications();
 
     setNotifs((prev) => prev.map((n) => ({ ...n, read: true })));
     fetch("/api/notifications/mark-read", {
@@ -96,7 +118,11 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
   }, [notifOpen, closeAll]);
 
   return (
-    <div className="notification-wrapper" ref={dropdownRef}>
+    <div
+      className="notification-wrapper"
+      ref={dropdownRef}
+      onClick={(e) => e.stopPropagation()}
+    >
       <button
         className="icon-btn relative"
         aria-label="Notifications"
@@ -118,7 +144,7 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
                 <div className="notification-dot"></div>
 
                 <div>
-                  <p className="notification-title">{n.title}</p>
+                  <p className="notification-title">{getTitle(n)}</p>
                   <p className="notification-desc">{n.message}</p>
                   <p className="notification-time">{formatTimeAgo(n.createdAt)}</p>
                 </div>
@@ -129,7 +155,10 @@ export default function NotificationDropdown({ userId }: { userId: string }) {
           {visibleCount < notifs.length && (
             <button
               className="show-more-btn"
-              onClick={() => setVisibleCount((prev) => prev + 5)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setVisibleCount((prev) => prev + 5);
+              }}
             >
               Show more
             </button>

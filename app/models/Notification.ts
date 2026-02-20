@@ -3,6 +3,7 @@ import { Schema, model, models } from "mongoose";
 const NotificationSchema = new Schema(
   {
     userId: { type: String, required: true },
+    title: { type: String, required: false },
     message: { type: String, required: true },
     type: { type: String, enum: ["success", "info", "error"], default: "info" },
     read: { type: Boolean, default: false },
