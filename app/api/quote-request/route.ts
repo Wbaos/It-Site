@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 import { connectDB } from "@/lib/mongodb";
 import { QuoteRequest } from "@/app/models/QuoteRequest";
+import { Notification } from "@/app/models/Notification";
 import { syncCustomerToMailchimp } from "@/lib/mailchimp";
 import { logger } from "@/lib/logger";
 
@@ -137,6 +140,26 @@ export async function POST(req: NextRequest) {
     }
 
     logger.info("Received quote request", { referenceNumber, id: created?._id });
+
+    try {
+      const session = await getServerSession(authOptions);
+      const userId = session?.user?.id;
+      if (userId) {
+        await Notification.create({
+          userId,
+          title: "Quote request received",
+          message: `We received your quote request (${referenceNumber}). We'll contact you shortly.`,
+          type: "success",
+          read: false,
+        });
+      }
+    } catch (err) {
+      logger.error("Failed to create quote-request notification", err, {
+        referenceNumber,
+        source: "quote-request",
+      });
+    }
+
     return NextResponse.json({ success: true, referenceNumber, id: created?._id }, { status: 201 });
   } catch (err: unknown) {
     logger.error("quote-request API error", err);

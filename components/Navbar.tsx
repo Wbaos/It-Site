@@ -22,7 +22,7 @@ const NAV = [
 ];
 
 export default function Navbar() {
-  const { open, setOpen, notifOpen, dropdownOpen, setDropdownOpen, searchOpen, setSearchOpen, closeAll } = useNav();
+  const { open, setOpen, dropdownOpen, setDropdownOpen, searchOpen, setSearchOpen, closeAll } = useNav();
   const router = useRouter();
   const { data: session } = useSession();
   const [categories, setCategories] = useState<any[]>([]);
@@ -327,9 +327,10 @@ export default function Navbar() {
             >
               <Search size={18} />
             </button>
-            <div onClick={closeAllMenus}>
-              <NotificationDropdown userId={session?.user?.id || "guest"} />
-            </div>
+            <NotificationDropdown
+              userId={session?.user?.id || "guest"}
+              onOpen={closeAllMenus}
+            />
             <Link
               href="/cart"
               className="icon-btn cart-btn"
