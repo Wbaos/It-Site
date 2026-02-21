@@ -11,6 +11,7 @@ import ServiceRating from "@/components/ServiceRating";
 import BookButtonWatcher from "@/components/BookButtonWatcher";
 import FaqAccordion from "@/components/FaqAccordion";
 import ServiceGroupList from "@/components/ServiceGroupList";
+import BeforeAfterSection from "@/components/BeforeAfterSection";
 import type { Metadata } from "next";
 
 
@@ -195,6 +196,15 @@ export default async function ServicePage({
       image { asset->{ url }, alt },
       details,
       faqs,
+      beforeAfter{
+        heading,
+        subheading,
+        comparisons[]{
+          title,
+          beforeImage{asset->{url}, alt},
+          afterImage{asset->{url}, alt}
+        }
+      },
       testimonials[] | order(date desc) {
         name,
         text,
@@ -838,6 +848,8 @@ export default async function ServicePage({
         )}
 
         {service.faqs && <FaqAccordion faqs={service.faqs} />}
+
+        <BeforeAfterSection data={service.beforeAfter} />
 
         {service.testimonials?.length > 0 && (
           <TestimonialsList
