@@ -816,22 +816,24 @@ export default async function ServicePage({
 
             <hr />
 
-            {service.showPrice && service.price && (
+            {service.showPrice && service.price != null && (
               <div className="service-price">
-                <span>${service.price}</span>{" "}
+                <span>${service.price}</span>
                 <small>
                   / {service.pricingModel === "hourly" ? "hr (starting)" : "starting price"}
                 </small>
               </div>
             )}
-            
 
-
-
-
-            <Link href={`/book/${slug}`} className="btn-book">
-              Book Service Now
-            </Link>
+            {service.showPrice && service.price != null ? (
+              <Link href={`/book/${slug}`} className="btn-book">
+                Book Service Now
+              </Link>
+            ) : (
+              <a href="tel:+17863662729" className="btn-book">
+                Call for Free Quote
+              </a>
+            )}
           </div>
         </div>
 
@@ -869,9 +871,15 @@ export default async function ServicePage({
 
       <BookButtonWatcher />
       <div id="floating-book-container" className="floating-book-hidden">
-        <Link href={`/book/${slug}`} className="floating-book-btn">
-          Book Service
-        </Link>
+        {service.showPrice && service.price != null ? (
+          <Link href={`/book/${slug}`} className="floating-book-btn">
+            Book Service
+          </Link>
+        ) : (
+          <a href="tel:+17863662729" className="floating-book-btn">
+            Call for Quote
+          </a>
+        )}
       </div>
     </section>
 

@@ -2793,7 +2793,7 @@ color: #fff;
   overflow-x: auto;
   scrollbar-width: auto;
   position: sticky;
-  top: 67px;
+  top: 64px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10);
 }
 
@@ -6263,7 +6263,7 @@ main {
 
 .notification-dropdown {
   position: absolute;
-  top: calc(100% + 12px);
+  top: calc(100% + 13px);
   right: 0;
   width: min(90vw, 500px);
   background: #0f172a;
@@ -6272,6 +6272,7 @@ main {
   box-shadow: 0 8px 25px rgba(0,0,0,0.25);
   z-index: 1000;
   overflow: hidden;
+  
 }
 
 .notification-dropdown h3 {
@@ -6361,13 +6362,15 @@ main {
 
   .notification-dropdown {
     position: fixed ;
-    top: 65px;
+    top: 64px;
     left: 0;
     width: 100vw ;
     max-width: 100vw ;
     border-radius: 0;
     right: 0 ;
     border: none;
+    border-bottom: 1px solid #334155;
+
   }
 }
 
@@ -6524,7 +6527,6 @@ main {
 }
 
 .cart-subtitle {
-  margin-top: -10px;
   margin-bottom: 25px;
   color: #94a3b8;
   font-size: 16px;
@@ -6654,7 +6656,6 @@ main {
 .cart-header {
   max-width: 1450px;
   margin: 0 auto 25px auto;
-  padding: 0 20px;
 }
 
 .cart-list{
@@ -9232,6 +9233,10 @@ object-fit: cover;
   color: var(--brand-teal);
   margin-bottom: 1.25rem;
 }
+.service-price-call{
+  font-size: 1.2rem;
+  color: #94a3b8;
+}
 
 .service-price small {
   font-size: 1rem;
@@ -9298,7 +9303,7 @@ object-fit: cover;
 .included-list li {
   position: relative;
   padding-left: 1.75rem;
-  line-height: 1.4;
+  line-height: 1.2;
   color: #cbd5e1;
   font-size: 0.96rem;
 }
@@ -9576,7 +9581,7 @@ object-fit: cover;
 #floating-book-container{
   position: fixed;
   top: 50%;
-  right: -180px;
+  right: -169px;
   transform: translateY(-50%);
   z-index: 9999;
   transition: right .35s ease, opacity .3s ease;
@@ -9640,7 +9645,7 @@ object-fit: cover;
 @media (max-width: 768px) {
   #floating-book-container {
     top: 60%;
-    right: -137px;
+    right: -142px;
   }
   #floating-book-container .floating-book-btn {
     font-size: 0.8rem;
@@ -9724,7 +9729,7 @@ object-fit: cover;
   font-family: var(--font-family-main);  
   margin-bottom: 4rem;
   margin-top: 0;
-  line-height: 1.6;
+  line-height: normal;
 }
 .testimonials-sub{
   padding: 0 20px;
@@ -9864,7 +9869,7 @@ object-fit: cover;
 .site-container-testimonials {
   max-width: 1250px;
   margin: 0 auto;
-  padding: 60px 0; 
+  padding: 30px 0; 
   border: 1px solid #1e293b;
   border-radius: 16px;
 }
@@ -9874,7 +9879,7 @@ object-fit: cover;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 35px;
+  gap: 15px;
 }
 
 .carousel-viewport {
@@ -9925,7 +9930,7 @@ object-fit: cover;
 .testimonial-card {
   background: #0b1123;
   border-radius: 14px;
-  padding: 40px 35px;
+  padding: 15px 20px;
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -9956,9 +9961,9 @@ object-fit: cover;
 .testimonial-text {
   color: #cbd5e1;
   font-size: 15px;
-  line-height: 1.6;
+  line-height: 1.2;
   margin-top: 5px;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
   text-align: left;
 }
 
@@ -10034,64 +10039,6 @@ object-fit: cover;
 .site-container-testimonials.no-container-border {
   border: none !important;
 }
-
-
-/*Accesibility*/
-/* .accessibility-section {
-  width: 90%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 9rem 0;
-  color: #1f2937; 
-  background-color: #ffffff; 
-}
-
-.accessibility-title {
-  font-size: 2.25rem;
-  font-weight: 700;
-  text-align: center;
-  color: #111827;
-  margin-bottom: 1rem;
-}
-
-.accessibility-date {
-  text-align: center;
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin-bottom: 2.5rem;
-}
-
-.accessibility-content {
-  max-width: 720px;
-  margin: 0 auto;
-  line-height: 1.8;
-}
-
-.accessibility-content h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-top: 2.5rem;
-  margin-bottom: 0.75rem;
-  color: #111827;
-    font-family: var(--font-family-main);
-
-}
-
-.accessibility-content p {
-  margin-bottom: 1rem;
-    font-family: var(--font-family-main);
-
-}
-
-.accessibility-content a {
-  color: #2563eb;
-  text-decoration: none;
-}
-
-.accessibility-content a:hover {
-  text-decoration: underline;
-}
- */
 
 /*Privacy/terms*/
 .legal-wrapper {
@@ -12634,6 +12581,7 @@ box-shadow:
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  line-height: 1.3;
 }
 
 .faq-heading::before {
@@ -12683,6 +12631,7 @@ summary.faq-question {
   line-height: 1.4;
   list-style: none;
   transition: color 0.3s ease;
+  line-height: normal;
 }
 
 summary.faq-question:hover {
@@ -12715,7 +12664,7 @@ details[open] .faq-toggle {
   align-items: center;      
   color: #94a3b8;
   font-size: 0.9rem;
-  line-height: 1.5;
+  line-height: 1.2;
   padding: 0.75rem 1.25rem;
   border-top: 1px solid #1e293b;
   background: rgb(19 29 46 / 30%);      
