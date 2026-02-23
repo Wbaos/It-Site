@@ -308,7 +308,11 @@ export default function BookingCustomizeClient({ slug }: { slug: string }) {
                   )}
                 </div>
                  <div className={styles.servicePrice}>
-                ${service.price.toFixed(2)}
+                {service.price != null ? (
+                  <>${service.price.toFixed(2)}</>
+                ) : (
+                  <>Custom Quote Required</>
+                )}
                 {pricingModel === "hourly" ? (
                   <span className={styles.servicePriceSmall}>/hr</span>
                 ) : null}

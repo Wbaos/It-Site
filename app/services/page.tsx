@@ -16,16 +16,19 @@ export const metadata: Metadata = {
 
 
 export default async function ServicesPage() {
-    const services = await sanity.fetch(`*[_type == "service" && enabled == true] | order(title asc) {
-    _id,
-    title,
-    slug,
-    category->{ title, slug },
-    description,
-    navDescription,
-    price,
-    image
-  }`);
+    const services = await sanity.fetch(`
+    *[_type == "service" && enabled == true] | order(title asc) {
+        _id,
+        title,
+        slug,
+        category->{ title, slug },
+        description,
+        navDescription,
+        price,
+        showPrice,
+        image
+    }
+    `);
 
     // Group services by category
     const servicesByCategory = services.reduce((acc: any, service: any) => {
@@ -93,8 +96,19 @@ export default async function ServicesPage() {
                                                         {service.description}
                                                     </p>
                                                     <div className="services-list-card-footer">
-                                                        <span className="services-list-card-price">${service.price}</span>
-                                                        <span className="services-list-card-link">Learn More →</span>
+                                                    {service.showPrice && service.price != null ? (
+                                                        <span className="services-list-card-price">
+                                                        ${service.price}
+                                                        </span>
+                                                    ) : (
+                                                        <span className="services-list-card-price-call">
+                                                        Call for Quote
+                                                        </span>
+                                                    )}
+
+                                                    <span className="services-list-card-link">
+                                                        Learn More →
+                                                    </span>
                                                     </div>
                                                 </div>
                                             </Link>
