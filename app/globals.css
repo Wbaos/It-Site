@@ -332,7 +332,7 @@ color: #fff;
   color: #b9c4d4;
   margin-bottom: 1.75rem;
   max-width: 44rem;
-  line-height: 1.65;
+  line-height: 1.3;
 }
 .category-cta-btn-row {
   display: flex;
@@ -422,7 +422,7 @@ color: #fff;
   font-size: 1.08rem;
   margin-bottom: 0.7rem;
   white-space: pre-line;
-
+  line-height: 1.3;
 }
 .styled-features-list {
   list-style: none;
@@ -449,7 +449,7 @@ color: #fff;
   display: flex;
   gap: 2rem;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
   border-radius: 1.1rem;
   padding: 2rem;
   border: 1px solid #10b98133;
@@ -839,7 +839,7 @@ color: #fff;
   color: #b9c4d4;
   text-align: center;
   max-width: 42rem;
-  line-height: 1.65;
+  line-height: 1.3;
 }
 @media (min-width: 768px) {
   .rq-client__heroSubtitle {
@@ -898,7 +898,7 @@ color: #fff;
 .rq-client__stepDesc {
   color: #94a3b8;
   font-size: 1rem;
-  line-height: 1.55;
+  line-height: 1.3;
 }
 
 .rq-client__contentSection {
@@ -2473,6 +2473,7 @@ color: #fff;
   color: #b9c4d4;
   font-size: 1.01rem;
   margin-bottom: 0.5rem;
+  line-height: 1.3;
 }
 .subservice-card-bottom {
   display: flex;
@@ -5613,6 +5614,7 @@ main {
   #hero .hero-sub {
     margin-top: 1.2rem;
     max-width: 700px;
+    line-height: normal;
     font-size: clamp(1rem, 1.4vw, 1.2rem);
     color: var(--hero-subtext);
   }
@@ -8942,6 +8944,7 @@ object-fit: cover;
   color: #94a3b8;
   text-align: center;
   margin-bottom: 3.5rem;
+  line-height: 1.3;
 }
 
 .services-grid {
@@ -8982,7 +8985,7 @@ object-fit: cover;
 .service-card-desc {
   color: #94a3b8;
   font-size: 0.95rem;
-  line-height: 1.55;
+  line-height: 1.3;
   text-align: left;
   max-width: 90%;
   margin-top: -0.25rem;
@@ -9581,14 +9584,15 @@ object-fit: cover;
 #floating-book-container{
   position: fixed;
   top: 50%;
-  right: -169px;
-  transform: translateY(-50%);
+  --floating-peek: 0px;
+  right: 0;
+  transform: translate(calc(100% - var(--floating-peek)), -50%);
   z-index: 9999;
-  transition: right .35s ease, opacity .3s ease;
+  transition: transform .35s ease, opacity .3s ease;
   opacity: 1;
 }
 #floating-book-container.floating-book-hidden{ opacity:0; pointer-events:none; }
-#floating-book-container:hover{ right:0; }
+#floating-book-container:hover{ transform: translate(0, -50%); }
 
 #floating-book-container .floating-book-btn{
   display:inline-flex;
@@ -9645,7 +9649,7 @@ object-fit: cover;
 @media (max-width: 768px) {
   #floating-book-container {
     top: 60%;
-    right: -142px;
+    --floating-peek: 2px;
   }
   #floating-book-container .floating-book-btn {
     font-size: 0.8rem;
@@ -11757,7 +11761,7 @@ box-shadow:
 .why-card p {
   color: #cbd5e1;
   font-size: 0.98rem;
-  line-height: 1.6;
+  line-height: 1.3;
 }
 
 @media (max-width: 900px) {
@@ -12929,7 +12933,7 @@ details[open] .faq-toggle {
 .speed-test-cta-description {
   font-size: 16px;
   color: #94a3b8;
-  line-height: 1.7;
+  line-height: 1.3;
   margin-bottom: 32px;
   max-width: 600px;
   margin-left: auto;
@@ -14796,7 +14800,7 @@ details[open] .faq-toggle {
 .services-list-card-description {
   font-size: 0.95rem;
   color: #9ca3af;
-  line-height: 1.6;
+  line-height: 1.3;
   margin: 0;
   flex: 1;
 }
@@ -14812,6 +14816,9 @@ details[open] .faq-toggle {
 .services-list-card-price {
   font-size: 1.5rem;
   font-weight: 700;
+  color: var(--brand-teal);
+}
+.services-list-card-price-call {
   color: var(--brand-teal);
 }
 
