@@ -9649,7 +9649,7 @@ object-fit: cover;
 @media (max-width: 768px) {
   #floating-book-container {
     top: 60%;
-    --floating-peek: 2px;
+    --floating-peek: 4px;
   }
   #floating-book-container .floating-book-btn {
     font-size: 0.8rem;
