@@ -92,7 +92,6 @@ export async function middleware(request: NextRequest) {
   const protectedApiPaths = [
     '/api/orders',
     '/api/profile',
-    '/api/notifications',
     '/api/manage-subscription',
     '/api/reviews'
   ];

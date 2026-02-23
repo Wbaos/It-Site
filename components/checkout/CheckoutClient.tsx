@@ -35,6 +35,11 @@ type CartState = {
     email?: string;
     phone?: string;
   };
+  promo?: {
+    code?: string;
+    discountType?: "percentage" | "flat";
+    value?: number;
+  };
   address?: {
     street?: string;
     city?: string;
@@ -58,7 +63,16 @@ export default function CheckoutClient() {
     return items.reduce((sum, i) => sum + (i.price || 0) * (i.quantity || 1), 0);
   }, [items]);
 
-  const total = subtotal;
+  const [promo, setPromo] = useState<CartState["promo"] | null>(null);
+
+  const discountAmount = useMemo(() => {
+    if (!promo?.code) return 0;
+    if (promo.discountType === "flat") return Number(promo.value || 0);
+    const pct = Number(promo.value || 0);
+    return subtotal * (pct / 100);
+  }, [promo, subtotal]);
+
+  const total = Math.max(0, subtotal - discountAmount);
 
   const {
     values: contact,
@@ -145,6 +159,14 @@ export default function CheckoutClient() {
           setSchedule({
             date: data.schedule.date || "",
             time: data.schedule.time || "",
+          });
+        }
+
+        if (data.promo?.code) {
+          setPromo({
+            code: String(data.promo.code || "").toUpperCase(),
+            discountType: data.promo.discountType === "flat" ? "flat" : "percentage",
+            value: Number(data.promo.value || 0),
           });
         }
       } catch {
@@ -781,6 +803,13 @@ export default function CheckoutClient() {
                   <span>Subtotal</span>
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
+
+                {promo?.code ? (
+                  <div className={styles.summaryRow}>
+                    <span>Discount ({promo.code})</span>
+                    <span>- ${discountAmount.toFixed(2)}</span>
+                  </div>
+                ) : null}
 
                 <div className={styles.summaryTotalRow}>
                   <span>Total</span>

@@ -6,6 +6,7 @@ import { connectDB } from "@/lib/mongodb";
 import { Cart } from "@/app/models/Cart";
 import { getSessionId } from "@/lib/sessionId";
 import { sanity } from "@/lib/sanity";
+import { DiscountLead } from "@/app/models/DiscountLead";
 
 /* -------------------------------------------
    TYPES
@@ -34,6 +35,67 @@ type CartItem = {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-08-27.basil",
 });
+
+function normalizeCode(code: string): string {
+  return String(code || "").trim().toUpperCase();
+}
+
+function getDiscountPopupCode(): string {
+  return normalizeCode(String(process.env.DISCOUNT_POPUP_CODE || "MYFIRSTSERVICE#-10"));
+}
+
+function getDiscountPopupPercent(): number {
+  const raw = Number(process.env.DISCOUNT_POPUP_PERCENT || 10);
+  if (!Number.isFinite(raw)) return 10;
+  return Math.min(100, Math.max(0, raw));
+}
+
+async function validatePromoCode(params: { code: string; email?: string }) {
+  const normalized = normalizeCode(params.code);
+  const emailLower = String(params.email || "").trim().toLowerCase();
+
+  // 1) Shared popup one-time-per-customer code (validated by email)
+  const popupCode = getDiscountPopupCode();
+  if (normalized === popupCode) {
+    if (!emailLower) return { ok: false as const, error: "Missing email" };
+
+    const lead = await DiscountLead.findOne({
+      emailLower,
+      discountCode: popupCode,
+    })
+      .select({ redeemedAt: 1 })
+      .lean();
+
+    if (!lead) return { ok: false as const, error: "Promo code requires signup" };
+    if ((lead as any).redeemedAt) return { ok: false as const, error: "This code has already been used" };
+
+    return {
+      ok: true as const,
+      discountType: "percentage" as const,
+      value: getDiscountPopupPercent(),
+      source: "discount-lead" as const,
+    };
+  }
+
+  // 2) Sanity promo codes (validate only; usageCount increments in webhook)
+  const promo = await sanity.fetch(
+    `*[_type == "promoCode" && code == $code][0]`,
+    { code: normalized }
+  );
+
+  if (!promo) return { ok: false as const, error: "Invalid code" };
+  if (!promo.active) return { ok: false as const, error: "Code is not active" };
+  if (promo.expires && new Date(promo.expires) < new Date()) {
+    return { ok: false as const, error: "Code has expired" };
+  }
+
+  return {
+    ok: true as const,
+    discountType: promo.discountType as "percentage" | "flat",
+    value: promo.value as number,
+    source: "sanity" as const,
+  };
+}
 
 /* -------------------------------------------
    POST /api/checkout
@@ -160,6 +222,45 @@ export async function POST(req: Request) {
     }
 
     /* -------------------------------------------
+       PROMO (REDEEM ON CHECKOUT)
+    ------------------------------------------- */
+    let stripeDiscounts:
+      | Stripe.Checkout.SessionCreateParams.Discount[]
+      | undefined;
+    let appliedPromo: { code: string; discountType: "percentage" | "flat"; value: number } | null = null;
+
+    const promoCode = normalizeCode(String((cart as any)?.promo?.code || ""));
+    if (promoCode) {
+      const validated = await validatePromoCode({ code: promoCode, email });
+      if (!validated.ok) {
+        return NextResponse.json(
+          { error: validated.error || "Promo code is invalid" },
+          { status: 400 }
+        );
+      }
+
+      appliedPromo = {
+        code: promoCode,
+        discountType: validated.discountType,
+        value: validated.value,
+      };
+
+      const coupon =
+        validated.discountType === "flat"
+          ? await stripe.coupons.create({
+              amount_off: Math.max(0, Math.round((validated.value || 0) * 100)),
+              currency: "usd",
+              duration: "once",
+            })
+          : await stripe.coupons.create({
+              percent_off: Math.min(100, Math.max(0, validated.value || 0)),
+              duration: "once",
+            });
+
+      stripeDiscounts = [{ coupon: coupon.id }];
+    }
+
+    /* -------------------------------------------
        REFRESH PRICES FROM SANITY
     ------------------------------------------- */
     const updatedItems: CartItem[] = await Promise.all(
@@ -258,11 +359,19 @@ export async function POST(req: Request) {
       ...(session?.user?.id ? { userId: session.user.id } : {}),
     };
 
+    if (appliedPromo) {
+      metadata.promoCode = appliedPromo.code;
+      metadata.promoType = appliedPromo.discountType;
+      metadata.promoValue = String(appliedPromo.value);
+      metadata.promoSource = promoCode === getDiscountPopupCode() ? "discount-lead" : "sanity";
+    }
+
     const stripeSession = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
       customer_email: email,
       line_items,
+      ...(stripeDiscounts ? { discounts: stripeDiscounts } : {}),
       metadata,
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cart`,

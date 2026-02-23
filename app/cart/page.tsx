@@ -3,7 +3,7 @@
 import { useCart } from "@/lib/CartContext";
 import { useNav } from "@/lib/NavContext";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function CartPage() {
   const { items, removeItem, updateItemQuantity } = useCart();
@@ -21,13 +21,36 @@ export default function CartPage() {
   const [appliedPromo, setAppliedPromo] = useState<any>(null);
   const [promoError, setPromoError] = useState("");
 
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch("/api/cart", { credentials: "include" });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data?.promo?.code) {
+          setPromoCode(String(data.promo.code));
+          setAppliedPromo(data.promo);
+        }
+      } catch {
+        // ignore
+      }
+    };
+    load();
+  }, []);
+
   const applyPromo = async () => {
     setPromoError("");
+
+    const normalized = promoCode.trim().toUpperCase();
+    if (!normalized) {
+      setPromoError("Please enter a promo code.");
+      return;
+    }
 
     const res = await fetch("/api/promo/validate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code: promoCode }),
+      body: JSON.stringify({ code: normalized }),
     });
 
     const data = await res.json();
@@ -35,10 +58,39 @@ export default function CartPage() {
     if (!data.valid) {
       setAppliedPromo(null);
       setPromoError(data.error);
+
+      try {
+        await fetch("/api/cart", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ promo: null }),
+        });
+      } catch {
+        // ignore
+      }
       return;
     }
 
-    setAppliedPromo(data);
+    const nextPromo = {
+      code: normalized,
+      discountType: data.discountType,
+      value: data.value,
+    };
+
+    setPromoCode(normalized);
+    setAppliedPromo(nextPromo);
+
+    try {
+      await fetch("/api/cart", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ promo: nextPromo }),
+      });
+    } catch {
+      // ignore
+    }
   };
 
   let discountAmount = 0;
@@ -289,7 +341,7 @@ export default function CartPage() {
 
           {appliedPromo && (
             <div className="summary-row">
-              <span>Discount ({promoCode.toUpperCase()})</span>
+              <span>Discount ({String(appliedPromo.code || promoCode).toUpperCase()})</span>
               <span>- ${discountAmount.toFixed(2)}</span>
             </div>
           )}

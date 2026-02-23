@@ -43,7 +43,13 @@ export async function GET(req: NextRequest) {
     cart = await CartModel.create({ sessionId, items: [] });
   }
 
-  return NextResponse.json({ items: cart.items });
+  return NextResponse.json({
+    items: cart.items,
+    promo: cart.promo,
+    contact: cart.contact,
+    address: cart.address,
+    schedule: cart.schedule,
+  });
 }
 
 /* -------------------------------------------
@@ -134,13 +140,14 @@ export async function PUT(req: NextRequest) {
       contact?: unknown;
       address?: unknown;
       schedule?: unknown;
+      promo?: unknown;
       description?: string;
       basePrice?: number;
       price?: number;
       options?: unknown;
     } = await req.json();
 
-    const { id, quantity, contact, address, schedule, ...updates } = body;
+    const { id, quantity, contact, address, schedule, promo, ...updates } = body;
 
     const cart = await CartModel.findOne({ sessionId });
     if (!cart) {
@@ -177,10 +184,33 @@ export async function PUT(req: NextRequest) {
     if (address) cart.address = address;
     if (schedule) cart.schedule = schedule;
 
+    if (promo !== undefined) {
+      const maybePromo = promo as
+        | { code?: unknown; discountType?: unknown; value?: unknown }
+        | null;
+
+      const code = String(maybePromo?.code ?? "").trim();
+      if (!code) {
+        cart.promo = undefined;
+      } else {
+        const discountTypeRaw = String(maybePromo?.discountType ?? "").trim();
+        const discountType =
+          discountTypeRaw === "flat" ? "flat" : "percentage";
+        const value = Number(maybePromo?.value ?? 0);
+
+        cart.promo = {
+          code: code.toUpperCase(),
+          discountType,
+          value: Number.isFinite(value) ? value : 0,
+        };
+      }
+    }
+
     await cart.save();
 
     return NextResponse.json({
       items: cart.items,
+      promo: cart.promo,
       contact: cart.contact,
       address: cart.address,
       schedule: cart.schedule,
