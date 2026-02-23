@@ -8,8 +8,18 @@ import { Order } from "@/app/models/Order";
 import { Notification } from "@/app/models/Notification";
 import { Cart } from "@/app/models/Cart";
 import { User } from "@/app/models/User"; // ⭐ REQUIRED
+import { DiscountLead } from "@/app/models/DiscountLead";
 import { logger } from "@/lib/logger";
 import { syncCustomerToMailchimp } from "@/lib/mailchimp";
+import { sanity } from "@/lib/sanity";
+
+function normalizeCode(code?: string | null): string {
+  return String(code || "").trim().toUpperCase();
+}
+
+function getDiscountPopupCode(): string {
+  return normalizeCode(process.env.DISCOUNT_POPUP_CODE || "MYFIRSTSERVICE#-10");
+}
 
 function getMailchimpEnabled(): boolean {
   return Boolean(
@@ -90,6 +100,45 @@ export async function POST(req: Request) {
         session.customer_email ||
         "unknown";
 
+      // Redeem promo code only after successful payment
+      try {
+        const promoCode = normalizeCode(session.metadata?.promoCode || "");
+        const promoSource = String(session.metadata?.promoSource || "").trim();
+        const emailLower = String(email || "").trim().toLowerCase();
+
+        if (promoCode && promoSource === "discount-lead") {
+          await DiscountLead.findOneAndUpdate(
+            {
+              emailLower,
+              discountCode: getDiscountPopupCode(),
+              redeemedAt: { $exists: false },
+            },
+            { $set: { redeemedAt: new Date() } }
+          );
+        }
+
+        if (promoCode && promoSource === "sanity") {
+          const promo = await sanity.fetch(
+            `*[_type == "promoCode" && code == $code][0]{ _id }`,
+            { code: promoCode }
+          );
+
+          if (promo?._id) {
+            await sanity
+              .patch(promo._id)
+              .setIfMissing({ usageCount: 0 })
+              .inc({ usageCount: 1 })
+              .commit();
+          }
+        }
+      } catch (err) {
+        logger.error("Promo redemption failed during checkout webhook", err, {
+          email,
+          source: "webhook.checkout.session.completed",
+          stripeSessionId: session.id,
+        });
+      }
+
       const total = (session.amount_total || 0) / 100;
       const sessionId = session.metadata?.sessionId;
       const cart = sessionId ? await Cart.findOne({ sessionId }) : null;
@@ -112,7 +161,7 @@ export async function POST(req: Request) {
 
       // Clear cart
       if (sessionId) {
-        await Cart.findOneAndUpdate({ sessionId }, { items: [] });
+        await Cart.findOneAndUpdate({ sessionId }, { items: [], promo: undefined });
       }
 
       // Notification

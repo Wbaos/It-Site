@@ -74,6 +74,26 @@ export function getMailchimpSubscriberHash(email: string): string {
     .digest('hex');
 }
 
+function isPermanentlyDeletedContact(parsed: {
+  status?: number;
+  title?: string;
+  detail?: string;
+  message: string;
+}): boolean {
+  if (parsed.status !== 400) return false;
+
+  const title = (parsed.title || '').toLowerCase();
+  const detail = (parsed.detail || parsed.message || '').toLowerCase();
+
+  // Mailchimp compliance behavior: contacts that were "permanently deleted" (forgotten)
+  // cannot be re-imported via API. The user must re-subscribe themselves.
+  return (
+    title.includes('forgotten') ||
+    detail.includes('permanently deleted') ||
+    detail.includes('cannot be re-imported')
+  );
+}
+
 function parseMailchimpError(err: unknown): {
   status?: number;
   title?: string;
@@ -196,6 +216,8 @@ const country = toMergeFieldValue(address.country) || 'US';
  */
 export async function syncCustomerToMailchimp(customer: MailchimpCustomer): Promise<{
   subscriberHash: string;
+  skipped?: boolean;
+  skipReason?: string;
 }> {
   if (!customer || typeof customer !== 'object') {
     throw new Error('Customer payload is required');
@@ -210,21 +232,43 @@ export async function syncCustomerToMailchimp(customer: MailchimpCustomer): Prom
   const client = getMailchimpClient();
   const subscriberHash = getMailchimpSubscriberHash(email);
 
-  const merge_fields = {
-    FNAME: toMergeFieldValue(customer.firstName),
-    LNAME: toMergeFieldValue(customer.lastName),
-    PHONE: toMergeFieldValue(customer.phone),
-  };
+  const merge_fields: Record<string, string> = {};
+  const firstName = toMergeFieldValue(customer.firstName);
+  const lastName = toMergeFieldValue(customer.lastName);
+  const phone = toMergeFieldValue(customer.phone);
+  if (firstName) merge_fields.FNAME = firstName;
+  if (lastName) merge_fields.LNAME = lastName;
+  if (phone) merge_fields.PHONE = phone;
 
   const addressMerge = toAddressMergeFieldValue(customer);
 
   try {
-    await client.lists.setListMember(audienceId, subscriberHash, {
+    const basePayload = {
       email_address: email,
       status_if_new: 'subscribed',
       status: 'subscribed',
-      merge_fields,
-    });
+      ...(Object.keys(merge_fields).length ? { merge_fields } : {}),
+    } as any;
+
+    try {
+      await client.lists.setListMember(audienceId, subscriberHash, basePayload);
+    } catch (err) {
+      const parsed = parseMailchimpError(err);
+      const mergedMsg = `${parsed.detail || ''} ${parsed.title || ''} ${parsed.message || ''}`.toLowerCase();
+      const isMergeFieldsError = parsed.status === 400 && mergedMsg.includes('merge') && mergedMsg.includes('field');
+
+      // Some Mailchimp audiences do not have certain merge tags (commonly PHONE).
+      // Best-effort: retry without merge_fields so the subscriber is still added.
+      if (isMergeFieldsError) {
+        await client.lists.setListMember(audienceId, subscriberHash, {
+          email_address: email,
+          status_if_new: 'subscribed',
+          status: 'subscribed',
+        });
+      } else {
+        throw err;
+      }
+    }
 
     // Optional: update ADDRESS merge field without risking the primary sync.
     // Some lists may not have the ADDRESS merge field configured.
@@ -261,6 +305,20 @@ export async function syncCustomerToMailchimp(customer: MailchimpCustomer): Prom
     return { subscriberHash };
   } catch (err) {
     const parsed = parseMailchimpError(err);
+
+    // Non-fatal: this email address was permanently deleted from the audience and
+    // Mailchimp will refuse re-importing via API.
+    if (isPermanentlyDeletedContact(parsed)) {
+      logger.warn('Mailchimp sync skipped: contact permanently deleted (must re-subscribe)', {
+        email,
+        subscriberHash,
+        status: parsed.status,
+        title: parsed.title,
+        detail: parsed.detail,
+        type: parsed.type,
+      });
+      return { subscriberHash, skipped: true, skipReason: 'permanently_deleted' };
+    }
 
     logger.error('Mailchimp customer sync failed', err, {
       email,

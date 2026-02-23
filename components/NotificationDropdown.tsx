@@ -50,16 +50,34 @@ export default function NotificationDropdown({
 
   const fetchNotifications = useCallback(async () => {
     try {
+      if (!userId || userId === "guest") {
+        setNotifs([]);
+        return;
+      }
+
       const res = await fetch("/api/notifications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId }),
       });
 
-      const data = await res.json();
-      if (data?.ok) {
-        setNotifs(data.notifications || []);
+      const contentType = res.headers.get("content-type") || "";
+      const isJson = contentType.includes("application/json");
+      const data = isJson ? await res.json().catch(() => null) : null;
+
+      if (!res.ok) {
+        // Avoid throwing JSON parse errors when the server returns plain text.
+        if (res.status === 401 || res.status === 403) {
+          setNotifs([]);
+          return;
+        }
+
+        const text = isJson ? "" : await res.text().catch(() => "");
+        console.warn("Fetch notifications failed:", res.status, data || text);
+        return;
       }
+
+      if (data?.ok) setNotifs(data.notifications || []);
     } catch (err) {
       console.error("Fetch notifications failed:", err);
     }
@@ -95,11 +113,14 @@ export default function NotificationDropdown({
     await fetchNotifications();
 
     setNotifs((prev) => prev.map((n) => ({ ...n, read: true })));
-    fetch("/api/notifications/mark-read", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId }),
-    }).catch(console.error);
+
+    if (userId && userId !== "guest") {
+      fetch("/api/notifications/mark-read", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      }).catch(console.error);
+    }
   };
 
   useEffect(() => {

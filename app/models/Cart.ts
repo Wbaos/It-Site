@@ -33,6 +33,12 @@ const CartSchema = new Schema({
   sessionId: { type: String, required: true, unique: true },
   items: [CartItemSchema],
 
+  promo: {
+    code: { type: String },
+    discountType: { type: String, enum: ["percentage", "flat"], required: false },
+    value: { type: Number, required: false },
+  },
+
   contact: {
     name: String,
     email: String,
