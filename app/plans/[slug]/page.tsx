@@ -1,5 +1,27 @@
 import { sanity } from "@/lib/sanity";
 import { PlanDetails } from "@/components/PlanDetails";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const canonical = `https://www.calltechcare.com/plans/${slug}`;
+
+  return {
+    alternates: { canonical },
+    robots: {
+      index: false,
+      follow: false,
+      googleBot: {
+        index: false,
+        follow: false,
+      },
+    },
+  };
+}
 
 export default async function PlanPage({
   params,

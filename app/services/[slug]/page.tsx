@@ -46,7 +46,8 @@ export async function generateMetadata({
   const service = await sanity.fetch(
     `*[_type == "service" && slug.current == $slug][0]{
       title,
-      description
+      description,
+      image { asset->{ url }, alt }
     }`,
     { slug }
   );
@@ -64,12 +65,16 @@ export async function generateMetadata({
           service.description ||
           `Professional ${service.title} service in Miami, Homestead, Fort Lauderdale, and Broward County.`,
         url,
+        images: service.image?.asset?.url
+          ? [{ url: service.image.asset.url, alt: service.image.alt || service.title }]
+          : [],
       },
       twitter: {
         title: `${service.title} in Miami & Broward | CallTechCare`,
         description:
           service.description ||
           `Professional ${service.title} service in Miami, Homestead, Fort Lauderdale, and Broward County.`,
+        images: service.image?.asset?.url ? [service.image.asset.url] : [],
       },
     };
   }
@@ -81,7 +86,8 @@ export async function generateMetadata({
       seoTitle,
       metaDescription,
       description,
-      tagline
+      tagline,
+      icon { asset->{ url }, alt }
 
     }`,
     { slug }
@@ -106,10 +112,14 @@ export async function generateMetadata({
         title,
         description,
         url,
+        images: category.icon?.asset?.url
+          ? [{ url: category.icon.asset.url, alt: category.icon.alt || category.title }]
+          : [],
       },
       twitter: {
         title,
         description,
+        images: category.icon?.asset?.url ? [category.icon.asset.url] : [],
       },
     };
   }
@@ -260,21 +270,41 @@ export default async function ServicePage({
       ? {
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          mainEntity: service.faqs.map((faq: any) => ({
-            "@type": "Question",
-            name: faq.question,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: faq.answer,
-            },
-          })),
+          mainEntity: service.faqs
+            .map((faq: any) => {
+              const question =
+                (typeof faq?.question === "string" && faq.question.trim()) ||
+                (typeof faq?.q === "string" && faq.q.trim()) ||
+                "";
+              const answer =
+                (typeof faq?.answer === "string" && faq.answer.trim()) ||
+                (typeof faq?.a === "string" && faq.a.trim()) ||
+                "";
+
+              if (!question || !answer) return null;
+
+              return {
+                "@type": "Question",
+                name: question,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: answer,
+                },
+              };
+            })
+            .filter(Boolean),
         }
       : null;
+
         const serviceSchema = service
           ? {
               "@context": "https://schema.org",
               "@type": "Service",
               name: service.title,
+              url: `https://www.calltechcare.com/services/${slug}`,
+              ...(service.image?.asset?.url && {
+                image: service.image.asset.url,
+              }),
               description:
                 service.description ||
                 `Professional ${service.title} service in Miami, Homestead, Fort Lauderdale, and Broward County.`,
@@ -287,6 +317,26 @@ export default async function ServicePage({
                 name: "CallTechCare",
                 url: "https://www.calltechcare.com",
               },
+              ...(service.showPrice && service.price != null
+                ? {
+                    offers: {
+                      "@type": "Offer",
+                      priceCurrency: "USD",
+                      price: service.price,
+                      url: `https://www.calltechcare.com/services/${slug}`,
+                      availability: "https://schema.org/InStock",
+                    },
+                  }
+                : {}),
+              ...(service.rating && service.reviewsCount
+                ? {
+                    aggregateRating: {
+                      "@type": "AggregateRating",
+                      ratingValue: service.rating,
+                      reviewCount: service.reviewsCount,
+                    },
+                  }
+                : {}),
             }
           : null;
 
@@ -402,17 +452,6 @@ export default async function ServicePage({
           name: "CallTechCare",
           url: "https://www.calltechcare.com",
         },
-
-        ...(category.customerRatingValue && {
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: category.customerRatingValue,
-            reviewCount:
-              category.jobsCompletedValue
-                ? category.jobsCompletedValue.replace("+", "")
-                : "1",
-          },
-        }),
       };
 
       const categoryFaqSchema =

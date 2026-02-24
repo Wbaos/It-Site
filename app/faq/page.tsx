@@ -4,6 +4,9 @@ export const metadata: Metadata = {
     title: "FAQ – CallTechCare | Tech Support for Seniors & Homes",
     description:
         "Find answers to frequently asked questions about CallTechCare services, pricing, and on-site support in South Florida.",
+    alternates: {
+        canonical: "https://www.calltechcare.com/faq",
+    },
 };
 
 export default function FAQPage() {
@@ -38,8 +41,26 @@ export default function FAQPage() {
         },
     ];
 
+    const faqSchema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.q,
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.a,
+            },
+        })),
+    };
+
     return (
         <main className="faq-page-container">
+            <script
+                type="application/ld+json"
+                suppressHydrationWarning
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+            />
             <div className="faq-page">
             <h1 className="faq-title">Frequently Asked Questions</h1>
             <p className="faq-intro">

@@ -5714,13 +5714,15 @@ main {
   font-size: 2.5rem;
   margin-bottom: 1rem;
   margin-top: 1rem;
+  line-height: normal;
 }
 .blog-subtitle {
   text-align: center;
   color: #9fb3c8;
   margin-top: -0.5rem;
   font-size: 1.1rem;
-  margin-bottom: 3.5rem;
+  margin-bottom: 2.5rem;
+  line-height: normal;
 }
 .blog-header-icon {
   display: flex;
@@ -5985,6 +5987,7 @@ main {
 
 .single-blog-body p {
   margin-bottom: 1.5rem;
+  line-height: normal;
 }
 
 .single-blog-body h2 {
@@ -6009,6 +6012,7 @@ main {
 
 .single-blog-body li {
   margin-bottom: 0.4rem;
+  line-height: normal;
 }
 
 .single-blog-body blockquote {
