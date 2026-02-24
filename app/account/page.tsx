@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { signOut, useSession } from "next-auth/react";
 import clsx from "clsx";
 import { redirect } from "next/navigation";
 import Loader from "@/components/common/Loader";
+import { Dialog } from "@headlessui/react";
+import { Calendar, Eye, MapPin, Tv, User, Wrench, StickyNote, CreditCard, ShieldCheck, X, Mail, Phone, LogOut } from "lucide-react";
+import { isTimeSlotAvailableForDate } from "@/lib/time-slots";
 type SessionUser = {
     name?: string | null;
     email?: string | null;
@@ -13,15 +16,26 @@ type SessionUser = {
 
 type Order = {
     _id: string;
+    orderNumber?: string;
     total: number;
     status: string;
     refunded?: boolean;
     deleted?: boolean
     createdAt: string;
 
+    completedAt?: string;
+
     contact?: { name?: string; email?: string; phone?: string };
     address?: { street?: string; city?: string; state?: string; zip?: string };
     schedule?: { date?: string; time?: string };
+
+    technicianName?: string;
+    technicianPhone?: string;
+
+    serviceDescription?: string;
+    notes?: string;
+    paymentLast4?: string;
+    warrantyText?: string;
 
     items: {
         title: string;
@@ -42,13 +56,125 @@ type Order = {
     };
 };
 
+type AccountTab = "orders" | "profile";
+
+function normalizeStatus(status: string | undefined): string {
+    return (status || "").trim().toLowerCase().replace(/[_-]+/g, " ");
+}
+
+function formatShortDate(date: string | undefined): string {
+    if (!date) return "—";
+    const d = new Date(date);
+    if (Number.isNaN(d.getTime())) return "—";
+    return d.toLocaleDateString(undefined, { year: "numeric", month: "2-digit", day: "2-digit" });
+}
+
+function formatISODateOnly(date: string | undefined): string {
+    if (!date) return "—";
+    // Accept already formatted YYYY-MM-DD
+    if (/^\d{4}-\d{2}-\d{2}$/.test(date)) return date;
+    const d = new Date(date);
+    if (Number.isNaN(d.getTime())) return "—";
+    return d.toISOString().slice(0, 10);
+}
+
+function formatTimeDisplay(time: string | undefined): string {
+    if (!time) return "—";
+    const t = String(time).trim();
+    if (!t) return "—";
+
+    // Already formatted like "2:00 PM" or "02:00 PM"
+    const ampmMatch = t.match(/^\s*(\d{1,2}):(\d{2})\s*(AM|PM)\s*$/i);
+    if (ampmMatch) {
+        const hour = Number(ampmMatch[1]);
+        const minute = ampmMatch[2];
+        const ampm = ampmMatch[3].toUpperCase();
+        const hour12 = ((hour + 11) % 12) + 1;
+        return `${hour12}:${minute} ${ampm}`;
+    }
+
+    // 24h format "14:00"
+    const hhmmMatch = t.match(/^\s*(\d{1,2}):(\d{2})\s*$/);
+    if (hhmmMatch) {
+        const hour24 = Number(hhmmMatch[1]);
+        const minute = hhmmMatch[2];
+        if (!Number.isFinite(hour24) || hour24 < 0 || hour24 > 23) return t;
+        const ampm = hour24 >= 12 ? "PM" : "AM";
+        const hour12 = ((hour24 + 11) % 12) + 1;
+        return `${hour12}:${minute} ${ampm}`;
+    }
+
+    return t;
+}
+
+function getLocalISODate(date: Date = new Date()): string {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
+
+function isISODateInPast(dateIso: string | undefined): boolean {
+    if (!dateIso || !/^\d{4}-\d{2}-\d{2}$/.test(dateIso)) return false;
+    const selected = new Date(`${dateIso}T00:00:00`);
+    if (Number.isNaN(selected.getTime())) return false;
+    const todayIso = getLocalISODate();
+    const today = new Date(`${todayIso}T00:00:00`);
+    return selected.getTime() < today.getTime();
+}
+
+function statusPillClasses(order: Order): string {
+    if (order.refunded) return "accountStatusPillRose";
+    const s = normalizeStatus(order.status);
+    if (s.includes("complete") || s.includes("paid")) {
+        return "accountStatusPillEmerald";
+    }
+    if (s.includes("schedule")) return "accountStatusPillSky";
+    if (s.includes("progress") || s.includes("in progress") || s.includes("processing")) {
+        return "accountStatusPillAmber";
+    }
+    if (s.includes("cancel")) return "accountStatusPillSlate";
+    return "accountStatusPillSlate";
+}
+
+function statusLabel(order: Order): string {
+    if (order.refunded) return "Refunded";
+    const s = normalizeStatus(order.status);
+    if (!s) return "—";
+    if (s === "paid") return "Completed";
+    return s.replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 
 export default function AccountPage() {
     const { data: session, status } = useSession();
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
     const [globalLoading, setGlobalLoading] = useState(true);
-    const [tab, setTab] = useState<"overview" | "orders" | "profile">("overview");
+    const [tab, setTab] = useState<AccountTab>("orders");
+
+    const stats = useMemo(() => {
+        const visible = orders.filter((o) => !o.deleted);
+        const counts = {
+            total: visible.length,
+            completed: 0,
+            scheduled: 0,
+            inProgress: 0,
+        };
+
+        for (const order of visible) {
+            const s = normalizeStatus(order.status);
+            if (s.includes("complete") || s.includes("paid")) counts.completed += 1;
+            else if (s.includes("schedule")) counts.scheduled += 1;
+            else if (s.includes("progress") || s.includes("processing") || s.includes("in progress")) {
+                counts.inProgress += 1;
+            }
+        }
+
+        return counts;
+    }, [orders]);
 
     useEffect(() => {
         if (status !== "authenticated") return;
@@ -78,171 +204,68 @@ export default function AccountPage() {
     }
 
     const user: SessionUser | undefined = session?.user as SessionUser | undefined;
-    const tabs: Array<"overview" | "orders" | "profile"> = [
-        "overview",
-        "orders",
-        "profile",
-    ];
+    const userName = user?.name?.trim() || "";
 
     // 3. Render account only when ready
     return (
-        <section className="account-page">
-            <div className="site-container fade-in">
-                <div className="account-header">
-                    <h1>
-                        Welcome, {user?.name?.split(" ")[0] || "User"} <span>👋</span>
-                    </h1>
+        <section className="accountPage">
+            <div className="accountContainer">
+                <div className="accountHeader">
+                    <div>
+                        <h1 className="accountTitle">My Account</h1>
+                        <p className="accountSubtitle">
+                            Welcome back{userName ? `, ${userName}` : ""}.
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={() => signOut({ callbackUrl: "/" })}
+                        className="accountLogoutButton"
+                    >
+                        <LogOut className="accountLogoutIcon" aria-hidden="true" />
+                        Logout
+                    </button>
                 </div>
 
-                <div className="account-tabs">
-                    {tabs.map((t) => (
-                        <button
-                            key={t}
-                            onClick={() => setTab(t)}
-                            className={clsx("tab-btn", tab === t && "active")}
-                        >
-                            {t[0].toUpperCase() + t.slice(1)}
-                        </button>
-                    ))}
+                <div className="accountTabBar">
+                    <button
+                        type="button"
+                        onClick={() => setTab("orders")}
+                        className={clsx(
+                            "accountTabButton",
+                            tab === "orders" && "accountTabButtonActive"
+                        )}
+                    >
+                        My Orders
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setTab("profile")}
+                        className={clsx(
+                            "accountTabButton",
+                            tab === "profile" && "accountTabButtonActive"
+                        )}
+                    >
+                        Profile
+                    </button>
                 </div>
 
-                {tab === "overview" && (
-                    <OverviewTab orders={orders} loading={loading} />
+                {tab === "orders" && (
+                    <OrdersTab
+                        orders={orders}
+                        loading={loading}
+                        stats={stats}
+                        onOrderUpdated={(updated) =>
+                            setOrders((prev) =>
+                                prev.map((o) => (o._id === updated._id ? { ...o, ...updated } : o))
+                            )
+                        }
+                    />
                 )}
-                {tab === "orders" && <OrdersTab orders={orders} loading={loading} />}
                 {tab === "profile" && <ProfileTab user={user} />}
             </div>
         </section>
-    );
-}
-
-
-/* -------------------------------------------
-   OVERVIEW TAB (with Manage Subscription)
-------------------------------------------- */
-function OverviewTab({
-    orders,
-    loading,
-}: {
-    orders: Order[];
-    loading: boolean;
-}) {
-    const [loadingPortal, setLoadingPortal] = useState(false);
-    const [hasSubscription, setHasSubscription] = useState<boolean | null>(null);
-    const recent = orders[0];
-
-    useEffect(() => {
-        const cachedStatus = sessionStorage.getItem("hasSubscription");
-        if (cachedStatus !== null) {
-            // Use cached status immediately
-            setHasSubscription(cachedStatus === "true");
-        }
-
-        // Then update in the background (non-blocking)
-        (async () => {
-            try {
-                const res = await fetch("/api/check-subscription");
-                const data = await res.json();
-                setHasSubscription(data.hasSubscription || false);
-                sessionStorage.setItem(
-                    "hasSubscription",
-                    String(data.hasSubscription || false)
-                );
-            } catch (err) {
-                console.error("Error checking subscription:", err);
-                setHasSubscription(false);
-                sessionStorage.setItem("hasSubscription", "false");
-            }
-        })();
-    }, []);
-
-
-    async function handleManage() {
-        try {
-            setLoadingPortal(true);
-
-            const res = await fetch("/api/manage-subscription", { method: "POST" });
-            const data = await res.json();
-
-            if (res.ok && data.url) {
-                window.location.assign(data.url);
-                return;
-            }
-
-            alert(data.error || "Could not open billing portal.");
-            setLoadingPortal(false);
-        } catch (err) {
-            console.error("Error managing subscription:", err);
-            alert("Something went wrong. Please try again later.");
-            setLoadingPortal(false);
-        }
-    }
-
-    return (
-        <div className="overview-tab">
-            <div className="account-card-grid">
-                <Card title="Total Orders" value={loading ? "..." : orders.length} />
-                <Card
-                    title="Last Booking"
-                    value={
-                        loading
-                            ? "..."
-                            : recent
-                                ? new Date(recent.createdAt).toLocaleDateString()
-                                : "None yet"
-                    }
-                />
-            </div>
-
-            {recent && (
-                <div className="recent-order">
-                    <h3>Most Recent Order</h3>
-                    <p>
-                        Placed on {new Date(recent.createdAt).toLocaleDateString()} —{" "}
-                        <strong>{recent.status}</strong>
-                    </p>
-                    <ul>
-                        {recent.items.map((item, i) => (
-                            <li key={i}>
-                                {item.title} (${item.basePrice ?? item.price})
-                                {item.options?.length ? (
-                                    <ul>
-                                        {item.options.map((opt, j) => (
-                                            <li key={j}>
-                                                {opt.name} (+${opt.price})
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : null}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-
-            <div className="subscription-section">
-                <h3>Manage Your Subscription</h3>
-                <p>You can update your payment method or cancel your plan anytime.</p>
-
-                <div
-                    className="tooltip-wrapper"
-                    title={
-                        hasSubscription === false
-                            ? "You don’t have an active subscription yet."
-                            : ""
-                    }
-                >
-                    <button
-                        onClick={handleManage}
-                        disabled={!hasSubscription || loadingPortal}
-                        className={`btn ${!hasSubscription ? "btn-disabled" : "btn btn-primary wide"
-                            }`}
-                    >
-                        {loadingPortal ? "Loading..." : "Manage / Cancel Subscription"}
-                    </button>
-                </div>
-            </div>
-        </div>
     );
 }
 
@@ -252,197 +275,495 @@ function OverviewTab({
 function OrdersTab({
     orders,
     loading,
+    stats,
+    onOrderUpdated,
 }: {
     orders: Order[];
     loading: boolean;
+    stats: { total: number; completed: number; scheduled: number; inProgress: number };
+    onOrderUpdated: (updated: Order) => void;
 }) {
-    const [openOrderId, setOpenOrderId] = useState<string | null>(null);
-    const [loadingPortal, setLoadingPortal] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+    const [isRescheduling, setIsRescheduling] = useState(false);
+    const [rescheduleSaving, setRescheduleSaving] = useState(false);
+    const [rescheduleDate, setRescheduleDate] = useState("");
+    const [rescheduleTime, setRescheduleTime] = useState("");
+    const scheduleCardRef = useRef<HTMLDivElement | null>(null);
 
     if (loading) return <Loader message="Loading your orders..." />;
-    if (orders.length === 0)
-        return <p className="text-gray-500">You have no orders yet.</p>;
+    const visibleOrders = orders.filter((o) => !o.deleted);
+    if (visibleOrders.length === 0) return <p className="accountEmptyState">You have no orders yet.</p>;
 
-    const toggleOrder = (id: string) => {
-        setOpenOrderId((prev) => (prev === id ? null : id));
+    const closeModal = () => setSelectedOrder(null);
+
+    const openModal = (order: Order) => {
+        setSelectedOrder(order);
+        setIsRescheduling(false);
+        setRescheduleSaving(false);
+        const initialDate = order.schedule?.date || "";
+        setRescheduleDate(isISODateInPast(initialDate) ? getLocalISODate() : initialDate);
+        setRescheduleTime(order.schedule?.time || "");
     };
 
+    const timeSlots = useMemo(() => {
+        const formatHourLabel = (hour24: number) => {
+            const ampm = hour24 >= 12 ? "PM" : "AM";
+            const hour12 = ((hour24 + 11) % 12) + 1;
+            return `${String(hour12).padStart(2, "0")}:00 ${ampm}`;
+        };
+
+        const slots: { label: string; value: string; startHour: number }[] = [];
+        for (let hour = 8; hour <= 19; hour++) {
+            slots.push({
+                label: formatHourLabel(hour),
+                value: `${String(hour).padStart(2, "0")}:00`,
+                startHour: hour,
+            });
+        }
+        return slots;
+    }, []);
+
+    const isTimeSlotAvailable = (startHour: number): boolean => {
+        // For rescheduling, allow selecting times more freely; backend can enforce stricter rules later if needed.
+        return isTimeSlotAvailableForDate({ dateIso: rescheduleDate, startHour, minimumHoursAhead: 0 });
+    };
+
+    const StatCard = ({
+        label,
+        value,
+        tone,
+    }: {
+        label: string;
+        value: number;
+        tone?: "emerald" | "sky" | "amber";
+    }) => (
+        <div className="accountStatCard">
+            <p
+                className={clsx(
+                    "accountStatValue",
+                    tone === "emerald" && "accountStatValueEmerald",
+                    tone === "sky" && "accountStatValueSky",
+                    tone === "amber" && "accountStatValueAmber"
+                )}
+            >
+                {value}
+            </p>
+            <p className="accountStatLabel">{label}</p>
+        </div>
+    );
+
     return (
-        <ul className="orders-list">
-            {orders.map((order, index) => {
-                // Detect real subscriptions
-                const isSubscription =
-                    !!order.planName || !!order.planInterval || !!order.nextPayment;
+        <div className="accountOrders">
+            <div className="accountStatsGrid">
+                <StatCard label="Total Orders" value={stats.total} />
+                <StatCard label="Completed" value={stats.completed} tone="emerald" />
+                <StatCard label="Scheduled" value={stats.scheduled} tone="sky" />
+                <StatCard label="In Progress" value={stats.inProgress} tone="amber" />
+            </div>
 
-                return (
-                    <li
-                        key={order._id}
-                        className={`order-card ${openOrderId === order._id ? "open" : ""
-                            }`}
-                        onClick={() => toggleOrder(order._id)}
-                    >
-                        <div className="order-header">
-                            <div>
-                                <p className="order-number">Order #{index + 1}</p>
-                                <p className="order-date">
-                                    {new Date(order.createdAt).toLocaleDateString()} —{" "}
-                                    <span className={`status ${order.status}`}>
-                                        {order.refunded ? "Refunded" : order.status}
-                                    </span>
-                                </p>
+            <ul className="accountOrderList">
+                {visibleOrders.map((order) => {
+                    const primaryTitle = order.items?.[0]?.title || order.serviceDescription || "—";
+
+                    const orderNumber = order.orderNumber || "—";
+
+                    const dateLabel = order.schedule?.date
+                        ? formatISODateOnly(order.schedule.date)
+                        : formatShortDate(order.createdAt);
+                    const timeLabel = order.schedule?.time ? formatTimeDisplay(order.schedule.time) : "";
+                    const dateTimeLabel = `${dateLabel}${timeLabel ? ` at ${timeLabel}` : ""}`;
+
+                    const addressLabel =
+                        [
+                            order.address?.street,
+                            [order.address?.city, order.address?.state].filter(Boolean).join(", "),
+                        ]
+                            .filter(Boolean)
+                            .join(", ") ||
+                        [order.address?.city, order.address?.state].filter(Boolean).join(", ") ||
+                        "—";
+
+                    return (
+                        <li key={order._id} className="accountOrderCard">
+                            <div className="accountOrderCardInner">
+                                <div className="accountOrderLeft">
+                                    <div className="accountOrderIconBox">
+                                        <Tv className="accountOrderMainIcon" aria-hidden="true" />
+                                    </div>
+
+                                    <div className="accountOrderContent">
+                                        <div className="accountOrderTitleRow">
+                                            <p className="accountOrderTitle">{primaryTitle}</p>
+                                            <span
+                                                className={clsx(
+                                                    "accountStatusPill",
+                                                    statusPillClasses(order)
+                                                )}
+                                            >
+                                                {statusLabel(order)}
+                                            </span>
+                                        </div>
+
+                                        <p className="accountOrderNumber">Order #{orderNumber}</p>
+
+                                        <div className="accountOrderMeta">
+                                            <div className="accountOrderMetaRow">
+                                                <Calendar className="accountMetaIcon" aria-hidden="true" />
+                                                <span className="truncate">{dateTimeLabel}</span>
+                                            </div>
+                                            <div className="accountOrderMetaRow">
+                                                <MapPin className="accountMetaIcon" aria-hidden="true" />
+                                                <span className="truncate">{addressLabel}</span>
+                                            </div>
+                                            {order.technicianName ? (
+                                                <div className="accountOrderMetaRow">
+                                                    <User className="accountMetaIcon" aria-hidden="true" />
+                                                    <span className="truncate">Technician: {order.technicianName}</span>
+                                                </div>
+                                            ) : null}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="accountOrderRight">
+                                    <div className="accountOrderTotal">
+                                        <p className="accountOrderTotalAmount">${order.total.toFixed(2)}</p>
+                                        <p className="accountOrderTotalLabel">Total Paid</p>
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => openModal(order)}
+                                        className={clsx("accountBtn", "accountBtnSm", "accountBtnSecondary")}
+                                    >
+                                        <Eye className="accountBtnIcon" aria-hidden="true" />
+                                        View Details
+                                    </button>
+                                </div>
                             </div>
-                            <p className="order-total">${order.total.toFixed(2)}</p>
-                        </div>
+                        </li>
+                    );
+                })}
+            </ul>
 
-                        {openOrderId === order._id && (
-                            <div className="order-details">
-                                {isSubscription ? (
-                                    <>
-                                        <div className="order-section">
-                                            <h4>Subscription Details</h4>
-                                            <ul>
-                                                <li>
-                                                    <strong>Plan:</strong>{" "}
-                                                    {order.planName || "—"}
-                                                </li>
-                                                <li>
-                                                    <strong>Billing Cycle:</strong>{" "}
-                                                    {order.planInterval || "—"}
-                                                </li>
-                                                <li>
-                                                    <strong>Next Payment:</strong>{" "}
-                                                    {order.nextPayment && order.nextPayment !== "pending" ? (
-                                                        <>
-                                                            <u>{new Date(order.nextPayment).toLocaleDateString()}</u>
-                                                            {order.status === "canceled" && (
-                                                                <span style={{ color: "#df3c52", marginLeft: "6px" }}>
-                                                                    (will remain active until this date)
-                                                                </span>
-                                                            )}
-                                                        </>
-                                                    ) : (
-                                                        "—"
-                                                    )}
-                                                </li>
+            <Dialog open={selectedOrder !== null} onClose={closeModal} className="accountModalRoot">
+                <div className="accountModalBackdrop" aria-hidden="true" />
 
-
-                                            </ul>
+                <div className="accountModalScroll">
+                    <div className="accountModalCenter">
+                        {selectedOrder ? (
+                            <Dialog.Panel className="accountModalPanel">
+                                <div className="accountModalHeader">
+                                    <div className="accountModalHeaderLeft">
+                                        <div className="accountOrderIconBox">
+                                            <Tv className="accountOrderMainIcon" aria-hidden="true" />
                                         </div>
 
-                                        <div className="order-section">
-                                            <h4>Payment Summary</h4>
-                                            <ul>
-                                                <li>
-                                                    <strong>Status:</strong> {order.status}
-                                                </li>
-                                                <li>
-                                                    <strong>Paid on:</strong>{" "}
-                                                    {new Date(order.createdAt).toLocaleDateString()}
-                                                </li>
-                                                <li>
-                                                    <strong>Total:</strong> $
-                                                    {order.total.toFixed(2)}
-                                                </li>
-                                            </ul>
+                                        <div className="accountModalTitleWrap">
+                                            <Dialog.Title className="accountModalTitle">
+                                                {selectedOrder.items?.[0]?.title || selectedOrder.serviceDescription || "—"}
+                                            </Dialog.Title>
+                                            <p className="accountModalSubtitle">
+                                                Order #{selectedOrder.orderNumber || "—"}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        onClick={closeModal}
+                                        className="accountModalClose"
+                                        aria-label="Close"
+                                    >
+                                        <X className="accountIconXs" aria-hidden="true" />
+                                    </button>
+                                </div>
+
+                                <div className="accountModalBody">
+                                    <div className="accountRowBetween">
+                                        <p className="accountFieldLabel">Status</p>
+                                        <span className={clsx("accountStatusPill", statusPillClasses(selectedOrder))}>
+                                            {normalizeStatus(selectedOrder.status).includes("schedule") ? (
+                                                <Calendar className="accountPillIcon" aria-hidden="true" />
+                                            ) : null}
+                                            {statusLabel(selectedOrder)}
+                                        </span>
+                                    </div>
+
+                                    <div className="accountCard">
+                                        <div className="accountCardHeader">
+                                            <Wrench className="accountMetaIcon" aria-hidden="true" />
+                                            <p className="accountCardTitle">Service Details</p>
+                                        </div>
+                                        <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{selectedOrder.serviceDescription || "—"}</p>
+                                    </div>
+
+                                    <div className="accountTwoColGrid">
+                                        <div ref={scheduleCardRef} className="accountCard">
+                                            <div className="accountCardHeader">
+                                                <Calendar className="accountMetaIcon" aria-hidden="true" />
+                                                <p className="accountCardTitle">Schedule</p>
+                                            </div>
+
+                                            <dl className="accountDl">
+                                                <div className="accountDlRow">
+                                                    <dt className="accountDlKey">Date</dt>
+                                                    <dd className="accountDlValue">
+                                                        {formatISODateOnly(selectedOrder.schedule?.date) !== "—"
+                                                            ? formatISODateOnly(selectedOrder.schedule?.date)
+                                                            : formatISODateOnly(selectedOrder.createdAt)}
+                                                    </dd>
+                                                </div>
+                                                <div className="accountDlRow">
+                                                    <dt className="accountDlKey">Time</dt>
+                                                    <dd className="accountDlValue">{formatTimeDisplay(selectedOrder.schedule?.time)}</dd>
+                                                </div>
+                                                <div className="accountDlRow">
+                                                    <dt className="accountDlKey">Order Created</dt>
+                                                    <dd className="accountDlValue">{formatISODateOnly(selectedOrder.createdAt)}</dd>
+                                                </div>
+                                                {formatISODateOnly(selectedOrder.completedAt) !== "—" ? (
+                                                    <div className="accountDlRow">
+                                                        <dt className="accountDlKey">Completed</dt>
+                                                        <dd className="accountDlValueAccent">
+                                                            {formatISODateOnly(selectedOrder.completedAt)}
+                                                        </dd>
+                                                    </div>
+                                                ) : null}
+                                            </dl>
+
+                                            {isRescheduling ? (
+                                                <div className="accountReschedule">
+                                                    <div>
+                                                        <label className="accountInputLabel">New Date</label>
+                                                        <input
+                                                            type="date"
+                                                            value={rescheduleDate}
+                                                            min={getLocalISODate()}
+                                                            onPointerDown={(e) => {
+                                                                const el = e.currentTarget as HTMLInputElement & {
+                                                                    showPicker?: () => void;
+                                                                };
+                                                                const nativeEvent = (e as unknown as { nativeEvent?: Event }).nativeEvent;
+                                                                if (!el.showPicker) return;
+                                                                if (nativeEvent && "isTrusted" in nativeEvent && !(nativeEvent as any).isTrusted) return;
+                                                                try {
+                                                                    el.showPicker();
+                                                                } catch {
+                                                                    // Ignore browsers that require stricter user-gesture rules.
+                                                                }
+                                                            }}
+                                                            onChange={(e) => {
+                                                                setRescheduleDate(e.target.value);
+                                                                setRescheduleTime("");
+                                                            }}
+                                                            className="accountDateInput"
+                                                        />
+                                                    </div>
+
+                                                    <div>
+                                                        <p className="accountInputLabel">New Time</p>
+                                                        <div className="accountTimeGrid">
+                                                            {timeSlots.map((slot) => {
+                                                                const available = isTimeSlotAvailable(slot.startHour);
+                                                                const selected = rescheduleTime === slot.value;
+
+                                                                return (
+                                                                    <button
+                                                                        key={slot.value}
+                                                                        type="button"
+                                                                        disabled={!available}
+                                                                        onClick={() => setRescheduleTime(slot.value)}
+                                                                        className={clsx(
+                                                                            "accountTimeSlot",
+                                                                            selected ? "accountTimeSlotSelected" : "accountTimeSlotDefault",
+                                                                            !available && "accountTimeSlotDisabled"
+                                                                        )}
+                                                                    >
+                                                                        {slot.label}
+                                                                    </button>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    </div>
+
+                                                    <button
+                                                        type="button"
+                                                        disabled={!rescheduleDate || !rescheduleTime || rescheduleSaving}
+                                                        className={clsx(
+                                                            "accountBtn",
+                                                            "accountBtnMd",
+                                                            "accountBtnPrimary",
+                                                            "accountBtnFull",
+                                                            "accountBtnDisabled"
+                                                        )}
+                                                        onClick={async () => {
+                                                            if (!selectedOrder) return;
+                                                            if (!rescheduleDate || !rescheduleTime) return;
+
+                                                            try {
+                                                                setRescheduleSaving(true);
+                                                                const res = await fetch(`/api/orders/${selectedOrder._id}`,
+                                                                    {
+                                                                        method: "PATCH",
+                                                                        headers: { "Content-Type": "application/json" },
+                                                                        body: JSON.stringify({ date: rescheduleDate, time: rescheduleTime }),
+                                                                        credentials: "include",
+                                                                    }
+                                                                );
+                                                                const data = await res.json();
+                                                                if (!res.ok) {
+                                                                    alert(data?.error || "Could not reschedule this order.");
+                                                                    setRescheduleSaving(false);
+                                                                    return;
+                                                                }
+
+                                                                const updated = (data?.order || null) as Order | null;
+                                                                if (updated) {
+                                                                    onOrderUpdated(updated);
+                                                                    setSelectedOrder(updated);
+                                                                }
+
+                                                                setIsRescheduling(false);
+                                                                setRescheduleSaving(false);
+                                                            } catch (err) {
+                                                                console.error("Reschedule failed", err);
+                                                                alert("Something went wrong while rescheduling.");
+                                                                setRescheduleSaving(false);
+                                                            }
+                                                        }}
+                                                    >
+                                                        {rescheduleSaving ? "Saving..." : "Save New Schedule"}
+                                                    </button>
+                                                </div>
+                                            ) : null}
                                         </div>
 
-                                        <div className="order-section">
+                                        <div className="accountCard">
+                                            <div className="accountCardHeader">
+                                                <MapPin className="accountMetaIcon" aria-hidden="true" />
+                                                <p className="accountCardTitle">Location</p>
+                                            </div>
+                                            <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>
+                                                {[selectedOrder.address?.street, selectedOrder.address?.city, selectedOrder.address?.state]
+                                                    .filter(Boolean)
+                                                    .join(", ") || "—"}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="accountCard">
+                                        <div className="accountCardHeader">
+                                            <User className="accountMetaIcon" aria-hidden="true" />
+                                            <p className="accountCardTitle">Assigned Technician</p>
+                                        </div>
+                                        <div className="accountTechRow">
+                                            <div>
+                                                <p className="accountTechName">
+                                                    {selectedOrder.technicianName || "—"}
+                                                </p>
+                                                <p className="accountTechPhone">
+                                                    {selectedOrder.technicianPhone || ""}
+                                                </p>
+                                            </div>
+
+                                            {selectedOrder.technicianPhone ? (
+                                                <a
+                                                    href={`tel:${selectedOrder.technicianPhone}`}
+                                                    className={clsx("accountBtn", "accountBtnSm", "accountBtnSecondary")}
+                                                >
+                                                    <Phone className="accountBtnIcon" aria-hidden="true" />
+                                                    Call
+                                                </a>
+                                            ) : null}
+                                        </div>
+                                    </div>
+
+                                    <div className="accountCard">
+                                        <div className="accountCardHeader">
+                                            <StickyNote className="accountMetaIcon" aria-hidden="true" />
+                                            <p className="accountCardTitle">Notes</p>
+                                        </div>
+                                        <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{selectedOrder.notes || "—"}</p>
+                                    </div>
+
+                                    <div className="accountTwoColGrid">
+                                        <div className="accountCard">
+                                            <div className="accountCardHeader">
+                                                <CreditCard className="accountMetaIcon" aria-hidden="true" />
+                                                <p className="accountCardTitle">Payment</p>
+                                            </div>
+                                            <div className="accountPaymentRow">
+                                                <p className="accountBodyText">
+                                                    Credit Card {selectedOrder.paymentLast4 ? `****${selectedOrder.paymentLast4}` : ""}
+                                                </p>
+                                                <p className="accountPaymentAmount">${selectedOrder.total.toFixed(0)}</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="accountCard">
+                                            <div className="accountCardHeader">
+                                                <ShieldCheck className="accountMetaIcon" aria-hidden="true" />
+                                                <p className="accountCardTitle">Warranty</p>
+                                            </div>
+                                            <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{selectedOrder.warrantyText || "—"}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="accountModalFooter">
+                                    {normalizeStatus(selectedOrder.status).includes("schedule") ? (
+                                        <div className="accountFooterGrid">
                                             <button
-                                                className="btn btn-secondary small"
-                                                disabled={loadingPortal}
-                                                onClick={async (e) => {
-                                                    e.stopPropagation();
-                                                    setLoadingPortal(true);
-                                                    const res = await fetch("/api/manage-subscription", {
-                                                        method: "POST",
-                                                    });
-                                                    const data = await res.json();
-
-                                                    if (res.ok && data.url) {
-                                                        window.location.href = data.url;
-                                                    } else {
-                                                        alert(data.error || "Could not open billing portal.");
-                                                        setLoadingPortal(false);
-                                                    }
-                                                }}
-                                            >
-                                                {loadingPortal ? "Loading..." : "Manage Subscription"}
-                                            </button>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <div className="order-section">
-                                        <div className="order-section-header">
-                                            <h4>Items</h4>
-                                            <a
-                                                href="#"
-                                                className={`delete-order-link ${order.refunded ? "disabled" : ""}`}
-                                                onClick={async (e) => {
-                                                    e.preventDefault();
-                                                    e.stopPropagation();
-
-                                                    if (order.refunded) {
-                                                        alert("This order has already been refunded.");
-                                                        return;
-                                                    }
-
-                                                    const confirmed = confirm("Are you sure you want to refund this order?");
-                                                    if (!confirmed) return;
-
-                                                    try {
-                                                        const res = await fetch(`/api/orders/${order._id}`, { method: "DELETE" });
-                                                        const data = await res.json();
-
-                                                        if (res.ok) {
-                                                            alert("Order refunded successfully!");
-                                                            window.location.reload();
-                                                        } else {
-                                                            alert(data.error || "Failed to refund order");
+                                                type="button"
+                                                onClick={() => {
+                                                    setIsRescheduling((v) => {
+                                                        const next = !v;
+                                                        if (!v && next) {
+                                                            requestAnimationFrame(() => {
+                                                                scheduleCardRef.current?.scrollIntoView({
+                                                                    behavior: "smooth",
+                                                                    block: "start",
+                                                                });
+                                                            });
                                                         }
-                                                    } catch (err) {
-                                                        console.error("Error refunding order:", err);
-                                                        alert("Something went wrong while refunding the order.");
-                                                    }
+                                                        return next;
+                                                    });
                                                 }}
+                                                className={clsx(
+                                                    "accountBtn",
+                                                    "accountBtnMd",
+                                                    "accountBtnFull",
+                                                    isRescheduling ? "accountBtnSecondary" : "accountBtnWarning"
+                                                )}
                                             >
-                                                {order.refunded ? "Refunded" : "Refund Order"}
+                                                {isRescheduling ? "Cancel" : "Reschedule"}
+                                            </button>
+
+                                            <a
+                                                href="/contact"
+                                                className={clsx("accountBtn", "accountBtnMd", "accountBtnFull", "accountBtnSecondary")}
+                                            >
+                                                <Mail className="accountBtnIcon" aria-hidden="true" />
+                                                Contact Support
                                             </a>
-
                                         </div>
-
-                                        <ul>
-                                            {order.items.map((item, i) => (
-                                                <li key={i}>
-                                                    {item.title} (${item.basePrice ?? item.price})
-                                                    {item.options?.length ? (
-                                                        <ul>
-                                                            {item.options.map((opt, j) => (
-                                                                <li key={j}>
-                                                                    {opt.name} (+${opt.price})
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                    ) : null}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-
-                                {order.schedule?.date && (
-                                    <div className="order-section">
-                                        <h4>Scheduled</h4>
-                                        <p>
-                                            {order.schedule.date} at {order.schedule.time}
-                                        </p>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </li>
-                );
-            })}
-        </ul>
+                                    ) : (
+                                        <a
+                                            href="/contact"
+                                            className={clsx("accountBtn", "accountBtnMd", "accountBtnFull", "accountBtnSecondary")}
+                                        >
+                                            <Mail className="accountBtnIcon" aria-hidden="true" />
+                                            Contact Support
+                                        </a>
+                                    )}
+                                </div>
+                            </Dialog.Panel>
+                        ) : null}
+                    </div>
+                </div>
+            </Dialog>
+        </div>
     );
 }
 
@@ -454,7 +775,7 @@ function OrdersTab({
 function ProfileTab({ user }: { user: SessionUser | undefined }) {
     const { update } = useSession();
     const [name, setName] = useState(user?.name || "");
-    const [email, setEmail] = useState(user?.email || "");
+    const [email] = useState(user?.email || "");
     const [phone, setPhone] = useState(user?.phone || "");
     const [editing, setEditing] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -462,7 +783,6 @@ function ProfileTab({ user }: { user: SessionUser | undefined }) {
 
     function handleCancel() {
         setName(user?.name || "");
-        setEmail(user?.email || "");
         setPhone(user?.phone || "");
         setEditing(false);
     }
@@ -491,73 +811,93 @@ function ProfileTab({ user }: { user: SessionUser | undefined }) {
     }
 
     return (
-        <form className="profile-card" onSubmit={handleSave}>
-            <h2>Profile Information</h2>
+        <form
+            className="accountProfileForm"
+            onSubmit={handleSave}
+        >
+            <h2 className="accountProfileTitle">Profile</h2>
+            <p className="accountProfileSubtitle">Update your contact information.</p>
 
-            <div className="form-group">
-                <label htmlFor="name">Full Name</label>
-                <input
-                    id="name"
-                    type="text"
-                    value={name}
-                    disabled={!editing}
-                    onChange={(e) => setName(e.target.value)}
-                />
+            <div className="accountProfileGrid">
+                <div>
+                    <label htmlFor="name" className="accountFieldLabel">
+                        Full Name
+                    </label>
+                    <input
+                        id="name"
+                        type="text"
+                        value={name}
+                        disabled={!editing}
+                        onChange={(e) => setName(e.target.value)}
+                        className={clsx(
+                            "accountInputBase",
+                            editing ? "accountInputEditable" : "accountInputReadOnly"
+                        )}
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="email" className="accountFieldLabel">
+                        Email
+                    </label>
+                    <input
+                        id="email"
+                        type="email"
+                        value={email}
+                        disabled
+                        className={clsx("accountInputBase", "accountInputReadOnly")}
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="phone" className="accountFieldLabel">
+                        Phone
+                    </label>
+                    <input
+                        id="phone"
+                        type="tel"
+                        value={phone}
+                        disabled={!editing}
+                        onChange={(e) => setPhone(e.target.value)}
+                        className={clsx(
+                            "accountInputBase",
+                            editing ? "accountInputEditable" : "accountInputReadOnly"
+                        )}
+                    />
+                </div>
             </div>
 
-            <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input id="email" type="email" value={email} disabled />
-            </div>
-
-            <div className="form-group">
-                <label htmlFor="phone">Phone</label>
-                <input
-                    id="phone"
-                    type="tel"
-                    value={phone}
-                    disabled={!editing}
-                    onChange={(e) => setPhone(e.target.value)}
-                />
-            </div>
-
-            {!editing ? (
-                <button
-                    type="button"
-                    className="edit-btn"
-                    onClick={() => setEditing(true)}
-                >
-                    Edit Profile
-                </button>
-            ) : (
-                <div className="edit-actions">
+            <div className="accountActionsRow">
+                {!editing ? (
                     <button
                         type="button"
-                        className="cancel-btn"
-                        onClick={handleCancel}
-                        disabled={saving}
+                        className={clsx("accountBtn", "accountBtnMd", "accountBtnSecondary")}
+                        onClick={() => setEditing(true)}
                     >
-                        Cancel
+                        Edit Profile
                     </button>
-                    <button type="submit" className="save-btn" disabled={saving}>
-                        {saving ? "Saving..." : "Save Changes"}
-                    </button>
-                </div>
-            )}
+                ) : (
+                    <>
+                        <button
+                            type="button"
+                            className={clsx("accountBtn", "accountBtnMd", "accountBtnSecondary", "accountBtnDisabled")}
+                            onClick={handleCancel}
+                            disabled={saving}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            className={clsx("accountBtn", "accountBtnMd", "accountBtnPrimary", "accountBtnDisabled")}
+                            disabled={saving}
+                        >
+                            {saving ? "Saving..." : "Save Changes"}
+                        </button>
+                    </>
+                )}
+            </div>
 
-            {saved && <p className="success-msg">✅ Profile updated successfully</p>}
+            {saved && <p className="accountSavedMsg">Profile updated successfully.</p>}
         </form>
-    );
-}
-
-/* -------------------------------------------
-   Reusable Card Component
-------------------------------------------- */
-function Card({ title, value }: { title: string; value: string | number }) {
-    return (
-        <div className="account-card">
-            <p className="title">{title}</p>
-            <p className="value">{value}</p>
-        </div>
     );
 }
