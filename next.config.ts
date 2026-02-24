@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
   // 🔹 REDIRECTS (FIXES GOOGLE SMART TV ISSUE)
   async redirects() {
     return [
+      // 🔹 Existing TV Redirects
       {
         source: "/services/smart-tv",
         destination: "/services/tv-mounting-and-setup",
@@ -45,6 +46,35 @@ const nextConfig: NextConfig = {
       {
         source: "/services/standard-tv",
         destination: "/services/tv-mounting-and-setup",
+        permanent: true,
+      },
+
+      // 🔹 Removed / Old Services Redirect Cleanup
+      {
+        source: "/services/wi-fi-network-setup",
+        destination: "/services/wifi-and-internet",
+        permanent: true,
+      },
+      {
+        source: "/services/virus-malware-removal",
+        destination: "/services/computer-and-printers",
+        permanent: true,
+      },
+      {
+        source: "/services/smart-home-device",
+        destination: "/services/smart-home",
+        permanent: true,
+      },
+      {
+        source: "/services/computer",
+        destination: "/services/computer-and-printers",
+        permanent: true,
+      },
+
+      // 🔹 Old Plans Page
+      {
+        source: "/plans",
+        destination: "/",
         permanent: true,
       },
     ];
