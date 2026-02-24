@@ -2,8 +2,18 @@ import { sanity } from "@/lib/sanity";
 import Image from "next/image";
 import Link from "next/link";
 import SvgIcon from "@/components/common/SvgIcons";
+import type { Metadata } from "next";
 
 export const revalidate = 0;
+
+export const metadata: Metadata = {
+  title: "Blog | CallTechCare",
+  description:
+    "Tech tips, Wi-Fi guides, TV mounting advice, cybersecurity basics, and IT best practices for homes and small businesses in South Florida.",
+  alternates: {
+    canonical: "https://www.calltechcare.com/blog",
+  },
+};
 
 export default async function BlogPage() {
   const posts = await sanity.fetch(`
