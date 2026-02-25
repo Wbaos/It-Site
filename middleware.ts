@@ -28,6 +28,11 @@ function checkRateLimit(ip: string): boolean {
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
+  const setNoIndex = (res: NextResponse) => {
+    res.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+    return res;
+  };
+
   const contentSecurityPolicy = [
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://js.stripe.com blob:",
@@ -85,6 +90,11 @@ export async function middleware(request: NextRequest) {
       const url = new URL('/login', request.url);
       url.searchParams.set('callbackUrl', request.nextUrl.pathname);
       return NextResponse.redirect(url);
+    }
+
+    // Even when authenticated, keep account pages out of search results.
+    if (request.nextUrl.pathname.startsWith('/account')) {
+      setNoIndex(response);
     }
   }
 

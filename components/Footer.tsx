@@ -36,7 +36,8 @@ export default function Footer() {
         <nav className="footer-nav" aria-label="Footer Navigation">
           <Link href="/#services">Services</Link>
           <Link href="/#how">How It Works</Link>
-          <Link href="/#pricing">Pricing</Link>
+          {/* <Link href="/#pricing">Pricing</Link> */}
+          <Link href="/blog">Blog</Link>
           <Link href="/locations">Service Areas</Link>
           <Link href="/#contact">Contact</Link>
           <a href="/about">About Us</a>
@@ -83,6 +84,11 @@ export default function Footer() {
             <li>
               <Link href="/services/senior-help">
                 Senior-Friendly Tech Help
+              </Link>
+            </li>
+            <li>
+              <Link href="/services/sprinkler-repair-and-installation">
+                Irrigation & Sprinkler Services
               </Link>
             </li>
           </ul>
