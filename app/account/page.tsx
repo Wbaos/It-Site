@@ -195,7 +195,13 @@ export default function AccountPage() {
 
     // 1. Full-page loader until everything is truly ready
     if (status === "loading" || globalLoading || loading) {
-        return <Loader message="Loading your account..." />;
+        return (
+            <section className="accountPage">
+                <div className="accountContainer">
+                    <Loader message="Loading your account..." variant="inline" />
+                </div>
+            </section>
+        );
     }
 
     // 2. Redirect unauthenticated users
@@ -290,7 +296,7 @@ function OrdersTab({
     const [rescheduleTime, setRescheduleTime] = useState("");
     const scheduleCardRef = useRef<HTMLDivElement | null>(null);
 
-    if (loading) return <Loader message="Loading your orders..." />;
+    if (loading) return <Loader message="Loading your orders..." variant="inline" />;
     const visibleOrders = orders.filter((o) => !o.deleted);
     if (visibleOrders.length === 0) return <p className="accountEmptyState">You have no orders yet.</p>;
 

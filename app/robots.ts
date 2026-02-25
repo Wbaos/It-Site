@@ -6,6 +6,7 @@ export default function robots(): MetadataRoute.Robots {
             {
                 userAgent: "*",
                 allow: "/",
+                disallow: ["/account", "/account/"],
             },
         ],
         sitemap: "https://www.calltechcare.com/sitemap.xml",
