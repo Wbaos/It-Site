@@ -13,8 +13,10 @@ export const metadata: Metadata = {
 export default async function PlanPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
+
   const plan = await sanity.fetch(
     `*[_type == "pricingPlan" && slug.current == $slug][0]{
       _id,
@@ -27,11 +29,11 @@ export default async function PlanPage({
       stripeProductId,
       description
     }`,
-    { slug: params.slug }
+    { slug }
   );
 
   if (!plan) {
-    notFound(); 
+    notFound();
   }
 
   return <PlanDetails plan={{ ...plan, features: plan.features || [] }} />;
