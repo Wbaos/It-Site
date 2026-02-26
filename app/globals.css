@@ -16087,7 +16087,7 @@ details[open] .faq-toggle {
 
 .discount-popup__codeValue {
   margin-top: 10px;
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 950;
   letter-spacing: 0.08em;
   color: #10b981;
@@ -16101,7 +16101,7 @@ details[open] .faq-toggle {
 
 .discount-popup__status {
   margin: 10px 0 0 0;
-  color: #f1f5f9;
+  color: #ca2c2c;
   font-size: 0.9rem;
   line-height: 1.3;
 }

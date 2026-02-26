@@ -4,9 +4,11 @@ import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const DISCOUNT_POPUP_SESSION_KEY = "ctc_discount_popup_seen";
+const DISCOUNT_POPUP_SEEN_KEY = "ctc_discount_popup_seen";
 const DISCOUNT_POPUP_MINIMIZED_KEY = "ctc_discount_popup_minimized";
 const DISCOUNT_POPUP_TEASER_DISMISSED_KEY = "ctc_discount_popup_teaser_dismissed";
+const DISCOUNT_POPUP_SIGNED_UP_COOKIE = "ctc_discount_popup_signed_up";
+const DISCOUNT_POPUP_SEEN_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 const OPEN_DELAY_MS = 6000;
 const API_TIMEOUT_MS = 8000;
 const DISCOUNT_LEAD_API = "/api/discount-signup";
@@ -17,11 +19,65 @@ function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function getCookieValue(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const cookies = document.cookie ? document.cookie.split(";") : [];
+  for (const raw of cookies) {
+    const cookie = raw.trim();
+    if (!cookie) continue;
+    if (cookie.startsWith(`${name}=`)) {
+      return decodeURIComponent(cookie.slice(name.length + 1));
+    }
+  }
+  return null;
+}
+
+function setCookie(name: string, value: string, days: number) {
+  if (typeof document === "undefined") return;
+  const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+  const secure = window.location?.protocol === "https:" ? "; Secure" : "";
+  document.cookie = `${name}=${encodeURIComponent(value)}; Expires=${expires}; Path=/; SameSite=Lax${secure}`;
+}
+
+function hasRecentSeenFlag(): boolean {
+  try {
+    const raw = localStorage.getItem(DISCOUNT_POPUP_SEEN_KEY);
+    if (!raw) return false;
+
+    // Migration: older versions stored "1".
+    if (raw === "1") {
+      localStorage.setItem(DISCOUNT_POPUP_SEEN_KEY, String(Date.now()));
+      return true;
+    }
+
+    const seenAt = Number(raw);
+    if (!Number.isFinite(seenAt) || seenAt <= 0) {
+      localStorage.removeItem(DISCOUNT_POPUP_SEEN_KEY);
+      return false;
+    }
+
+    const isRecent = Date.now() - seenAt < DISCOUNT_POPUP_SEEN_TTL_MS;
+    if (!isRecent) localStorage.removeItem(DISCOUNT_POPUP_SEEN_KEY);
+    return isRecent;
+  } catch {
+    return false;
+  }
+}
+
+function markSeenNow() {
+  try {
+    localStorage.setItem(DISCOUNT_POPUP_SEEN_KEY, String(Date.now()));
+  } catch {
+    // ignore
+  }
+}
+
 export default function DiscountSignupPopup() {
   const { data: session, status } = useSession();
   const pathname = usePathname();
 
   const [hydrated, setHydrated] = useState(false);
+  const [signedUp, setSignedUp] = useState(false);
   const [open, setOpen] = useState(false);
   const [minimized, setMinimized] = useState(false);
   const [teaserDismissed, setTeaserDismissed] = useState(false);
@@ -36,14 +92,21 @@ export default function DiscountSignupPopup() {
   const [issuedCode, setIssuedCode] = useState(FALLBACK_CODE);
   const [issuedPercent, setIssuedPercent] = useState(10);
 
+  const [emailCheckBusy, setEmailCheckBusy] = useState(false);
+  const [emailTaken, setEmailTaken] = useState(false);
+
   useEffect(() => {
     setHydrated(true);
 
     try {
-      if (sessionStorage.getItem(DISCOUNT_POPUP_TEASER_DISMISSED_KEY) === "1") {
+      if (getCookieValue(DISCOUNT_POPUP_SIGNED_UP_COOKIE) === "1") {
+        setSignedUp(true);
+      }
+
+      if (localStorage.getItem(DISCOUNT_POPUP_TEASER_DISMISSED_KEY) === "1") {
         setTeaserDismissed(true);
       }
-      if (sessionStorage.getItem(DISCOUNT_POPUP_MINIMIZED_KEY) === "1") {
+      if (localStorage.getItem(DISCOUNT_POPUP_MINIMIZED_KEY) === "1") {
         setMinimized(true);
       }
     } catch {
@@ -55,14 +118,11 @@ export default function DiscountSignupPopup() {
     if (!hydrated) return;
     if (status === "loading") return;
     if (session) return;
+    if (signedUp) return;
 
     if (pathname?.startsWith("/signup") || pathname?.startsWith("/login")) return;
 
-    try {
-      if (sessionStorage.getItem(DISCOUNT_POPUP_SESSION_KEY) === "1") return;
-    } catch {
-      // ignore storage errors
-    }
+    if (hasRecentSeenFlag()) return;
 
     const timer = window.setTimeout(() => {
       setOpen(true);
@@ -71,20 +131,20 @@ export default function DiscountSignupPopup() {
       setMinimized(false);
 
       try {
-        sessionStorage.removeItem(DISCOUNT_POPUP_MINIMIZED_KEY);
+        localStorage.removeItem(DISCOUNT_POPUP_MINIMIZED_KEY);
       } catch {
         // ignore
       }
 
       try {
-        sessionStorage.setItem(DISCOUNT_POPUP_SESSION_KEY, "1");
+        markSeenNow();
       } catch {
         // ignore storage errors
       }
     }, OPEN_DELAY_MS);
 
     return () => window.clearTimeout(timer);
-  }, [hydrated, pathname, session, status]);
+  }, [hydrated, pathname, session, signedUp, status]);
 
   function close(reason: "dismiss" | "success") {
     setOpen(false);
@@ -93,14 +153,14 @@ export default function DiscountSignupPopup() {
     if (reason === "dismiss" && step === "form") {
       if (!teaserDismissed) setMinimized(true);
       try {
-        sessionStorage.setItem(DISCOUNT_POPUP_MINIMIZED_KEY, "1");
+        localStorage.setItem(DISCOUNT_POPUP_MINIMIZED_KEY, "1");
       } catch {
         // ignore
       }
     } else {
       setMinimized(false);
       try {
-        sessionStorage.removeItem(DISCOUNT_POPUP_MINIMIZED_KEY);
+        localStorage.removeItem(DISCOUNT_POPUP_MINIMIZED_KEY);
       } catch {
         // ignore
       }
@@ -111,8 +171,8 @@ export default function DiscountSignupPopup() {
     setMinimized(false);
     setTeaserDismissed(true);
     try {
-      sessionStorage.setItem(DISCOUNT_POPUP_TEASER_DISMISSED_KEY, "1");
-      sessionStorage.removeItem(DISCOUNT_POPUP_MINIMIZED_KEY);
+      localStorage.setItem(DISCOUNT_POPUP_TEASER_DISMISSED_KEY, "1");
+      localStorage.removeItem(DISCOUNT_POPUP_MINIMIZED_KEY);
     } catch {
       // ignore
     }
@@ -124,12 +184,53 @@ export default function DiscountSignupPopup() {
     setFormStatus(null);
     setMinimized(false);
     try {
-      sessionStorage.removeItem(DISCOUNT_POPUP_MINIMIZED_KEY);
-      sessionStorage.setItem(DISCOUNT_POPUP_SESSION_KEY, "1");
+      localStorage.removeItem(DISCOUNT_POPUP_MINIMIZED_KEY);
+      markSeenNow();
     } catch {
       // ignore
     }
   }
+
+  useEffect(() => {
+    if (!hydrated) return;
+    if (signedUp) return;
+
+    const trimmed = email.trim();
+    if (!trimmed || !isValidEmail(trimmed)) {
+      setEmailTaken(false);
+      setEmailCheckBusy(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      setEmailCheckBusy(true);
+      try {
+        const res = await fetch(
+          `${DISCOUNT_LEAD_API}?email=${encodeURIComponent(trimmed)}`,
+          { signal: controller.signal }
+        );
+        const data = await res.json().catch(() => ({}));
+        const exists = Boolean(data?.exists);
+        setEmailTaken(exists);
+
+        if (exists) {
+          setFormStatus("This email is already signed up.");
+        } else {
+          setFormStatus((prev) => (prev === "This email is already signed up." ? null : prev));
+        }
+      } catch {
+        // ignore check errors
+      } finally {
+        setEmailCheckBusy(false);
+      }
+    }, 450);
+
+    return () => {
+      controller.abort();
+      window.clearTimeout(timer);
+    };
+  }, [email, hydrated, signedUp]);
 
   useEffect(() => {
     if (!open) return;
@@ -194,6 +295,16 @@ export default function DiscountSignupPopup() {
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data?.ok) {
+        if (data?.code === "EMAIL_EXISTS") {
+          setEmailTaken(true);
+          setFormStatus("This email is already signed up.");
+          return;
+        }
+        if (data?.code === "ALREADY_USED") {
+          setEmailTaken(true);
+          setFormStatus("This email has already used the one-time discount.");
+          return;
+        }
         setFormStatus(String(data?.error || "Something went wrong"));
         return;
       }
@@ -201,12 +312,21 @@ export default function DiscountSignupPopup() {
       if (data?.discountCode) setIssuedCode(String(data.discountCode));
       if (typeof data?.discountPercent === "number") setIssuedPercent(data.discountPercent);
 
+      setCookie(DISCOUNT_POPUP_SIGNED_UP_COOKIE, "1", 365);
+      setSignedUp(true);
+      try {
+        markSeenNow();
+        localStorage.removeItem(DISCOUNT_POPUP_MINIMIZED_KEY);
+      } catch {
+        // ignore
+      }
+
       if (typeof window !== "undefined" && (window as any).gtag) {
-      (window as any).gtag("event", "generate_lead", {
-        event_category: "Discount Popup",
-        event_label: "10% Signup",
-      });
-    }
+        (window as any).gtag("event", "generate_lead", {
+          event_category: "Discount Popup",
+          event_label: "10% Signup",
+        });
+      }
 
       setStep("success");
     } catch (err: unknown) {
@@ -225,7 +345,7 @@ export default function DiscountSignupPopup() {
     pathname?.startsWith("/signup") || pathname?.startsWith("/login")
   );
 
-  const canShowUI = hydrated && status !== "loading" && !session && !isBlockedRoute;
+  const canShowUI = hydrated && status !== "loading" && !session && !isBlockedRoute && (!signedUp || open);
   if (!canShowUI) return null;
 
   return (
@@ -434,7 +554,7 @@ export default function DiscountSignupPopup() {
                   </span>
                 </label>
 
-                <button type="submit" className="discount-popup__cta" disabled={busy}>
+                <button type="submit" className="discount-popup__cta" disabled={busy || emailTaken || emailCheckBusy}>
                   {busy ? "Sending..." : "Get My 10% Off"}
                   <span className="discount-popup__ctaArrow" aria-hidden="true">→</span>
                 </button>
@@ -460,7 +580,7 @@ export default function DiscountSignupPopup() {
                 </svg>
               </div>
 
-              <h3 className="discount-popup__successTitle">You're All Set!</h3>
+              <h3 className="discount-popup__successTitle">You&apos;re All Set!</h3>
               <p className="discount-popup__successSubtitle">
                 Your discount code has been sent to your email:
               </p>

@@ -7,6 +7,8 @@ import { syncCustomerToMailchimp } from "@/lib/mailchimp";
 import { logger } from "@/lib/logger";
 import { DiscountLead } from "@/app/models/DiscountLead";
 
+const DISCOUNT_POPUP_SIGNED_UP_COOKIE = "ctc_discount_popup_signed_up";
+
 function getMailchimpEnabled(): boolean {
   return Boolean(
     process.env.MAILCHIMP_API_KEY &&
@@ -44,18 +46,86 @@ function canResend(lastSentAt?: Date | null): boolean {
   return Date.now() - lastSentAt.getTime() > ONE_DAY_MS;
 }
 
-async function sendDiscountEmail(to: string, code: string) {
-  const subject = "Your 10% discount code";
+function buildSignedUpCookie(): string {
+  const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
+  const isProd = process.env.NODE_ENV === "production";
+  return [
+    `${DISCOUNT_POPUP_SIGNED_UP_COOKIE}=1`,
+    "Path=/",
+    `Max-Age=${ONE_YEAR_SECONDS}`,
+    "SameSite=Lax",
+    isProd ? "Secure" : null,
+  ]
+    .filter(Boolean)
+    .join("; ");
+}
+
+export async function GET(req: Request) {
+  try {
+    const url = new URL(req.url);
+    const email = String(url.searchParams.get("email") || "").trim();
+
+    if (!email) {
+      return NextResponse.json({ ok: false, error: "Missing email" }, { status: 400 });
+    }
+
+    if (!isValidEmail(email)) {
+      return NextResponse.json({ ok: false, error: "Invalid email" }, { status: 400 });
+    }
+
+    const emailLower = email.toLowerCase();
+    await connectDB();
+    const exists = Boolean(await DiscountLead.exists({ emailLower }));
+
+    return NextResponse.json({ ok: true, exists });
+  } catch (err) {
+    logger.error("Discount lead check API error", err);
+    return NextResponse.json({ ok: false, error: "Server error" }, { status: 500 });
+  }
+}
+
+async function sendDiscountEmail(to: string, code: string, percent: number) {
+  const safePercent = Number.isFinite(percent) ? Math.min(100, Math.max(0, percent)) : 10;
+  const subject = `Your ${safePercent}% discount code`;
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.calltechcare.com";
+  const headline = `Here’s your ${safePercent}% off code`;
 
   const html = `
-    <div style="font-family: Arial, sans-serif; line-height:1.5; color:#0b1220;">
-      <h2 style="margin:0 0 12px 0;">Here’s your 10% off code</h2>
-      <p style="margin:0 0 10px 0;">Use this code at checkout:</p>
-      <p style="font-size:20px; font-weight:800; letter-spacing:1px; margin:0 0 16px 0;">${code}</p>
-      <p style="margin:0 0 16px 0;">You can book a service anytime here:</p>
-      <p style="margin:0 0 20px 0;"><a href="${baseUrl}" target="_blank" rel="noreferrer">${baseUrl}</a></p>
-      <p style="font-size:12px; color:#334155; margin:0;">If you didn’t request this, you can ignore this email.</p>
+    <div style="background:#f8fafc; padding:24px 12px; font-family:Arial, sans-serif; color:#0b1220;">
+      <div style="max-width:520px; margin:0 auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:14px; overflow:hidden;">
+        <div style="padding:18px 18px 14px 18px; background:#0b1220; color:#ffffff;">
+          <div style="font-size:12px; letter-spacing:1.2px; opacity:0.9;">CALLTECHCARE</div>
+          <div style="font-size:22px; font-weight:800; line-height:1.2; margin-top:8px;">${headline}</div>
+          <div style="font-size:13px; opacity:0.9; margin-top:6px;">Use this code at checkout to save on your first service.</div>
+        </div>
+
+        <div style="padding:18px;">
+          <div style="background:#f1f5f9; border:1px solid #e2e8f0; border-radius:12px; padding:14px 14px; text-align:center;">
+            <div style="font-size:11px; letter-spacing:1.4px; color:#334155; font-weight:700;">YOUR DISCOUNT CODE</div>
+            <div style="font-size:22px; font-weight:900; letter-spacing:1px; margin-top:8px;">${code}</div>
+            <div style="font-size:12px; color:#475569; margin-top:8px;">Applies ${safePercent}% off your first service.</div>
+          </div>
+
+          <div style="margin-top:16px; font-size:14px; color:#0b1220;">
+            Ready to book? Click below:
+          </div>
+
+          <div style="margin-top:12px;">
+            <a href="${baseUrl}" target="_blank" rel="noreferrer"
+              style="display:inline-block; background:#0b1220; color:#ffffff; text-decoration:none; padding:12px 16px; border-radius:10px; font-weight:800; font-size:14px;">
+              Book a service
+            </a>
+          </div>
+
+          <div style="margin-top:14px; font-size:12px; color:#64748b;">
+            Or copy/paste this link: <a href="${baseUrl}" target="_blank" rel="noreferrer" style="color:#0b1220;">${baseUrl}</a>
+          </div>
+
+          <div style="margin-top:18px; padding-top:14px; border-top:1px solid #e2e8f0; font-size:12px; color:#64748b;">
+            If you didn’t request this, you can ignore this email.
+          </div>
+        </div>
+      </div>
     </div>
   `;
 
@@ -104,26 +174,33 @@ export async function POST(req: Request) {
     await connectDB();
 
     const existing = (await DiscountLead.findOne({ emailLower })
-      .select({ codeSentAt: 1, redeemedAt: 1 })
-      .lean()) as { codeSentAt?: Date; redeemedAt?: Date } | null;
+      .select({ redeemedAt: 1 })
+      .lean()) as { redeemedAt?: Date } | null;
 
-    if (existing?.redeemedAt) {
-      // Customer already used their one-time discount.
-      await DiscountLead.findOneAndUpdate(
-        { emailLower },
-        { $set: { phone, consent } }
+    if (existing) {
+      if (existing?.redeemedAt) {
+        return NextResponse.json(
+          {
+            ok: false,
+            code: "ALREADY_USED",
+            error: "This email has already used the one-time discount.",
+          },
+          { status: 409 }
+        );
+      }
+
+      return NextResponse.json(
+        {
+          ok: false,
+          code: "EMAIL_EXISTS",
+          error: "This email is already signed up.",
+        },
+        { status: 409 }
       );
-      return NextResponse.json({
-        ok: true,
-        mailchimpSynced: false,
-        emailSent: false,
-        discountCode,
-        discountPercent,
-        alreadyUsed: true,
-      });
     }
 
-    const shouldSend = canResend(existing?.codeSentAt ?? null);
+    // New leads only reach here; no resend throttling needed.
+    const shouldSend = canResend(null);
 
     await DiscountLead.findOneAndUpdate(
       { emailLower },
@@ -164,7 +241,7 @@ export async function POST(req: Request) {
     let emailSent = false;
     if (shouldSend) {
       try {
-        await sendDiscountEmail(email, discountCode);
+        await sendDiscountEmail(email, discountCode, discountPercent);
         emailSent = true;
         await DiscountLead.findOneAndUpdate(
           { emailLower },
@@ -184,6 +261,10 @@ export async function POST(req: Request) {
       emailSent,
       discountCode,
       discountPercent,
+    }, {
+      headers: {
+        "Set-Cookie": buildSignedUpCookie(),
+      },
     });
   } catch (err) {
     logger.error("Discount lead API error", err);
