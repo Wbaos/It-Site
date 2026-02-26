@@ -70,13 +70,6 @@ const nextConfig: NextConfig = {
         destination: "/services/computer-and-printers",
         permanent: true,
       },
-
-      // 🔹 Old Plans Page
-      {
-        source: "/plans",
-        destination: "/",
-        permanent: true,
-      },
     ];
   },
 
