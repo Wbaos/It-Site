@@ -201,6 +201,13 @@ export default function DiscountSignupPopup() {
       if (data?.discountCode) setIssuedCode(String(data.discountCode));
       if (typeof data?.discountPercent === "number") setIssuedPercent(data.discountPercent);
 
+      if (typeof window !== "undefined" && (window as any).gtag) {
+      (window as any).gtag("event", "generate_lead", {
+        event_category: "Discount Popup",
+        event_label: "10% Signup",
+      });
+    }
+
       setStep("success");
     } catch (err: unknown) {
       const anyErr = err as { name?: unknown };
