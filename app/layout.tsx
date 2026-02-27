@@ -180,11 +180,6 @@ export default function RootLayout({
         {/* App meta */}
         <meta name="apple-mobile-web-app-title" content="CallTechCare" />
         <meta name="theme-color" content="#0891b2" />
-        <meta name="author" content="CallTechCare" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1"
-        />
         <meta
           name="copyright"
           content="© 2025 CallTechCare. All rights reserved."

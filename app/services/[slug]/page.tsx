@@ -12,6 +12,7 @@ import BookButtonWatcher from "@/components/BookButtonWatcher";
 import FaqAccordion from "@/components/FaqAccordion";
 import ServiceGroupList from "@/components/ServiceGroupList";
 import BeforeAfterSection from "@/components/BeforeAfterSection";
+import { PortableText } from "@portabletext/react";
 import type { Metadata } from "next";
 
 
@@ -408,6 +409,7 @@ export default async function ServicePage({
       )
     ]);
     if (category) {
+
       const categoryBreadcrumbSchema = {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -532,7 +534,7 @@ export default async function ServicePage({
 
               <hr className="category-section-divider" />
 
-              <div className="category-header-stats">
+              {/* <div className="category-header-stats">
                 {category.icon?.asset?.url && (
                   <Image
                     src={category.icon.asset.url}
@@ -548,7 +550,7 @@ export default async function ServicePage({
                     <p className="category-desc">{category.tagline}</p>
                   )}
                 </div>
-              </div>
+              </div> */}
 
               {/* --- Extra Category Info Section --- */}
               <div className="styled-extra-info">
@@ -581,27 +583,67 @@ export default async function ServicePage({
                     </div>
                   )}
                 </div>
-                {(category.about || (category.features && category.features.length > 0)) && (
+                {category.about && (
                   <div className="styled-about-features-row">
-                    {category.about && (
-                      <div className="styled-about-box">
-                        <div className="styled-about-title">About This Service</div>
-                        <div className="styled-about-desc">{category.about}</div>
-                      </div>
-                    )}
-                    {category.features && category.features.length > 0 && (
-                      <div className="styled-features-box">
-                        <div className="styled-features-title">What&apos;s Included</div>
-                        <ul className="styled-features-list">
-                          {category.features.map((f: string, i: number) => (
-                            <li key={i} className="styled-feature-item">
-                              <SvgIcon name="checkmark-circle" size={20} color="#10b981" />
-                              {f}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    <div className="styled-about-box">
+                      <div className="styled-about-title">About This Service</div>
+                      <div className="styled-about-desc">
+  <PortableText
+    value={category.about}
+    components={{
+      block: {
+        normal: ({ children }) => (
+          <p className="styled-about-paragraph">
+            {children}
+          </p>
+        ),
+        h2: ({ children }) => (
+          <h2 className="styled-about-heading">
+            {children}
+          </h2>
+        ),
+        h3: ({ children }) => (
+          <h3 className="styled-about-subheading">
+            {children}
+          </h3>
+        ),
+      },
+      list: {
+        bullet: ({ children }) => (
+          <ul className="styled-about-list">
+            {children}
+          </ul>
+        ),
+      },
+      listItem: {
+        bullet: ({ children }) => (
+          <li className="styled-about-list-item">
+            {children}
+          </li>
+        ),
+      },
+      types: {
+        // fallback safety in case something weird appears
+        undefined: () => null,
+      },
+    }}
+  />
+</div>
+                    </div>
+                  </div>
+                )}
+
+                {category.features && category.features.length > 0 && (
+                  <div className="styled-features-box">
+                    <div className="styled-features-title">What&apos;s Included</div>
+                    <ul className="styled-features-list">
+                      {category.features.map((f: string, i: number) => (
+                        <li key={i} className="styled-feature-item">
+                          <SvgIcon name="checkmark-circle" size={20} color="#10b981" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 )}
                 {category.badges && category.badges.length > 0 && (
