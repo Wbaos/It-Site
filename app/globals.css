@@ -10444,6 +10444,11 @@ object-fit: cover;
     display: none;
   }
 }
+@media (max-width: 600px) {
+  .section.how {
+    padding: 32px 20px;
+  }
+}
 
 /* ===== TESTIMONIALS ===== */
 
@@ -11996,6 +12001,10 @@ input:checked + .slider:before {
 @media (max-width: 720px) {
   .contact .form-row {
     grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .contact {
+    padding: 3rem 1rem 4rem;
   }
 }
 
@@ -12176,6 +12185,9 @@ box-shadow:
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  .site-footer {
+    padding: 0 0 1rem;
   }
 }
 
