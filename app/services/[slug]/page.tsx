@@ -135,6 +135,23 @@ export default async function ServicePage({
 }) {
   const { slug } = await params;
 
+  const pageUrl = `https://www.calltechcare.com/services/${slug}`;
+  const speakableWebPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    url: pageUrl,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: [
+        ".service-detail h1",
+        ".service-description",
+        ".included-box",
+        ".styled-about-box",
+        ".styled-features-box",
+      ],
+    },
+  };
+
   const serviceAreasRaw = await sanity.fetch<
     Array<{ city?: string; slug?: { current?: string } }>
   >(
@@ -266,36 +283,41 @@ export default async function ServicePage({
   : null;
 
 
-  const faqSchema =
-    service?.faqs?.length > 0
-      ? {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: service.faqs
-            .map((faq: any) => {
-              const question =
-                (typeof faq?.question === "string" && faq.question.trim()) ||
-                (typeof faq?.q === "string" && faq.q.trim()) ||
-                "";
-              const answer =
-                (typeof faq?.answer === "string" && faq.answer.trim()) ||
-                (typeof faq?.a === "string" && faq.a.trim()) ||
-                "";
+  const faqSchema = (() => {
+    if (!service?.faqs?.length) return null;
 
-              if (!question || !answer) return null;
+    const mainEntity = service.faqs
+      .map((faq: any) => {
+        const question =
+          (typeof faq?.question === "string" && faq.question.trim()) ||
+          (typeof faq?.q === "string" && faq.q.trim()) ||
+          "";
+        const answer =
+          (typeof faq?.answer === "string" && faq.answer.trim()) ||
+          (typeof faq?.a === "string" && faq.a.trim()) ||
+          "";
 
-              return {
-                "@type": "Question",
-                name: question,
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: answer,
-                },
-              };
-            })
-            .filter(Boolean),
-        }
-      : null;
+        if (!question || !answer) return null;
+
+        return {
+          "@type": "Question",
+          name: question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: answer,
+          },
+        };
+      })
+      .filter(Boolean);
+
+    if (mainEntity.length === 0) return null;
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity,
+    };
+  })();
 
         const serviceSchema = service
           ? {
@@ -315,6 +337,7 @@ export default async function ServicePage({
               },
               provider: {
                 "@type": "LocalBusiness",
+                "@id": "https://www.calltechcare.com/#business",
                 name: "CallTechCare",
                 url: "https://www.calltechcare.com",
               },
@@ -451,24 +474,34 @@ export default async function ServicePage({
 
         provider: {
           "@type": "LocalBusiness",
+          "@id": "https://www.calltechcare.com/#business",
           name: "CallTechCare",
           url: "https://www.calltechcare.com",
         },
       };
 
+      const categoryFaqMainEntity = (category?.faqs || [])
+        .map((faq: any) => {
+          const question = String(faq?.question || "").trim();
+          const answer = String(faq?.answer || "").trim();
+          if (!question || !answer) return null;
+          return {
+            "@type": "Question",
+            name: question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: answer,
+            },
+          };
+        })
+        .filter(Boolean);
+
       const categoryFaqSchema =
-        category?.faqs?.length > 0
+        categoryFaqMainEntity.length > 0
           ? {
               "@context": "https://schema.org",
               "@type": "FAQPage",
-              mainEntity: category.faqs.map((faq: any) => ({
-                "@type": "Question",
-                name: faq.question,
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: faq.answer,
-                },
-              })),
+              mainEntity: categoryFaqMainEntity,
             }
           : null;
       return (
@@ -483,6 +516,13 @@ export default async function ServicePage({
     type="application/ld+json"
     dangerouslySetInnerHTML={{
       __html: JSON.stringify(categoryServiceSchema),
+    }}
+  />
+
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify(speakableWebPageSchema),
     }}
   />
 
@@ -855,6 +895,13 @@ export default async function ServicePage({
         }}
       />
     )}
+
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(speakableWebPageSchema),
+      }}
+    />
 
 
     <section className="service-detail">

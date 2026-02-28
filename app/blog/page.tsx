@@ -30,9 +30,60 @@ export default async function BlogPage() {
     }
   `);
 
+  const pageUrl = "https://www.calltechcare.com/blog";
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://www.calltechcare.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: pageUrl,
+      },
+    ],
+  };
+
+  const blogItemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: (Array.isArray(posts) ? posts : [])
+      .map((post: any, index: number) => {
+        const slug = post?.slug?.current;
+        const title = typeof post?.title === "string" ? post.title : "";
+        if (!slug || !title) return null;
+        const url = `https://www.calltechcare.com/blog/${slug}`;
+        return {
+          "@type": "ListItem",
+          position: index + 1,
+          url,
+          name: title,
+        };
+      })
+      .filter(Boolean),
+  };
+
   return (
-    <section className="blog-page">
-      <div className="blog-container">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogItemListSchema) }}
+      />
+
+      <section className="blog-page">
+        <div className="blog-container">
 
         <div className="blog-header-icon">
           <SvgIcon name="book-open" size={70} color="var(--brand-teal)" />
@@ -126,7 +177,8 @@ export default async function BlogPage() {
             </Link>
           ))}
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }

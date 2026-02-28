@@ -73,9 +73,61 @@ export default async function LocationPage({ params }: Props) {
   if (!location) {
     notFound();
   }
+  const pageUrl = `https://www.calltechcare.com/locations/${slug}`;
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://www.calltechcare.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Locations",
+        item: "https://www.calltechcare.com/locations",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: `${location.city}, ${location.state}`,
+        item: pageUrl,
+      },
+    ],
+  };
+
+  const locationServiceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `Tech Support & Smart Home Services in ${location.city}, ${location.state}`,
+    url: pageUrl,
+    description: location.metaDescription || location.description,
+    areaServed: {
+      "@type": "City",
+      name: `${location.city}, ${location.state}`,
+    },
+    provider: {
+      "@id": "https://www.calltechcare.com/#business",
+    },
+  };
   const isPrimaryOffice = location.slug?.current === "miami";
   return (
-    <div className="location-detail-page">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(locationServiceSchema) }}
+      />
+
+      <div className="location-detail-page">
       {/* Hero Section with Background Image */}
       <section className="location-hero-section">
         {location.heroImage && (
@@ -406,6 +458,7 @@ export default async function LocationPage({ params }: Props) {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }

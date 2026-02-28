@@ -7,13 +7,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const now = new Date();
 
-    const [locationSlugs, serviceItems, categorySlugs, postItems] = await Promise.all([
+    const [locationSlugs, serviceItems, categoryItems, postItems] = await Promise.all([
         getAllLocationSlugs(),
         sanity.fetch<Array<{ slug?: { current?: string }; _updatedAt?: string }>>( 
             `*[_type == "service" && enabled == true && defined(slug.current)]{ slug, _updatedAt }`
         ),
-        sanity.fetch<string[]>(
-            `*[_type == "category" && defined(slug.current)].slug.current`
+        sanity.fetch<Array<{ slug?: { current?: string }; _updatedAt?: string }>>(
+            `*[_type == "category" && defined(slug.current)]{ slug, _updatedAt }`
         ),
         sanity.fetch<Array<{ slug?: { current?: string }; _updatedAt?: string; publishedAt?: string }>>(
             `*[_type == "post" && publishedAt <= now() && defined(slug.current)]{ slug, _updatedAt, publishedAt }`
@@ -28,23 +28,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
 
     // /services/[slug] is used for both services and categories
-    const serviceAndCategorySlugs = Array.from(
-        new Set([
-            ...(serviceItems ?? [])
-                .map((s) => s.slug?.current)
-                .filter((s): s is string => Boolean(s)),
-            ...(categorySlugs ?? [])
-                .map((s) => (typeof s === 'string' ? s : ''))
-                .filter(Boolean),
-        ])
-    );
+    const slugToLastModified = new Map<string, Date>();
 
-    const serviceUrls = serviceAndCategorySlugs.map((slug) => ({
-        url: `${baseUrl}/services/${slug}`,
-        lastModified: now,
-        changeFrequency: 'weekly' as const,
-        priority: 0.8,
-    }));
+    for (const item of serviceItems ?? []) {
+        const slug = item.slug?.current;
+        if (!slug) continue;
+        const last = item._updatedAt ? new Date(item._updatedAt) : now;
+        const existing = slugToLastModified.get(slug);
+        if (!existing || last > existing) slugToLastModified.set(slug, last);
+    }
+
+    for (const item of categoryItems ?? []) {
+        const slug = item.slug?.current;
+        if (!slug) continue;
+        const last = item._updatedAt ? new Date(item._updatedAt) : now;
+        const existing = slugToLastModified.get(slug);
+        if (!existing || last > existing) slugToLastModified.set(slug, last);
+    }
+
+    const serviceUrls = Array.from(slugToLastModified.entries()).map(
+        ([slug, lastModified]) => ({
+            url: `${baseUrl}/services/${slug}`,
+            lastModified,
+            changeFrequency: 'weekly' as const,
+            priority: 0.8,
+        })
+    );
 
     const blogPostUrls = (postItems ?? []).flatMap((p) => {
         const slug = p.slug?.current;

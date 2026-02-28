@@ -113,6 +113,12 @@ export default function RootLayout({
     name: "CallTechCare",
     url: "https://www.calltechcare.com",
     image: "https://www.calltechcare.com/logo-og.png",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://www.calltechcare.com/logo-schema.png",
+      width: 512,
+      height: 512,
+    },
     description:
     "Local IT and in-home tech support for homes, seniors, and small businesses across South Florida, including TV mounting, WiFi troubleshooting, home security, smart home setup, and device support.",
     telephone: "+1-786-366-2729",
@@ -166,6 +172,16 @@ export default function RootLayout({
     paymentAccepted: ["Cash", "Credit Card", "Zelle"],
   };
 
+  const webSiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://www.calltechcare.com/#website",
+    url: "https://www.calltechcare.com",
+    name: "CallTechCare",
+    publisher: { "@id": "https://www.calltechcare.com/#business" },
+    inLanguage: "en-US",
+  };
+
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
@@ -190,6 +206,12 @@ export default function RootLayout({
           type="application/ld+json"
           suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+        />
+
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
         />
       </head>
 
