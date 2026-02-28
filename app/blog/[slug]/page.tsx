@@ -127,6 +127,10 @@ export default async function BlogPost({
     "@type": "BlogPosting",
     headline: post.metaTitle || post.title,
     description,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: [".post-summary", ".single-blog-body"],
+    },
     image: image ? [image] : undefined,
     datePublished: post.publishedAt,
     dateModified: post._updatedAt || post.publishedAt,
@@ -202,6 +206,8 @@ export default async function BlogPost({
           </Link>
 
           <h1 className="single-blog-title">{post.title}</h1>
+
+          <p className="post-summary sr-only">{description}</p>
 
           <p className="single-blog-meta">
             <span className="single-blog-metaItem single-blog-metaAuthor">

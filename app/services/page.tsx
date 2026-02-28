@@ -30,6 +30,46 @@ export default async function ServicesPage() {
     }
     `);
 
+    const pageUrl = "https://www.calltechcare.com/services";
+
+    const breadcrumbSchema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+            {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://www.calltechcare.com",
+            },
+            {
+                "@type": "ListItem",
+                position: 2,
+                name: "Services",
+                item: pageUrl,
+            },
+        ],
+    };
+
+    const servicesItemListSchema = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        itemListElement: (Array.isArray(services) ? services : [])
+            .map((service: any, index: number) => {
+                const slug = service?.slug?.current;
+                const title = typeof service?.title === "string" ? service.title : "";
+                if (!slug || !title) return null;
+                const url = `https://www.calltechcare.com/services/${slug}`;
+                return {
+                    "@type": "ListItem",
+                    position: index + 1,
+                    url,
+                    name: title,
+                };
+            })
+            .filter(Boolean),
+    };
+
     // Group services by category
     const servicesByCategory = services.reduce((acc: any, service: any) => {
         const categoryTitle = service.category?.title || "Other Services";
@@ -42,6 +82,16 @@ export default async function ServicesPage() {
 
     return (
         <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+            />
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesItemListSchema) }}
+            />
+
             {/* Hero Section */}
             <section className="services-list-hero">
                 <div className="services-list-hero-container">

@@ -47,6 +47,32 @@ export default function ContactFaqSection({ faqs = DEFAULT_FAQS }: { faqs?: FaqI
   const [query, setQuery] = useState("");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
+  const faqSchema = useMemo(() => {
+    const mainEntity = (faqs || [])
+      .map((item) => {
+        const q = String(item?.q || "").trim();
+        const a = String(item?.a || "").trim();
+        if (!q || !a) return null;
+        return {
+          "@type": "Question",
+          name: q,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: a,
+          },
+        };
+      })
+      .filter(Boolean);
+
+    if (mainEntity.length === 0) return null;
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity,
+    };
+  }, [faqs]);
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return faqs;
@@ -57,6 +83,14 @@ export default function ContactFaqSection({ faqs = DEFAULT_FAQS }: { faqs?: FaqI
 
   return (
     <div className="contact-faq">
+      {faqSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(faqSchema),
+          }}
+        />
+      ) : null}
       <header className="contact-faq-header">
         <h2 className="contact-faq-title">Frequently Asked Questions</h2>
         <p className="contact-faq-subtitle">Find quick answers to common questions</p>
