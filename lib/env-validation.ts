@@ -21,6 +21,9 @@ const requiredEnvVars = [
 
 const optionalEnvVars = [
   'FROM_EMAIL',
+  'EMAIL_TO',
+  'BCC_EMAIL',
+  'ORDER_NOTIFICATION_EMAIL',
   'OPENAI_API_KEY',
   'MAILCHIMP_API_KEY',
   'MAILCHIMP_SERVER_PREFIX',
