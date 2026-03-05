@@ -183,7 +183,8 @@ export async function sendCustomerOrderConfirmationEmail(params: {
   const address = order?.address || {};
   const schedule = order?.schedule || {};
 
-  const subject = `Your order confirmation${orderId ? ` — ${orderId}` : ""}`;
+  const orderNumber = String(order?.orderNumber || "").trim();
+  const subject = `Your order confirmation${orderNumber ? ` — #${escapeHtml(orderNumber)}` : orderId ? ` — ${orderId}` : ""}`;
 
   const html = `
     <h2>Thanks for your order, ${customerName}!</h2>

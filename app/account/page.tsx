@@ -41,6 +41,7 @@ type Order = {
         title: string;
         price: number;
         basePrice?: number;
+        navDescription?: string;
         options?: { name: string; price: number }[];
     }[];
 
@@ -107,6 +108,34 @@ function formatTimeDisplay(time: string | undefined): string {
     return t;
 }
 
+function getFallbackOrderNumber(order: Pick<Order, "_id" | "orderNumber"> | null | undefined): string {
+    const explicit = String(order?.orderNumber || "").trim();
+    if (explicit) return explicit;
+    const id = String(order?._id || "").trim();
+    if (!id) return "—";
+    return id.slice(-6).toUpperCase();
+}
+
+function getFallbackServiceDescription(order: Order | null | undefined): string {
+    const explicit = String(order?.serviceDescription || "").trim();
+    if (explicit) return explicit;
+
+    const items = Array.isArray(order?.items) ? order!.items : [];
+    const firstNav = String(items?.[0]?.navDescription || "").trim();
+    if (firstNav) return firstNav;
+    const formatted = items
+        .map((it) => {
+            const title = String(it?.title || "").trim();
+            if (!title) return "";
+            const options = Array.isArray(it?.options) ? it.options : [];
+            const optNames = options.map((o) => String(o?.name || "").trim()).filter(Boolean);
+            return optNames.length ? `${title} (Add-ons: ${optNames.join(", ")})` : title;
+        })
+        .filter(Boolean);
+
+    return formatted.length ? formatted.join(" • ") : "—";
+}
+
 function getLocalISODate(date: Date = new Date()): string {
     const d = new Date(date);
     d.setHours(0, 0, 0, 0);
@@ -126,25 +155,46 @@ function isISODateInPast(dateIso: string | undefined): boolean {
 }
 
 function statusPillClasses(order: Order): string {
-    if (order.refunded) return "accountStatusPillRose";
-    const s = normalizeStatus(order.status);
-    if (s.includes("complete") || s.includes("paid")) {
-        return "accountStatusPillEmerald";
-    }
-    if (s.includes("schedule")) return "accountStatusPillSky";
-    if (s.includes("progress") || s.includes("in progress") || s.includes("processing")) {
-        return "accountStatusPillAmber";
-    }
-    if (s.includes("cancel")) return "accountStatusPillSlate";
+    const display = getDisplayStatus(order);
+    if (display === "completed") return "accountStatusPillEmerald";
+    if (display === "scheduled") return "accountStatusPillSky";
+    if (display === "in_progress") return "accountStatusPillAmber";
+    if (display === "refunded") return "accountStatusPillViolet";
+    if (display === "failed") return "accountStatusPillRose";
+    if (display === "canceled") return "accountStatusPillRose";
     return "accountStatusPillSlate";
 }
 
 function statusLabel(order: Order): string {
-    if (order.refunded) return "Refunded";
+    const display = getDisplayStatus(order);
+    if (display === "completed") return "Completed";
+    if (display === "scheduled") return "Scheduled";
+    if (display === "in_progress") return "In Progress";
+    if (display === "refunded") return "Refunded";
+    if (display === "canceled") return "Canceled";
+    if (display === "failed") return "Failed";
+    return "Pending";
+}
+
+function getDisplayStatus(
+    order: Order
+): "pending" | "scheduled" | "in_progress" | "completed" | "refunded" | "canceled" | "failed" {
     const s = normalizeStatus(order.status);
-    if (!s) return "—";
-    if (s === "paid") return "Completed";
-    return s.replace(/\b\w/g, (c) => c.toUpperCase());
+    const hasSchedule = Boolean(order.schedule?.date || order.schedule?.time);
+
+    if (order.refunded || s.includes("refund")) return "refunded";
+    if (s.includes("cancel") || s.includes("cancelled")) return "canceled";
+    if (s.includes("failed")) return "failed";
+    if (s.includes("unpaid") || s.includes("incomplete expired") || s.includes("incomplete_expired")) return "failed";
+    if (s.includes("past due") || s.includes("past_due")) return "in_progress";
+
+    if (Boolean(order.completedAt) || s.includes("complete")) return "completed";
+    if (s.includes("schedule") || (s === "paid" && hasSchedule)) return "scheduled";
+
+    if (s.includes("pending")) return "pending";
+
+    // Everything else (paid without a schedule, subscription states, processing states, etc)
+    return "in_progress";
 }
 
 
@@ -165,12 +215,10 @@ export default function AccountPage() {
         };
 
         for (const order of visible) {
-            const s = normalizeStatus(order.status);
-            if (s.includes("complete") || s.includes("paid")) counts.completed += 1;
-            else if (s.includes("schedule")) counts.scheduled += 1;
-            else if (s.includes("progress") || s.includes("processing") || s.includes("in progress")) {
-                counts.inProgress += 1;
-            }
+            const display = getDisplayStatus(order);
+            if (display === "completed") counts.completed += 1;
+            else if (display === "scheduled") counts.scheduled += 1;
+            else if (display === "in_progress") counts.inProgress += 1;
         }
 
         return counts;
@@ -292,13 +340,10 @@ function OrdersTab({
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [isRescheduling, setIsRescheduling] = useState(false);
     const [rescheduleSaving, setRescheduleSaving] = useState(false);
+    const [cancelSaving, setCancelSaving] = useState(false);
     const [rescheduleDate, setRescheduleDate] = useState("");
     const [rescheduleTime, setRescheduleTime] = useState("");
     const scheduleCardRef = useRef<HTMLDivElement | null>(null);
-
-    if (loading) return <Loader message="Loading your orders..." variant="inline" />;
-    const visibleOrders = orders.filter((o) => !o.deleted);
-    if (visibleOrders.length === 0) return <p className="accountEmptyState">You have no orders yet.</p>;
 
     const closeModal = () => setSelectedOrder(null);
 
@@ -306,6 +351,7 @@ function OrdersTab({
         setSelectedOrder(order);
         setIsRescheduling(false);
         setRescheduleSaving(false);
+        setCancelSaving(false);
         const initialDate = order.schedule?.date || "";
         setRescheduleDate(isISODateInPast(initialDate) ? getLocalISODate() : initialDate);
         setRescheduleTime(order.schedule?.time || "");
@@ -333,6 +379,10 @@ function OrdersTab({
         // For rescheduling, allow selecting times more freely; backend can enforce stricter rules later if needed.
         return isTimeSlotAvailableForDate({ dateIso: rescheduleDate, startHour, minimumHoursAhead: 0 });
     };
+
+    const visibleOrders = orders.filter((o) => !o.deleted);
+    if (loading) return <Loader message="Loading your orders..." variant="inline" />;
+    if (visibleOrders.length === 0) return <p className="accountEmptyState">You have no orders yet.</p>;
 
     const StatCard = ({
         label,
@@ -371,7 +421,7 @@ function OrdersTab({
                 {visibleOrders.map((order) => {
                     const primaryTitle = order.items?.[0]?.title || order.serviceDescription || "—";
 
-                    const orderNumber = order.orderNumber || "—";
+                    const orderNumber = getFallbackOrderNumber(order);
 
                     const dateLabel = order.schedule?.date
                         ? formatISODateOnly(order.schedule.date)
@@ -421,12 +471,10 @@ function OrdersTab({
                                                 <MapPin className="accountMetaIcon" aria-hidden="true" />
                                                 <span className="truncate">{addressLabel}</span>
                                             </div>
-                                            {order.technicianName ? (
-                                                <div className="accountOrderMetaRow">
-                                                    <User className="accountMetaIcon" aria-hidden="true" />
-                                                    <span className="truncate">Technician: {order.technicianName}</span>
-                                                </div>
-                                            ) : null}
+                                            <div className="accountOrderMetaRow">
+                                                <User className="accountMetaIcon" aria-hidden="true" />
+                                                <span className="truncate">Technician: {order.technicianName || "Wilber Banos"}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -470,7 +518,7 @@ function OrdersTab({
                                                 {selectedOrder.items?.[0]?.title || selectedOrder.serviceDescription || "—"}
                                             </Dialog.Title>
                                             <p className="accountModalSubtitle">
-                                                Order #{selectedOrder.orderNumber || "—"}
+                                                Order #{getFallbackOrderNumber(selectedOrder)}
                                             </p>
                                         </div>
                                     </div>
@@ -489,19 +537,83 @@ function OrdersTab({
                                     <div className="accountRowBetween">
                                         <p className="accountFieldLabel">Status</p>
                                         <span className={clsx("accountStatusPill", statusPillClasses(selectedOrder))}>
-                                            {normalizeStatus(selectedOrder.status).includes("schedule") ? (
+                                            {getDisplayStatus(selectedOrder) === "scheduled" ? (
                                                 <Calendar className="accountPillIcon" aria-hidden="true" />
                                             ) : null}
                                             {statusLabel(selectedOrder)}
                                         </span>
                                     </div>
 
+                                    {(() => {
+                                        const display = getDisplayStatus(selectedOrder);
+                                        const canCancel = display === "scheduled" || display === "pending";
+                                        if (!canCancel) return null;
+
+                                        return (
+                                            <div className="accountRowBetween">
+                                                <p className="accountFieldLabel">Actions</p>
+                                                <button
+                                                    type="button"
+                                                    disabled={cancelSaving}
+                                                    className={clsx(
+                                                        "accountBtn",
+                                                        "accountBtnSm",
+                                                        "accountBtnSecondary",
+                                                        "accountBtnDisabled"
+                                                    )}
+                                                    onClick={async () => {
+                                                        if (!selectedOrder) return;
+                                                        const ok = confirm("Cancel this order? This cannot be undone.");
+                                                        if (!ok) return;
+
+                                                        try {
+                                                            setCancelSaving(true);
+                                                            const res = await fetch(`/api/orders/${selectedOrder._id}`,
+                                                                {
+                                                                    method: "PATCH",
+                                                                    headers: { "Content-Type": "application/json" },
+                                                                    body: JSON.stringify({ action: "cancel" }),
+                                                                    credentials: "include",
+                                                                }
+                                                            );
+                                                            const data = await res.json();
+                                                            if (!res.ok) {
+                                                                alert(data?.error || "Could not cancel this order.");
+                                                                setCancelSaving(false);
+                                                                return;
+                                                            }
+
+                                                            const updated = (data?.order || null) as Order | null;
+                                                            if (updated) {
+                                                                onOrderUpdated(updated);
+                                                                setSelectedOrder(updated);
+                                                            }
+
+                                                            setIsRescheduling(false);
+                                                            setCancelSaving(false);
+                                                        } catch (err) {
+                                                            console.error("Cancel failed", err);
+                                                            alert("Something went wrong while canceling.");
+                                                            setCancelSaving(false);
+                                                        }
+                                                    }}
+                                                >
+                                                    {cancelSaving ? "Canceling..." : "Cancel Order"}
+                                                </button>
+                                            </div>
+                                        );
+                                    })()}
+
                                     <div className="accountCard">
                                         <div className="accountCardHeader">
                                             <Wrench className="accountMetaIcon" aria-hidden="true" />
                                             <p className="accountCardTitle">Service Details</p>
                                         </div>
-                                        <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{selectedOrder.serviceDescription || "—"}</p>
+                                        {selectedOrder.items?.[0]?.navDescription ? (
+                                            <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{selectedOrder.items[0].navDescription}</p>
+                                        ) : (
+                                            <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{getFallbackServiceDescription(selectedOrder)}</p>
+                                        )}
                                     </div>
 
                                     <div className="accountTwoColGrid">
@@ -666,7 +778,7 @@ function OrdersTab({
                                         <div className="accountTechRow">
                                             <div>
                                                 <p className="accountTechName">
-                                                    {selectedOrder.technicianName || "—"}
+                                                    {selectedOrder.technicianName || "Wilber Banos"}
                                                 </p>
                                                 <p className="accountTechPhone">
                                                     {selectedOrder.technicianPhone || ""}
@@ -701,7 +813,7 @@ function OrdersTab({
                                             </div>
                                             <div className="accountPaymentRow">
                                                 <p className="accountBodyText">
-                                                    Credit Card {selectedOrder.paymentLast4 ? `****${selectedOrder.paymentLast4}` : ""}
+                                                    Credit Card {selectedOrder.paymentLast4 ? `****${selectedOrder.paymentLast4}` : "—"}
                                                 </p>
                                                 <p className="accountPaymentAmount">${selectedOrder.total.toFixed(0)}</p>
                                             </div>
@@ -712,13 +824,13 @@ function OrdersTab({
                                                 <ShieldCheck className="accountMetaIcon" aria-hidden="true" />
                                                 <p className="accountCardTitle">Warranty</p>
                                             </div>
-                                            <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{selectedOrder.warrantyText || "—"}</p>
+                                            <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{selectedOrder.warrantyText || "90-Day Warranty"}</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="accountModalFooter">
-                                    {normalizeStatus(selectedOrder.status).includes("schedule") ? (
+                                    {getDisplayStatus(selectedOrder) === "scheduled" ? (
                                         <div className="accountFooterGrid">
                                             <button
                                                 type="button"

@@ -26,6 +26,7 @@ type CartItem = {
   id: string;
   slug: string;
   title: string;
+  navDescription?: string;
   basePrice?: number;
   price?: number;
   options?: CartOption[];
@@ -265,8 +266,8 @@ export async function POST(req: Request) {
     ------------------------------------------- */
     const updatedItems: CartItem[] = await Promise.all(
       cart.items.map(async (item: CartItem) => {
-        const sanityService = await sanity.fetch<{ price?: number }>(
-          `*[_type == "service" && slug.current == $slug][0]{ price }`,
+        const sanityService = await sanity.fetch<{ price?: number; navDescription?: string }>(
+          `*[_type == "service" && slug.current == $slug][0]{ price, navDescription }`,
           { slug: item.slug }
         );
 
@@ -281,6 +282,7 @@ export async function POST(req: Request) {
           id: item.id,
           slug: item.slug,
           title: item.title,
+          navDescription: sanityService?.navDescription ?? item.navDescription ?? undefined,
           basePrice: realBase,
           price: realBase + optionsTotal,
           options: item.options ?? [],

@@ -8,6 +8,7 @@ const OptionSchema = new Schema({
 const OrderItemSchema = new Schema({
   slug: { type: String, required: true },
   title: { type: String, required: true },
+  navDescription: { type: String, default: null },
   basePrice: { type: Number, required: true },
   price: { type: Number, required: true },
   options: [OptionSchema],
@@ -35,7 +36,14 @@ const OrderSchema = new Schema(
     stripeSessionId: { type: String },
     stripeSubscriptionId: { type: String, default: null },
     email: { type: String },
+    orderNumber: { type: String, default: null },
     confirmationEmailSentAt: { type: Date, default: null },
+    technicianName: { type: String, default: null },
+    technicianPhone: { type: String, default: null },
+    serviceDescription: { type: String, default: null },
+    notes: { type: String, default: null },
+    paymentLast4: { type: String, default: null },
+    warrantyText: { type: String, default: null },
     items: { type: [OrderItemSchema], default: [] },
     total: { type: Number, required: true },
     quantity: { type: Number, required: true },
@@ -81,5 +89,14 @@ const OrderSchema = new Schema(
   },
   { timestamps: true }
 );
+
+OrderSchema.pre("save", function (next) {
+  const doc = this as any;
+  if (!doc.orderNumber) {
+    const id = String(doc._id || "");
+    doc.orderNumber = id ? id.slice(-6).toUpperCase() : null;
+  }
+  next();
+});
 
 export const Order = models.Order || model("Order", OrderSchema);

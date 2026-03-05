@@ -97,15 +97,7 @@ export async function PATCH(
         }
 
         const body = await req.json().catch(() => null);
-        const date = typeof body?.date === "string" ? body.date.trim() : "";
-        const time = typeof body?.time === "string" ? body.time.trim() : "";
-
-        if (!date || !time) {
-            return NextResponse.json(
-                { error: "Missing required fields: date, time" },
-                { status: 400 }
-            );
-        }
+        const action = typeof body?.action === "string" ? body.action.trim().toLowerCase() : "";
 
         await connectDB();
 
@@ -121,9 +113,80 @@ export async function PATCH(
             return NextResponse.json({ error: "Forbidden" }, { status: 403 });
         }
 
+        const normalizeStatus = (status: unknown): string =>
+            String(status || "")
+                .trim()
+                .toLowerCase()
+                .replace(/[_-]+/g, " ");
+
+        const status = normalizeStatus((existing as any).status);
+        const hasSchedule = Boolean((existing as any)?.schedule?.date || (existing as any)?.schedule?.time);
+
+        // Cancel order
+        if (action === "cancel") {
+            if (Boolean((existing as any).isSubscription)) {
+                return NextResponse.json(
+                    { error: "Subscription orders must be canceled from subscription management." },
+                    { status: 400 }
+                );
+            }
+
+            if (Boolean((existing as any).refunded) || status.includes("refund")) {
+                return NextResponse.json({ error: "This order is already refunded." }, { status: 400 });
+            }
+
+            if (status.includes("cancel")) {
+                return NextResponse.json({ error: "This order is already canceled." }, { status: 400 });
+            }
+
+            if (Boolean((existing as any).completedAt) || status.includes("complete")) {
+                return NextResponse.json(
+                    { error: "Completed orders cannot be canceled." },
+                    { status: 400 }
+                );
+            }
+
+            // Only allow canceling when the order is pending or scheduled (paid + scheduled also allowed).
+            const cancelable =
+                status.includes("pending") || status.includes("schedule") || (status === "paid" && hasSchedule);
+            if (!cancelable) {
+                return NextResponse.json(
+                    { error: "Only pending or scheduled orders can be canceled." },
+                    { status: 400 }
+                );
+            }
+
+            const updated = (await Order.findOneAndUpdate(
+                { _id: orderId },
+                {
+                    $set: {
+                        status: "canceled",
+                        deleted: false,
+                    },
+                },
+                { new: true, runValidators: false }
+            ).lean()) as any;
+
+            if (!updated) {
+                return NextResponse.json({ error: "Order not found" }, { status: 404 });
+            }
+
+            return NextResponse.json({ order: updated });
+        }
+
+        // Reschedule order (default PATCH behavior)
+        const date = typeof body?.date === "string" ? body.date.trim() : "";
+        const time = typeof body?.time === "string" ? body.time.trim() : "";
+
+        if (!date || !time) {
+            return NextResponse.json(
+                { error: "Missing required fields: date, time" },
+                { status: 400 }
+            );
+        }
+
         // Only allow rescheduling of scheduled orders.
-        const status = typeof (existing as any).status === "string" ? (existing as any).status.toLowerCase() : "";
-        if (!status.includes("schedule")) {
+        if (!status.includes("schedule") && !(status === "paid" && hasSchedule)) {
             return NextResponse.json(
                 { error: "Only scheduled orders can be rescheduled." },
                 { status: 400 }
