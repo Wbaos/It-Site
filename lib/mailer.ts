@@ -258,3 +258,99 @@ export async function sendResetEmail(to: string, resetUrl: string) {
 
   return transporter.sendMail(mailOptions);
 }
+
+export async function sendDiscountCodeEmail(params: {
+  to: string;
+  code: string;
+  discountType: "percentage" | "flat";
+  value: number;
+  source: string;
+}) {
+  const to = String(params.to || "").trim();
+  if (!to) {
+    return { ok: false as const, skipped: true as const, reason: "Missing to" };
+  }
+
+  const code = String(params.code || "").trim().toUpperCase();
+  const discountType = params.discountType === "flat" ? "flat" : "percentage";
+  const valueRaw = Number(params.value);
+  const value = Number.isFinite(valueRaw) ? Math.max(0, valueRaw) : 0;
+  const valueLabel = discountType === "flat" ? `$${formatMoney(value)} off` : `${Math.min(100, Math.max(0, value))}% off`;
+
+  const fromEmailRaw = String(
+    process.env.FROM_EMAIL ||
+      (process.env.EMAIL_USER ? `CallTechCare <${process.env.EMAIL_USER}>` : "") ||
+      "CallTechCare <support@calltechcare.com>"
+  ).trim();
+
+  const baseUrl = String(process.env.NEXT_PUBLIC_BASE_URL || "https://www.calltechcare.com").trim();
+  const subject = `Your discount code — ${valueLabel}`;
+
+  const html = `
+    <div style="background:#f8fafc; padding:24px 12px; font-family:Arial, sans-serif; color:#0b1220;">
+      <div style="max-width:520px; margin:0 auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:14px; overflow:hidden;">
+        <div style="padding:18px 18px 14px 18px; background:#0b1220; color:#ffffff;">
+          <div style="font-size:12px; letter-spacing:1.2px; opacity:0.9;">CALLTECHCARE</div>
+          <div style="font-size:22px; font-weight:800; line-height:1.2; margin-top:8px;">Here’s your ${escapeHtml(valueLabel)} code</div>
+          <div style="font-size:13px; opacity:0.9; margin-top:6px;">Use this code at checkout to save on your first service.</div>
+        </div>
+
+        <div style="padding:18px;">
+          <div style="background:#f1f5f9; border:1px solid #e2e8f0; border-radius:12px; padding:14px 14px; text-align:center;">
+            <div style="font-size:11px; letter-spacing:1.4px; color:#334155; font-weight:700;">YOUR DISCOUNT CODE</div>
+            <div style="font-size:22px; font-weight:900; letter-spacing:1px; margin-top:8px;">${escapeHtml(code)}</div>
+            <div style="font-size:12px; color:#475569; margin-top:8px;">Applies ${escapeHtml(valueLabel)} your first service.</div>
+          </div>
+
+          <div style="margin-top:16px; font-size:14px; color:#0b1220;">Ready to book? Click below:</div>
+
+          <div style="margin-top:12px;">
+            <a href="${escapeHtml(baseUrl)}" target="_blank" rel="noreferrer"
+              style="display:inline-block; background:#0b1220; color:#ffffff; text-decoration:none; padding:12px 16px; border-radius:10px; font-weight:800; font-size:14px;">
+              Book a service
+            </a>
+          </div>
+
+          <div style="margin-top:14px; font-size:12px; color:#64748b;">
+            Or copy/paste this link: <a href="${escapeHtml(baseUrl)}" target="_blank" rel="noreferrer" style="color:#0b1220;">${escapeHtml(baseUrl)}</a>
+          </div>
+
+          <p style="margin-top:16px; color:#64748b; font-size:12px;">Source: ${escapeHtml(params.source)}</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Prefer Resend if configured
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      await resend.emails.send({
+        from: fromEmailRaw,
+        to: [to],
+        subject,
+        html,
+      });
+      return { ok: true as const, skipped: false as const, provider: "resend" as const };
+    } catch (err) {
+      logger.error("Discount code email failed (Resend)", err, { to, source: params.source });
+    }
+  }
+
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    return {
+      ok: false as const,
+      skipped: true as const,
+      reason: "Missing EMAIL_USER/EMAIL_PASS (and RESEND_API_KEY not usable)",
+    };
+  }
+
+  await transporter.sendMail({
+    from: fromEmailRaw,
+    to,
+    subject,
+    html,
+  });
+
+  return { ok: true as const, skipped: false as const, provider: "nodemailer" as const };
+}

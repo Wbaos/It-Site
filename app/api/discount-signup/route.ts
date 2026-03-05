@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
 
 import { connectDB } from "@/lib/mongodb";
-import { transporter } from "@/lib/mailer";
+import { sendDiscountCodeEmail } from "@/lib/mailer";
 import { syncCustomerToMailchimp } from "@/lib/mailchimp";
 import { logger } from "@/lib/logger";
 import { DiscountLead } from "@/app/models/DiscountLead";
+import { sanity } from "@/lib/sanity";
 
 const DISCOUNT_POPUP_SIGNED_UP_COOKIE = "ctc_discount_popup_signed_up";
 
@@ -29,15 +29,33 @@ function normalizeCode(code: string): string {
   return String(code || "").trim().toUpperCase();
 }
 
-function getDiscountCode(): string {
-  const code = String(process.env.DISCOUNT_POPUP_CODE || "MYFIRSTSERVICE#-10");
-  return normalizeCode(code);
-}
+type SanityPromo = {
+  code?: string;
+  discountType?: "percentage" | "flat";
+  value?: number;
+};
 
-function getDiscountPercent(): number {
-  const raw = Number(process.env.DISCOUNT_POPUP_PERCENT || 10);
-  if (!Number.isFinite(raw)) return 10;
-  return Math.min(100, Math.max(0, raw));
+async function getActivePromoFromSanity(): Promise<
+  | { ok: true; promo: { code: string; discountType: "percentage" | "flat"; value: number } }
+  | { ok: false; error: string }
+> {
+  try {
+    const promo = await sanity.fetch<SanityPromo>(
+      `*[_type == "promoCode" && active == true && (!defined(expires) || expires > now())] | order(_createdAt desc)[0]{ code, discountType, value }`
+    );
+
+    const code = String(promo?.code || "").trim().toUpperCase();
+    const discountType = promo?.discountType === "flat" ? "flat" : "percentage";
+    const value = Number(promo?.value ?? 0);
+
+    if (!code) return { ok: false, error: "No active promo code found" };
+    if (!Number.isFinite(value) || value <= 0) return { ok: false, error: "Promo value is invalid" };
+
+    return { ok: true, promo: { code, discountType, value } };
+  } catch (err) {
+    logger.error("Failed to fetch promo from Sanity (discount-signup)", err);
+    return { ok: false, error: "Failed to fetch promo" };
+  }
 }
 
 function canResend(lastSentAt?: Date | null): boolean {
@@ -84,65 +102,6 @@ export async function GET(req: Request) {
   }
 }
 
-async function sendDiscountEmail(to: string, code: string, percent: number) {
-  const safePercent = Number.isFinite(percent) ? Math.min(100, Math.max(0, percent)) : 10;
-  const subject = `Your ${safePercent}% discount code`;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.calltechcare.com";
-  const headline = `Here’s your ${safePercent}% off code`;
-
-  const html = `
-    <div style="background:#f8fafc; padding:24px 12px; font-family:Arial, sans-serif; color:#0b1220;">
-      <div style="max-width:520px; margin:0 auto; background:#ffffff; border:1px solid #e2e8f0; border-radius:14px; overflow:hidden;">
-        <div style="padding:18px 18px 14px 18px; background:#0b1220; color:#ffffff;">
-          <div style="font-size:12px; letter-spacing:1.2px; opacity:0.9;">CALLTECHCARE</div>
-          <div style="font-size:22px; font-weight:800; line-height:1.2; margin-top:8px;">${headline}</div>
-          <div style="font-size:13px; opacity:0.9; margin-top:6px;">Use this code at checkout to save on your first service.</div>
-        </div>
-
-        <div style="padding:18px;">
-          <div style="background:#f1f5f9; border:1px solid #e2e8f0; border-radius:12px; padding:14px 14px; text-align:center;">
-            <div style="font-size:11px; letter-spacing:1.4px; color:#334155; font-weight:700;">YOUR DISCOUNT CODE</div>
-            <div style="font-size:22px; font-weight:900; letter-spacing:1px; margin-top:8px;">${code}</div>
-            <div style="font-size:12px; color:#475569; margin-top:8px;">Applies ${safePercent}% off your first service.</div>
-          </div>
-
-          <div style="margin-top:16px; font-size:14px; color:#0b1220;">
-            Ready to book? Click below:
-          </div>
-
-          <div style="margin-top:12px;">
-            <a href="${baseUrl}" target="_blank" rel="noreferrer"
-              style="display:inline-block; background:#0b1220; color:#ffffff; text-decoration:none; padding:12px 16px; border-radius:10px; font-weight:800; font-size:14px;">
-              Book a service
-            </a>
-          </div>
-
-          <div style="margin-top:14px; font-size:12px; color:#64748b;">
-            Or copy/paste this link: <a href="${baseUrl}" target="_blank" rel="noreferrer" style="color:#0b1220;">${baseUrl}</a>
-          </div>
-
-          <div style="margin-top:18px; padding-top:14px; border-top:1px solid #e2e8f0; font-size:12px; color:#64748b;">
-            If you didn’t request this, you can ignore this email.
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  if (process.env.RESEND_API_KEY) {
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const from = process.env.FROM_EMAIL || "CallTechCare <support@calltechcare.com>";
-    await resend.emails.send({ from, to: [to], subject, html });
-    return;
-  }
-
-  const from = process.env.EMAIL_USER
-    ? `CallTechCare <${process.env.EMAIL_USER}>`
-    : "CallTechCare <support@calltechcare.com>";
-
-  await transporter.sendMail({ from, to, subject, html });
-}
-
 export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));
@@ -168,8 +127,18 @@ export async function POST(req: Request) {
     }
 
     const emailLower = email.toLowerCase();
-    const discountCode = getDiscountCode();
-    const discountPercent = getDiscountPercent();
+    const activePromo = await getActivePromoFromSanity();
+    if (!activePromo.ok) {
+      return NextResponse.json(
+        { ok: false, error: activePromo.error || "No active discount available" },
+        { status: 400 }
+      );
+    }
+
+    const discountCode = activePromo.promo.code;
+    const discountType = activePromo.promo.discountType;
+    const discountValue = activePromo.promo.value;
+    const discountPercent = discountType === "percentage" ? discountValue : 0;
 
     await connectDB();
 
@@ -215,6 +184,8 @@ export async function POST(req: Request) {
           consent,
           discountCode,
           discountPercent,
+          discountType,
+          discountValue,
         },
       },
       { upsert: true }
@@ -241,7 +212,13 @@ export async function POST(req: Request) {
     let emailSent = false;
     if (shouldSend) {
       try {
-        await sendDiscountEmail(email, discountCode, discountPercent);
+        await sendDiscountCodeEmail({
+          to: email,
+          code: discountCode,
+          discountType,
+          value: discountValue,
+          source: "discount-popup",
+        });
         emailSent = true;
         await DiscountLead.findOneAndUpdate(
           { emailLower },
@@ -260,7 +237,8 @@ export async function POST(req: Request) {
       mailchimpSynced,
       emailSent,
       discountCode,
-      discountPercent,
+      discountType,
+      value: discountValue,
     }, {
       headers: {
         "Set-Cookie": buildSignedUpCookie(),

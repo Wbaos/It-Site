@@ -311,14 +311,17 @@ export default function CheckoutClient() {
       });
 
       if (!res.ok) {
-        throw new Error(`Checkout failed with status ${res.status}`);
+        const data = await res.json().catch(() => ({}));
+        const message = String((data as any)?.error || "Checkout failed");
+        throw new Error(message);
       }
 
       const { url } = await res.json();
       if (url) router.push(url);
     } catch (err) {
       console.error("Checkout error:", err);
-      alert("Something went wrong with checkout.");
+      const message = err instanceof Error ? err.message : "Something went wrong with checkout.";
+      alert(message);
     } finally {
       setLoading(false);
     }

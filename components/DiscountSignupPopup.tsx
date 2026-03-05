@@ -15,6 +15,23 @@ const DISCOUNT_LEAD_API = "/api/discount-signup";
 const SUCCESS_AUTO_CLOSE_MS = 5000;
 const FALLBACK_CODE = "MYFIRSTSERVICE#-10";
 
+type DiscountType = "percentage" | "flat";
+type GtagFn = (...args: unknown[]) => void;
+
+function formatUsd(amount: number): string {
+  const safe = Number(amount);
+  if (!Number.isFinite(safe)) return "$0";
+  try {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: Number.isInteger(safe) ? 0 : 2,
+    }).format(safe);
+  } catch {
+    return `$${safe}`;
+  }
+}
+
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -91,6 +108,8 @@ export default function DiscountSignupPopup() {
   const [formStatus, setFormStatus] = useState<string | null>(null);
   const [issuedCode, setIssuedCode] = useState(FALLBACK_CODE);
   const [issuedPercent, setIssuedPercent] = useState(10);
+  const [issuedDiscountType, setIssuedDiscountType] = useState<DiscountType>("percentage");
+  const [issuedDiscountValue, setIssuedDiscountValue] = useState(10);
 
   const [emailCheckBusy, setEmailCheckBusy] = useState(false);
   const [emailTaken, setEmailTaken] = useState(false);
@@ -310,7 +329,21 @@ export default function DiscountSignupPopup() {
       }
 
       if (data?.discountCode) setIssuedCode(String(data.discountCode));
-      if (typeof data?.discountPercent === "number") setIssuedPercent(data.discountPercent);
+      if (data?.discountType === "flat" || data?.discountType === "percentage") {
+        setIssuedDiscountType(data.discountType);
+      }
+      if (typeof data?.value === "number" && Number.isFinite(data.value) && data.value > 0) {
+        setIssuedDiscountValue(data.value);
+        if (data?.discountType === "percentage") {
+          setIssuedPercent(data.value);
+        }
+      }
+      // Backward compatibility (older API shape)
+      if (typeof data?.discountPercent === "number" && Number.isFinite(data.discountPercent)) {
+        setIssuedDiscountType("percentage");
+        setIssuedDiscountValue(data.discountPercent);
+        setIssuedPercent(data.discountPercent);
+      }
 
       setCookie(DISCOUNT_POPUP_SIGNED_UP_COOKIE, "1", 365);
       setSignedUp(true);
@@ -321,11 +354,14 @@ export default function DiscountSignupPopup() {
         // ignore
       }
 
-      if (typeof window !== "undefined" && (window as any).gtag) {
-        (window as any).gtag("event", "generate_lead", {
-          event_category: "Discount Popup",
-          event_label: "10% Signup",
-        });
+      if (typeof window !== "undefined") {
+        const gtag = (window as unknown as { gtag?: GtagFn })?.gtag;
+        if (gtag) {
+          gtag("event", "generate_lead", {
+            event_category: "Discount Popup",
+            event_label: "10% Signup",
+          });
+        }
       }
 
       setStep("success");
@@ -591,7 +627,9 @@ export default function DiscountSignupPopup() {
               </div>
 
               <p className="discount-popup__successHint">
-                Use this code at checkout for {issuedPercent}% off your first service
+                {issuedDiscountType === "flat"
+                  ? `Use this code at checkout for ${formatUsd(issuedDiscountValue)} off your first service`
+                  : `Use this code at checkout for ${issuedPercent}% off your first service`}
               </p>
             </div>
           )}
