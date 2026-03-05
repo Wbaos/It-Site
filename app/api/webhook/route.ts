@@ -12,7 +12,10 @@ import { DiscountLead } from "@/app/models/DiscountLead";
 import { logger } from "@/lib/logger";
 import { syncCustomerToMailchimp } from "@/lib/mailchimp";
 import { sanity } from "@/lib/sanity";
-import { sendCompanyOrderNotificationEmail } from "@/lib/mailer";
+import {
+  sendCompanyOrderNotificationEmail,
+  sendCustomerOrderConfirmationEmail,
+} from "@/lib/mailer";
 
 function normalizeCode(code?: string | null): string {
   return String(code || "").trim().toUpperCase();
@@ -92,7 +95,29 @@ export async function POST(req: Request) {
 
       // Skip if order already exists
       const existingOrder = await Order.findOne({ stripeSessionId: session.id });
-      if (existingOrder) return NextResponse.json({ received: true });
+      if (existingOrder) {
+        if (!existingOrder.isSubscription && !existingOrder.confirmationEmailSentAt) {
+          try {
+            const result = await sendCustomerOrderConfirmationEmail({
+              order: existingOrder,
+              source: "webhook.checkout.session.completed.existing",
+            });
+            if (result.ok) {
+              await Order.findByIdAndUpdate(existingOrder._id, {
+                confirmationEmailSentAt: new Date(),
+              });
+            }
+          } catch (err) {
+            logger.error("Customer order confirmation failed (existing order)", err, {
+              source: "webhook.checkout.session.completed",
+              stripeSessionId: session.id,
+              orderId: String((existingOrder as any)?._id || ""),
+            });
+          }
+        }
+
+        return NextResponse.json({ received: true });
+      }
 
       const userId = session.metadata?.userId || null;
       const email =
@@ -169,6 +194,25 @@ export async function POST(req: Request) {
         });
       } catch (err) {
         logger.error("Company order notification failed", err, {
+          source: "webhook.checkout.session.completed",
+          stripeSessionId: session.id,
+          orderId: String((order as any)?._id || ""),
+        });
+      }
+
+      // Best-effort customer confirmation email (do not fail webhook)
+      try {
+        const result = await sendCustomerOrderConfirmationEmail({
+          order,
+          source: "webhook.checkout.session.completed",
+        });
+        if (result.ok) {
+          await Order.findByIdAndUpdate(order._id, {
+            confirmationEmailSentAt: new Date(),
+          });
+        }
+      } catch (err) {
+        logger.error("Customer order confirmation failed", err, {
           source: "webhook.checkout.session.completed",
           stripeSessionId: session.id,
           orderId: String((order as any)?._id || ""),
