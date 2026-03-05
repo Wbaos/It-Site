@@ -35,6 +35,7 @@ const OrderSchema = new Schema(
     stripeSessionId: { type: String },
     stripeSubscriptionId: { type: String, default: null },
     email: { type: String },
+    confirmationEmailSentAt: { type: Date, default: null },
     items: { type: [OrderItemSchema], default: [] },
     total: { type: Number, required: true },
     quantity: { type: Number, required: true },
