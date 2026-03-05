@@ -8,7 +8,6 @@ import { Order } from "@/app/models/Order";
 import { Notification } from "@/app/models/Notification";
 import { Cart } from "@/app/models/Cart";
 import { User } from "@/app/models/User"; // ⭐ REQUIRED
-import { DiscountLead } from "@/app/models/DiscountLead";
 import { logger } from "@/lib/logger";
 import { syncCustomerToMailchimp } from "@/lib/mailchimp";
 import { sanity } from "@/lib/sanity";
@@ -21,8 +20,10 @@ function normalizeCode(code?: string | null): string {
   return String(code || "").trim().toUpperCase();
 }
 
-function getDiscountPopupCode(): string {
-  return normalizeCode(process.env.DISCOUNT_POPUP_CODE || "MYFIRSTSERVICE#-10");
+function normalizeEmail(email?: string | null): { email: string | null; emailLower: string | null } {
+  const trimmed = String(email || "").trim();
+  if (!trimmed) return { email: null, emailLower: null };
+  return { email: trimmed, emailLower: trimmed.toLowerCase() };
 }
 
 function getMailchimpEnabled(): boolean {
@@ -143,30 +144,18 @@ export async function POST(req: Request) {
       }
 
       const userId = session.metadata?.userId || null;
-      const email =
+      const resolvedEmail =
         session.metadata?.email ||
         session.customer_details?.email ||
         session.customer_email ||
-        "unknown";
+        null;
+
+      const { email, emailLower } = normalizeEmail(resolvedEmail);
 
       // Redeem promo code only after successful payment
       try {
         const promoCode = normalizeCode(session.metadata?.promoCode || "");
-        const promoSource = String(session.metadata?.promoSource || "").trim();
-        const emailLower = String(email || "").trim().toLowerCase();
-
-        if (promoCode && promoSource === "discount-lead") {
-          await DiscountLead.findOneAndUpdate(
-            {
-              emailLower,
-              discountCode: getDiscountPopupCode(),
-              redeemedAt: { $exists: false },
-            },
-            { $set: { redeemedAt: new Date() } }
-          );
-        }
-
-        if (promoCode && promoSource === "sanity") {
+        if (promoCode) {
           const promo = await sanity.fetch(
             `*[_type == "promoCode" && code == $code][0]{ _id }`,
             { code: promoCode }
@@ -221,10 +210,19 @@ export async function POST(req: Request) {
 
       // Create order
 
+      const promoCode = normalizeCode(session.metadata?.promoCode || "") || null;
+      const promoTypeRaw = String(session.metadata?.promoType || "").trim();
+      const promoType = promoTypeRaw === "flat" || promoTypeRaw === "percentage" ? promoTypeRaw : null;
+      const promoValueRaw = Number(session.metadata?.promoValue ?? NaN);
+      const promoValue = Number.isFinite(promoValueRaw) ? promoValueRaw : null;
+      const promoSourceRaw = String(session.metadata?.promoSource || "").trim();
+      const promoSource = promoSourceRaw ? promoSourceRaw : null;
+
       const order = await Order.create({
         stripeSessionId: session.id,
         userId,
-        email,
+        email: email || "unknown",
+        emailLower,
         technicianName: defaultTechnicianName || null,
         technicianPhone: defaultTechnicianPhone,
         serviceDescription: serviceDescription || null,
@@ -238,6 +236,11 @@ export async function POST(req: Request) {
         contact: cart?.contact || {},
         address: cart?.address || {},
         schedule: cart?.schedule || {},
+
+        promoCode,
+        promoType,
+        promoValue,
+        promoSource,
       });
 
       // Best-effort company notification email (do not fail webhook)

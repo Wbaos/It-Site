@@ -4,9 +4,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { connectDB } from "@/lib/mongodb";
 import { Cart } from "@/app/models/Cart";
+import { Order } from "@/app/models/Order";
 import { getSessionId } from "@/lib/sessionId";
 import { sanity } from "@/lib/sanity";
-import { DiscountLead } from "@/app/models/DiscountLead";
 
 /* -------------------------------------------
    TYPES
@@ -41,44 +41,13 @@ function normalizeCode(code: string): string {
   return String(code || "").trim().toUpperCase();
 }
 
-function getDiscountPopupCode(): string {
-  return normalizeCode(String(process.env.DISCOUNT_POPUP_CODE || "MYFIRSTSERVICE#-10"));
-}
-
-function getDiscountPopupPercent(): number {
-  const raw = Number(process.env.DISCOUNT_POPUP_PERCENT || 10);
-  if (!Number.isFinite(raw)) return 10;
-  return Math.min(100, Math.max(0, raw));
+function normalizeEmail(email: string): string {
+  return String(email || "").trim().toLowerCase();
 }
 
 async function validatePromoCode(params: { code: string; email?: string }) {
   const normalized = normalizeCode(params.code);
-  const emailLower = String(params.email || "").trim().toLowerCase();
-
-  // 1) Shared popup one-time-per-customer code (validated by email)
-  const popupCode = getDiscountPopupCode();
-  if (normalized === popupCode) {
-    if (!emailLower) return { ok: false as const, error: "Missing email" };
-
-    const lead = await DiscountLead.findOne({
-      emailLower,
-      discountCode: popupCode,
-    })
-      .select({ redeemedAt: 1 })
-      .lean();
-
-    if (!lead) return { ok: false as const, error: "Promo code requires signup" };
-    if ((lead as any).redeemedAt) return { ok: false as const, error: "This code has already been used" };
-
-    return {
-      ok: true as const,
-      discountType: "percentage" as const,
-      value: getDiscountPopupPercent(),
-      source: "discount-lead" as const,
-    };
-  }
-
-  // 2) Sanity promo codes (validate only; usageCount increments in webhook)
+  // Sanity promo codes (validate only; usageCount increments in webhook)
   const promo = await sanity.fetch(
     `*[_type == "promoCode" && code == $code][0]`,
     { code: normalized }
@@ -88,6 +57,28 @@ async function validatePromoCode(params: { code: string; email?: string }) {
   if (!promo.active) return { ok: false as const, error: "Code is not active" };
   if (promo.expires && new Date(promo.expires) < new Date()) {
     return { ok: false as const, error: "Code has expired" };
+  }
+
+  // One-time-per-customer guard (by email)
+  if (params.email) {
+    const emailLower = normalizeEmail(params.email);
+    const alreadyUsed = Boolean(
+      await Order.exists({
+        emailLower,
+        promoCode: normalized,
+        isSubscription: false,
+        deleted: { $ne: true },
+        status: { $ne: "failed" },
+      })
+    );
+
+    if (alreadyUsed) {
+      return {
+        ok: false as const,
+        code: "PROMO_ALREADY_USED" as const,
+        error: "This promo code has already been used by this email.",
+      };
+    }
   }
 
   return {
@@ -365,7 +356,7 @@ export async function POST(req: Request) {
       metadata.promoCode = appliedPromo.code;
       metadata.promoType = appliedPromo.discountType;
       metadata.promoValue = String(appliedPromo.value);
-      metadata.promoSource = promoCode === getDiscountPopupCode() ? "discount-lead" : "sanity";
+      metadata.promoSource = "sanity";
     }
 
     const stripeSession = await stripe.checkout.sessions.create({

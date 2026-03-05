@@ -36,6 +36,7 @@ const OrderSchema = new Schema(
     stripeSessionId: { type: String },
     stripeSubscriptionId: { type: String, default: null },
     email: { type: String },
+    emailLower: { type: String, index: true },
     orderNumber: { type: String, default: null },
     confirmationEmailSentAt: { type: Date, default: null },
     technicianName: { type: String, default: null },
@@ -86,12 +87,20 @@ const OrderSchema = new Schema(
       date: String,
       time: String,
     },
+
+    promoCode: { type: String, default: null },
+    promoType: { type: String, default: null },
+    promoValue: { type: Number, default: null },
+    promoSource: { type: String, default: null },
   },
   { timestamps: true }
 );
 
 OrderSchema.pre("save", function (next) {
   const doc = this as any;
+  if (doc.email && !doc.emailLower) {
+    doc.emailLower = String(doc.email).trim().toLowerCase();
+  }
   if (!doc.orderNumber) {
     const id = String(doc._id || "");
     doc.orderNumber = id ? id.slice(-6).toUpperCase() : null;
