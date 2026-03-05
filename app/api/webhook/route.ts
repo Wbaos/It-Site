@@ -12,6 +12,7 @@ import { DiscountLead } from "@/app/models/DiscountLead";
 import { logger } from "@/lib/logger";
 import { syncCustomerToMailchimp } from "@/lib/mailchimp";
 import { sanity } from "@/lib/sanity";
+import { sendCompanyOrderNotificationEmail } from "@/lib/mailer";
 
 function normalizeCode(code?: string | null): string {
   return String(code || "").trim().toUpperCase();
@@ -159,6 +160,21 @@ export async function POST(req: Request) {
         schedule: cart?.schedule || {},
       });
 
+      // Best-effort company notification email (do not fail webhook)
+      try {
+        await sendCompanyOrderNotificationEmail({
+          order,
+          source: "webhook.checkout.session.completed",
+          kind: "one-time",
+        });
+      } catch (err) {
+        logger.error("Company order notification failed", err, {
+          source: "webhook.checkout.session.completed",
+          stripeSessionId: session.id,
+          orderId: String((order as any)?._id || ""),
+        });
+      }
+
       // Clear cart
       if (sessionId) {
         await Cart.findOneAndUpdate({ sessionId }, { items: [], promo: undefined });
@@ -256,7 +272,7 @@ export async function POST(req: Request) {
       if (existingOrder) return NextResponse.json({ received: true });
 
       // Create order
-      await Order.create({
+      const order = await Order.create({
         stripeSubscriptionId: sub.id,
         userId,
         email,
@@ -269,6 +285,21 @@ export async function POST(req: Request) {
         planInterval,
         nextPayment,
       });
+
+      // Best-effort company notification email (do not fail webhook)
+      try {
+        await sendCompanyOrderNotificationEmail({
+          order,
+          source: "webhook.customer.subscription.created",
+          kind: "subscription",
+        });
+      } catch (err) {
+        logger.error("Company order notification failed", err, {
+          source: "webhook.customer.subscription.created",
+          stripeSubscriptionId: sub.id,
+          orderId: String((order as any)?._id || ""),
+        });
+      }
 
       if (userId) {
         await Notification.create({
@@ -349,7 +380,7 @@ export async function POST(req: Request) {
         });
         if (existingOrder) return NextResponse.json({ received: true });
 
-        await Order.create({
+        const order = await Order.create({
           stripeSubscriptionId: sub.id,
           userId,
           email,
@@ -362,6 +393,21 @@ export async function POST(req: Request) {
           planInterval,
           nextPayment,
         });
+
+        // Best-effort company notification email (do not fail webhook)
+        try {
+          await sendCompanyOrderNotificationEmail({
+            order,
+            source: "webhook.invoice.payment_succeeded.subscription_create",
+            kind: "subscription",
+          });
+        } catch (err) {
+          logger.error("Company order notification failed", err, {
+            source: "webhook.invoice.payment_succeeded.subscription_create",
+            stripeSubscriptionId: sub.id,
+            orderId: String((order as any)?._id || ""),
+          });
+        }
 
         if (userId) {
           await Notification.create({
