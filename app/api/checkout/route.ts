@@ -41,11 +41,15 @@ function normalizeCode(code: string): string {
   return String(code || "").trim().toUpperCase();
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 function normalizeEmail(email: string): string {
   return String(email || "").trim().toLowerCase();
 }
 
-async function validatePromoCode(params: { code: string; email?: string }) {
+async function validatePromoCode(params: { code: string; email?: string; userId?: string }) {
   const normalized = normalizeCode(params.code);
   // Sanity promo codes (validate only; usageCount increments in webhook)
   const promo = await sanity.fetch(
@@ -59,24 +63,125 @@ async function validatePromoCode(params: { code: string; email?: string }) {
     return { ok: false as const, error: "Code has expired" };
   }
 
-  // One-time-per-customer guard (by email)
-  if (params.email) {
-    const emailLower = normalizeEmail(params.email);
-    const alreadyUsed = Boolean(
-      await Order.exists({
-        emailLower,
-        promoCode: normalized,
-        isSubscription: false,
-        deleted: { $ne: true },
-        status: { $ne: "failed" },
-      })
-    );
+  // One-time-per-customer guard
+  // Prefer matching by authenticated userId (stable), else by email.
+  {
+    const queryBase = {
+      promoCode: normalized,
+      isSubscription: false,
+      deleted: { $ne: true },
+      status: { $in: ["paid", "refunded"] },
+    } as const;
+
+    const userId = String(params.userId || "").trim();
+    const email = String(params.email || "").trim();
+    const emailLower = email ? normalizeEmail(email) : "";
+    const emailRegex = email ? new RegExp(`^${escapeRegExp(email)}$`, "i") : null;
+
+    const emailOwnerFilter = emailLower
+      ? ({
+          $or: [
+            { emailLower },
+            ...(emailRegex ? [{ email: emailRegex }, { "contact.email": emailRegex }] : []),
+          ],
+        } as const)
+      : null;
+
+    const ownerFilters: Array<Record<string, unknown>> = [];
+    if (userId) ownerFilters.push({ userId });
+    // If logged-in now, still check by email to catch previous guest orders.
+    if (emailOwnerFilter) ownerFilters.push(emailOwnerFilter as unknown as Record<string, unknown>);
+
+    let alreadyUsed = false;
+    for (const ownerFilter of ownerFilters) {
+      alreadyUsed = Boolean(await Order.exists({ ...queryBase, ...ownerFilter }));
+      if (alreadyUsed) break;
+    }
+
+    // Backfill: some older orders may be missing promo fields even though Stripe has them.
+    if (!alreadyUsed && ownerFilters.length) {
+      for (const ownerFilter of ownerFilters) {
+        const candidates = (await Order.find({
+          ...ownerFilter,
+          isSubscription: false,
+          deleted: { $ne: true },
+          status: { $in: ["paid", "refunded"] },
+          stripeSessionId: { $type: "string" },
+          $or: [{ promoCode: null }, { promoCode: { $exists: false } }],
+        })
+          .sort({ createdAt: -1 })
+          .limit(12)
+          .select({ stripeSessionId: 1, email: 1, emailLower: 1, contact: 1 })
+          .lean()) as Array<{
+          _id: unknown;
+          stripeSessionId?: string;
+          email?: string;
+          emailLower?: string;
+          contact?: { email?: string };
+        }>;
+
+        for (const candidate of candidates) {
+          const stripeSessionId = String(candidate?.stripeSessionId || "").trim();
+          if (!stripeSessionId) continue;
+
+          try {
+            const stripeSession = (await stripe.checkout.sessions.retrieve(
+              stripeSessionId
+            )) as Stripe.Checkout.Session;
+            const stripePromoCode = normalizeCode(
+              String(stripeSession?.metadata?.promoCode || "")
+            );
+            if (!stripePromoCode) continue;
+
+            const promoTypeRaw = String(
+              stripeSession?.metadata?.promoType || ""
+            ).trim();
+            const promoType =
+              promoTypeRaw === "flat" || promoTypeRaw === "percentage"
+                ? promoTypeRaw
+                : null;
+            const promoValueRaw = Number(stripeSession?.metadata?.promoValue ?? NaN);
+            const promoValue = Number.isFinite(promoValueRaw) ? promoValueRaw : null;
+            const promoSourceRaw = String(
+              stripeSession?.metadata?.promoSource || ""
+            ).trim();
+            const promoSource = promoSourceRaw || null;
+
+            const updates: Record<string, unknown> = {
+              promoCode: stripePromoCode,
+              promoType,
+              promoValue,
+              promoSource,
+            };
+
+            const candidateEmail = String(
+              candidate?.email ||
+                candidate?.contact?.email ||
+                stripeSession?.metadata?.email ||
+                ""
+            ).trim();
+            if (candidateEmail) updates.emailLower = normalizeEmail(candidateEmail);
+
+            await Order.updateOne({ _id: candidate._id }, { $set: updates });
+
+            if (stripePromoCode === normalized) {
+              alreadyUsed = true;
+              break;
+            }
+          } catch {
+            // ignore Stripe lookup errors for backfill
+          }
+        }
+
+        if (alreadyUsed) break;
+      }
+    }
 
     if (alreadyUsed) {
       return {
         ok: false as const,
         code: "PROMO_ALREADY_USED" as const,
-        error: "This promo code has already been used by this email.",
+        error: "This promo code has already been used and can’t be applied again.",
       };
     }
   }
@@ -223,7 +328,11 @@ export async function POST(req: Request) {
 
     const promoCode = normalizeCode(String((cart as any)?.promo?.code || ""));
     if (promoCode) {
-      const validated = await validatePromoCode({ code: promoCode, email });
+      const validated = await validatePromoCode({
+        code: promoCode,
+        email,
+        userId: session?.user?.id,
+      });
       if (!validated.ok) {
         return NextResponse.json(
           { error: validated.error || "Promo code is invalid" },

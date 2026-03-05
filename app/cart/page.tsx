@@ -20,6 +20,7 @@ export default function CartPage() {
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState<any>(null);
   const [promoError, setPromoError] = useState("");
+  const [cartEmail, setCartEmail] = useState<string>("");
 
   useEffect(() => {
     const load = async () => {
@@ -27,6 +28,7 @@ export default function CartPage() {
         const res = await fetch("/api/cart", { credentials: "include" });
         if (!res.ok) return;
         const data = await res.json();
+        if (data?.contact?.email) setCartEmail(String(data.contact.email));
         if (data?.promo?.code) {
           setPromoCode(String(data.promo.code));
           setAppliedPromo(data.promo);
@@ -50,7 +52,7 @@ export default function CartPage() {
     const res = await fetch("/api/promo/validate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code: normalized }),
+      body: JSON.stringify({ code: normalized, email: cartEmail || undefined }),
     });
 
     const data = await res.json();
