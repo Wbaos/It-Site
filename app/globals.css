@@ -6883,6 +6883,14 @@ main {
   background: rgba(255, 255, 255, 0.15);
 }
 
+.promo-error {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.2;
+  color: #fca5a5;
+  word-break: break-word;
+}
+
 
 @media (max-width: 1050px) {
   .cart-container {
