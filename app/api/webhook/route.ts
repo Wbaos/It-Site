@@ -50,6 +50,29 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-08-27.basil",
 });
 
+function buildServiceDescriptionFromItems(items: any[]): string {
+  if (!Array.isArray(items) || items.length === 0) return "";
+
+  const parts: string[] = [];
+  for (const item of items) {
+    const title = String(item?.navDescription || item?.title || item?.slug || "").trim();
+    if (!title) continue;
+
+    const options = Array.isArray(item?.options) ? item.options : [];
+    const optionNames = options
+      .map((opt: any) => String(opt?.name || "").trim())
+      .filter(Boolean);
+
+    if (optionNames.length) {
+      parts.push(`${title} (Add-ons: ${optionNames.join(", ")})`);
+    } else {
+      parts.push(title);
+    }
+  }
+
+  return parts.join(" • ");
+}
+
 // ================================================================
 // Utility — safely get next payment date from subscription
 // ================================================================
@@ -169,12 +192,44 @@ export async function POST(req: Request) {
       const sessionId = session.metadata?.sessionId;
       const cart = sessionId ? await Cart.findOne({ sessionId }) : null;
 
+      // Best-effort: pull card last4 from Stripe (never store full card number)
+      let paymentLast4: string | null = null;
+      try {
+        const fullSession = (await stripe.checkout.sessions.retrieve(session.id, {
+          expand: ["payment_intent", "payment_intent.latest_charge"],
+        })) as any;
+
+        const charge = fullSession?.payment_intent?.latest_charge;
+        const last4 = charge?.payment_method_details?.card?.last4;
+        if (typeof last4 === "string" && last4.trim()) {
+          paymentLast4 = last4.trim();
+        }
+      } catch (err) {
+        logger.warn("Could not fetch payment last4 from Stripe", {
+          source: "webhook.checkout.session.completed",
+          stripeSessionId: session.id,
+        });
+      }
+
+      const defaultTechnicianName = String(process.env.DEFAULT_TECHNICIAN_NAME || "Wilber Banos").trim();
+      const defaultTechnicianPhone = String(process.env.DEFAULT_TECHNICIAN_PHONE || "").trim() || null;
+      const defaultWarrantyText = String(process.env.DEFAULT_WARRANTY_TEXT || "90-Day Warranty").trim();
+
+      const serviceDescription =
+        buildServiceDescriptionFromItems(cart?.items || []) ||
+        String(session.metadata?.itemSlugs || "").trim();
+
       // Create order
 
       const order = await Order.create({
         stripeSessionId: session.id,
         userId,
         email,
+        technicianName: defaultTechnicianName || null,
+        technicianPhone: defaultTechnicianPhone,
+        serviceDescription: serviceDescription || null,
+        paymentLast4,
+        warrantyText: defaultWarrantyText || null,
         total,
         quantity: 1,
         status: "paid",

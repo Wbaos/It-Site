@@ -14,6 +14,7 @@ const CartItemSchema = new Schema(
     slug: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String },
+    navDescription: { type: String },
 
     basePrice: { type: Number, required: true },
     price: { type: Number, required: true },

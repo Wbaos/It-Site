@@ -7554,6 +7554,12 @@ main {
   color: #fda4af;
 }
 
+.accountStatusPillViolet {
+  border-color: rgba(168, 85, 247, 0.25);
+  background-color: rgba(168, 85, 247, 0.12);
+  color: #d8b4fe;
+}
+
 .accountStatusPillEmerald {
   border-color: rgba(16, 185, 129, 0.2);
   background-color: rgba(16, 185, 129, 0.1);
@@ -7854,6 +7860,12 @@ main {
   font-size: 0.875rem;
   line-height: 1.25rem;
   color: #e2e8f0;
+}
+
+.accountDateInput::-webkit-calendar-picker-indicator {
+  opacity: 0.9;
+  cursor: pointer;
+  filter: invert(88%) sepia(21%) saturate(440%) hue-rotate(96deg) brightness(90%) contrast(92%);
 }
 
 .accountTimeGrid {
