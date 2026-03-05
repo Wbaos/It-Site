@@ -131,7 +131,6 @@ export async function sendCompanyOrderNotificationEmail(params: {
       return { ok: true as const, skipped: false as const, provider: "resend" as const };
     } catch (err) {
       logger.error("Company order notification failed (Resend)", err, { to, source });
-      // fall through to nodemailer
     }
   }
 
