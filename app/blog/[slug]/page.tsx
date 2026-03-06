@@ -1,9 +1,52 @@
 import { sanity } from "@/lib/sanity";
 import Image from "next/image";
 import { PortableText } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/types";
 import Link from "next/link";
 import SvgIcon from "@/components/common/SvgIcons";
+import RelatedArticlesCarousel from "@/components/RelatedArticlesCarousel";
 import type { Metadata } from "next";
+
+type SanityImage = {
+  asset?: { url?: string };
+  alt?: string;
+};
+
+type SanitySlug = {
+  current: string;
+};
+
+type BlogCategoryRef = {
+  _id: string;
+  title?: string;
+};
+
+type BlogPostResult = {
+  title: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  excerpt?: string;
+  canonicalUrl?: string;
+  authorName?: string;
+  publishedAt: string;
+  _updatedAt?: string;
+  mainImage?: SanityImage;
+  ogImage?: { asset?: { url?: string } };
+  readingTime?: number;
+  body: PortableTextBlock[];
+  categories?: BlogCategoryRef[];
+  tags?: string[];
+  focusKeyword?: string;
+};
+
+type RelatedPostResult = {
+  _id: string;
+  title: string;
+  slug: SanitySlug;
+  mainImage?: SanityImage;
+  excerpt?: string;
+  categories?: string[];
+};
 
 /* =========================
    SEO METADATA
@@ -76,7 +119,7 @@ export default async function BlogPost({
 }) {
   const { slug } = await params;
 
-  const post = await sanity.fetch(
+  const post = await sanity.fetch<BlogPostResult | null>(
     `*[_type == "post" && slug.current == $slug][0]{
       title,
       metaTitle,
@@ -90,6 +133,7 @@ export default async function BlogPost({
       ogImage { asset->{url} },
       readingTime,
       body,
+      "categories": categories[]->{ _id, title },
       tags,
       focusKeyword
     }`,
@@ -111,13 +155,29 @@ export default async function BlogPost({
     post.excerpt ||
     "Professional IT support, Wi-Fi setup, TV mounting, and tech help in South Florida.";
 
-  const tags: string[] = Array.isArray(post.tags)
-    ? (post.tags as string[])
-    : [];
+  const tags: string[] = Array.isArray(post.tags) ? post.tags : [];
 
   const uniqueTags = Array.from(
     new Set(tags.map(tag => tag.trim()).filter(Boolean))
   );
+
+  const primaryCategoryId = post.categories?.[0]?._id;
+  const relatedLimit = 9;
+
+  const relatedPosts: RelatedPostResult[] = primaryCategoryId
+    ? await sanity.fetch<RelatedPostResult[]>(
+        `*[_type == "post" && slug.current != $slug && publishedAt <= now() && $primaryCategoryId in categories[]._ref]
+          | order(publishedAt desc)[0...$relatedLimit]{
+            _id,
+            title,
+            slug,
+            mainImage { asset->{url}, alt },
+            excerpt,
+            "categories": categories[]->title,
+          }`,
+        { slug, primaryCategoryId, relatedLimit }
+      )
+    : [];
 
   /* =========================
      BLOGPOSTING SCHEMA
@@ -262,6 +322,12 @@ export default async function BlogPost({
               </div>
             </div>
           )}
+
+          {Array.isArray(relatedPosts) && relatedPosts.length > 0 ? (
+            <section className="single-blog-related" aria-labelledby="related-articles">
+              <RelatedArticlesCarousel posts={relatedPosts} />
+            </section>
+          ) : null}
 
           <div className="single-blog-cta-box">
             <h2 className="single-blog-cta-title">
