@@ -16,7 +16,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             `*[_type == "category" && defined(slug.current)]{ slug, _updatedAt }`
         ),
         sanity.fetch<Array<{ slug?: { current?: string }; _updatedAt?: string; publishedAt?: string }>>(
-            `*[_type == "post" && publishedAt <= now() && defined(slug.current)]{ slug, _updatedAt, publishedAt }`
+            `*[_type == "post" && publishedAt <= now() && defined(slug.current)]
+            | order(publishedAt desc)
+            { slug, _updatedAt, publishedAt }`
         ),
     ]);
 
@@ -63,8 +65,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             {
                 url: `${baseUrl}/blog/${slug}`,
                 lastModified: last ? new Date(last) : now,
-                changeFrequency: 'monthly' as const,
-                priority: 0.6,
+                changeFrequency: 'weekly' as const,
+                priority: 0.7,
             },
         ];
     });
@@ -86,8 +88,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         {
             url: `${baseUrl}/blog`,
             lastModified: now,
-            changeFrequency: 'monthly',
-            priority: 0.8,
+            changeFrequency: 'weekly',
+            priority: 0.9,
         },
         {
             url: `${baseUrl}/locations`,
