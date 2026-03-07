@@ -1,11 +1,21 @@
-"use client";
+import ServiceReviews from "./ServiceReviews";
+import { getGoogleReviews, getGoogleReviewsUrl } from "@/lib/google-reviews";
 
-import dynamic from "next/dynamic";
+export default async function ServiceReviewsWrapper({ slug }: { slug: string }) {
+    let initialReviews;
+    const googleReviewsUrl = getGoogleReviewsUrl() ?? undefined;
 
-const ServiceReviews = dynamic(() => import("./ServiceReviews"), {
-    ssr: false,
-});
+    try {
+        initialReviews = await getGoogleReviews();
+    } catch {
+        initialReviews = undefined;
+    }
 
-export default function ServiceReviewsWrapper({ slug }: { slug: string }) {
-    return <ServiceReviews slug={slug} />;
+    return (
+        <ServiceReviews
+            slug={slug}
+            initialReviews={initialReviews}
+            googleReviewsUrl={googleReviewsUrl}
+        />
+    );
 }

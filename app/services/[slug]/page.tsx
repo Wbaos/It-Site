@@ -7,6 +7,8 @@ import Image from "next/image";
 import SvgIcon from "@/components/common/SvgIcons";
 import TestimonialsList from "@/components/common/TestimonialsList";
 import ServiceReviewsWrapper from "@/components/ServiceReviewsWrapper";
+import { getGoogleWriteReviewUrl } from "@/lib/google-reviews";
+  const googleWriteReviewUrl = getGoogleWriteReviewUrl();
 import ServiceRating from "@/components/ServiceRating";
 import BookButtonWatcher from "@/components/BookButtonWatcher";
 import FaqAccordion from "@/components/FaqAccordion";
@@ -134,6 +136,7 @@ export default async function ServicePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+    console.log("SERVICE SLUG:", slug);
 
   const pageUrl = `https://www.calltechcare.com/services/${slug}`;
   const speakableWebPageSchema = {
@@ -874,6 +877,13 @@ export default async function ServicePage({
 
 
   const includedList = service.details || [];
+  const tvMountingSlugs = [
+  "small-tv-up-to-32",
+  "standard-tv-33-60",
+  "large-tv-61",
+];
+
+const isTvMounting = tvMountingSlugs.includes(slug);
 
   return (
   <>
@@ -981,20 +991,46 @@ export default async function ServicePage({
 
         <BeforeAfterSection data={service.beforeAfter} />
 
-        {service.testimonials?.length > 0 && (
-          <TestimonialsList
-            items={service.testimonials.map((t: any) => ({
-              name: t.name,
-              text: t.text,
-              rating: t.rating ?? 5,
-              verified: true,
-              date: t.date,
-            }))}
-            title="Customer Reviews"
-          />
-        )}
+        {!isTvMounting && service.testimonials?.length > 0 && (
+        <TestimonialsList
+          items={service.testimonials.map((t: any) => ({
+            name: t.name,
+            text: t.text,
+            rating: t.rating ?? 5,
+            verified: true,
+            date: t.date,
+          }))}
+          title="Customer Reviews"
+        />
+      )}
 
-        <ServiceReviewsWrapper slug={slug} />
+      {isTvMounting && <ServiceReviewsWrapper slug={slug} />}
+
+      <div className="reviews-section">
+        <h3 className="reviews-title">Customer Reviews</h3>
+
+        <div className="review-action-footer">
+          {googleWriteReviewUrl ? (
+            <a
+              href={googleWriteReviewUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-write-review"
+            >
+              Write a Review
+            </a>
+          ) : (
+            <Link
+              href={`/reviews/write?slug=${slug}&title=${encodeURIComponent(
+                service.title || ""
+              )}&img=${encodeURIComponent(service.image?.asset?.url || "")}`}
+              className="btn-write-review"
+            >
+              Write a Review
+            </Link>
+          )}
+        </div>
+      </div>
       </div>
 
       <BookButtonWatcher />

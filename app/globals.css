@@ -17286,11 +17286,11 @@ details[open] .faq-toggle {
   font-weight: 800;
 }
 
-/* === Booking Customize (from components/booking/BookingCustomizeClient.module.css) === */
+/* === Booking Customize  === */
 .bookingCustomize .page {
   background-color: #060b19;
   min-height: 100vh;
-  padding: 7.5rem 0 5rem;
+  padding: 9.5rem 0 5rem;
   color: #e2e8f0;
 }
 
