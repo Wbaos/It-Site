@@ -2,119 +2,107 @@
 
 import { useEffect, useState } from "react";
 import { sanity } from "@/lib/sanity";
-import Image from "next/image";
-import Link from "next/link";
-import SvgIcon from "./common/SvgIcons";
+import TestimonialsList, { Testimonial } from "@/components/common/TestimonialsList";
 
-interface Review {
-    _id: string;
-    userName: string;
-    rating: number;
-    comment: string;
-    title?: string;
-    _createdAt: string;
-    media?: string;
-}
+export default function ServiceReviews({
+  slug,
+  initialReviews,
+  googleReviewsUrl,
+}: {
+  slug: string;
+  initialReviews?: Testimonial[];
+  googleReviewsUrl?: string;
+}) {
+  const [reviews, setReviews] = useState<Testimonial[]>(initialReviews ?? []);
+  const [loading, setLoading] = useState(initialReviews ? false : true);
 
-export default function ServiceReviews({ slug }: { slug: string }) {
-    const [reviews, setReviews] = useState<Review[]>([]);
-    const [service, setService] = useState<{ title?: string; image?: string }>({});
+  const tvMountingSlugs = [
+    "small-tv-up-to-32",
+    "standard-tv-33-60",
+    "large-tv-61",
+  ];
 
-    // Fetch approved reviews + service info
-    useEffect(() => {
-        const fetchReviews = async () => {
-            const query = `*[_type == "review" && approved == true && serviceSlug == $slug] | order(_createdAt desc) {
-        _id, userName, rating, comment, title, _createdAt, "media": media.asset->url
+  const isTvMounting = tvMountingSlugs.includes(slug);
+
+  useEffect(() => {
+    if (initialReviews) {
+      setReviews(initialReviews);
+      setLoading(false);
+      return;
+    }
+
+    async function fetchSanityReviews() {
+      const query = `*[_type == "review" && approved == true && serviceSlug == $slug]
+      | order(_createdAt desc){
+        userName,
+        rating,
+        comment,
+        _createdAt
       }`;
-            const data = await sanity.fetch(query, { slug });
-            setReviews(data);
-        };
 
-        const fetchService = async () => {
-            const query = `*[_type == "service" && slug.current == $slug][0]{ title, image { asset->{url} } }`;
-            const data = await sanity.fetch(query, { slug });
-            setService({
-                title: data?.title || "",
-                image: data?.image?.asset?.url || "",
-            });
-        };
+      const data = await sanity.fetch(query, { slug });
 
-        fetchReviews();
-        fetchService();
-    }, [slug]);
+      const formatted = data.map((r: any) => ({
+        name: r.userName,
+        text: r.comment,
+        rating: r.rating,
+        verified: true,
+        date: r._createdAt,
+      }));
 
-    return (
-        <div className="reviews-section">
-            <h3 className="reviews-title">Customer Reviews</h3>
-            {/* Button to new page */}
-            <div className="review-action-footer">
-                <Link
-                    href={`/reviews/write?slug=${slug}&title=${encodeURIComponent(
-                        service.title || ""
-                    )}&img=${encodeURIComponent(service.image || "")}`}
-                    className="btn-write-review"
-                >
-                    Write a Review
-                </Link>
-            </div>
+      setReviews(formatted);
+      setLoading(false);
+    }
 
-            {/* Existing Reviews */}
-            {/* {reviews.length === 0 && <p>No reviews yet — be the first to share your experience!</p>} */}
+    async function fetchGoogleReviews() {
+      try {
+        const res = await fetch("/api/google-reviews");
 
-            {/* <div className="existing-reviews">
-                <ul className="review-list">
-                    {reviews.map((r) => (
-                        <li key={r._id} className="review-card">
-                            <div className="review-top">
-                                <div className="review-avatar">
-                                    <SvgIcon name="user-avatar" size={40} color="#333" />
-                                    <p className="review-author">{r.userName}</p>
-                                </div>
+        if (!res.ok) {
+          console.error("Google reviews API failed");
+          setLoading(false);
+          return;
+        }
 
-                                <div className="review-meta">
-                                    <div className="review-stars">
-                                        {Array.from({ length: 5 }).map((_, i) => (
-                                            <span key={i} className={i < r.rating ? "filled" : ""}>★</span>
-                                        ))}
-                                    </div>
+        const data = await res.json();
 
-                                    {r.title && <p className="review-title">{r.title}</p>}
+        setReviews(data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Google reviews fetch error:", err);
+        setLoading(false);
+      }
+    }
 
-                                    <p className="review-date">
-                                        Reviewed on{" "}
-                                        {new Date(r._createdAt).toLocaleDateString(undefined, {
-                                            year: "numeric",
-                                            month: "long",
-                                            day: "numeric",
-                                        })}
-                                    </p>
-                                </div>
-                            </div>
+    if (isTvMounting) {
+      fetchGoogleReviews();
+    } else {
+      fetchSanityReviews();
+    }
+  }, [slug, initialReviews, isTvMounting]);
 
-                            <div className="review-body">
-                                <p className="review-comment">{r.comment}</p>
+  return (
+    <>
+      {loading && <p>Loading reviews...</p>}
 
-                                {r.media && (
-                                    <div className="review-media">
-                                        {r.media.endsWith(".mp4") ? (
-                                            <video src={r.media} controls />
-                                        ) : (
-                                            <img src={r.media} alt="Review" />
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="review-actions">
-                                <button>Helpful</button>
-                                <button>Report</button>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            </div> */}
-
-
-        </div>
-    );
+      {!loading && reviews.length > 0 && (
+        <TestimonialsList
+          items={reviews}
+          title="Customer Reviews"
+          afterSubtitle={
+            googleReviewsUrl ? (
+              <a
+                className="read-more-btn"
+                href={googleReviewsUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                View all reviews on Google
+              </a>
+            ) : null
+          }
+        />
+      )}
+    </>
+  );
 }

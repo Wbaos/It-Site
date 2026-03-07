@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import SvgIcon from "./SvgIcons";
 
 export type Testimonial = {
@@ -15,6 +16,7 @@ type Props = {
   items: Testimonial[];
   title?: string;
   subtitle?: string;
+  afterSubtitle?: ReactNode;
   carousel?: boolean;
   variant?: "card" | "plain";
 };
@@ -23,6 +25,7 @@ export default function TestimonialsList({
   items,
   title = "What Clients Say",
   subtitle = "Real experiences from satisfied homeowners and businesses.",
+  afterSubtitle,
   variant = "card", // NEW default
 }: Props) {
   const n = items.length;
@@ -134,6 +137,7 @@ export default function TestimonialsList({
       <div className={`site-container-testimonials ${variant === "plain" ? "no-container-border" : ""}`}>
         {title && <h2 className="testimonials-heading">{title}</h2>}
         {subtitle && <p className="testimonials-sub">{subtitle}</p>}
+        {afterSubtitle}
 
         <div className="carousel-wrapper">
           <div className="carousel-viewport">
