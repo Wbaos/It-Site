@@ -12,6 +12,7 @@ import NotificationDropdown from "@/components/NotificationDropdown";
 import UserMenu from "@/components/UserMenu";
 import SearchModal from "@/components/SearchModal";
 import SvgIcon from "@/components/common/SvgIcons";
+import AnnouncementBar from "@/components/AnnouncementBar";
 import MobileServicesPanel from "./MobileServicesPanel";
 import ServiceGroupList from "./ServiceGroupList";
 
@@ -72,6 +73,7 @@ export default function Navbar() {
 
   return (
     <>
+      <AnnouncementBar />
       <header className="site-header">
         <div className="site-container-var nav-grid">
           {/* BRAND */}
