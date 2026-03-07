@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
@@ -6,6 +8,11 @@ import { QuoteRequest } from "@/app/models/QuoteRequest";
 import { Notification } from "@/app/models/Notification";
 import { syncCustomerToMailchimp } from "@/lib/mailchimp";
 import { logger } from "@/lib/logger";
+import { sendCompanyQuoteRequestNotificationEmail } from "@/lib/mailer";
+
+type EmailSendResult =
+  | { ok: true; skipped: false; provider: "resend" | "nodemailer" }
+  | { ok: false; skipped: true; reason: string };
 
 function getMailchimpEnabled(): boolean {
   return Boolean(
@@ -141,6 +148,32 @@ export async function POST(req: NextRequest) {
 
     logger.info("Received quote request", { referenceNumber, id: created?._id });
 
+    // Best-effort email notification to business (do not block quote request)
+    let businessEmailSent = false;
+    let businessEmailProvider: "resend" | "nodemailer" | null = null;
+    let businessEmailSkippedReason: string | null = null;
+
+    const businessEmailTo = String(process.env.ORDER_NOTIFICATION_EMAIL || "").trim() || null;
+    try {
+      const result = (await sendCompanyQuoteRequestNotificationEmail({
+        referenceNumber,
+        quoteRequest: doc,
+        source: "api.quote-request",
+      })) as EmailSendResult;
+
+      businessEmailSent = Boolean(result.ok);
+      if (result.ok) {
+        businessEmailProvider = result.provider;
+      } else {
+        businessEmailSkippedReason = result.reason;
+      }
+    } catch (err) {
+      logger.error("Company quote request notification failed", err, {
+        referenceNumber,
+        source: "quote-request",
+      });
+    }
+
     try {
       const session = await getServerSession(authOptions);
       const userId = session?.user?.id;
@@ -160,7 +193,24 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return NextResponse.json({ success: true, referenceNumber, id: created?._id }, { status: 201 });
+    const debug = process.env.NODE_ENV !== "production";
+
+    return NextResponse.json(
+      {
+        success: true,
+        referenceNumber,
+        id: created?._id,
+        businessEmailSent,
+        ...(debug
+          ? {
+              businessEmailProvider,
+              businessEmailSkippedReason,
+              businessEmailTo,
+            }
+          : {}),
+      },
+      { status: 201 }
+    );
   } catch (err: unknown) {
     logger.error("quote-request API error", err);
     const isSyntax = err instanceof SyntaxError;

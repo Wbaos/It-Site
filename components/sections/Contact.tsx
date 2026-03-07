@@ -90,11 +90,12 @@ export default function Contact({
               name="message"
               className="textarea"
               placeholder="Tell us about your IT needs..."
+              required
             />
           </div>
 
-          <button type="submit" className="btn-submit">
-            Send Message
+          <button type="submit" className="btn-submit" disabled={busy}>
+            {busy ? "Sending..." : "Send Message"}
           </button>
 
           {status && <p className="form-status">{status}</p>}
