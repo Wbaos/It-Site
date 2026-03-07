@@ -185,7 +185,6 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
-        {/* Performance */}
         <link
           rel="preconnect"
           href="https://cdn.sanity.io"
@@ -193,15 +192,22 @@ export default function RootLayout({
         />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
 
-        {/* App meta */}
         <meta name="apple-mobile-web-app-title" content="CallTechCare" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#0891b2" />
+
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+        <link rel="manifest" href="/site.webmanifest" />
+
         <meta
           name="copyright"
           content="© 2025 CallTechCare. All rights reserved."
         />
 
-        {/* Structured data */}
         <script
           type="application/ld+json"
           suppressHydrationWarning
