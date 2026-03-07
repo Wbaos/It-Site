@@ -98,7 +98,7 @@ export default function Footer() {
         {/* Contact Info */}
         <div className="footer-contact">
           <p>
-            <strong>CallTechCare LLC</strong>
+            <strong>CallTechCare</strong>
             <br />
             Serving South Florida (Broward County to Homestead)
           </p>

@@ -837,7 +837,7 @@ color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 7rem 0 3rem;
+  padding: 10rem 0 3rem;
   border-bottom: 1px solid #1e293b;
   background:
     radial-gradient(1200px 600px at 50% -100px, rgba(56, 189, 248, 0.12), transparent 60%),
@@ -3671,7 +3671,7 @@ color: #fff;
     grid-template-columns: 1fr;
   }
   .category-detail {
-    padding: 6rem 0;
+    padding: 6.7rem 0;
   }
   .category-top {
     margin-bottom: 2rem;
@@ -3681,7 +3681,8 @@ color: #fff;
 @import "tailwindcss";
 
 :root {
-  --nav-h: 64px;
+  --topbar-h: 44px;
+  --nav-h: calc(64px + var(--topbar-h));
   --font-family-main: 'Segoe UI', sans-serif;
 }
 html, body {
@@ -5247,7 +5248,7 @@ body.no-scroll {
 .assessment-landing-page {
   min-height: 100vh;
   background: linear-gradient(180deg, #060b19 0%, #03050a 100%);
-  padding: 8rem 0 4rem;
+  padding: 9rem 0 4rem;
 }
 
 .assessment-landing-container {
@@ -5465,7 +5466,7 @@ body.no-scroll {
 
 @media (max-width: 768px) {
   .assessment-landing-page {
-    padding: 6rem 0 3rem;
+    padding: 8.5rem 0 3rem;
   }
 
   .assessment-landing-title {
@@ -5503,7 +5504,7 @@ html {
 
 @media (max-width: 900px) {
   :root {
-    --nav-h: 79px;
+    --nav-h: calc(79px + var(--topbar-h));
   }
 }
 
@@ -5752,7 +5753,7 @@ main {
       grid-template-columns: 1fr;
     }
     #hero {
-      padding-top: 6rem;
+      padding-top: 9rem;
     }
   }
 
@@ -5951,13 +5952,18 @@ main {
   align-items: center;
   gap: 0.4rem;
 }
+@media (max-width: 600px) {
+  .blog-title {
+    font-size: 2rem;
+  }
+}
 
 @media (max-width: 900px) {
  .blog-grid {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
   .blog-page {
-    padding: 6rem 0;
+    padding: 8rem 0;
   }
 }
 
@@ -5966,7 +5972,7 @@ main {
 
 .single-blog-page {
   background: #060b19;
-  padding: 6rem 0;
+  padding: 9rem 0;
   min-height: 100vh;
 }
 
@@ -5981,6 +5987,7 @@ main {
   font-weight: 800;
   color: #e5f3ff;
   margin-bottom: 0.6rem;
+  line-height: normal;
 }
 
 .single-blog-meta {
@@ -6361,6 +6368,100 @@ main {
 
 
 /* ===== NAVBAR ===== */
+.announcement-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--topbar-h);
+  z-index: 1001;
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid #1e293b;
+  background-color: #0f172acc;
+}
+
+.announcement-bar-inner {
+  height: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.announcement-bar-grid {
+  height: 100%;
+  display: flex;
+  grid-template-columns: 1fr auto 1fr;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.announcement-left,
+.announcement-center,
+.announcement-right {
+  min-width: 0;
+}
+
+.announcement-center {
+  display: flex;
+  justify-content: center;
+}
+
+.announcement-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.announcement-phone {
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.announcement-phone:hover {
+  text-decoration: underline;
+}
+
+.announcement-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: #34d399;
+  opacity: 1;
+  transition-property: opacity;
+  transition-timing-function: ease;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+@media (max-width: 600px) {
+  .announcement-text {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .announcement-text {
+    font-size: 0.8rem;
+  }
+  .announcement-phone {
+    font-size: 0.85rem;
+  }
+  .announcement-right {
+    display: none;
+  }
+}
+
+.announcement-text--out {
+  opacity: 0;
+}
+
+.announcement-text--in {
+  opacity: 1;
+}
+
 .active-nav-link {
   color: var(--brand-teal) !important;
 }
@@ -6373,7 +6474,7 @@ main {
 .site-header {
   position: fixed;
   width: 100%;
-  top: 0;
+  top: var(--topbar-h);
   z-index: 1000;
   backdrop-filter: saturate(180%) blur(12px);
   border-bottom: 1px solid #1e293b;
@@ -6705,7 +6806,7 @@ main {
 .cart-page {
   background: #0f172a;
   min-height: 100vh;
-  padding: 5rem 20px;
+  padding: 8rem 20px;
   color: #e2e8f0;
 }
 
@@ -7318,7 +7419,7 @@ main {
 .accountPage {
   min-height: 80vh;
   background-color: #020617;
-  padding-top: 7rem;
+  padding-top: 9rem;
   padding-bottom: 4rem;
 }
 
@@ -9109,7 +9210,7 @@ main {
 }
 .mobile-services-overlay {
   position: fixed;
-  top: 64px;       
+  top: 108px;       
   left: 0;
   right: 0;
   bottom: 0;
@@ -10108,7 +10209,7 @@ object-fit: cover;
     grid-template-columns: 1fr;
   }
   .service-detail {
-    padding: 6rem 0;
+    padding: 8rem 0;
   }
   .service-top{
     margin-bottom: 2rem;
@@ -12971,6 +13072,11 @@ box-shadow:
     padding-right: 14px;
   }
 
+  .contact-page {
+  padding: 5rem 0 0;
+  color: #e5e7eb;
+}
+
   .contact-support-grid {
     grid-template-columns: 1fr;
   }
@@ -13831,7 +13937,7 @@ details[open] .faq-toggle {
   min-height: 100vh;
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
   padding: 40px 20px;
-  padding-top: 100px;
+  padding-top: 9rem;
 }
 
 .speed-test-container-new {
@@ -14331,7 +14437,7 @@ details[open] .faq-toggle {
 @media (max-width: 768px) {
   .speed-test-page-new {
     padding: 20px 16px;
-    padding-top: 80px;
+    padding-top: 8rem;
   }
 
   .test-title {
@@ -14533,7 +14639,7 @@ details[open] .faq-toggle {
 }
 
 .locations-hero {
-  padding-top: 8rem;
+  padding-top: 9rem;
   padding-bottom: 4rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -14885,6 +14991,7 @@ details[open] .faq-toggle {
 .location-detail-page {
   min-height: 100vh;
   background: linear-gradient(180deg, #061020 0%, #03050a 100%);
+  padding-top: 6.7rem;
 }
 
 .location-hero-section {
@@ -15449,7 +15556,7 @@ details[open] .faq-toggle {
    ======================================== */
 
 .services-list-hero {
-  padding-top: 8rem;
+  padding-top: 9rem;
   padding-bottom: 2rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -16637,7 +16744,7 @@ details[open] .faq-toggle {
 .checkoutClient .page {
   background: #020617;
   min-height: 100vh;
-  padding: 6.5rem 20px;
+  padding: 8.5rem 20px;
   color: #e2e8f0;
 }
 
