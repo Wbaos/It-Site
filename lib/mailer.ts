@@ -153,6 +153,206 @@ export async function sendCompanyOrderNotificationEmail(params: {
   return { ok: true as const, skipped: false as const, provider: "nodemailer" as const };
 }
 
+export async function sendCompanyContactNotificationEmail(params: {
+  contact: {
+    name: string;
+    email: string;
+    company?: string;
+    message: string;
+  };
+  source: string;
+}) {
+  const { contact, source } = params;
+
+  const to = String(process.env.ORDER_NOTIFICATION_EMAIL || "").trim() || null;
+  if (!to) {
+    return {
+      ok: false as const,
+      skipped: true as const,
+      reason: "Missing ORDER_NOTIFICATION_EMAIL",
+    };
+  }
+
+  const fromEmailRaw = String(
+    process.env.FROM_EMAIL ||
+      (process.env.EMAIL_USER ? `CallTechCare <${process.env.EMAIL_USER}>` : "") ||
+      "CallTechCare <support@calltechcare.com>"
+  ).trim();
+
+  const contactName = escapeHtml(contact?.name || "Contact");
+  const contactEmail = String(contact?.email || "").trim();
+  const contactCompany = escapeHtml(contact?.company || "");
+  const contactMessage = escapeHtml(contact?.message || "").replace(/\n/g, "<br />");
+  const receivedAt = new Date().toLocaleString();
+
+  const subject = `New contact form submission — ${contactName}`;
+  const html = `
+    <h2>New Contact Form Submission</h2>
+    <p><b>Name:</b> ${contactName}</p>
+    <p><b>Email:</b> ${escapeHtml(contactEmail)}</p>
+    ${contactCompany ? `<p><b>Company:</b> ${contactCompany}</p>` : ""}
+    <hr />
+    <p><b>Message:</b><br />${contactMessage}</p>
+    <hr />
+    <p style="color:#64748b; font-size:12px;">Received: ${escapeHtml(receivedAt)}</p>
+    <p style="color:#64748b; font-size:12px;">Source: ${escapeHtml(source)}</p>
+  `;
+
+  // Prefer Resend if configured
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      await resend.emails.send({
+        from: fromEmailRaw,
+        to: [to],
+        ...(process.env.BCC_EMAIL ? { bcc: [String(process.env.BCC_EMAIL)] } : {}),
+        ...(contactEmail ? { replyTo: contactEmail } : {}),
+        subject,
+        html,
+      });
+      return { ok: true as const, skipped: false as const, provider: "resend" as const };
+    } catch (err) {
+      logger.error("Company contact notification failed (Resend)", err, {
+        to,
+        source,
+      });
+    }
+  }
+
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    return {
+      ok: false as const,
+      skipped: true as const,
+      reason: "Missing EMAIL_USER/EMAIL_PASS (and RESEND_API_KEY not usable)",
+    };
+  }
+
+  await transporter.sendMail({
+    from: fromEmailRaw,
+    to,
+    ...(process.env.BCC_EMAIL ? { bcc: String(process.env.BCC_EMAIL) } : {}),
+    ...(contactEmail ? { replyTo: contactEmail } : {}),
+    subject,
+    html,
+  });
+
+  return { ok: true as const, skipped: false as const, provider: "nodemailer" as const };
+}
+
+export async function sendCompanyQuoteRequestNotificationEmail(params: {
+  referenceNumber: string;
+  quoteRequest: any;
+  source: string;
+}) {
+  const { referenceNumber, quoteRequest, source } = params;
+
+  const to = String(process.env.ORDER_NOTIFICATION_EMAIL || "").trim() || null;
+  if (!to) {
+    return {
+      ok: false as const,
+      skipped: true as const,
+      reason: "Missing ORDER_NOTIFICATION_EMAIL",
+    };
+  }
+
+  const fromEmailRaw = String(
+    process.env.FROM_EMAIL ||
+      (process.env.EMAIL_USER ? `CallTechCare <${process.env.EMAIL_USER}>` : "") ||
+      "CallTechCare <support@calltechcare.com>"
+  ).trim();
+
+  const ref = escapeHtml(referenceNumber || "(no ref)");
+  const contact = quoteRequest?.contact || {};
+  const location = quoteRequest?.location || {};
+  const service = quoteRequest?.service || {};
+  const details = quoteRequest?.details || {};
+
+  const contactName = escapeHtml(
+    `${String(contact?.firstName || "").trim()} ${String(contact?.lastName || "").trim()}`.trim() ||
+      "Customer"
+  );
+  const contactEmail = String(contact?.email || "").trim();
+  const contactPhone = escapeHtml(contact?.phone || "");
+
+  const subject = `New quote request — ${ref} — ${contactName}`;
+  const html = `
+    <h2>New Quote Request</h2>
+    <p><b>Reference:</b> ${ref}</p>
+    <hr />
+    <h3>Contact</h3>
+    <p><b>Name:</b> ${contactName}</p>
+    <p><b>Email:</b> ${escapeHtml(contactEmail || "")}</p>
+    ${contactPhone ? `<p><b>Phone:</b> ${contactPhone}</p>` : ""}
+    <hr />
+    <h3>Service</h3>
+    <p><b>Category:</b> ${escapeHtml(service?.category || "")}</p>
+    <p><b>Group:</b> ${escapeHtml(service?.group || "")}</p>
+    <p><b>Service:</b> ${escapeHtml(service?.service || "")}</p>
+    ${quoteRequest?.urgency ? `<p><b>Urgency:</b> ${escapeHtml(quoteRequest.urgency)}</p>` : ""}
+    ${quoteRequest?.other ? `<p><b>Other:</b> ${escapeHtml(quoteRequest.other)}</p>` : ""}
+    <hr />
+    <h3>Location</h3>
+    <p>
+      ${escapeHtml(location?.streetAddress || "")}${location?.streetAddress ? "<br />" : ""}
+      ${escapeHtml(location?.city || "")}${location?.city ? ", " : ""}${escapeHtml(location?.zipCode || "")}
+    </p>
+    <hr />
+    <h3>Details</h3>
+    ${details?.projectDetails ? `<p><b>Project details:</b><br />${escapeHtml(details.projectDetails).replace(/\n/g, "<br />")}</p>` : ""}
+    <p><b>Technician visit first:</b> ${details?.wantsTechnicianVisitFirst ? "Yes" : "No"}</p>
+    ${details?.preferredDate ? `<p><b>Preferred date:</b> ${escapeHtml(details.preferredDate)}</p>` : ""}
+    ${details?.preferredTime ? `<p><b>Preferred time:</b> ${escapeHtml(details.preferredTime)}</p>` : ""}
+    ${details?.heardAbout ? `<p><b>Heard about us:</b> ${escapeHtml(details.heardAbout)}</p>` : ""}
+    <hr />
+    <details>
+      <summary>Raw quote request JSON</summary>
+      <pre style="white-space:pre-wrap">${escapeHtml(JSON.stringify({ referenceNumber, ...quoteRequest }, null, 2))}</pre>
+    </details>
+    <p style="color:#64748b; font-size:12px;">Source: ${escapeHtml(source)}</p>
+  `;
+
+  // Prefer Resend if configured
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      await resend.emails.send({
+        from: fromEmailRaw,
+        to: [to],
+        ...(process.env.BCC_EMAIL ? { bcc: [String(process.env.BCC_EMAIL)] } : {}),
+        ...(contactEmail ? { replyTo: contactEmail } : {}),
+        subject,
+        html,
+      });
+      return { ok: true as const, skipped: false as const, provider: "resend" as const };
+    } catch (err) {
+      logger.error("Company quote request notification failed (Resend)", err, {
+        to,
+        source,
+        referenceNumber,
+      });
+    }
+  }
+
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    return {
+      ok: false as const,
+      skipped: true as const,
+      reason: "Missing EMAIL_USER/EMAIL_PASS (and RESEND_API_KEY not usable)",
+    };
+  }
+
+  await transporter.sendMail({
+    from: fromEmailRaw,
+    to,
+    ...(process.env.BCC_EMAIL ? { bcc: String(process.env.BCC_EMAIL) } : {}),
+    ...(contactEmail ? { replyTo: contactEmail } : {}),
+    subject,
+    html,
+  });
+
+  return { ok: true as const, skipped: false as const, provider: "nodemailer" as const };
+}
+
 export async function sendCustomerOrderConfirmationEmail(params: {
   order: any;
   source: string;
