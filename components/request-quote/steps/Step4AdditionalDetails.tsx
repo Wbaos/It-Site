@@ -4,6 +4,12 @@ import { useEffect, useRef } from "react";
 import SvgIcon from "@/components/common/SvgIcons";
 import { isTimeSlotAvailableForDate, STANDARD_TIME_SLOTS } from "@/lib/time-slots";
 
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+  }
+}
+
 export default function Step4AdditionalDetails(props: {
   projectDetails: string;
   setProjectDetails: (v: string) => void;
@@ -64,14 +70,18 @@ export default function Step4AdditionalDetails(props: {
       <div className="rq-step4__card">
         <button
           type="button"
-          onClick={() => props.setWantsTechnicianVisitFirst(!props.wantsTechnicianVisitFirst)}
+          onClick={() =>
+            props.setWantsTechnicianVisitFirst(!props.wantsTechnicianVisitFirst)
+          }
           className="rq-step4__cardButton"
         >
           <div className="rq-step4__cardTopRow">
             <input
               type="checkbox"
               checked={props.wantsTechnicianVisitFirst}
-              onChange={(e) => props.setWantsTechnicianVisitFirst(e.target.checked)}
+              onChange={(e) =>
+                props.setWantsTechnicianVisitFirst(e.target.checked)
+              }
               className="rq-step4__checkbox"
               aria-label="I'd like a technician to visit first"
             />
@@ -80,24 +90,34 @@ export default function Step4AdditionalDetails(props: {
                 <div className="rq-step4__cardTitleIcon">
                   <SvgIcon name="calendar" size={22} color="#10b981" />
                 </div>
-                <div className="rq-step4__cardTitle">I’d like a technician to visit first</div>
+                <div className="rq-step4__cardTitle">
+                  I’d like a technician to visit first
+                </div>
                 <span className="rq-step4__badge">FREE</span>
               </div>
 
               <div className="rq-step4__cardDescription">
-                Not sure about the exact work needed? We’ll send a technician to your location to:
+                Not sure about the exact work needed? We’ll send a technician to your
+                location to:
               </div>
+
               <ul className="rq-step4__benefits">
                 <li className="rq-step4__benefit">
-                  <span className="rq-step4__benefitCheck">✓</span> Inspect and assess the job in person
+                  <span className="rq-step4__benefitCheck">✓</span>
+                  Inspect and assess the job in person
                 </li>
+
                 <li className="rq-step4__benefit">
-                  <span className="rq-step4__benefitCheck">✓</span> Give you an exact price (no surprises)
+                  <span className="rq-step4__benefitCheck">✓</span>
+                  Give you an exact price (no surprises)
                 </li>
+
                 <li className="rq-step4__benefit">
-                  <span className="rq-step4__benefitCheck">✓</span> Answer any questions face-to-face
+                  <span className="rq-step4__benefitCheck">✓</span>
+                  Answer any questions face-to-face
                 </li>
               </ul>
+
               <div className="rq-step4__cardNote">
                 No commitment required — you decide after the visit.
               </div>
@@ -108,12 +128,17 @@ export default function Step4AdditionalDetails(props: {
         {props.wantsTechnicianVisitFirst ? (
           <>
             <div className="rq-step4__divider" />
-            <div className="rq-step4__subheading">When works best for you?</div>
+
+            <div className="rq-step4__subheading">
+              When works best for you?
+            </div>
+
             <div className="rq-step4__twoCol">
               <div>
                 <label className="rq-step4__label">
                   Preferred Date
                 </label>
+
                 <div className="rq-step4__dateWrap">
                   <input
                     type="date"
@@ -123,38 +148,56 @@ export default function Step4AdditionalDetails(props: {
                     onPointerDown={(e) => {
                       const el = preferredDateInputRef.current;
                       if (!el) return;
+
                       if (document.activeElement === el) {
                         e.preventDefault();
                         el.blur();
                         return;
                       }
+
                       try {
                         el.showPicker?.();
-                      } catch {
-                      }
+                      } catch {}
                     }}
                     onChange={(e) => {
                       const next = e.target.value;
-                      props.setPreferredDate(next && next < todayIso ? todayIso : next);
+                      props.setPreferredDate(
+                        next && next < todayIso ? todayIso : next
+                      );
                     }}
                     className="rq-date-input rq-step4__input rq-step4__input--date"
                   />
-                  <span className="rq-step4__dateIcon" aria-hidden="true">
-                    <SvgIcon name="calendar" size={18} color="currentColor" />
+
+                  <span
+                    className="rq-step4__dateIcon"
+                    aria-hidden="true"
+                  >
+                    <SvgIcon
+                      name="calendar"
+                      size={18}
+                      color="currentColor"
+                    />
                   </span>
                 </div>
               </div>
+
               <div>
                 <label className="rq-step4__label">
                   Preferred Time
                 </label>
+
                 <div className="rq-step4__selectWrap">
                   <select
                     value={props.preferredTime}
-                    onChange={(e) => props.setPreferredTime(e.target.value)}
+                    onChange={(e) =>
+                      props.setPreferredTime(e.target.value)
+                    }
                     className="rq-step4__select"
                   >
-                    <option value="">Select a time</option>
+                    <option value="">
+                      Select a time
+                    </option>
+
                     {STANDARD_TIME_SLOTS.map((slot) => (
                       <option
                         key={slot.value}
@@ -170,8 +213,16 @@ export default function Step4AdditionalDetails(props: {
                       </option>
                     ))}
                   </select>
-                  <span className="rq-step4__selectIcon" aria-hidden="true">
-                    <SvgIcon name="chevron-down" size={18} color="currentColor" />
+
+                  <span
+                    className="rq-step4__selectIcon"
+                    aria-hidden="true"
+                  >
+                    <SvgIcon
+                      name="chevron-down"
+                      size={18}
+                      color="currentColor"
+                    />
                   </span>
                 </div>
               </div>
@@ -203,33 +254,44 @@ export default function Step4AdditionalDetails(props: {
         </div>
       </div>
 
-      <div className="rq-step4__actions">
-        <button
-          type="button"
-          onClick={props.onBack}
-          className="rq-step4__btn rq-step4__btn--secondary"
-        >
-          Back
-        </button>
-        <button
-          type="button"
-          onClick={props.onSubmit}
-          disabled={!props.canSubmit || props.submitting}
-          className={
-            props.canSubmit && !props.submitting
-              ? "rq-step4__btn rq-step4__btn--primary"
-              : "rq-step4__btn rq-step4__btn--disabled"
-          }
-        >
-          <SvgIcon
-            name="paper-plane"
-            size={18}
-            color={props.canSubmit && !props.submitting ? "#fff" : "#64748b"}
-          />
-          <span>{props.submitting ? "Submitting..." : "Submit Quote Request"}</span>
-        </button>
-      </div>
+    <div className="rq-step4__actions">
+      <button
+        type="button"
+        onClick={props.onBack}
+        className="rq-step4__btn rq-step4__btn--secondary"
+      >
+        Back
+      </button>
 
+      <button
+        type="button"
+        onClick={() => {
+          props.onSubmit();
+
+          // Google Ads conversion tracking
+          if (typeof window !== "undefined" && window.gtag) {
+            window.gtag("event", "conversion", {
+              send_to: "AW-17496959572/O9vCKjXw4QcENtUmZdB",
+            });
+          }
+        }}
+        disabled={!props.canSubmit || props.submitting}
+        className={
+          props.canSubmit && !props.submitting
+            ? "rq-step4__btn rq-step4__btn--primary"
+            : "rq-step4__btn rq-step4__btn--disabled"
+        }
+      >
+        <SvgIcon
+          name="paper-plane"
+          size={18}
+          color={props.canSubmit && !props.submitting ? "#fff" : "#64748b"}
+        />
+        <span>
+          {props.submitting ? "Submitting..." : "Submit Quote Request"}
+        </span>
+      </button>
+    </div>
       {props.submitError ? (
         <div className="rq-step4__error">{props.submitError}</div>
       ) : null}

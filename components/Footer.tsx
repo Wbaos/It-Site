@@ -24,7 +24,13 @@ export default function Footer() {
               width={250}
               height={250}
               className="footer-logo"
-              style={{ objectFit: "contain", objectPosition: "center" }}
+              priority
+              style={{
+                width: "auto",
+                height: "auto",
+                objectFit: "contain",
+                objectPosition: "center",
+              }}
             />
           </a>
           <p className="footer-tagline">
@@ -158,8 +164,15 @@ export default function Footer() {
               alt="Stripe Secure Payments"
               width={60}
               height={20}
+              style={{ width: "auto", height: "auto" }}
             />
-            <Image src="/icons/ssl.png" alt="SSL Secured" width={24} height={24} />
+            <Image
+              src="/icons/ssl.png"
+              alt="SSL Secured"
+              width={24}
+              height={24}
+              style={{ width: "auto", height: "auto" }}
+            />
           </div>
         </div>
 

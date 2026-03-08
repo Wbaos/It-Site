@@ -1,5 +1,12 @@
 "use client";
+
 import { useState } from "react";
+
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+  }
+}
 
 export default function Contact({
   headline = "Get In Touch",
@@ -33,6 +40,13 @@ export default function Contact({
       if (res.ok) {
         setStatus("Thanks! We'll reply shortly.");
         form.reset();
+
+        // Google Ads conversion tracking
+        if (typeof window !== "undefined" && window.gtag) {
+          window.gtag("event", "conversion", {
+            send_to: "AW-17496959572/O9vCKjXw4QcENtUmZdB",
+          });
+        }
       } else {
         const data = await res.json().catch(() => ({}));
         setStatus(data.error || "Something went wrong.");
@@ -81,7 +95,11 @@ export default function Contact({
 
           <div className="field">
             <label className="label">Company</label>
-            <input name="company" className="input" placeholder="Your Company" />
+            <input
+              name="company"
+              className="input"
+              placeholder="Your Company"
+            />
           </div>
 
           <div className="field">
