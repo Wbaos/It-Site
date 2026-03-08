@@ -40,7 +40,23 @@ export default function GoogleAnalytics() {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
+
           gtag('config', '${gaId}', { anonymize_ip: true });
+
+          // Google Ads conversion tracking
+          gtag('config', 'AW-17496959572');
+
+          // Track phone clicks automatically
+          document.addEventListener('click', function(e) {
+            const link = e.target.closest('a[href^="tel:"]');
+            if (!link) return;
+
+            if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+              window.gtag('event', 'conversion', {
+                send_to: 'AW-17496959572/O9vCKjXw4QcENtUmZdB'
+              });
+            }
+          });
         `}
       </Script>
     </>
