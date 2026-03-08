@@ -55,7 +55,6 @@ export default function Hero({
 
         {secondaryCtaText && secondaryCtaHref && (
           <a href={secondaryCtaHref} className="btn-cta btn-secondary flex items-center gap-2">
-            {/* Show document icon only for 'Request a Quote' */}
             <SvgIcon name="document" size={20} />
             {secondaryCtaText}
           </a>

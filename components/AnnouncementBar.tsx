@@ -19,7 +19,7 @@ export default function AnnouncementBar({
         ? messages
         : [
             "Free estimates on all services",
-            "Same-day service available in your area",
+            "Hablamos Español",
             "Get 10% discount when you sign up",
           ])
           .filter(Boolean),
