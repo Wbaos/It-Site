@@ -269,7 +269,7 @@ export async function POST(req: Request) {
         mode: "subscription",
         payment_method_types: ["card"],
         line_items: [{ price: activePrice.id, quantity: 1 }],
-        success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success`,
+        success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url:
           returnUrl || `${process.env.NEXT_PUBLIC_BASE_URL}/plans`,
         customer_email: sessionAuth?.user?.email ?? undefined,
@@ -475,7 +475,7 @@ export async function POST(req: Request) {
       line_items,
       ...(stripeDiscounts ? { discounts: stripeDiscounts } : {}),
       metadata,
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cart`,
     });
 

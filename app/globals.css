@@ -2838,7 +2838,7 @@ color: #fff;
   overflow-x: auto;
   scrollbar-width: auto;
   position: sticky;
-  top: 64px;
+  top: 112px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10);
 }
 
@@ -2907,6 +2907,11 @@ color: #fff;
   .category-main-layout {
     flex-direction: column;
     gap: 2rem;
+  }
+}
+@media (max-width: 900px) {
+  .category-sidebar {
+    top: 108px;
   }
 }
 @media (max-width: 700px) {

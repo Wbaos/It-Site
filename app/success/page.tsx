@@ -1,16 +1,36 @@
 "use client";
 
 import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/lib/CartContext";
 import SvgIcon from "@/components/common/SvgIcons";
 
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+  }
+}
+
 export default function SuccessPage() {
   const { clearCart } = useCart();
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id");
 
   useEffect(() => {
     clearCart();
-  }, [clearCart]);
+
+    // Google Ads conversion tracking
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      window.gtag("event", "conversion", {
+        send_to: "AW-17496959572/YOUR_PURCHASE_LABEL",
+        value: 1.0,
+        currency: "USD",
+        transaction_id: sessionId || undefined
+      });
+    }
+
+  }, [clearCart, sessionId]);
 
   return (
     <main className="success-page">
