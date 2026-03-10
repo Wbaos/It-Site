@@ -16,6 +16,7 @@ import ServiceGroupList from "@/components/ServiceGroupList";
 import BeforeAfterSection from "@/components/BeforeAfterSection";
 import { PortableText } from "@portabletext/react";
 import type { Metadata } from "next";
+import ServiceGalleryClient from "./ServiceGalleryClient";
 
 
 type SubService = {
@@ -225,6 +226,16 @@ export default async function ServicePage({
       rating,
       reviewsCount,
       image { asset->{ url }, alt },
+      gallery[]{
+        asset-> { url },
+        alt
+      },
+      videos[]{
+        title,
+        caption,
+        videoFile{ asset-> { url, mimeType, size } },
+        poster{ asset-> { url }, alt }
+      },
       details,
       faqs,
       beforeAfter{
@@ -926,6 +937,7 @@ const isTvMounting = tvMountingSlugs.includes(slug);
                 width={700}
                 height={400}
                 className="service-hero"
+                sizes="(max-width: 700px) 100vw, 50vw"
                 priority
               />
             </div>
@@ -974,6 +986,12 @@ const isTvMounting = tvMountingSlugs.includes(slug);
             )}
           </div>
         </div>
+
+        <ServiceGalleryClient
+          serviceTitle={service.title}
+          gallery={service.gallery}
+          videos={service.videos}
+        />
 
         {includedList.length > 0 && (
           <div className="included-box">

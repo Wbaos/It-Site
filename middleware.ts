@@ -38,6 +38,7 @@ export async function middleware(request: NextRequest) {
     "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://js.stripe.com blob:",
     "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://api.stripe.com https://cdn.sanity.io https://*.sanity.io https://speed.cloudflare.com",
     "img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https:",
+    "media-src 'self' https://cdn.sanity.io",
     "style-src 'self' 'unsafe-inline'",
     "font-src 'self' data:",
     "frame-src https://js.stripe.com https://www.googletagmanager.com https://googleads.g.doubleclick.net",
