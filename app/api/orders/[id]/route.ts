@@ -156,11 +156,37 @@ export async function PATCH(
                 );
             }
 
+            // If the order was paid via Stripe Checkout, cancelling should refund the payment.
+            const stripeSessionId = typeof (existing as any).stripeSessionId === "string" ? (existing as any).stripeSessionId : "";
+            const shouldAttemptRefund = status === "paid" || status.includes("paid");
+            let refunded = false;
+
+            if (stripeSessionId && shouldAttemptRefund) {
+                try {
+                    const stripeSession = await stripe.checkout.sessions.retrieve(stripeSessionId);
+                    const paymentIntentId = stripeSession.payment_intent as string | null;
+
+                    if (paymentIntentId) {
+                        await stripe.refunds.create({ payment_intent: paymentIntentId });
+                        refunded = true;
+                    } else {
+                        console.warn(` No payment intent found for order ${orderId} (session ${stripeSessionId})`);
+                    }
+                } catch (refundErr: any) {
+                    console.error("Refund failed:", refundErr?.message || refundErr);
+                    return NextResponse.json(
+                        { error: "Refund failed: " + (refundErr?.message || "Unknown error") },
+                        { status: 500 }
+                    );
+                }
+            }
+
             const updated = (await Order.findOneAndUpdate(
                 { _id: orderId },
                 {
                     $set: {
-                        status: "canceled",
+                        status: refunded ? "refunded" : "canceled",
+                        refunded,
                         deleted: false,
                     },
                 },
@@ -171,7 +197,7 @@ export async function PATCH(
                 return NextResponse.json({ error: "Order not found" }, { status: 404 });
             }
 
-            return NextResponse.json({ order: updated });
+            return NextResponse.json({ order: updated, refunded });
         }
 
         // Reschedule order (default PATCH behavior)
