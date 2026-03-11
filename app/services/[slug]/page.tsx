@@ -1006,9 +1006,11 @@ const isTvMounting = tvMountingSlugs.includes(slug);
           </div>
         )}
 
+        <BeforeAfterSection data={service.beforeAfter} />
+
+
         {service.faqs && <FaqAccordion faqs={service.faqs} />}
 
-        <BeforeAfterSection data={service.beforeAfter} />
 
         {!isTvMounting && service.testimonials?.length > 0 && (
         <TestimonialsList
