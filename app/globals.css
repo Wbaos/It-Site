@@ -2668,7 +2668,7 @@ color: #fff;
 }
 @media (max-width: 700px) {
   .category-service-dropdown {
-    padding: .5rem 1rem;
+    --nav-h: calc(64px + var(--topbar-h));
   }
   .subservice-card-header{
     margin-bottom: 0;
@@ -3696,8 +3696,9 @@ html, body {
 }
 body.no-scroll {
   overflow: hidden;
-  touch-action: none;
-  overscroll-behavior: contain;
+  /* Scroll locking is handled in JS (position: fixed) to avoid iOS rubber-band.
+     Keep this class lightweight so nested overlays can still scroll. */
+  overscroll-behavior: none;
 }
 
 /* ================= ASSESSMENT TOOL ================= */
@@ -5505,12 +5506,6 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--nav-h);
   height: 100%;
-}
-
-@media (max-width: 900px) {
-  :root {
-    --nav-h: calc(79px + var(--topbar-h));
-  }
 }
 
 body {
@@ -7471,7 +7466,7 @@ main {
 /* --------- Responsive --------- */
 @media (max-width: 900px) {
   
-  .primary-nav {
+  .primary-nav--desktop {
     display: none;
   }
   .nav-grid {
@@ -9232,6 +9227,7 @@ main {
   font-weight: 700;
   font-size: 1rem;
   letter-spacing: .4px;
+  white-space: normal;
 }
 
 .dropdown-category ul {
@@ -9318,31 +9314,37 @@ main {
 
 @media (max-width: 900px) {
   
-  .primary-nav {
+  .primary-nav--mobile {
     position: fixed;
-    top: 64px;
+    top: var(--nav-offset, var(--nav-h));
     left: 0;
+    right: 0;
+    bottom: 0;
+    height: auto;
+    min-height: calc(100dvh - var(--nav-offset, var(--nav-h)));
     width: 100%;
     background: #0f172a;
-    padding: 1.75rem 1.25rem 3.5rem;
+    padding: 1.75rem 1.25rem calc(3.5rem + env(safe-area-inset-bottom));
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
     align-items: flex-start;
     opacity: 0;
     pointer-events: none;
     transition: 0.28s ease;
     z-index: 9998;
     box-sizing: border-box;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 
-  .primary-nav.open {
+  .primary-nav--mobile.open {
     opacity: 1;
     pointer-events: auto;
   }
 
 
-  .primary-nav .nav-link {
+  .primary-nav--mobile .nav-link {
     font-size: 1.25rem;
     font-weight: 600;
     color: #e2e8f0;
@@ -9351,7 +9353,7 @@ main {
     text-align: left;
   }
 
-  .primary-nav .nav-link:hover {
+  .primary-nav--mobile .nav-link:hover {
     color: var(--brand-teal);
   }
 
@@ -9405,27 +9407,34 @@ main {
 }
 .mobile-services-overlay {
   position: fixed;
-  top: 108px;       
+  top: var(--nav-offset, var(--nav-h));
   left: 0;
   right: 0;
   bottom: 0;
+  height: auto;
+  min-height: calc(100dvh - var(--nav-offset, var(--nav-h)));
   background: #0b1220;
-  z-index: 1000; 
+  z-index: 9999;
   display: flex;
   justify-content: flex-end;
+  overscroll-behavior: contain;
+  overflow: hidden;
 }
 
 
 .mobile-services-panel {
   position: absolute;
-  top: 0;         
+  top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background: #0b1220;
   color: white;
-  padding: 1.5rem 1.5rem 3rem 1.5rem;
+  padding: 1.5rem 1.5rem calc(3rem + env(safe-area-inset-bottom)) 1.5rem;
   /* border-left: 1px solid rgba(255,255,255,0.1); */
+  display: flex;
+  flex-direction: column;
+  touch-action: pan-y;
 }
 
 
@@ -9447,10 +9456,14 @@ main {
 }
 
 .mobile-services-body {
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
-  height: calc(100% - 100px);
+  height: auto;
   -webkit-overflow-scrolling: touch; 
   padding-bottom: 1rem;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
 }
 
 .mobile-services-body::-webkit-scrollbar {

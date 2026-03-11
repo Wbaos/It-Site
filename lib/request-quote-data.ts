@@ -37,6 +37,7 @@ export type ApiCategory = {
   category: string;
   categorySlug: string;
   icon?: any;
+  displayOrder?: number;
   groups: ApiGroup[];
 };
 
@@ -89,6 +90,7 @@ export async function getServiceCategories(): Promise<ApiCategory[]> {
     category->{
       title,
       "slug": slug.current,
+      displayOrder,
       icon {
         "url": asset->url,
         alt
@@ -155,6 +157,7 @@ export async function getServiceCategories(): Promise<ApiCategory[]> {
         category: catTitle,
         categorySlug: catSlug,
         icon: group.category?.icon ?? "tag",
+        displayOrder: group.category?.displayOrder ?? 999,
         groups: [],
       };
       grouped.push(categoryBucket);
@@ -168,7 +171,9 @@ export async function getServiceCategories(): Promise<ApiCategory[]> {
       services: servicesByGroup[group._id] || [],
     });
   }
-
+  grouped.sort(
+    (a, b) => (a.displayOrder ?? 999) - (b.displayOrder ?? 999)
+  );
   return grouped;
 }
 
