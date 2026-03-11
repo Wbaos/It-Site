@@ -566,7 +566,7 @@ export default async function ServicePage({
                 )}
                 <div>
                   <h1 className="category-title">
-                    {category.title} in Miami, Broward & South Florida
+                    {category.title} in Miami & Broward
                   </h1>
                   {category.tagline && (
                     <p className="category-desc">{category.tagline}</p>
