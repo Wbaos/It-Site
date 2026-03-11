@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import SvgIcon from "@/components/common/SvgIcons";
 
 type Category = {
@@ -41,6 +41,7 @@ function getCategoryTitle(category: Category | undefined): string {
 export default function BlogPageClient({ posts }: { posts: Post[] }) {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   const categories = useMemo(() => {
     const map = new Map<string, { slug: string; title: string }>();
@@ -131,7 +132,22 @@ export default function BlogPageClient({ posts }: { posts: Post[] }) {
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search blogs..."
             autoComplete="off"
+            ref={searchInputRef}
           />
+
+          {searchTerm.trim().length > 0 ? (
+            <button
+              type="button"
+              className="blog-filter-clear"
+              aria-label="Clear search"
+              onClick={() => {
+                setSearchTerm("");
+                searchInputRef.current?.focus();
+              }}
+            >
+              <SvgIcon name="x" size={18} color="currentColor" />
+            </button>
+          ) : null}
         </div>
       </div>
 
