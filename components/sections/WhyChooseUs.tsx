@@ -5,7 +5,7 @@ export default function WhyChooseUs() {
     {
       icon: <Smile size={32} strokeWidth={1.5} />,
       title: "Patient & Friendly Experts",
-      text: "We help seniors, families, home offices, and small business owners with clear explanations and no tech jargon.",
+      text: "We help seniors, families, and small business owners with clear explanations and reliable, on-site service.",
     },
     {
       icon: <Clock size={32} strokeWidth={1.5} />,
@@ -14,13 +14,13 @@ export default function WhyChooseUs() {
     },
     {
       icon: <Network size={32} strokeWidth={1.5} />,
-      title: "WiFi & Network Specialists",
-      text: "We diagnose slow internet, optimize router placement, and upgrade home or office networks for maximum speed.",
+      title: "WiFi, Internet & Smart Setup",
+      text: "We troubleshoot slow internet, optimize Wi-Fi, and set up smart-home devices, cameras, and connected systems — including smart irrigation controllers.",
     },
     {
       icon: <Cpu size={32} strokeWidth={1.5} />,
-      title: "Smart-Home & Device Setup",
-      text: "From smart TVs to cameras, computers, phones, routers, printers, and more — we set it all up for you.",
+      title: "Hands-On Installations",
+      text: "From TV mounting and security cameras to computer and printer setup — plus outdoor help like sprinkler service and tree trimming — we handle the details.",
     },
     {
       icon: <Users size={32} strokeWidth={1.5} />,
@@ -35,12 +35,21 @@ export default function WhyChooseUs() {
   ];
 
   return (
-    <section className="why-choose">
+    <section
+      className="why-choose"
+      role="region"
+      aria-labelledby="why-title"
+    >
       <div className="site-container">
 
         <div className="why-header">
-          <h2>Why Choose <span className="brand">CallTechCare</span>?</h2>
-          <p>Your trusted tech experts serving Miami, Pembroke Pines, Broward & Homestead.</p>
+          <h2 id="why-title">
+            Why Choose <span className="brand">CallTechCare</span> for Home, Outdoor & Tech Services?
+          </h2>
+          <p>
+            Your trusted local service team providing home, outdoor, and tech services
+            across Miami, Pembroke Pines, Broward County, Miramar, and Homestead.
+          </p>
         </div>
 
         <div className="why-grid">

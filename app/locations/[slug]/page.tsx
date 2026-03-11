@@ -54,15 +54,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: location.metaTitle || `${location.title} | IT Services`,
+    title:
+      location.metaTitle ||
+      `${location.title} | Home, Outdoor & Tech Services`,
     description: location.metaDescription || location.description,
+    alternates: {
+      canonical: `https://www.calltechcare.com/locations/${slug}`,
+    },
     openGraph: {
       title: location.metaTitle || location.title,
       description: location.metaDescription || location.description,
+      url: `https://www.calltechcare.com/locations/${slug}`,
+      siteName: "CallTechCare",
       images: location.heroImage
         ? [{ url: urlFor(location.heroImage).width(1200).height(630).url() }]
         : [],
-    },
+    }
   };
 }
 
@@ -100,10 +107,24 @@ export default async function LocationPage({ params }: Props) {
     ],
   };
 
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": pageUrl + "#localbusiness",
+    name: "CallTechCare",
+    url: pageUrl,
+    areaServed: {
+      "@type": "City",
+      name: `${location.city}, ${location.state}`,
+    },
+    telephone: location.phone || "+1-786-366-2729",
+    email: location.email || "support@calltechcare.com",
+  };
+
   const locationServiceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: `Tech Support & Smart Home Services in ${location.city}, ${location.state}`,
+    name: `Home, Outdoor & Tech Services in ${location.city}, ${location.state}`,
     url: pageUrl,
     description: location.metaDescription || location.description,
     areaServed: {
@@ -119,12 +140,22 @@ export default async function LocationPage({ params }: Props) {
     <>
       <script
         type="application/ld+json"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       <script
         type="application/ld+json"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(locationServiceSchema) }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(localBusinessSchema),
+        }}
       />
 
       <div className="location-detail-page">
@@ -159,7 +190,7 @@ export default async function LocationPage({ params }: Props) {
             {location.city}, {location.state}
           </h1>
           <p className="location-hero-subtitle">
-            Professional Tech Support & Smart Home Services
+            Professional Home, Outdoor & Tech Services in {location.city}
           </p>
         </div>
       </section>
@@ -169,18 +200,21 @@ export default async function LocationPage({ params }: Props) {
         <div className="location-content-grid">
           {/* Left Column - Main Content */}
           <div className="location-left-column">
-            {/* Tech Support Services */}
+            {/* Services */}
             <div className="location-section-card">
               <h2 className="location-section-title">
-                Tech Support Services in {location.city}
+                Services in {location.city}
               </h2>
               <p className="location-section-text">{location.description}</p>
               <p className="location-section-text">
                 Our {location.city} team consists of certified technicians who
-                are experts in home technology, smart home automation, computer
-                repair, and IT support. We pride ourselves on providing
-                same-day service, transparent pricing, and exceptional customer
-                service to the {location.city}, {location.state} area.
+                help with security camera installation, TV mounting, WiFi & internet
+                troubleshooting, computer and printer support, phone & tablet setup,
+                and senior-friendly tech help — and we also support common outdoor
+                services like sprinkler & irrigation work, and tree
+                trimming.
+                We pride ourselves on providing same-day service, transparent pricing,
+                and exceptional customer service to the {location.city}, {location.state} area.
               </p>
             </div>
 
@@ -253,8 +287,7 @@ export default async function LocationPage({ params }: Props) {
                     {location.serviceRadius?.population && (
                       <> Serving a population of approximately{" "}
                         {location.serviceRadius.population} residents with
-                        professional technology support and smart home installation
-                        services.
+                        professional home, outdoor, and tech services.
                       </>
                     )}
                   </p>
@@ -425,35 +458,33 @@ export default async function LocationPage({ params }: Props) {
       <section className="location-seo-section">
         <div className="location-section-card">
           <h2 className="location-section-title">
-            Professional Tech Support in {location.city}, {location.state}
+            Professional Home, Outdoor & Tech Services in {location.city}, {location.state}
           </h2>
           <div className="location-seo-content">
             <p>
-              Looking for reliable technology support in {location.city}?
-              TechSupport Pro is your trusted local provider for all
-              tech-related services. Whether you need help with smart home
-              installation, computer repair, network setup, or home
-              entertainment systems, our certified technicians in{" "}
-              {location.city} are here to help.
+              Looking for reliable service in {location.city}? CallTechCare is a trusted
+              local provider for home, outdoor, and tech services. Whether you need help
+              with security camera installation, TV mounting, WiFi & internet troubleshooting,
+              computer and printer support, phone & tablet help, senior-friendly tech support,
+              sprinkler & irrigation service, and tree trimming, our team in
+              {location.city} is here to help.
             </p>
             <p>
               We understand the unique needs of {location.city} residents
               and businesses. That&apos;s why we offer flexible scheduling,
               transparent pricing, and guaranteed satisfaction on every
               service call. From simple TV mounting to complex whole-home
-              automation, we have the expertise to handle any technology
-              challenge.
+              automation, we have the experience to handle a wide range of projects.
             </p>
             <p>
               <strong>
                 Services we provide in {location.city} include:
               </strong>{" "}
-              Smart home installation and automation, TV mounting and home
-              theater setup, computer repair and upgrades, WiFi and network
-              configuration, security camera installation, smart thermostat
-              setup, printer installation, smart lighting systems, home
-              entertainment systems, and much more. Contact us today to
-              schedule service in {location.city}, {location.state}.
+              Security camera installation, TV mounting and basic home theater setup, WiFi &
+              internet support, computer and printer support, phone & tablet help, senior-friendly
+              tech support, smart home installation and automation, plus sprinkler & irrigation
+              service, and tree trimming. Contact us today to schedule service
+              in {location.city}, {location.state}.
             </p>
           </div>
         </div>

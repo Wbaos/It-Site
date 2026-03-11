@@ -79,7 +79,7 @@ export async function generateMetadata({
   const description =
     post.metaDescription ||
     post.excerpt ||
-    "Professional IT support, Wi-Fi setup, TV mounting, and tech help in South Florida.";
+    "Local home, outdoor, and tech services in South Florida — including security camera installation, TV mounting, Wi-Fi & internet troubleshooting, computer and printer support, phone & tablet help, senior-friendly tech support, plus sprinkler & irrigation service, and tree trimming.";
 
   const image =
     post.ogImage?.asset?.url || post.mainImage?.asset?.url;
@@ -153,7 +153,7 @@ export default async function BlogPost({
   const description =
     post.metaDescription ||
     post.excerpt ||
-    "Professional IT support, Wi-Fi setup, TV mounting, and tech help in South Florida.";
+    "Local home, outdoor, and tech services in South Florida — including security camera installation, TV mounting, Wi-Fi & internet troubleshooting, computer and printer support, phone & tablet help, senior-friendly tech support, plus sprinkler & irrigation service, and tree trimming.";
 
   const tags: string[] = Array.isArray(post.tags) ? post.tags : [];
 
@@ -187,17 +187,15 @@ export default async function BlogPost({
     "@type": "BlogPosting",
     headline: post.metaTitle || post.title,
     description,
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: [".post-summary", ".single-blog-body"],
-    },
     image: image ? [image] : undefined,
     datePublished: post.publishedAt,
     dateModified: post._updatedAt || post.publishedAt,
+
     author: {
       "@type": "Person",
       name: post.authorName || "CallTechCare",
     },
+
     publisher: {
       "@type": "Organization",
       name: "CallTechCare",
@@ -208,10 +206,14 @@ export default async function BlogPost({
         height: 512,
       },
     },
+
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": url,
     },
+
+    articleSection: post.categories?.map(c => c.title).filter(Boolean),
+
     keywords: uniqueTags.join(", "),
     about: post.focusKeyword || undefined,
   };
@@ -245,6 +247,7 @@ export default async function BlogPost({
     <>
       <script
         type="application/ld+json"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(blogSchema),
         }}
@@ -252,6 +255,7 @@ export default async function BlogPost({
 
       <script
         type="application/ld+json"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(breadcrumbSchema),
         }}
@@ -331,10 +335,10 @@ export default async function BlogPost({
 
           <div className="single-blog-cta-box">
             <h2 className="single-blog-cta-title">
-              Need Expert IT Support?
+              Need Expert Help?
             </h2>
             <p className="single-blog-cta-text">
-              Our team is ready to help you with all your technology needs
+              Our team is ready to help with home, outdoor, and tech services
             </p>
 
             <Link href="/#contact" className="single-blog-cta-btn">

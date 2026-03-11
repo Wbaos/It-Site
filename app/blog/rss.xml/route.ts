@@ -22,16 +22,19 @@ export async function GET() {
       metaDescription?: string;
       publishedAt?: string;
       _updatedAt?: string;
+      authorName?: string;
     }>
   >(
-    `*[_type == "post" && publishedAt <= now() && defined(slug.current)] | order(publishedAt desc)[0...50] {
-      title,
-      slug,
-      excerpt,
-      metaDescription,
-      publishedAt,
-      _updatedAt
-    }`
+    `*[_type == "post" && publishedAt <= now() && defined(slug.current)]
+      | order(publishedAt desc)[0...50]{
+        title,
+        slug,
+        excerpt,
+        metaDescription,
+        publishedAt,
+        _updatedAt,
+        "authorName": author->name
+      }`
   );
 
   const itemsXml = (posts ?? [])
@@ -41,17 +44,31 @@ export async function GET() {
       if (!slug || !title) return "";
 
       const url = `${siteUrl}/blog/${slug}`;
-      const description = (post.metaDescription || post.excerpt || "").trim();
+
+      const description =
+        (post.metaDescription || post.excerpt || "").trim();
+
       const pubDate = post.publishedAt || post._updatedAt;
-      const pubDateRfc822 = pubDate ? new Date(pubDate).toUTCString() : "";
+      const pubDateRfc822 = pubDate
+        ? new Date(pubDate).toUTCString()
+        : "";
+
+      const author = post.authorName?.trim();
 
       return [
         "<item>",
         `<title>${escapeXml(title)}</title>`,
-        `<link>${escapeXml(url)}</link>`,
-        `<guid isPermaLink=\"true\">${escapeXml(url)}</guid>`,
-        pubDateRfc822 ? `<pubDate>${escapeXml(pubDateRfc822)}</pubDate>` : "",
-        description ? `<description><![CDATA[${description}]]></description>` : "",
+        `<link>${url}</link>`,
+        `<guid isPermaLink="true">${url}</guid>`,
+        pubDateRfc822
+          ? `<pubDate>${escapeXml(pubDateRfc822)}</pubDate>`
+          : "",
+        description
+          ? `<description><![CDATA[${description}]]></description>`
+          : "",
+        author
+          ? `<author>${escapeXml(author)} (CallTechCare)</author>`
+          : "",
         "</item>",
       ]
         .filter(Boolean)
@@ -65,18 +82,40 @@ export async function GET() {
   <channel>
     <title>CallTechCare Blog</title>
     <link>${siteUrl}/blog</link>
-    <description>Tech tips, Wi-Fi guides, TV mounting advice, cybersecurity basics, and IT best practices for homes and small businesses in South Florida.</description>
+
+    <description>
+    Home, outdoor, and tech tips for South Florida — including Wi-Fi &amp; internet guides, security camera and smart home tips, TV mounting advice, computer/printer help, and practical maintenance insights.
+    </description>
+
+    <generator>CallTechCare Blog RSS</generator>
+
     <language>en-us</language>
+
+    <image>
+      <url>https://www.calltechcare.com/logo-schema.png</url>
+      <title>CallTechCare</title>
+      <link>${siteUrl}/blog</link>
+    </image>
+
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="${feedUrl}" rel="self" type="application/rss+xml" />
+
+    <atom:link
+      xmlns:atom="http://www.w3.org/2005/Atom"
+      href="${feedUrl}"
+      rel="self"
+      type="application/rss+xml"
+    />
+
     ${itemsXml}
+
   </channel>
 </rss>`;
 
   return new NextResponse(rssXml, {
     headers: {
       "content-type": "application/rss+xml; charset=utf-8",
-      "cache-control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      "cache-control":
+        "public, s-maxage=3600, stale-while-revalidate=86400",
     },
   });
 }
