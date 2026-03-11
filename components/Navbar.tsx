@@ -35,6 +35,239 @@ export default function Navbar() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [mobileServicesPanel, setMobileServicesPanel] = useState(false);
 
+  const NavLinks = ({ attachDropdownRef }: { attachDropdownRef: boolean }) => (
+    <>
+      <div className="nav-item dropdown" ref={attachDropdownRef ? dropdownRef : undefined}>
+        {/* SERVICES BUTTON */}
+        <a
+          href="#"
+          className={`nav-link ${dropdownOpen ? "active-nav-link" : ""}`}
+          onClick={(e) => {
+            e.preventDefault();
+            // MOBILE
+            if (typeof window !== "undefined" && window.innerWidth < 900) {
+              if (mobileServicesPanel) {
+                setMobileServicesPanel(false);
+                setOpen(false);
+                closeAllMenus();
+                return;
+              }
+              closeAllMenus();
+              setOpen(true);
+              setMobileServicesPanel(true);
+              return;
+            }
+            // DESKTOP
+            closeAllMenus();
+            setDropdownOpen(true);
+          }}
+        >
+          Services ▾
+        </a>
+        {dropdownOpen && (
+          <div className="dropdown-panel">
+            <div className="dropdown-inner">
+              <h3 className="dropdown-main-title">All Our Services</h3>
+              {loadingServices ? (
+                <p className="loading-text">Loading…</p>
+              ) : activeGroup ? (
+                (() => {
+                  const { catIdx, groupIdx } = activeGroup;
+                  const group = categories[catIdx]?.groups[groupIdx];
+                  if (!group) return null;
+                  return (
+                    <>
+                      <div className="submenu-header">
+                        <button className="back-btn" onClick={() => setActiveGroup(null)}>
+                          <SvgIcon name="chevron-left" size={18} color="var(--brand-teal)" />
+                          Back to All Services
+                        </button>
+                        <h4 className="submenu-title">{group.title}</h4>
+                      </div>
+                      <div className="submenu-body">
+                        <div className="submenu-columns">
+                          <div className="submenu-left-column">
+                            <ServiceGroupList
+                              title={group.title}
+                              items={group.services}
+                              onSelect={(srv) => {
+                                closeAllMenus();
+                                if (srv?.slug) router.push(`/services/${srv.slug}`);
+                              }}
+                            />
+                          </div>
+                          {group.promo?.enabled && (
+                            <div className="submenu-right-column">
+                              <div className="promo-card">
+                                {group.promo.icon?.asset?.url && (
+                                  <div className="promo-icon">
+                                    <img
+                                      src={group.promo.icon.asset.url}
+                                      alt={group.promo.icon.alt || "promo icon"}
+                                    />
+                                  </div>
+                                )}
+                                <h3 className="promo-title">{group.promo.title}</h3>
+                                <p className="promo-subtitle">{group.promo.subtitle}</p>
+                                <ul className="promo-list">
+                                  {group.promo.items?.map((item: string, i: number) => (
+                                    <li key={i}>{item}</li>
+                                  ))}
+                                </ul>
+                                {group.promo.buttonText && (
+                                  <button className="promo-btn">{group.promo.buttonText}</button>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  );
+                })()
+              ) : (
+                <>
+                  {categories.map((cat, i) => (
+                    <div key={cat.category} className={`dropdown-category col-${(i % 3) + 1}`}>
+                      <div className="dropdown-header">
+                        {cat.categorySlug ? (
+                          <Link
+                            href={`/services/${cat.categorySlug}`}
+                            className="dropdown-title"
+                            onClick={closeAllMenus}
+                            style={{
+                              textDecoration: "none",
+                              color: "inherit",
+                              display: "flex",
+                              alignItems: "center",
+                              cursor: "pointer",
+                            }}
+                          >
+                            {cat.icon?.url ? (
+                              <img src={cat.icon.url} alt={cat.icon.alt || cat.category} width={22} height={22} />
+                            ) : (
+                              <SvgIcon name="tag" size={22} />
+                            )}
+                            <h4 style={{ marginLeft: 8 }}>{cat.category}</h4>
+                          </Link>
+                        ) : (
+                          <div
+                            className="dropdown-title"
+                            style={{ display: "flex", alignItems: "center", opacity: 0.5 }}
+                          >
+                            {cat.icon?.url ? (
+                              <img src={cat.icon.url} alt={cat.icon.alt || cat.category} width={22} height={22} />
+                            ) : (
+                              <SvgIcon name="tag" size={22} />
+                            )}
+                            <h4 style={{ marginLeft: 8 }}>{cat.category}</h4>
+                          </div>
+                        )}
+                      </div>
+                      <ul>
+                        {cat.groups?.map((group: any, j: number) => (
+                          <li key={group.slug}>
+                            <a
+                              href="#"
+                              className="dropdown-link"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setActiveGroup({ catIdx: i, groupIdx: j });
+                              }}
+                            >
+                              <span className="srv-left">
+                                <span className="dot"></span>
+                                {group.title}
+                              </span>
+                              {group.services && <span className="srv-count">({group.services.length})</span>}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </>
+              )}
+            </div>
+            <div className="custom-service-box-separator-wrapper">
+              <hr className="custom-service-box-separator" />
+              <div className="custom-service-box">
+                <div className="custom-service-icon">
+                  <span role="img" aria-label="chat">
+                    💬
+                  </span>
+                </div>
+                <h2 className="custom-service-title">Need Something Custom?</h2>
+                <p className="custom-service-desc">
+                  Can&apos;t find what you&apos;re looking for? We offer customized services tailored to your specific needs.
+                </p>
+                <a href="/contact" className="custom-service-btn-grey">
+                  Contact Us for Custom Services
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* NAV LINKS */}
+      {NAV.map((i) => {
+        const isActive = !dropdownOpen && pathname === i.href;
+        return (
+          <Link
+            key={i.href}
+            href={i.href}
+            className={`nav-link ${isActive ? "active-nav-link" : ""}`}
+            onClick={closeAllMenus}
+          >
+            {i.label}
+          </Link>
+        );
+      })}
+
+      {/* GET SUPPORT */}
+      <Link href="/contact" className="support-btn" onClick={closeAllMenus}>
+        Get Support
+      </Link>
+    </>
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.innerWidth >= 900) return;
+    if (searchOpen) return;
+
+    const shouldLock = open || mobileServicesPanel;
+    if (!shouldLock) return;
+
+    const scrollY = window.scrollY;
+    const { style } = document.body;
+    const prev = {
+      position: style.position,
+      top: style.top,
+      left: style.left,
+      right: style.right,
+      width: style.width,
+    };
+
+    document.body.classList.add("no-scroll");
+    style.position = "fixed";
+    style.top = `-${scrollY}px`;
+    style.left = "0";
+    style.right = "0";
+    style.width = "100%";
+
+    return () => {
+      document.body.classList.remove("no-scroll");
+      style.position = prev.position;
+      style.top = prev.top;
+      style.left = prev.left;
+      style.right = prev.right;
+      style.width = prev.width;
+      window.scrollTo(0, scrollY);
+    };
+  }, [open, mobileServicesPanel, searchOpen]);
+
   const closeAllMenus = () => {
     closeAll();
     setMobileServicesPanel(false);
@@ -100,215 +333,8 @@ export default function Navbar() {
               {open ? <X size={30} /> : <Menu size={30} />}
             </button>
             {/* NAV */}
-            <nav className={`primary-nav ${open ? "open" : ""}`}>
-              <div className="nav-item dropdown" ref={dropdownRef}>
-                {/* SERVICES BUTTON */}
-                <a
-                  href="#"
-                  className={`nav-link ${dropdownOpen ? "active-nav-link" : ""}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    // MOBILE
-                    if (window.innerWidth < 900) {
-                      if (mobileServicesPanel) {
-                        setMobileServicesPanel(false);
-                        setOpen(false);
-                        closeAllMenus();
-                        return;
-                      }
-                      closeAllMenus();
-                      setOpen(true);
-                      setMobileServicesPanel(true);
-                      return;
-                    }
-                    // DESKTOP
-                    closeAllMenus();
-                    setDropdownOpen(true);
-                  }}
-                >
-                  Services ▾
-                </a>
-                {dropdownOpen && (
-                  <div className="dropdown-panel">
-                    <div className="dropdown-inner">
-                      <h3 className="dropdown-main-title">All Our Services</h3>
-                      {loadingServices ? (
-                        <p className="loading-text">Loading…</p>
-                      ) : activeGroup ? (
-                        (() => {
-                          const { catIdx, groupIdx } = activeGroup;
-                          const group = categories[catIdx]?.groups[groupIdx];
-                          if (!group) return null;
-                          return (
-                            <>
-                              <div className="submenu-header">
-                                <button
-                                  className="back-btn"
-                                  onClick={() => setActiveGroup(null)}
-                                >
-                                  <SvgIcon
-                                    name="chevron-left"
-                                    size={18}
-                                    color="var(--brand-teal)"
-                                  />
-                                  Back to All Services
-                                </button>
-                                <h4 className="submenu-title">{group.title}</h4>
-                              </div>
-                              <div className="submenu-body">
-                                <div className="submenu-columns">
-                                  <div className="submenu-left-column">
-                                    <ServiceGroupList
-                                      title={group.title}
-                                      items={group.services}
-                                      onSelect={(srv) => {
-                                        closeAllMenus();
-                                        if (srv?.slug) router.push(`/services/${srv.slug}`);
-                                      }}
-                                    />
-                                  </div>
-                                  {group.promo?.enabled && (
-                                    <div className="submenu-right-column">
-                                      <div className="promo-card">
-                                        {group.promo.icon?.asset?.url && (
-                                          <div className="promo-icon">
-                                            <img
-                                              src={group.promo.icon.asset.url}
-                                              alt={group.promo.icon.alt || "promo icon"}
-                                            />
-                                          </div>
-                                        )}
-                                        <h3 className="promo-title">{group.promo.title}</h3>
-                                        <p className="promo-subtitle">{group.promo.subtitle}</p>
-                                        <ul className="promo-list">
-                                          {group.promo.items?.map((item: string, i: number) => (
-                                            <li key={i}>{item}</li>
-                                          ))}
-                                        </ul>
-                                        {group.promo.buttonText && (
-                                          <button className="promo-btn">{group.promo.buttonText}</button>
-                                        )}
-                                      </div>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            </>
-                          );
-                        })()
-                      ) : (
-                        <>
-                          {categories.map((cat, i) => (
-                            <div
-                              key={cat.category}
-                              className={`dropdown-category col-${(i % 3) + 1}`}
-                            >
-                              <div className="dropdown-header">
-                                {cat.categorySlug ? (
-                                  <Link
-                                    href={`/services/${cat.categorySlug}`}
-                                    className="dropdown-title"
-                                    onClick={closeAllMenus}
-                                    style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-                                  >
-                                    {cat.icon?.url ? (
-                                      <img
-                                        src={cat.icon.url}
-                                        alt={cat.icon.alt || cat.category}
-                                        width={22}
-                                        height={22}
-                                      />
-                                    ) : (
-                                      <SvgIcon name="tag" size={22} />
-                                    )}
-                                    <h4 style={{ marginLeft: 8 }}>{cat.category}</h4>
-                                  </Link>
-                                ) : (
-                                  <div className="dropdown-title" style={{ display: 'flex', alignItems: 'center', opacity: 0.5 }}>
-                                    {cat.icon?.url ? (
-                                      <img
-                                        src={cat.icon.url}
-                                        alt={cat.icon.alt || cat.category}
-                                        width={22}
-                                        height={22}
-                                      />
-                                    ) : (
-                                      <SvgIcon name="tag" size={22} />
-                                    )}
-                                    <h4 style={{ marginLeft: 8 }}>{cat.category}</h4>
-                                  </div>
-                                )}
-                              </div>
-                              <ul>
-                                {cat.groups?.map((group: any, j: number) => (
-                                  <li key={group.slug}>
-                                    <a
-                                      href="#"
-                                      className="dropdown-link"
-                                      onClick={e => {
-                                        e.preventDefault();
-                                        setActiveGroup({ catIdx: i, groupIdx: j });
-                                      }}
-                                    >
-                                      <span className="srv-left">
-                                        <span className="dot"></span>
-                                        {group.title}
-                                      </span>
-                                      {group.services && (
-                                        <span className="srv-count">
-                                          ({group.services.length})
-                                        </span>
-                                      )}
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
-                           
-                        </>
-                      )}
-                    </div>
-                    <div className="custom-service-box-separator-wrapper">
-                      <hr className="custom-service-box-separator" />
-                      <div className="custom-service-box">
-                        <div className="custom-service-icon">
-                          <span role="img" aria-label="chat">💬</span>
-                        </div>
-                        <h2 className="custom-service-title">Need Something Custom?</h2>
-                        <p className="custom-service-desc">
-                          Can&apos;t find what you&apos;re looking for? We offer customized services tailored to your specific needs.
-                        </p>
-                        <a href="/contact" className="custom-service-btn-grey">
-                          Contact Us for Custom Services
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-              {/* NAV LINKS */}
-              {NAV.map((i) => {
-                const isActive = !dropdownOpen && pathname === i.href;
-                return (
-                  <Link
-                    key={i.href}
-                    href={i.href}
-                    className={`nav-link ${isActive ? "active-nav-link" : ""}`}
-                    onClick={closeAllMenus}
-                  >
-                    {i.label}
-                  </Link>
-                );
-              })}
-              {/* GET SUPPORT */}
-              <Link
-                href="/contact"
-                className="support-btn"
-                onClick={closeAllMenus}
-              >
-                Get Support
-              </Link>
+            <nav className="primary-nav primary-nav--desktop">
+              <NavLinks attachDropdownRef={true} />
             </nav>
           </div>
           {/* RIGHT ACTIONS */}
@@ -349,6 +375,14 @@ export default function Navbar() {
           </div>
         </div>
       </header>
+
+      {/* Mobile nav must be outside the blurred fixed header (iOS/WebKit fix) */}
+      {open && (
+        <nav className={`primary-nav primary-nav--mobile ${open ? "open" : ""}`}>
+          <NavLinks attachDropdownRef={false} />
+        </nav>
+      )}
+
       {searchOpen && (
         <SearchModal onClose={() => {
           closeAllMenus();
