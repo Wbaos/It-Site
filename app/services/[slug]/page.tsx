@@ -399,7 +399,8 @@ export default async function ServicePage({
         { slug }
       ),
       sanity.fetch(
-        `*[_type == "category"]|order(title asc){
+        `*[_type == "category" && defined(slug.current) && count(*[_type == "serviceGroup" && category._ref == ^._id]) > 0]
+          | order(title asc){
           title,
           slug,
           icon {
