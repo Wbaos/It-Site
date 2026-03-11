@@ -22,7 +22,7 @@ type Section = {
     | "speed-test-cta"
     | "contact";
   Component: ComponentType<any>;
-  props?: any;
+  props?: Record<string, unknown>;
 };
 
 const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
@@ -56,12 +56,12 @@ export const homeSections: Section[] = [
     props: {
         // imageSrc: "/helping2.jpg",
 
-        titleLine1: "Local IT & Tech Support",
+        titleLine1: "Local Home, Outdoor & Tech Services",
         titleLine2: "for Homes & Small Businesses in South Florida",
 
         subtitle:
-          "Serving homes, seniors, home offices, and small businesses across Miami, Pembroke Pines, Broward County, and Homestead with TV mounting, security camera installation, Wi-Fi troubleshooting, computer support, smart-home setup, and reliable on-site tech services.",
-        badgeText: "Trusted Local IT & Tech Services in South Florida",
+          "Serving Miami, Pembroke Pines, Broward County, Miramar, and Homestead with professional home, outdoor, and tech services including security camera installation, TV mounting, Wi-Fi & internet troubleshooting, computer and printer support, phone & tablet help, senior-friendly in-home tech support, sprinkler & irrigation service, and tree trimming.",
+        badgeText: "Trusted Local Services in South Florida",
 
         primaryCtaText: "Contact Us",
         primaryCtaHref: "#contact",
@@ -69,7 +69,9 @@ export const homeSections: Section[] = [
         secondaryCtaText: "Request a Quote",
         secondaryCtaHref: "/request-quote",
 
-
+        phoneNumber: "+17863662729",
+        showCallButton: true,
+        
         stats: [
             { value: "500+", label: "Local Clients Helped" },
             { value: "4.9/5", label: "Customer Satisfaction" },
@@ -95,7 +97,7 @@ export const homeSections: Section[] = [
     Component: TestimonialsList,
     props: {
       items: HOMEPAGE_TESTIMONIALS,
-      title: "What Clients Say",
+      title: "What South Florida Clients Say",
       subtitle: "Real experiences from satisfied homeowners and families.",
       variant: "plain", 
     },

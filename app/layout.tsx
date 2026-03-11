@@ -9,9 +9,6 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import CookieConsent from "@/components/CookieConsent";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 
-/* =========================
-   GLOBAL METADATA (FALLBACK)
-   ========================= */
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.calltechcare.com"),
 
@@ -22,32 +19,38 @@ export const metadata: Metadata = {
 
   /* Fallback title only (pages override this) */
   title: {
-    default: "CallTechCare | Local IT & Tech Support in South Florida",
+    default: "CallTechCare | TV Mounting, Security Cameras, Sprinkler Repair & Tech Support in Miami",
     template: "%s | CallTechCare",
   },
 
   /* Fallback description */
   description:
-    "Local IT and in-home tech support for homes, seniors, and small businesses across South Florida. We provide TV mounting, WiFi troubleshooting, home security, smart home setup, and device support.",
+    "Local home, outdoor, and tech services across South Florida. We provide security camera installation, TV mounting, WiFi & internet troubleshooting, computer and printer support, phone & tablet help, senior-friendly in-home tech support, plus sprinkler & irrigation service, and tree trimming.",
 
   /* Keywords (harmless fallback) */
   keywords: [
-    "TV mounting service",
-    "Security camera installation",
-    "IT support for homes",
-    "Small business IT support",
-    "WiFi troubleshooting",
-    "Smart home setup",
-    "Miami tech support",
-    "South Florida IT services",
-  ],
+      "TV mounting Miami",
+      "TV wall mount installation Miami",
+      "Security camera installation Miami",
+      "WiFi troubleshooting Miami",
+      "Computer support Miami",
+      "Printer setup Miami",
+      "Smart home installation Miami",
+      "Sprinkler repair Miami",
+      "Irrigation repair Miami",
+      "Tree trimming Miami",
+      "Tech support Miami",
+      "IT support Miami",
+      "TV mounting Miramar",
+      "Security camera installation Pembroke Pines",
+      "Sprinkler repair Broward County",
+    ],
 
   /* Open Graph fallback */
   openGraph: {
-    title: "CallTechCare | Local IT & Tech Support in South Florida",
+    title: "CallTechCare | TV Mounting, Security Cameras, Sprinkler Repair & Tech Support in Miami",
     description:
-      "Local IT and in-home tech support for homes, seniors, and small businesses across South Florida. We provide TV mounting, WiFi troubleshooting, home security, smart home setup, and device support.",
-    url: "https://www.calltechcare.com",
+      "CallTechCare provides TV wall mounting, security camera installation, WiFi troubleshooting, computer and printer support, sprinkler repair, irrigation services, and tree trimming across Miami, Miramar, Pembroke Pines, Hollywood, and Fort Lauderdale.",    url: "https://www.calltechcare.com",
     siteName: "CallTechCare",
     locale: "en_US",
     type: "website",
@@ -56,7 +59,7 @@ export const metadata: Metadata = {
         url: "/logo-og.png",
         width: 1200,
         height: 630,
-        alt: "CallTechCare – In-Home IT & Tech Support",
+        alt: "CallTechCare – Local Home, Outdoor & Tech Services",
       },
     ],
   },
@@ -64,9 +67,8 @@ export const metadata: Metadata = {
   /* Twitter fallback */
   twitter: {
     card: "summary_large_image",
-    title: "CallTechCare | Local IT & Tech Support in South Florida",
-    description:
-      "Local IT and in-home tech support for homes, seniors, and small businesses across South Florida. We provide TV mounting, WiFi troubleshooting, home security, smart home setup, and device support.",
+    title: "CallTechCare | TV Mounting, Security Cameras, Sprinkler Repair & Tech Support in Miami",    description:
+      "CallTechCare provides TV wall mounting, security camera installation, WiFi troubleshooting, computer and printer support, sprinkler repair, irrigation services, and tree trimming across Miami, Miramar, Pembroke Pines, Hollywood, and Fort Lauderdale.",
     images: ["/logo-og.png"],
   },
 
@@ -108,7 +110,7 @@ export default function RootLayout({
   /* ITService schema (service-area business) */
   const orgJsonLd = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": ["LocalBusiness", "ProfessionalService"],
     "@id": "https://www.calltechcare.com/#business",
     name: "CallTechCare",
     url: "https://www.calltechcare.com",
@@ -120,13 +122,16 @@ export default function RootLayout({
       height: 512,
     },
     description:
-    "Local IT and in-home tech support for homes, seniors, and small businesses across South Florida, including TV mounting, WiFi troubleshooting, home security, smart home setup, and device support.",
+      "Local home, outdoor, and tech services for homes and small businesses across South Florida, including security camera installation, TV mounting, WiFi & internet troubleshooting, computer and printer support, phone & tablet help, senior-friendly tech support, plus sprinkler & irrigation service, and tree trimming.",
     telephone: "+1-786-366-2729",
     priceRange: "$$",
-    areaServed: {
-      "@type": "AdministrativeArea",
-      name: "South Florida",
-    },
+    areaServed: [
+      { "@type": "City", name: "Miami" },
+      { "@type": "City", name: "Miramar" },
+      { "@type": "City", name: "Pembroke Pines" },
+      { "@type": "City", name: "Hollywood" },
+      { "@type": "City", name: "Fort Lauderdale" },
+    ],
     address: {
       "@type": "PostalAddress",
       streetAddress: "18730 SW 122nd Ave",
@@ -134,6 +139,18 @@ export default function RootLayout({
       addressRegion: "FL",
       postalCode: "33177",
       addressCountry: "US",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 25.5516,
+      longitude: -80.3467
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: "+1-786-366-2729",
+      contactType: "customer service",
+      areaServed: "US",
+      availableLanguage: ["English", "Spanish"]
     },
     openingHoursSpecification: [
       {
@@ -161,16 +178,20 @@ export default function RootLayout({
       "https://www.instagram.com/CallTechCare",
     ],
     serviceType: [
-      "Local IT Support",
-      "TV Mounting & Setup",
-      "WiFi & Internet Support",
-      "Home Security Systems",
+      "TV Wall Mount Installation",
+      "Security Camera Installation",
+      "WiFi Troubleshooting",
+      "Computer Repair & Support",
+      "Printer Setup & Support",
       "Smart Home Installation",
-      "Device Setup & Configuration",
-      "Senior-Friendly Tech Help",
+      "Sprinkler System Repair",
+      "Irrigation System Installation",
+      "Tree Trimming Service",
+      "Senior Tech Support",
     ],
     paymentAccepted: ["Cash", "Credit Card", "Zelle"],
   };
+  
 
   const webSiteJsonLd = {
     "@context": "https://schema.org",
@@ -178,8 +199,40 @@ export default function RootLayout({
     "@id": "https://www.calltechcare.com/#website",
     url: "https://www.calltechcare.com",
     name: "CallTechCare",
-    publisher: { "@id": "https://www.calltechcare.com/#business" },
+    publisher: { "@id": "https://www.calltechcare.com/#organization" },
     inLanguage: "en-US",
+  };
+
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: "Home Technology & Property Services",
+    provider: {
+      "@id": "https://www.calltechcare.com/#business",
+    },
+    areaServed: [
+      { "@type": "City", name: "Miami" },
+      { "@type": "City", name: "Miramar" },
+      { "@type": "City", name: "Pembroke Pines" },
+      { "@type": "City", name: "Hollywood" },
+      { "@type": "City", name: "Fort Lauderdale" }
+    ],
+  };
+
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://www.calltechcare.com/#organization",
+    name: "CallTechCare",
+    url: "https://www.calltechcare.com",
+    logo: "https://www.calltechcare.com/logo-schema.png",
+    sameAs: [
+      "https://www.facebook.com/CallTechCare",
+      "https://www.instagram.com/CallTechCare",
+      "https://www.yelp.com/biz/call-tech-care-miami?osq=calltechcare",
+      "https://nextdoor.com/page/calltechcare-1/"
+
+    ],
   };
 
   return (
@@ -191,6 +244,8 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="canonical" href="https://www.calltechcare.com/" />
 
         <meta name="apple-mobile-web-app-title" content="CallTechCare" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -218,6 +273,17 @@ export default function RootLayout({
           type="application/ld+json"
           suppressHydrationWarning
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
+        />
+
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
       </head>
 

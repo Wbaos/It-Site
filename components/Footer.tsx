@@ -20,7 +20,7 @@ export default function Footer() {
 
             <Image
               src="/Print_Transparent.svg"
-              alt="CallTechCare Logo"
+              alt="CallTechCare – Home, Outdoor and Tech Services in South Florida"
               width={250}
               height={250}
               className="footer-logo"
@@ -34,7 +34,7 @@ export default function Footer() {
             />
           </a>
           <p className="footer-tagline">
-              Reliable Tech Support for Homes & Businesses in South Florida
+              Reliable Home, Outdoor & Tech Services in South Florida
           </p>
         </div>
 
@@ -46,14 +46,14 @@ export default function Footer() {
           <Link href="/blog">Blog</Link>
           <Link href="/locations">Service Areas</Link>
           <Link href="/#contact">Contact</Link>
-          <a href="/about">About Us</a>
-          <a href="/faq">FAQ</a>
+          <Link href="/about">About Us</Link>
+          <Link href="/faq">FAQ</Link>
         </nav>
 
         {/* Services List (SEO) */}
         <div className="footer-services">
           <p className="footer-services-title">
-            🛠️ Tech Services We Offer
+            Popular Home & Tech Services
           </p>
 
           <ul className="footer-services-list">
@@ -109,10 +109,10 @@ export default function Footer() {
             Serving South Florida (Broward County to Homestead)
           </p>
           <p>
-            📞 <a href="tel:+17863662729">(786) 366-2729</a>
+            📞 <a href="tel:+17863662729" title="Call CallTechCare">(786) 366-2729</a>
             <br />
             ✉️{" "}
-            <a href="mailto:support@calltechcare.com">
+              <a href="mailto:support@calltechcare.com" title="Email CallTechCare support">
               support@calltechcare.com
             </a>
           </p>
@@ -153,6 +153,7 @@ export default function Footer() {
             >
               <SvgIcon name="instagram" size={28} color="#ffffff" />
             </a>
+            
           </div>
         </div>
 
@@ -184,21 +185,21 @@ export default function Footer() {
       {/* ===== Bottom Row ===== */}
       <div className="site-container footer-bottom">
         <div className="legal">
-          <a href="/privacy-policy" aria-label="Privacy Policy">
+          <Link href="/privacy-policy" aria-label="Privacy Policy">
             Privacy Policy
-          </a>
+          </Link>
           <span>•</span>
-          <a href="#cookie-settings" aria-label="Cookie Settings">
+          <Link href="#cookie-settings" aria-label="Cookie Settings">
             Cookie Settings
-          </a>
+          </Link>
           <span>•</span>
-          <a href="/terms-and-conditions" aria-label="Terms and Conditions">
+          <Link href="/terms-and-conditions" aria-label="Terms and Conditions">
             Terms & Conditions
-          </a>
+          </Link>
           <span>•</span>
-          <a href="/accessibility" aria-label="Accessibility Statement">
+          <Link href="/accessibility" aria-label="Accessibility Statement">
             Accessibility
-          </a>
+          </Link>
         </div>
 
         <p className="copy">

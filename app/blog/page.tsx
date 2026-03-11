@@ -3,13 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import SvgIcon from "@/components/common/SvgIcons";
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import BlogPageClient from "@/app/blog/BlogPageClient";
 
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Blog | CallTechCare",
+  title: "Home Tech, TV Mounting & Smart Home Tips | CallTechCare Blog",
   description:
-    "Tech tips, Wi-Fi guides, TV mounting advice, cybersecurity basics, and IT best practices for homes and small businesses in South Florida.",
+    "Helpful guides on TV mounting, security camera installation, Wi-Fi troubleshooting, smart home setup, sprinkler repair, and home technology tips for homeowners across Miami and South Florida.",  
   alternates: {
     canonical: "https://www.calltechcare.com/blog",
   },
@@ -25,7 +27,7 @@ export default async function BlogPage() {
       excerpt,
       "authorName": author->name,
       publishedAt,
-      "categories": categories[]->title,
+      "categories": categories[]->{ title, slug },
       tags
     }
   `);
@@ -51,6 +53,23 @@ export default async function BlogPage() {
     ],
   };
 
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "CallTechCare Blog",
+    description:
+      "Guides and tips about TV mounting, security cameras, Wi-Fi troubleshooting, smart home setup, and home services.",
+    url: pageUrl,
+    publisher: {
+      "@type": "Organization",
+      name: "CallTechCare",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://www.calltechcare.com/logo-schema.png"
+      }
+    }
+  };
+
   const blogItemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -74,12 +93,20 @@ export default async function BlogPage() {
     <>
       <script
         type="application/ld+json"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       <script
         type="application/ld+json"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogItemListSchema) }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
       />
 
       <section className="blog-page">
@@ -89,94 +116,37 @@ export default async function BlogPage() {
           <SvgIcon name="book-open" size={70} color="var(--brand-teal)" />
         </div>
 
-        <h1 className="blog-title">Tech Insights & Updates</h1>
+        <h1 className="blog-title">
+          Home Tech, TV Mounting & Smart Home Guides
+        </h1>
 
         <p className="blog-subtitle">
-          Stay informed with the latest in technology, cybersecurity, and IT best practices
+          Helpful guides on TV mounting, security cameras, Wi-Fi troubleshooting, smart home setup, and home maintenance tips for Miami and South Florida homeowners.
         </p>
 
-        <div className="blog-grid">
-          {posts.map((post: any) => (
-            <Link
-              key={post._id}
-              href={`/blog/${post.slug.current}`}
-              className="blog-card"
-            >
-              <div className="blog-image-wrapper">
-                {post.mainImage?.asset?.url && (
-                  <Image
-                    src={post.mainImage.asset.url}
-                    alt={post.mainImage.alt || post.title}
-                    width={500}
-                    height={300}
-                    className="blog-image"
-                  />
-                )}
+        <p className="blog-intro">
+          Looking for professional help? CallTechCare also provides{" "}
+          <Link href="/services/tv-wall-mount-installation-services">
+            TV mounting
+          </Link>,{" "}
+          <Link href="/services/home-security">
+            security camera installation
+          </Link>,{" "}
+          <Link href="/services/wifi-and-internet">
+            Wi-Fi troubleshooting
+          </Link>,{" "}
+          <Link href="/services/computer-and-printers">
+            computer and printer support
+          </Link>,{" "}
+          <Link href="/services/landscaping">
+            sprinkler, irrigation, and tree trimming services
+          </Link>{" "}
+          across Miami and South Florida.
+        </p>
 
-                {post.categories?.[0] && (
-                  <span className="blog-badge">{post.categories[0]}</span>
-                )}
-              </div>
-
-              <div className="blog-content">
-                <h2 className="blog-card-title">{post.title}</h2>
-
-                <p className="blog-excerpt">
-                  {post.excerpt
-                    ? post.excerpt
-                    : "Read insights, tips, and guides from the CallTechCare team."}
-                </p>
-
-                <div className="blog-meta-row">
-                  <div className="blog-meta-left">
-                    <SvgIcon name="blog-author" size={18} color="#9fb3c8" />
-                    <span className="blog-author-name">{post.authorName}</span>
-                  </div>
-
-                  <div className="blog-meta-right">
-                    <SvgIcon name="calendar" size={18} color="#9fb3c8" />
-                    <span className="blog-date">
-                      {new Date(post.publishedAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="blog-tags">
-                  {(() => {
-                    const rawTags = Array.isArray(post.tags)
-                      ? (post.tags as unknown[])
-                      : [];
-
-                    const uniqueTags: string[] = Array.from(
-                      new Set(
-                        rawTags
-                          .filter((t): t is string => typeof t === "string")
-                          .map((t) => t.trim())
-                          .filter((t) => t.length > 0)
-                      )
-                    );
-
-                    return uniqueTags.map((tag) => (
-                      <span key={tag} className="blog-tag">
-                        {tag}
-                      </span>
-                    ));
-                  })()}
-                </div>
-              </div>
-
-              <div className="blog-readmore">
-                <span>Read More</span>
-                <SvgIcon
-                  name="chevron-right"
-                  size={18}
-                  className="blog-arrow"
-                  color="var(--brand-teal)"
-                />
-              </div>
-            </Link>
-          ))}
-        </div>
+        <Suspense fallback={null}>
+          <BlogPageClient posts={Array.isArray(posts) ? posts : []} />
+        </Suspense>
         </div>
       </section>
     </>

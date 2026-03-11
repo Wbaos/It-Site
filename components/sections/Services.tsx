@@ -23,14 +23,20 @@ export default async function Services() {
   `);
 
   return (
-    <section id="services" className="section services">
+    <section
+      id="services"
+      className="section services"
+      role="region"
+      aria-labelledby="services-title"
+    >
       <div className="site-container-services">
-        <h2 className="services-heading">Local IT & Tech Services in South Florida</h2>
+        <h2 id="services-title" className="services-heading">Popular Home, Outdoor & Tech Services in South Florida</h2>
         <p className="services-sub">
-          Professional in-home and remote IT and tech services for homes, seniors,
-          and small businesses across South Florida, including TV mounting, Wi-Fi
-          troubleshooting, security camera installation, smart home setup, and
-          device support.
+          From security camera installation and TV mounting to Wi-Fi & internet
+          troubleshooting, computer and printer support, phone & tablet help, and
+          sprinkler & irrigation service, we serve homes, seniors, and small
+          businesses across South Florida with reliable, on-site service you can
+          trust.
         </p>
 
        <div className="services-grid">
