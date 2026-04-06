@@ -245,7 +245,6 @@ export default function RootLayout({
         />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="canonical" href="https://www.calltechcare.com/" />
 
         <meta name="apple-mobile-web-app-title" content="CallTechCare" />
         <meta name="mobile-web-app-capable" content="yes" />
