@@ -20,7 +20,7 @@ export default function Footer() {
 
             <Image
               src="/Print_Transparent.svg"
-              alt="CallTechCare – Home, Outdoor and Tech Services in South Florida"
+              alt="CallTechCare – Sprinkler Repair & Irrigation Services in Miami and Broward"
               width={250}
               height={250}
               className="footer-logo"
@@ -34,7 +34,7 @@ export default function Footer() {
             />
           </a>
           <p className="footer-tagline">
-              Reliable Home, Outdoor & Tech Services in South Florida
+              Sprinkler Repair & Irrigation Services in Miami & Broward
           </p>
         </div>
 
@@ -53,13 +53,23 @@ export default function Footer() {
         {/* Services List (SEO) */}
         <div className="footer-services">
           <p className="footer-services-title">
-            Popular Home & Tech Services
+            Popular Services in Miami & Broward
           </p>
 
           <ul className="footer-services-list">
             <li>
-              <Link href="/services/tv-mounting-and-setup">
-                TV Mounting & Setup
+              <Link href="/sprinkler-repair-miami">
+                Sprinkler Repair Miami
+              </Link>
+            </li>
+            <li>
+              <Link href="/services/sprinkler-repair-and-installation">
+                Sprinkler Repair & Irrigation
+              </Link>
+            </li>
+            <li>
+              <Link href="/services/home-security">
+                Security Camera Installation
               </Link>
             </li>
             <li>
@@ -68,13 +78,8 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/services/home-security">
-                Home Security & Cameras
-              </Link>
-            </li>
-            <li>
-              <Link href="/services/smart-home">
-                Smart Home Installation
+              <Link href="/services/computer-and-printers">
+                Computer & Printer Support
               </Link>
             </li>
             <li>
@@ -83,18 +88,13 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/services/computer-and-printers">
-                Computer & Printer Support
-              </Link>
-            </li>
-            <li>
               <Link href="/services/senior-help">
                 Senior-Friendly Tech Help
               </Link>
             </li>
             <li>
-              <Link href="/services/sprinkler-repair-and-installation">
-                Irrigation & Sprinkler Services
+              <Link href="/services/smart-home">
+                Smart Home Setup
               </Link>
             </li>
           </ul>
@@ -189,9 +189,9 @@ export default function Footer() {
             Privacy Policy
           </Link>
           <span>•</span>
-          <Link href="#cookie-settings" aria-label="Cookie Settings">
+          <a href="#cookie-settings" aria-label="Cookie Settings">
             Cookie Settings
-          </Link>
+          </a>
           <span>•</span>
           <Link href="/terms-and-conditions" aria-label="Terms and Conditions">
             Terms & Conditions

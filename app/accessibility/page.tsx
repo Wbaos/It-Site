@@ -5,7 +5,7 @@ import SvgIcon from "@/components/common/SvgIcons";
 export const metadata: Metadata = {
     title: "Accessibility Statement – CallTechCare",
     description:
-        "Accessibility Statement for CallTechCare: Learn about our ongoing efforts to ensure digital accessibility for all users, including seniors and individuals with disabilities.",
+    "Accessibility Statement for CallTechCare: Learn about our ongoing efforts to ensure digital accessibility for all users visiting our site for sprinkler repair & irrigation services in Miami and Broward (plus security cameras and tech support).",
 };
 
 export default function AccessibilityPage() {

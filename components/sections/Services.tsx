@@ -22,6 +22,21 @@ export default async function Services() {
     }
   `);
 
+  const getServicePriority = (value: unknown) => {
+    const text = typeof value === "string" ? value.toLowerCase() : "";
+    if (text.includes("sprinkler") || text.includes("irrigation")) return 0;
+    if (text.includes("camera") || text.includes("cctv") || text.includes("security")) return 1;
+    if (text.includes("wifi") || text.includes("wi-fi") || text.includes("computer") || text.includes("printer") || text.includes("tech")) return 2;
+    return 3;
+  };
+
+  const sortedServices = (Array.isArray(services) ? services : []).slice().sort((a: any, b: any) => {
+    const aPriority = getServicePriority(a?.title);
+    const bPriority = getServicePriority(b?.title);
+    if (aPriority !== bPriority) return aPriority - bPriority;
+    return String(a?.title ?? "").localeCompare(String(b?.title ?? ""));
+  });
+
   return (
     <section
       id="services"
@@ -30,17 +45,14 @@ export default async function Services() {
       aria-labelledby="services-title"
     >
       <div className="site-container-services">
-        <h2 id="services-title" className="services-heading">Popular Home, Outdoor & Tech Services in South Florida</h2>
+        <h2 id="services-title" className="services-heading">Popular Sprinkler Repair & Irrigation Services in Miami & Broward</h2>
         <p className="services-sub">
-          From security camera installation and TV mounting to Wi-Fi & internet
-          troubleshooting, computer and printer support, phone & tablet help, and
-          sprinkler & irrigation service, we serve homes, seniors, and small
-          businesses across South Florida with reliable, on-site service you can
-          trust.
+          From sprinkler repair and irrigation troubleshooting to security camera installation and expert tech support (Wi-Fi,
+          computers, and printers), we help homes and small businesses across Miami and Broward with reliable, on-site service.
         </p>
 
        <div className="services-grid">
-        {services.map((s: any) => (
+        {sortedServices.map((s: any) => (
           <Link key={s._id} href={`/services/${s.slug}`} className="service-card">
 
             <div className="service-card-icon">

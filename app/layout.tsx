@@ -1,4 +1,6 @@
+
 import "./globals.css";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Providers } from "./Providers";
@@ -19,38 +21,36 @@ export const metadata: Metadata = {
 
   /* Fallback title only (pages override this) */
   title: {
-    default: "CallTechCare | TV Mounting, Security Cameras, Sprinkler Repair & Tech Support in Miami",
+    default: "CallTechCare | Sprinkler Repair Miami, Irrigation, Cameras & Tech Services",
     template: "%s | CallTechCare",
   },
 
   /* Fallback description */
   description:
-    "Local home, outdoor, and tech services across South Florida. We provide security camera installation, TV mounting, WiFi & internet troubleshooting, computer and printer support, phone & tablet help, senior-friendly in-home tech support, plus sprinkler & irrigation service, and tree trimming.",
-
-  /* Keywords (harmless fallback) */
+  "Professional sprinkler repair and irrigation services in Miami and Broward. We also install security cameras and provide expert tech support for homes and businesses. Fast, reliable service.",
   keywords: [
-      "TV mounting Miami",
-      "TV wall mount installation Miami",
+      "Sprinkler repair Miami",
+      "Irrigation repair Miami",
+      "Sprinkler repair Broward County",
       "Security camera installation Miami",
+      "Security camera installation Pembroke Pines",
       "WiFi troubleshooting Miami",
       "Computer support Miami",
       "Printer setup Miami",
-      "Smart home installation Miami",
-      "Sprinkler repair Miami",
-      "Irrigation repair Miami",
-      "Tree trimming Miami",
       "Tech support Miami",
-      "IT support Miami",
+      "Smart home installation Miami",
+      "TV mounting Miami",
+      "TV wall mount installation Miami",
       "TV mounting Miramar",
-      "Security camera installation Pembroke Pines",
-      "Sprinkler repair Broward County",
+      "Tree trimming Miami",
+      "IT support Miami",
     ],
 
   /* Open Graph fallback */
   openGraph: {
-    title: "CallTechCare | TV Mounting, Security Cameras, Sprinkler Repair & Tech Support in Miami",
+    title: "CallTechCare | Sprinkler Repair Miami, Irrigation, Cameras & Tech Services",  
     description:
-      "CallTechCare provides TV wall mounting, security camera installation, WiFi troubleshooting, computer and printer support, sprinkler repair, irrigation services, and tree trimming across Miami, Miramar, Pembroke Pines, Hollywood, and Fort Lauderdale.",    url: "https://www.calltechcare.com",
+      "Professional sprinkler repair and irrigation services in Miami and Broward. Security camera installation and expert tech support for homes and businesses.", 
     siteName: "CallTechCare",
     locale: "en_US",
     type: "website",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
         url: "/logo-og.png",
         width: 1200,
         height: 630,
-        alt: "CallTechCare – Local Home, Outdoor & Tech Services",
+        alt: "CallTechCare – Sprinkler Repair Miami",
       },
     ],
   },
@@ -67,8 +67,9 @@ export const metadata: Metadata = {
   /* Twitter fallback */
   twitter: {
     card: "summary_large_image",
-    title: "CallTechCare | TV Mounting, Security Cameras, Sprinkler Repair & Tech Support in Miami",    description:
-      "CallTechCare provides TV wall mounting, security camera installation, WiFi troubleshooting, computer and printer support, sprinkler repair, irrigation services, and tree trimming across Miami, Miramar, Pembroke Pines, Hollywood, and Fort Lauderdale.",
+    title: "CallTechCare | Sprinkler Repair Miami, Irrigation, Cameras & Tech Services",  
+    description:
+        "Professional sprinkler repair and irrigation services in Miami and Broward. Security camera installation and expert tech support for homes and businesses.",
     images: ["/logo-og.png"],
   },
 
@@ -122,7 +123,7 @@ export default function RootLayout({
       height: 512,
     },
     description:
-      "Local home, outdoor, and tech services for homes and small businesses across South Florida, including security camera installation, TV mounting, WiFi & internet troubleshooting, computer and printer support, phone & tablet help, senior-friendly tech support, plus sprinkler & irrigation service, and tree trimming.",
+        "Professional sprinkler repair and irrigation services in Miami and Broward. We also provide security camera installation and expert tech support for homes and businesses.",
     telephone: "+1-786-366-2729",
     priceRange: "$$",
     areaServed: [
@@ -178,16 +179,16 @@ export default function RootLayout({
       "https://www.instagram.com/CallTechCare",
     ],
     serviceType: [
-      "TV Wall Mount Installation",
+      "Sprinkler System Repair",
+      "Irrigation System Installation",
       "Security Camera Installation",
       "WiFi Troubleshooting",
       "Computer Repair & Support",
       "Printer Setup & Support",
-      "Smart Home Installation",
-      "Sprinkler System Repair",
-      "Irrigation System Installation",
-      "Tree Trimming Service",
       "Senior Tech Support",
+      "Smart Home Installation",
+      "TV Wall Mount Installation",
+      "Tree Trimming Service",
     ],
     paymentAccepted: ["Cash", "Credit Card", "Zelle"],
   };

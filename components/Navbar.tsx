@@ -17,7 +17,7 @@ import MobileServicesPanel from "./MobileServicesPanel";
 import ServiceGroupList from "./ServiceGroupList";
 
 const NAV = [
-  { href: "/assessment", label: "Free Assessment" },
+  // { href: "/assessment", label: "Free Assessment" },
   { href: "/#contact", label: "Contact" },
   { href: "/blog", label: "Blog" },
 ];

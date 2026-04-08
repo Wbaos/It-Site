@@ -18,6 +18,33 @@ interface Service {
     faqs?: FAQ[] | null;
 }
 
+function formatPrice(price?: number): string {
+    if (typeof price === "number" && Number.isFinite(price) && price > 0) {
+        return `$${price}`;
+    }
+    return "Call for quote";
+}
+
+function buildServiceUrl(slug?: string): string {
+    const base = (process.env.NEXT_PUBLIC_BASE_URL || "").replace(/\/$/, "");
+    const path = `/services/${slug || ""}`;
+    return base ? `${base}${path}` : path;
+}
+
+function formatServiceCard(service: Service): string {
+    const priceText = formatPrice(service.price);
+    const description = (service.shortDescription || "").trim();
+    const url = buildServiceUrl(service.slug?.current);
+
+    return [
+        `• **${service.title}** — **${priceText}**`,
+        description,
+        `[View Service](${url})`,
+    ]
+        .filter(Boolean)
+        .join("\n");
+}
+
 let cachedServices: Service[] | null = null;
 let cachedHomepage: string | null = null;
 let cacheTime = 0;
@@ -110,27 +137,7 @@ export async function POST(req: Request) {
 
         const relevantServices = pickRelevantServices(message, services, 6);
 
-        const serviceInfo = relevantServices
-            .map((s) => {
-                const faqsArray = Array.isArray(s.faqs) ? s.faqs : [];
-                const cleanFaqs = faqsArray
-                    .filter((f) => f && typeof f === "object")
-                    .map((f) => {
-                        const q = (f.question || "").trim();
-                        const a = (f.answer || "").trim();
-                        return q && a ? `Q: ${q}\nA: ${a}` : "";
-                    })
-                    .filter(Boolean)
-                    .join("\n");
-
-                const faqSection = cleanFaqs ? `FAQs:\n${cleanFaqs}\n` : "";
-
-                return `• ${s.title} — $${s.price || "?"}
-                ${s.shortDescription || ""}
-                ${faqSection}URL: ${process.env.NEXT_PUBLIC_BASE_URL}/services/${s.slug?.current || ""}
-                `;
-                            })
-                            .join("\n");
+        const serviceCards = relevantServices.map(formatServiceCard).join("\n\n");
 
                         const homepagePlainText = stripHtmlToText(homepageText);
                         const knowledgeContext = `
@@ -140,17 +147,18 @@ export async function POST(req: Request) {
                 --- COMPANY INFO ---
                 ${homepagePlainText.slice(0, 3500)}
 
-                --- SERVICES (from CMS) ---
-                ${serviceInfo}
+                --- SERVICE CARDS (from CMS) ---
+                (When listing services, copy/paste these cards verbatim. Do not invent prices.)
+
+                ${serviceCards}
 
                 Guidelines:
                 - Always answer in the same language as the user (you speak both English and Spanish fluently).
                 - Be warm and conversational - acknowledge questions about your capabilities, greet users naturally, and build rapport.
                 - If the user's request is ambiguous, ask 1-2 quick clarifying questions before recommending a service.
-                - For service questions: Format services as a clean list with each service on a new line. Use this format:
-                • **Service Name** — **$Price**
-                Description here
-                [View Service](URL)
+                - For simple yes/no questions like "Do you provide sprinkler repair?": Answer directly, mention Miami + Broward coverage, then show 1-3 relevant SERVICE CARDS.
+                - Never make up prices or promotions. If a service has no price, keep "Call for quote".
+                - Avoid guarantees like "free estimate" unless explicitly stated in the COMPANY INFO.
                 
                 - When listing multiple services, separate them clearly with line breaks.
                 - For questions about your abilities (e.g., "Do you speak Spanish?"): Answer directly and positively, then offer to help with services.
@@ -182,8 +190,8 @@ export async function POST(req: Request) {
         const wantsToBook = bookingKeywords.test(message) || bookingKeywords.test(aiReply);
 
         const suggestions = lang === "es"
-            ? ["📋 Ver todos los servicios", "⚡ Prueba de velocidad", "💬 Hablar con soporte"]
-            : ["📋 View all services", "⚡ Speed Test", "💬 Contact support"];
+            ? ["🌱 Reparación de sprinklers", "📋 Ver todos los servicios", "⚡ Prueba de velocidad", "💬 Hablar con soporte"]
+            : ["🌱 Sprinkler repair", "📋 View all services", "⚡ Speed Test", "💬 Contact support"];
 
         return NextResponse.json({
             reply: aiReply,
