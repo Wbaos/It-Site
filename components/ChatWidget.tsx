@@ -7,7 +7,7 @@ import ReactMarkdown from "react-markdown";
 const INITIAL_MESSAGES: Msg[] = [
     {
         from: "bot",
-        text: "Hi 👋 I'm **Sofía** from CallTechCare. Which device do you need help with today? (computer, printer, Wi-Fi, TV, etc.)",
+        text: "Hi! I’m **Sofía** from CallTechCare. What can we help you with today—**sprinkler/irrigation repair**, **security cameras**, or **tech support** (Wi‑Fi, computer, printer, TV, etc.)?",
     },
 ];
 
@@ -23,13 +23,46 @@ export default function ChatWidget() {
 
     const chatEndRef = useRef<HTMLDivElement | null>(null);
     const requestIdRef = useRef(0);
+    const abortRef = useRef<AbortController | null>(null);
+    const messagesRef = useRef<Msg[]>(INITIAL_MESSAGES);
+    const languageRef = useRef<"en" | "es">("en");
     const inputRef = useRef<HTMLInputElement | null>(null);
     const chatWindowRef = useRef<HTMLDivElement | null>(null);
 
     // Auto-scroll to last message
     useEffect(() => {
+        messagesRef.current = messages;
         chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
+
+    useEffect(() => {
+        languageRef.current = language;
+    }, [language]);
+
+    // Focus input on open (helps keyboard behavior on mobile)
+    useEffect(() => {
+        if (!isOpen) return;
+        const el = inputRef.current;
+        if (!el) return;
+        // Defer focus until after mount/layout
+        const id = window.setTimeout(() => {
+            try {
+                el.focus({ preventScroll: true });
+            } catch {
+                el.focus();
+            }
+        }, 0);
+
+        return () => window.clearTimeout(id);
+    }, [isOpen]);
+
+    // Abort any in-flight request on unmount
+    useEffect(() => {
+        return () => {
+            abortRef.current?.abort();
+            abortRef.current = null;
+        };
+    }, []);
 
     // Clear any previously persisted chat (privacy + fresh sessions)
     useEffect(() => {
@@ -109,6 +142,8 @@ export default function ChatWidget() {
     }, [isOpen]);
 
     const resetChat = () => {
+        abortRef.current?.abort();
+        abortRef.current = null;
         requestIdRef.current += 1; // invalidate any in-flight responses
         setPending(false);
         setInput("");
@@ -124,14 +159,18 @@ export default function ChatWidget() {
     };
 
     // Send message to API
-    const sendMessage = async () => {
-        if (!input.trim() || pending) return;
+    const sendMessage = async (rawText?: string) => {
+        const text = (rawText ?? input).trim();
+        if (!text || pending) return;
 
         const requestId = (requestIdRef.current += 1);
 
-        const newMessages: Msg[] = [...messages, { from: "user", text: input }];
-        const userInput = input;
-        setMessages(newMessages);
+        abortRef.current?.abort();
+        const controller = new AbortController();
+        abortRef.current = controller;
+
+        const newHistory: Msg[] = [...messagesRef.current, { from: "user", text }];
+        setMessages(newHistory);
         setInput("");
         setPending(true);
 
@@ -139,9 +178,10 @@ export default function ChatWidget() {
             const res = await fetch("/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                signal: controller.signal,
                 body: JSON.stringify({
-                    message: userInput,
-                    history: newMessages,
+                    message: text,
+                    history: newHistory,
                 }),
             });
 
@@ -153,11 +193,7 @@ export default function ChatWidget() {
             setLanguage(data.language);
             setSuggestions(data.suggestions || []);
 
-            setMessages((prev) => [
-                ...prev,
-                { from: "bot", text: data.reply || "..." },
-            ]);
-
+            setMessages((prev) => [...prev, { from: "bot", text: data.reply || "..." }]);
             setPending(false);
 
             if (data.booking) {
@@ -166,18 +202,25 @@ export default function ChatWidget() {
                 // Example: window.location.href = "/contact";
             }
         } catch (error) {
+            if (error instanceof DOMException && error.name === "AbortError") {
+                return;
+            }
             if (requestIdRef.current !== requestId) return;
             setMessages((prev) => [
                 ...prev,
                 {
                     from: "bot",
                     text:
-                        language === "es"
+                        languageRef.current === "es"
                             ? "Lo siento 😔, hubo un problema. Intenta nuevamente más tarde."
                             : "Sorry 😔, something went wrong. Please try again later.",
                 },
             ]);
             setPending(false);
+        } finally {
+            if (abortRef.current === controller) {
+                abortRef.current = null;
+            }
         }
     };
 
@@ -211,7 +254,7 @@ export default function ChatWidget() {
             {/* Floating chat button - always mounted */}
             <button
                 className="ctc-chat-bubbleButton"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => setIsOpen((v) => !v)}
                 aria-label={isOpen ? "Close chat support" : "Open chat support"}
                 style={{ zIndex: isOpen ? 9998 : 9999 }}
             >
@@ -239,7 +282,12 @@ export default function ChatWidget() {
                             </button>
                             <button
                                 className="ctc-chat-close"
-                                onClick={() => setIsOpen(false)}
+                                onClick={() => {
+                                    abortRef.current?.abort();
+                                    abortRef.current = null;
+                                    setPending(false);
+                                    setIsOpen(false);
+                                }}
                                 aria-label="Close chat"
                                 type="button"
                             >
@@ -294,7 +342,7 @@ export default function ChatWidget() {
                                 <button
                                     key={i}
                                     className="ctc-chat-suggestion-btn"
-                                    onClick={async () => {
+                                    onClick={() => {
                                         // Handle special actions
                                         if (suggestion.includes("Speed Test") || suggestion.includes("velocidad")) {
                                             window.location.href = "/speed-test";
@@ -308,13 +356,9 @@ export default function ChatWidget() {
                                             window.location.href = "/services";
                                             return;
                                         }
-                                        
+
                                         // Default: send as message
-                                        setInput(suggestion);
-                                        setTimeout(() => {
-                                            const btn = document.querySelector('.ctc-chat-sendBtn') as HTMLButtonElement;
-                                            btn?.click();
-                                        }, 50);
+                                        void sendMessage(suggestion);
                                     }}
                                 >
                                     {suggestion}
@@ -341,8 +385,10 @@ export default function ChatWidget() {
                         />
                         <button
                             className="ctc-chat-sendBtn"
-                            onClick={sendMessage}
-                            disabled={pending}
+                            onClick={() => {
+                                void sendMessage();
+                            }}
+                            disabled={pending || !input.trim()}
                         >
                             ➤
                         </button>

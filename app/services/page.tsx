@@ -6,19 +6,19 @@ import { Briefcase } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Home, Outdoor & Tech Services in South Florida | CallTechCare",
+  title: "Sprinkler Repair, Irrigation & Home Services Miami | CallTechCare",
 
   description:
-    "Explore CallTechCare services across South Florida including security camera installation, TV mounting, WiFi & internet troubleshooting, computer and printer support, phone & tablet help, senior-friendly tech support, sprinkler & irrigation service, and tree trimming.",
+    "Explore CallTechCare services in Miami and Broward: sprinkler repair & irrigation, security camera installation, and expert tech support (Wi-Fi, computers, printers, and more).",
 
   alternates: {
     canonical: "https://www.calltechcare.com/services",
   },
 
   openGraph: {
-    title: "CallTechCare Services | Home, Outdoor & Tech Help",
+    title: "Sprinkler Repair, Irrigation, Cameras & Tech Services | CallTechCare",
     description:
-      "Browse professional services from CallTechCare including TV mounting, security cameras, Wi-Fi troubleshooting, computer help, and outdoor services.",
+      "Sprinkler repair & irrigation services in Miami and Broward, plus security camera installation and expert tech support.",
     url: "https://www.calltechcare.com/services",
     siteName: "CallTechCare",
     images: [
@@ -99,7 +99,15 @@ export default async function ServicesPage() {
       name: "CallTechCare",
       url: "https://www.calltechcare.com",
     },
-    areaServed: "South Florida",
+    areaServed: "Miami and Broward County, Florida",
+  };
+
+  const getServicePriority = (value: unknown) => {
+    const text = typeof value === "string" ? value.toLowerCase() : "";
+    if (text.includes("sprinkler") || text.includes("irrigation")) return 0;
+    if (text.includes("camera") || text.includes("cctv") || text.includes("security")) return 1;
+    if (text.includes("wifi") || text.includes("wi-fi") || text.includes("computer") || text.includes("printer") || text.includes("tech")) return 2;
+    return 3;
   };
 
   // Group services by category
@@ -114,6 +122,24 @@ export default async function ServicesPage() {
     },
     {}
   );
+
+  const sortedCategoryEntries = Object.entries(servicesByCategory)
+    .map(([category, categoryServices]) => {
+      const sortedServices = (Array.isArray(categoryServices) ? categoryServices : []).slice().sort((a: any, b: any) => {
+        const aPriority = Math.min(getServicePriority(a?.title), getServicePriority(a?.category?.title));
+        const bPriority = Math.min(getServicePriority(b?.title), getServicePriority(b?.category?.title));
+        if (aPriority !== bPriority) return aPriority - bPriority;
+        return String(a?.title ?? "").localeCompare(String(b?.title ?? ""));
+      });
+
+      return [category, sortedServices] as const;
+    })
+    .sort(([aCategory], [bCategory]) => {
+      const aPriority = getServicePriority(aCategory);
+      const bPriority = getServicePriority(bCategory);
+      if (aPriority !== bPriority) return aPriority - bPriority;
+      return aCategory.localeCompare(bCategory);
+    });
 
   return (
     <>
@@ -142,10 +168,14 @@ export default async function ServicesPage() {
             <Briefcase />
           </div>
 
-          <h1>Our Services</h1>
+          <h1>Sprinkler Repair, Irrigation & Home Services in Miami</h1>
 
           <p className="services-list-hero-subtitle">
-            Professional home, outdoor, and tech services across South Florida
+            Sprinkler repair & irrigation services in Miami and Broward, plus security camera installation and expert tech support.
+          </p>
+
+          <p className="services-list-hero-subtitle">
+            Looking for <Link href="/sprinkler-repair-miami">Sprinkler Repair Miami</Link>?
           </p>
 
           <p className="services-list-hero-badge">
@@ -165,8 +195,8 @@ export default async function ServicesPage() {
           ) : (
             <div className="services-list-categories">
 
-              {Object.entries(servicesByCategory).map(
-                ([category, categoryServices]: [string, any]) => (
+              {sortedCategoryEntries.map(
+                ([category, categoryServices]) => (
 
                 <div key={category} className="services-list-category-section">
 

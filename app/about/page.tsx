@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About CallTechCare | TV Mounting, Security Cameras & Tech Support in Miami",
+  title: "About CallTechCare | Sprinkler Repair & Irrigation in Miami & Broward",
   description:
-    "Learn about CallTechCare, a trusted provider of TV mounting, security camera installation, tech support, sprinkler repair, and home services across Miami, Miramar, Pembroke Pines, and South Florida.",
+    "Learn about CallTechCare, a trusted local provider of sprinkler repair & irrigation services in Miami and Broward—with security camera installation and expert tech support available as secondary services.",
 };
 
 export default function AboutPage() {
@@ -15,18 +15,17 @@ export default function AboutPage() {
         <section className="about-hero">
           <h1 className="about-title">About CallTechCare</h1>
           <p className="about-subtitle">
-            Reliable TV Mounting, Security Camera, Sprinkler & Tech Services in South Florida
+            Sprinkler Repair & Irrigation Services in Miami & Broward
           </p>
         </section>
 
         <section className="about-section">
           <h2 className="about-heading">Our Mission</h2>
           <p className="about-text">
-            At CallTechCare, our mission is to make home services simple, safe, and accessible.
-            We specialize in in-home tech support including TV mounting, security camera installation,
-            Wi-Fi troubleshooting, computer setup, printer support, and smart device configuration.
-            We also provide outdoor services such as sprinkler and irrigation repair and tree trimming
-            for homeowners across South Florida.
+            At CallTechCare, our mission is to make service simple, safe, and accessible for homeowners and small businesses.
+            Our primary focus is <Link href="/sprinkler-repair-miami">sprinkler repair and irrigation troubleshooting in Miami and Broward</Link>.
+            We also provide security camera installation and expert tech support (Wi-Fi, computers, printers, and device setup)
+            when you need help beyond irrigation.
           </p>
         </section>
 
@@ -43,8 +42,7 @@ export default function AboutPage() {
             As our clients continued to trust us, many also asked for help with other practical
             services around their homes. Over time we expanded to offer reliable home and outdoor
             services alongside our technology support. Based in Miami, we proudly serve homeowners
-            across Miami, Miramar, Pembroke Pines, Hollywood, Fort Lauderdale, and surrounding
-            South Florida communities.
+            across Miami-Dade and Broward, including Miami, Miramar, Pembroke Pines, Hollywood, and Fort Lauderdale.
           </p>
         </section>
 
@@ -73,10 +71,9 @@ export default function AboutPage() {
         <section className="about-cta">
           <h2>Need Help Today?</h2>
           <p>
-            Book a trusted service visit for TV wall mounting, security camera installation,
-            Wi-Fi troubleshooting, computer and printer support, phone and tablet help,
-            senior-friendly tech support, or outdoor services like sprinkler repair,
-            irrigation troubleshooting, and tree trimming.
+            Book a trusted service visit for sprinkler repair and irrigation troubleshooting in Miami and Broward.
+            We also provide security camera installation and expert tech support (Wi-Fi, computers, printers, and device setup).
+            If you're looking for <Link href="/sprinkler-repair-miami">Sprinkler Repair Miami</Link>, start here.
           </p>
 
           <Link href="/#booking" className="about-button">

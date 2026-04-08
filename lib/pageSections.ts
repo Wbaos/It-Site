@@ -56,15 +56,15 @@ export const homeSections: Section[] = [
     props: {
         // imageSrc: "/helping2.jpg",
 
-        titleLine1: "Local Home, Outdoor & Tech Services",
-        titleLine2: "for Homes & Small Businesses in South Florida",
+        titleLine1: "Sprinkler Repair Miami",
+        titleLine2: "Irrigation • Cameras • Tech Services",
 
         subtitle:
-          "Serving Miami, Pembroke Pines, Broward County, Miramar, and Homestead with professional home, outdoor, and tech services including security camera installation, TV mounting, Wi-Fi & internet troubleshooting, computer and printer support, phone & tablet help, senior-friendly in-home tech support, sprinkler & irrigation service, and tree trimming.",
-        badgeText: "Trusted Local Services in South Florida",
+          "Professional sprinkler repair and irrigation services in Miami and Broward. We also install security cameras and provide expert tech support.",
+        badgeText: "Sprinkler Repair & Irrigation in Miami & Broward",
 
-        primaryCtaText: "Contact Us",
-        primaryCtaHref: "#contact",
+        primaryCtaText: "Call Now",
+        primaryCtaHref: "tel:+17863662729",
 
         secondaryCtaText: "Request a Quote",
         secondaryCtaHref: "/request-quote",

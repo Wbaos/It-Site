@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "FAQ – CallTechCare | Local Home, Outdoor & Tech Services",
+  title: "FAQ | Sprinkler Repair Miami & Broward | CallTechCare",
 
   description:
-    "Find answers to common questions about CallTechCare services including TV mounting, security camera installation, Wi-Fi troubleshooting, computer support, sprinkler repair, and home tech services across Miami and South Florida.",
+    "Find answers to common questions about CallTechCare services in Miami and Broward: sprinkler repair & irrigation, security camera installation, and expert tech support.",
 
   alternates: {
     canonical: "https://www.calltechcare.com/faq",
@@ -16,15 +16,15 @@ export default function FAQPage() {
   const faqs = [
     {
       q: "What areas do you serve?",
-      a: "CallTechCare provides in-home and on-site services across Miami, Miramar, Pembroke Pines, Hollywood, Fort Lauderdale, and surrounding South Florida communities.",
+      a: "CallTechCare provides on-site services across Miami-Dade and Broward, including Miami, Miramar, Pembroke Pines, Hollywood, and Fort Lauderdale.",
+    },
+    {
+      q: "Do you offer sprinkler repair & irrigation services?",
+      a: "Yes. Sprinkler repair and irrigation troubleshooting are our primary services. We help with leaks, broken heads, poor coverage, controller/timer issues, and system optimization.",
     },
     {
       q: "Do you install security cameras?",
-      a: "Yes. We install security cameras and help with proper placement, wiring, network connectivity, and basic troubleshooting for residential and small business security systems.",
-    },
-    {
-      q: "Do you mount TVs and help with setup?",
-      a: "Yes. We provide professional TV mounting and can also help with smart TV setup, streaming devices, cable management, and basic audio configuration.",
+      a: "Yes. We install security cameras and help with placement, wiring, network connectivity, and troubleshooting for residential and small business systems.",
     },
     {
       q: "Can you help with Wi-Fi and internet issues?",
@@ -39,8 +39,8 @@ export default function FAQPage() {
       a: "Yes. We help with phone and tablet setup, email configuration, data transfer, and basic training so you can use your devices confidently.",
     },
     {
-      q: "Do you offer sprinkler & irrigation services?",
-      a: "Yes. We provide sprinkler and irrigation services including repairs, troubleshooting, controller setup, and system optimization.",
+      q: "Do you mount TVs and help with setup?",
+      a: "Yes. We provide professional TV mounting and can also help with smart TV setup, streaming devices, cable management, and basic audio configuration.",
     },
     {
       q: "Do you help with landscaping or tree trimming?",
@@ -102,13 +102,10 @@ export default function FAQPage() {
         <h1 className="faq-title">Frequently Asked Questions</h1>
 
         <p className="faq-intro">
-          Here are answers to common questions about our services including{" "}
-          <Link href="/services/tv-wall-mount-installation-services">TV mounting</Link>,{" "}
-          <Link href="/services/home-security">security camera installation</Link>,{" "}
-          <Link href="/services/wifi-and-internet">Wi-Fi troubleshooting</Link>,{" "}
-          <Link href="/services/computer-and-printers">computer support</Link>,{" "}
-          and <Link href="/services/landscaping">sprinkler & landscaping services</Link>{" "}
-          across Miami and South Florida.
+          Here are answers to common questions about our services in Miami and Broward, including{" "}
+          <Link href="/sprinkler-repair-miami">Sprinkler Repair Miami</Link>,{" "}
+          <Link href="/services/home-security">security camera installation</Link>, and{" "}
+          <Link href="/services/wifi-and-internet">tech support</Link>.
         </p>
 
         <div className="faq-container">

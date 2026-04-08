@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Terms of Service | CallTechCare",
 
   description:
-    "Read the CallTechCare Terms of Service outlining service policies, warranties, payments, and responsibilities when using our home, outdoor, and tech services in South Florida.",
+        "Read the CallTechCare Terms of Service outlining policies, payments, warranties, and responsibilities for services in Miami and Broward, including sprinkler repair & irrigation, security camera installation, and tech support.",
 
   alternates: {
     canonical: "https://www.calltechcare.com/terms-and-conditions",
@@ -98,19 +98,19 @@ export default function TermsAndConditionsPage() {
                                     <h2>Services Description</h2>
                                 </div>
                                 <p>
-                                    CallTechCare provides home, outdoor, and tech services, including
+                                    CallTechCare provides on-site services in Miami-Dade and Broward, including
                                     (but not limited to):
                                 </p>
                                 <ul>
+                                    <li>Sprinkler repair & irrigation service (repairs and installations)</li>
+                                    <li>Security camera installation and setup</li>
                                     <li>Remote and on-site troubleshooting</li>
                                     <li>Device setup and configuration</li>
-                                    <li>Network and Wi‑Fi support</li>
-                                    <li>Security camera installation and setup</li>
+                                    <li>Network and Wi-Fi support</li>
                                     <li>TV mounting and basic setup</li>
                                     <li>Computer and printer support</li>
                                     <li>Phone and tablet support</li>
                                     <li>Senior-friendly in-home tech help</li>
-                                    <li>Sprinkler & irrigation service (repairs and installations)</li>
                                     <li>Tree trimming assistance</li>
                                     <li>Software installation and optimization</li>
                                     <li>General IT consulting</li>

@@ -19,13 +19,12 @@ type Props = {
 };
 
 export default function Hero({
-  titleLine1 = "Local Home, Outdoor & Tech Services",
-  titleLine2 = "for Homes & Small Businesses in South Florida",
-  subtitle =
-    "Serving Miami, Pembroke Pines, Broward County, and Homestead with professional home, outdoor, and tech services including security camera installation, TV mounting, Wi-Fi & internet troubleshooting, computer and printer support, phone & tablet help, senior-friendly in-home tech support, sprinkler & irrigation service, and tree trimming.",
-  badgeText = "Trusted Local Services in South Florida",
-  primaryCtaText = "Contact Us",
-  primaryCtaHref = "#contact",
+  titleLine1 = "Sprinkler Repair Miami",
+  titleLine2 = "Irrigation • Cameras • Tech Services",
+  subtitle = "Professional sprinkler repair and irrigation services in Miami and Broward. We also install security cameras and provide expert tech support for homes and businesses.",
+  badgeText = "Sprinkler Repair & Irrigation in Miami & Broward",
+  primaryCtaText = "Call Now",
+  primaryCtaHref = "tel:+17863662729",
   secondaryCtaText = "Request a Quote",
   secondaryCtaHref = "/request-quote",
   phoneNumber = "+17863662729",
@@ -36,6 +35,8 @@ export default function Hero({
     { value: "Same-Day", label: "Appointments Available" },
   ],
 }: Props) {
+  const isPrimaryPhoneLink = typeof primaryCtaHref === "string" && primaryCtaHref.startsWith("tel:");
+
   return (
     <section id="hero" role="region" aria-labelledby="hero-title">
 
@@ -54,30 +55,40 @@ export default function Hero({
       {/* CTAs */}
       <div className="hero-ctas">
         {primaryCtaText && primaryCtaHref && (
-          <Link
-            href={primaryCtaHref}
-            className="btn-cta btn-primary"
-            aria-label="Contact CallTechCare for home, outdoor, or tech services"
-          >
-            {primaryCtaText}
-          </Link>
+          isPrimaryPhoneLink ? (
+            <a
+              href={primaryCtaHref}
+              className="btn-cta btn-primary"
+              aria-label="Call CallTechCare for sprinkler repair in Miami and Broward"
+            >
+              {primaryCtaText}
+            </a>
+          ) : (
+            <Link
+              href={primaryCtaHref}
+              className="btn-cta btn-primary"
+              aria-label="Get sprinkler repair and irrigation service in Miami and Broward"
+            >
+              {primaryCtaText}
+            </Link>
+          )
         )}
 
         {secondaryCtaText && secondaryCtaHref && (
           <Link
             href={secondaryCtaHref}
             className="btn-cta btn-secondary flex items-center gap-2"
-            aria-label="Request a service quote from CallTechCare"
+            aria-label="Request a quote for sprinkler repair in Miami and Broward"
           >
             <SvgIcon name="document" size={20} />
             {secondaryCtaText}
           </Link>
         )}
-        {showCallButton && (
+        {showCallButton && !isPrimaryPhoneLink && (
         <a
           href={`tel:${phoneNumber}`}
           className="btn-cta btn-cta btn-primary flex items-center gap-2"
-          aria-label="Call CallTechCare now"
+          aria-label="Call CallTechCare for sprinkler repair in Miami and Broward"
         >
           <SvgIcon name="phone" size={20} />
           Call Now

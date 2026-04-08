@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy | CallTechCare",
 
   description:
-    "Read the CallTechCare privacy policy to understand how we collect, use, and protect your personal information when you use our home, outdoor, and tech services in South Florida.",
+    "Read the CallTechCare privacy policy to understand how we collect, use, and protect your personal information when you request or use our services in Miami and Broward—including sprinkler repair & irrigation, security camera installation, and tech support.",
 
   alternates: {
     canonical: "https://www.calltechcare.com/privacy-policy",

@@ -1,38 +1,30 @@
+import Link from "next/link";
+
 export default function SEOIntro() {
   return (
     <section className="seo-intro-section">
       <div className="seo-intro">
         <h2 className="seo-intro-title">
-          Trusted Home, Outdoor & Tech Services in Miami & Broward County
+          Sprinkler Repair & Irrigation Services in Miami & Broward
         </h2>
 
         <p>
-          CallTechCare provides fast, friendly home, outdoor, and tech services for homes and small
-          businesses across Miami, Pembroke Pines, Broward County, Miramar,
-          Hollywood, Fort Lauderdale, and Homestead. From sprinkler & irrigation
-          service and tree trimming to security camera installation, TV mounting,
-          Wi-Fi & internet troubleshooting, computer and printer support, phone &
-          tablet help, and smart-home setup, our team delivers clear, reliable help
-          right to your door.
+          CallTechCare is a local service team focused on{" "}
+          <Link href="/sprinkler-repair-miami">Sprinkler Repair Miami</Link> and irrigation troubleshooting across Miami-Dade and
+          Broward. We help with leaks, broken sprinkler heads, poor coverage, timer/controller issues, and system tune-ups—with clear
+          communication and reliable on-site service.
         </p>
 
         <p>
-          We specialize in professional TV mounting, wireless security camera
-          installation, Wi-Fi troubleshooting and router optimization, smart TV
-          setup, smart-home device installation, computer cleanup, printer
-          configuration, and guided phone or tablet support for all ages — with
-          extra patience for seniors who want step-by-step help. We also provide
-          outdoor service support including sprinkler system tune-ups, irrigation
-          troubleshooting, and tree trimming help.
+          After sprinkler repair and irrigation service, we also provide security camera installation and expert tech support—including
+          Wi-Fi and internet troubleshooting, computer and printer support, and device setup for homes and small businesses.
         </p>
 
         <p>
-          With same-day availability in most South Florida locations, CallTechCare
-          makes service simple, stress-free, and accessible for everyone. Whether 
-          you need irrigation service or in-home tech support, 
-          we help keep your home running smoothly — inside and out.
+          With same-day availability in many Miami and Broward areas, CallTechCare makes scheduling simple and stress-free.
+          Call now for sprinkler repair or request a quote—we’ll confirm details and book the next available visit.
         </p>
       </div>
     </section>
   );
-}
+} 
