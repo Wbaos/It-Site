@@ -13656,69 +13656,6 @@ box-shadow:
   line-height: 1.6;
 }
 
-.spr-showcase {
-  margin-top: 34px;
-}
-
-.spr-showcaseGrid {
-  margin-top: 18px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.spr-showcaseCard {
-  padding: 12px;
-}
-
-.spr-showcaseMedia {
-  position: relative;
-  width: 100%;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  background: rgba(2, 6, 23, 0.55);
-  aspect-ratio: 16 / 10;
-}
-
-.spr-showcaseImg {
-  object-fit: cover;
-}
-
-.spr-showcaseBadge {
-  position: absolute;
-  left: 12px;
-  bottom: 12px;
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(2, 6, 23, 0.7);
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  color: rgba(226, 232, 240, 0.95);
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-
-.spr-showcaseTitle {
-  margin: 12px 4px 0;
-  font-size: 1.05rem;
-  font-weight: 900;
-  color: #ffffff;
-}
-
-.spr-showcaseList {
-  margin: 10px 4px 2px;
-  padding-left: 18px;
-  color: rgba(148, 163, 184, 0.95);
-  line-height: 1.6;
-}
-
-.spr-showcaseKey {
-  color: rgba(226, 232, 240, 0.95);
-  font-weight: 800;
-}
-
 .spr-steps {
   margin-top: 34px;
 }
@@ -13799,8 +13736,7 @@ box-shadow:
 
 @media (max-width: 900px) {
   .spr-cardGrid,
-  .spr-stepGrid,
-  .spr-showcaseGrid {
+  .spr-stepGrid {
     grid-template-columns: 1fr;
   }
 }
