@@ -11105,7 +11105,10 @@ object-fit: cover;
 }
 
 .beforeafter-img {
-  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 
 .beforeafter-badge {
