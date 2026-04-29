@@ -45,7 +45,7 @@ export default async function Services() {
       aria-labelledby="services-title"
     >
       <div className="site-container-services">
-        <h2 id="services-title" className="services-heading">Popular Sprinkler Repair & Irrigation Services in Miami & Broward</h2>
+        <h2 id="services-title" className="services-heading">Popular Services in Miami & Broward</h2>
         <p className="services-sub">
           From sprinkler repair and irrigation troubleshooting to security camera installation and expert tech support (Wi-Fi,
           computers, and printers), we help homes and small businesses across Miami and Broward with reliable, on-site service.

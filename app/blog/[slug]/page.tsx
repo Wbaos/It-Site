@@ -6,6 +6,8 @@ import Link from "next/link";
 import SvgIcon from "@/components/common/SvgIcons";
 import RelatedArticlesCarousel from "@/components/RelatedArticlesCarousel";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+
 
 type SanityImage = {
   asset?: { url?: string };
@@ -141,7 +143,7 @@ export default async function BlogPost({
   );
 
   if (!post) {
-    return <p className="no-posts">Post not found.</p>;
+    notFound();
   }
 
   const url =
