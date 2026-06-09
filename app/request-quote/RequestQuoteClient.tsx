@@ -305,7 +305,10 @@ export default function RequestQuoteClient(props: {
             }
           : undefined,
         urgency: urgencyId || undefined,
-        other: needSomethingElse && otherServiceText.trim() ? otherServiceText.trim() : undefined,
+        other:
+          needSomethingElse && otherServiceText.trim()
+            ? otherServiceText.trim()
+            : undefined,
         contact: {
           firstName: contactFirstName.trim(),
           lastName: contactLastName.trim(),
@@ -320,8 +323,12 @@ export default function RequestQuoteClient(props: {
         details: {
           projectDetails: projectDetails.trim() || undefined,
           wantsTechnicianVisitFirst,
-          preferredDate: wantsTechnicianVisitFirst ? (preferredDate || undefined) : undefined,
-          preferredTime: wantsTechnicianVisitFirst ? (preferredTime || undefined) : undefined,
+          preferredDate: wantsTechnicianVisitFirst
+            ? preferredDate || undefined
+            : undefined,
+          preferredTime: wantsTechnicianVisitFirst
+            ? preferredTime || undefined
+            : undefined,
           heardAbout: heardAbout || undefined,
         },
       };
@@ -332,15 +339,33 @@ export default function RequestQuoteClient(props: {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error("Failed to submit request");
+      if (!res.ok) {
+        throw new Error("Failed to submit request");
+      }
 
       const json = (await res.json().catch(() => null)) as
         | { success?: boolean; referenceNumber?: string }
         | null;
 
+      // Google Ads Contact Conversion
+      if (
+        typeof window !== "undefined" &&
+        typeof window.gtag === "function"
+      ) {
+        window.gtag("event", "conversion", {
+          send_to: "AW-17496959572/-O9vCKjXw4QcENTUmZdB",
+        });
+      }
+
       setReferenceNumber(json?.referenceNumber || "");
-      setShowThankYou(true);
-    } catch {
+
+      // Small delay to ensure conversion event is sent
+      setTimeout(() => {
+        setShowThankYou(true);
+      }, 500);
+
+    } catch (error) {
+      console.error("Quote request error:", error);
       setSubmitError("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
