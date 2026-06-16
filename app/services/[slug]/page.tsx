@@ -982,7 +982,8 @@ const isTvMounting = tvMountingSlugs.includes(slug);
               </Link>
             ) : (
               <a href="tel:+17863662729" className="btn-book">
-                Call for Free Quote
+                <span className="mobile-only">Call for Free Quote</span>
+                <span className="desktop-only">Call us at (786) 366-2729</span>
               </a>
             )}
           </div>
