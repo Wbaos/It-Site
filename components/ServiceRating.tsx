@@ -10,31 +10,53 @@ export default function ServiceRating({
   reviewsCount?: number;
 }) {
   const handleScroll = () => {
-    const section = document.querySelector(".reviews-section");
+    const section =
+      document.querySelector(".site-container-testimonials") ||
+      document.querySelector(".reviews-section");
+
     if (section) {
-      const yOffset = -80;
+      // More space at the top when scrolling
+      const yOffset = -130;
       const y = section.getBoundingClientRect().top + window.scrollY + yOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
+
+      window.scrollTo({
+        top: y,
+        behavior: "smooth",
+      });
     }
   };
 
   const getStarFill = (index: number) => {
     const diff = rating - index;
+
     if (diff >= 1) return 100;
     if (diff > 0) return diff * 100;
+
     return 0;
   };
 
   return (
-    <div className="service-rating" onClick={handleScroll}>
-      <div className="star-wrapper">
+    <button
+      type="button"
+      className="service-rating"
+      onClick={handleScroll}
+      aria-label={`View customer reviews. Rated ${rating.toFixed(1)} out of 5${
+        reviewsCount !== undefined ? ` based on ${reviewsCount} reviews` : ""
+      }`}
+    >
+      <div className="star-wrapper" aria-hidden="true">
         {[0, 1, 2, 3, 4].map((i) => {
           const fill = getStarFill(i);
+
           return (
             <div
               className="star-item"
               key={i}
-              style={{ position: "relative", width: 16, height: 16 }} 
+              style={{
+                position: "relative",
+                width: 16,
+                height: 16,
+              }}
             >
               <SvgIcon name="star" size={16} className="star-outline" />
 
@@ -58,9 +80,10 @@ export default function ServiceRating({
       </div>
 
       <span className="score">{rating.toFixed(1)}</span>
+
       {reviewsCount !== undefined && (
         <span className="reviews">· {reviewsCount} reviews</span>
       )}
-    </div>
+    </button>
   );
 }
