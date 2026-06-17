@@ -366,15 +366,6 @@ export default async function ServicePage({
                     },
                   }
                 : {}),
-              ...(service.rating && service.reviewsCount
-                ? {
-                    aggregateRating: {
-                      "@type": "AggregateRating",
-                      ratingValue: service.rating,
-                      reviewCount: service.reviewsCount,
-                    },
-                  }
-                : {}),
             }
           : null;
 
