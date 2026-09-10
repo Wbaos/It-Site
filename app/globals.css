@@ -10795,7 +10795,7 @@ object-fit: cover;
 }
 
 .service-card {
-  height: 520px;
+  /* height: 520px; */
   max-height: 520px;
 }
 
