@@ -70,6 +70,8 @@ export default function BookingCustomizeClient({ slug }: { slug: string }) {
 
   const [service, setService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const [responses, setResponses] = useState<Record<string, any>>({});
   const [errors, setErrors] = useState<Record<string, boolean>>({});
 
@@ -78,11 +80,14 @@ export default function BookingCustomizeClient({ slug }: { slug: string }) {
 
   useEffect(() => {
     if (!slug) return;
+    let cancelled = false;
 
     const fetchService = async () => {
       setLoading(true);
-      const data: Service = await sanity.fetch(
-        `*[_type == "service" && slug.current == $slug][0]{
+      setLoadError(false);
+      try {
+        const data: Service | null = await sanity.fetch(
+          `*[_type == "service" && slug.current == $slug][0]{
           title,
           "slug": slug.current,
           price,
@@ -107,15 +112,25 @@ export default function BookingCustomizeClient({ slug }: { slug: string }) {
             optionsByParent[]{ parentValue, options[]{label, extraCost} }
           }
         }`,
-        { slug }
-      );
+          { slug }
+        );
 
-      setService(data);
-      setLoading(false);
+        if (!cancelled) setService(data);
+      } catch (error) {
+        if (!cancelled) {
+          console.error("Failed to load service", error);
+          setLoadError(true);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     };
 
     fetchService();
-  }, [slug]);
+    return () => {
+      cancelled = true;
+    };
+  }, [slug, retryCount]);
 
   useEffect(() => {
     if (!isEdit || !editId || !service?.questions) return;
@@ -264,6 +279,22 @@ export default function BookingCustomizeClient({ slug }: { slug: string }) {
         <section className={`booking ${styles.page}`}>
           <div className={styles.container}>
             <p>Loading service...</p>
+          </div>
+        </section>
+      </div>
+    );
+
+  if (loadError)
+    return (
+      <div className="bookingCustomize">
+        <section className={`booking ${styles.page}`}>
+          <div className={styles.container} role="alert">
+            <h1>Unable to load service</h1>
+            <p>Please try again in a moment.</p>
+            <button type="button" className="btn" onClick={() => setRetryCount((count) => count + 1)}>
+              Try again
+            </button>
+            <Link href="/services" className="btn">Back to Services</Link>
           </div>
         </section>
       </div>
