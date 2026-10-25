@@ -379,6 +379,64 @@ export default function SprinklerRepairMiamiPage() {
           </p>
         </div>
       </section>
+
+      <section className="spr-landing-section" aria-label="Our work">
+        <div className="spr-landing">
+          <h2 className="spr-landing-title">Our Work</h2>
+          <p className="spr-landing-sub">
+            Real sprinkler work by CallTechCare across Miami-Dade and Broward.
+          </p>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+              gap: "16px",
+            }}
+          >
+            <figure style={{ margin: 0 }}>
+              <img
+                src="https://cdn.sanity.io/images/celkrwoq/production/6120f13ca37bb09c75a7687af063c8a045b82ed1-1320x904.jpg?w=900&auto=format"
+                alt="Sprinkler system watering a lawn"
+                loading="lazy"
+                style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
+              />
+              <figcaption>New sprinkler system watering a lawn</figcaption>
+            </figure>
+
+            <figure style={{ margin: 0 }}>
+              <img
+                src="https://cdn.sanity.io/images/celkrwoq/production/bc5aa7c65e5c02afad22df4a6ab125528280eb2d-1232x1320.jpg?w=900&auto=format"
+                alt="Smart WiFi irrigation controller installed"
+                loading="lazy"
+                style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
+              />
+              <figcaption>Smart WiFi controller installed</figcaption>
+            </figure>
+
+            <figure style={{ margin: 0 }}>
+              <img
+                src="https://cdn.sanity.io/images/celkrwoq/production/232c961b8b1512926ae7f989c6c6a16d0b3b414b-1200x1600.jpg?w=900&auto=format"
+                alt="Sprinkler leak repair"
+                loading="lazy"
+                style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
+              />
+              <figcaption>Sprinkler leak repaired</figcaption>
+            </figure>
+
+            <figure style={{ margin: 0 }}>
+              <img
+                src="https://cdn.sanity.io/images/celkrwoq/production/21a2632358c4e5dde2158083c2d144f946340daa-1200x1600.jpg?w=900&auto=format"
+                alt="Valve manifold replacement"
+                loading="lazy"
+                style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
+              />
+              <figcaption>Valve manifold replacement</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
       <section className="spr-landing-section" aria-label="Frequently asked questions">
         <div className="spr-landing">
           <div className="service-faq">
