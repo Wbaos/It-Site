@@ -227,7 +227,7 @@ export default function SprinklerRepairMiamiPage() {
           <h3 className="spr-landing-h3">Service area</h3>
 
           <p>
-            We serve Miami-Dade and Broward, including Miami, Miramar, Pembroke Pines, Hollywood, and Fort Lauderdale. If you’re nearby
+            We serve Miami-Dade and Broward, including Sunrise, Fort Lauderdale, Weston, Davie, Hollywood, Pembroke Pines, Miramar, Aventura, Hialeah, Doral, Miami, Kendall, and Cutler Bay. If you’re nearby
             and don’t see your city listed, reach out—we’ll confirm availability.
           </p>
 
