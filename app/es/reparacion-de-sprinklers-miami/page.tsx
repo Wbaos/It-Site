@@ -382,6 +382,64 @@ export default function ReparacionDeSprinklersMiamiPage() {
           </p>
         </div>
       </section>
+
+      <section className="spr-landing-section" aria-label="Nuestro trabajo">
+        <div className="spr-landing">
+          <h2 className="spr-landing-title">Nuestro Trabajo</h2>
+          <p className="spr-landing-sub">
+            Trabajos reales de sprinkler de CallTechCare en Miami-Dade y Broward.
+          </p>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+              gap: "16px",
+            }}
+          >
+            <figure style={{ margin: 0 }}>
+              <img
+                src="https://cdn.sanity.io/images/celkrwoq/production/6120f13ca37bb09c75a7687af063c8a045b82ed1-1320x904.jpg?w=900&auto=format"
+                alt="Sistema de sprinklers regando el jardín"
+                loading="lazy"
+                style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
+              />
+              <figcaption>Sistema nuevo de sprinklers regando el jardín</figcaption>
+            </figure>
+
+            <figure style={{ margin: 0 }}>
+              <img
+                src="https://cdn.sanity.io/images/celkrwoq/production/bc5aa7c65e5c02afad22df4a6ab125528280eb2d-1232x1320.jpg?w=900&auto=format"
+                alt="Controlador WiFi inteligente instalado"
+                loading="lazy"
+                style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
+              />
+              <figcaption>Controlador WiFi inteligente instalado</figcaption>
+            </figure>
+
+            <figure style={{ margin: 0 }}>
+              <img
+                src="https://cdn.sanity.io/images/celkrwoq/production/232c961b8b1512926ae7f989c6c6a16d0b3b414b-1200x1600.jpg?w=900&auto=format"
+                alt="Reparación de fuga de sprinkler"
+                loading="lazy"
+                style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
+              />
+              <figcaption>Fuga de sprinkler reparada</figcaption>
+            </figure>
+
+            <figure style={{ margin: 0 }}>
+              <img
+                src="https://cdn.sanity.io/images/celkrwoq/production/21a2632358c4e5dde2158083c2d144f946340daa-1200x1600.jpg?w=900&auto=format"
+                alt="Reemplazo de manifold de válvulas"
+                loading="lazy"
+                style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
+              />
+              <figcaption>Reemplazo de manifold de válvulas</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
       <section className="spr-landing-section" aria-label="Frequently asked questions">
         <div className="spr-landing">
           <div className="service-faq">
