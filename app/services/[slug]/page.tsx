@@ -61,13 +61,13 @@ export async function generateMetadata({
       title: `${service.title} in Miami & Broward | CallTechCare`,
       description:
         service.description ||
-        `Professional ${service.title} service in Miami, Homestead, Fort Lauderdale, and Broward County.`,
+        `Professional ${service.title} service in Miami, Fort Lauderdale, and Broward County.`,
       alternates: { canonical: url },
       openGraph: {
         title: `${service.title} in Miami & Broward | CallTechCare`,
         description:
           service.description ||
-          `Professional ${service.title} service in Miami, Homestead, Fort Lauderdale, and Broward County.`,
+          `Professional ${service.title} service in Miami, Fort Lauderdale, and Broward County.`,
         url,
         images: service.image?.asset?.url
           ? [{ url: service.image.asset.url, alt: service.image.alt || service.title }]
@@ -77,7 +77,7 @@ export async function generateMetadata({
         title: `${service.title} in Miami & Broward | CallTechCare`,
         description:
           service.description ||
-          `Professional ${service.title} service in Miami, Homestead, Fort Lauderdale, and Broward County.`,
+          `Professional ${service.title} service in Miami, Fort Lauderdale, and Broward County.`,
         images: service.image?.asset?.url ? [service.image.asset.url] : [],
       },
     };
@@ -106,7 +106,7 @@ export async function generateMetadata({
       category.metaDescription ||
       category.tagline ||
       category.description ||
-      `Professional ${category.title} services in Miami, Homestead, Fort Lauderdale, and Broward County.`;
+      `Professional ${category.title} services in Miami, Fort Lauderdale, and Broward County.`;
 
     return {
       title,
@@ -344,10 +344,10 @@ export default async function ServicePage({
               }),
               description:
                 service.description ||
-                `Professional ${service.title} service in Miami, Homestead, Fort Lauderdale, and Broward County.`,
+                `Professional ${service.title} service in Miami, Fort Lauderdale, and Broward County.`,
               areaServed: {
                 "@type": "Place",
-                name: "Miami, Homestead, Fort Lauderdale, Broward County",
+                name: "Miami, Fort Lauderdale, Broward County",
               },
               provider: {
                 "@type": "LocalBusiness",
@@ -471,11 +471,11 @@ export default async function ServicePage({
           category.metaDescription ||
           category.tagline ||
           category.description ||
-          `Professional ${category.title} services in Miami, Homestead, Fort Lauderdale, and Broward County.`,
+          `Professional ${category.title} services in Miami, Fort Lauderdale, and Broward County.`,
 
         areaServed: {
           "@type": "Place",
-          name: "Miami, Homestead, Fort Lauderdale, Broward County",
+          name: "Miami, Fort Lauderdale, Broward County",
         },
 
         provider: {

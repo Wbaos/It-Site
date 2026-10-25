@@ -10,7 +10,7 @@ export default function WhyChooseUs() {
     {
       icon: <Clock size={32} strokeWidth={1.5} />,
       title: "Same-Day Availability",
-      text: "Most appointments available the same day across Miami, Pembroke Pines, Broward, Miramar, and Homestead.",
+      text: "Most appointments available the same day across all 13 service areas, from Sunrise to Cutler Bay.",
     },
     {
       icon: <Network size={32} strokeWidth={1.5} />,

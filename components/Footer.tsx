@@ -106,7 +106,7 @@ export default function Footer() {
           <p>
             <strong>CallTechCare</strong>
             <br />
-            Serving South Florida (Broward County to Homestead)
+            Serving South Florida — from Sunrise to Cutler Bay
           </p>
           <p>
             📞 <a href="tel:+17863662729" title="Call CallTechCare">(786) 366-2729</a>
@@ -124,9 +124,9 @@ export default function Footer() {
           <div className="footer-areas">
             <p className="areas-title">📍 Service Areas</p>
             <p className="areas-list">
-              Miami • Pembroke Pines • Broward County • Homestead • Miramar •
-              Hollywood • Fort Lauderdale • Doral • Kendall • Hialeah • Weston •
-              Davie • Sunrise • Cutler Bay • Aventura
+              Sunrise • Fort Lauderdale • Weston • Davie • Hollywood •
+              Pembroke Pines • Miramar • Aventura • Hialeah • Doral • Miami •
+              Kendall • Cutler Bay
             </p>
           </div>
         </div>
