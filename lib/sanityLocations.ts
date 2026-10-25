@@ -32,7 +32,7 @@ export interface LocationServiceRadius {
 export interface LocationPopularService {
   name: string;
   price: string;
-  icon?: string;
+  icon?: string | { asset?: { url?: string }; alt?: string };
   slug?: string;
 }
 
@@ -89,7 +89,10 @@ export async function getAllActiveLocations(): Promise<Location[]> {
     popularServices[]{
       "name": coalesce(service->name, service->title, service->serviceName),
       "price": coalesce(priceOverride, service->price),
-      "icon": string(service->icon),
+      "icon": select(
+        defined(service->icon.asset) => service->icon { asset->{url}, alt },
+        service->icon
+      ),
       "slug": service->slug.current
     },
     badges,
@@ -125,7 +128,10 @@ export async function getLocationBySlug(slug: string): Promise<Location | null> 
     popularServices[]{
       "name": coalesce(service->name, service->title, service->serviceName),
       "price": coalesce(priceOverride, service->price),
-      "icon": string(service->icon),
+      "icon": select(
+        defined(service->icon.asset) => service->icon { asset->{url}, alt },
+        service->icon
+      ),
       "slug": service->slug.current
     },
     badges,
