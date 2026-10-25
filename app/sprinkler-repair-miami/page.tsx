@@ -171,6 +171,67 @@ export const metadata: Metadata = {
 export default function SprinklerRepairMiamiPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "How much does sprinkler repair cost in Miami?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "It depends on the problem and the size of your system. A broken sprinkler head costs less than a valve or zone repair. CallTechCare gives you a clear, upfront estimate before starting any work, and the estimate is free.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "How fast can you come for a sprinkler repair?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "In most areas of Miami-Dade and Broward, same-day appointments are available. Call (786) 366-2729 and we will confirm the next available visit.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What areas do you serve?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "We serve 13 cities across Miami-Dade and Broward, from Sunrise to Cutler Bay, including Sunrise, Fort Lauderdale, Weston, Davie, Hollywood, Pembroke Pines, Miramar, Aventura, Hialeah, Doral, Miami, Kendall, and Cutler Bay.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Why is one sprinkler zone not working?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "The most common causes are a faulty valve, a wiring issue, a timer problem, or an underground leak. We diagnose the root cause before recommending a repair.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Do you install new sprinkler systems or only repair them?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Both. We install new irrigation zones, valves, sprinkler lines, and controllers, and we can upgrade old systems with smart WiFi controllers.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Do you repair sprinkler leaks?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. We repair sprinkler leaks, including PVC pipe leaks, leaking valves, and broken heads, and we test the system after the repair.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
+
       <Hero
         titleLine1="Sprinkler Repair Miami"
         titleLine2="Irrigation • Cameras • Tech Services"
@@ -185,6 +246,10 @@ export default function SprinklerRepairMiamiPage() {
 
       <section className="seo-intro-section">
         <div className="seo-intro">
+          <p style={{ paddingBottom: "1rem" }}>
+            <Link href="/es/reparacion-de-sprinklers-miami">Ver esta página en español →</Link>
+          </p>
+
           <h2 className="seo-intro-title">Sprinkler Repair & Irrigation Services in Miami and Broward</h2>
 
           <p>
@@ -312,6 +377,57 @@ export default function SprinklerRepairMiamiPage() {
             details? View{" "}
             <Link href={SPRINKLER_SERVICE_DETAILS_HREF}>Sprinkler Repair &amp; Irrigation</Link>.
           </p>
+        </div>
+      </section>
+      <section className="spr-landing-section" aria-label="Frequently asked questions">
+        <div className="spr-landing">
+          <div className="service-faq">
+            <h2 className="faq-heading">Frequently Asked Questions About Sprinkler Repair in Miami</h2>
+            <div className="faq-list">
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>How much does sprinkler repair cost in Miami?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">It depends on the problem and the size of your system. A broken sprinkler head costs less than a valve or zone repair. CallTechCare gives you a clear, upfront estimate before starting any work, and the estimate is free.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>How fast can you come for a sprinkler repair?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">In most areas of Miami-Dade and Broward, same-day appointments are available. Call (786) 366-2729 and we will confirm the next available visit.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>What areas do you serve?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">We serve 13 cities across Miami-Dade and Broward, from Sunrise to Cutler Bay, including Sunrise, Fort Lauderdale, Weston, Davie, Hollywood, Pembroke Pines, Miramar, Aventura, Hialeah, Doral, Miami, Kendall, and Cutler Bay.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Why is one sprinkler zone not working?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">The most common causes are a faulty valve, a wiring issue, a timer problem, or an underground leak. We diagnose the root cause before recommending a repair.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you install new sprinkler systems or only repair them?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Both. We install new irrigation zones, valves, sprinkler lines, and controllers, and we can upgrade old systems with smart WiFi controllers.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you repair sprinkler leaks?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. We repair sprinkler leaks, including PVC pipe leaks, leaking valves, and broken heads, and we test the system after the repair.</p>
+              </details>
+            </div>
+          </div>
         </div>
       </section>
     </>
