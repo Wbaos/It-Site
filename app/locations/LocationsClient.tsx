@@ -56,7 +56,7 @@ export default function LocationsClient() {
             Miami-Dade, Broward County, and surrounding South Florida areas.
           </p>
           <p className="locations-hero-badge">
-            ✦ Serving Miami, Fort Lauderdale & 15+ surrounding cities
+            ✦ Serving 13 cities across Miami-Dade & Broward
           </p>
         </div>
       </section>
@@ -149,7 +149,7 @@ export default function LocationsClient() {
                     )}
                     <div className="location-card-info-item">
                       <MapPin />
-                      <span>Service Radius: 50 miles</span>
+                      <span>Service Radius: 45 miles</span>
                     </div>
                   </div>
 
@@ -185,7 +185,7 @@ export default function LocationsClient() {
                 <div className="location-stat-label">County</div>
               </div>
               <div>
-                <div className="location-stat-value">15+</div>
+                <div className="location-stat-value">13</div>
                 <div className="location-stat-label">Cities Served</div>
               </div>
               <div>
@@ -204,7 +204,7 @@ export default function LocationsClient() {
             </div>
 
             <Link href="/#contact" className="locations-cta-button">
-              Request Expecific Service
+              Request Specific Service
             </Link>
           </div>
         </div>

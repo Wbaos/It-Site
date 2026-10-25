@@ -38,16 +38,19 @@ export default function LocationsPage() {
       "@type": "LocalBusiness",
       name: "CallTechCare",
       areaServed: [
-        "Miami",
-        "Miami Beach",
-        "Coral Gables",
-        "Hialeah",
-        "Homestead",
-        "Miramar",
-        "Pembroke Pines",
-        "Hollywood",
+        "Sunrise",
         "Fort Lauderdale",
-        "Davie"
+        "Weston",
+        "Davie",
+        "Hollywood",
+        "Pembroke Pines",
+        "Miramar",
+        "Aventura",
+        "Hialeah",
+        "Doral",
+        "Miami",
+        "Kendall",
+        "Cutler Bay"
       ]
     }
   };

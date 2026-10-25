@@ -74,7 +74,7 @@ export const homeSections: Section[] = [
         
         stats: [
             { value: "500+", label: "Local Clients Helped" },
-            { value: "4.9/5", label: "Customer Satisfaction" },
+            { value: "5/5", label: "Customer Satisfaction" },
             { value: "Same-Day", label: "Appointments Available" },
         ],
         },
