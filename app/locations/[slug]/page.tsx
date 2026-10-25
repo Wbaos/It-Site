@@ -478,8 +478,7 @@ export default async function LocationPage({ params }: Props) {
               local provider for home, outdoor, and tech services. Whether you need help
               with security camera installation, TV mounting, WiFi & internet troubleshooting,
               computer and printer support, phone & tablet help, senior-friendly tech support,
-              sprinkler & irrigation service, and tree trimming, our team in
-              {location.city} is here to help.
+              sprinkler & irrigation service, and tree trimming, our team in {location.city} is here to help.
             </p>
             <p>
               We understand the unique needs of {location.city} residents
