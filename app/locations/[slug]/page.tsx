@@ -18,12 +18,13 @@ import {
   Lock,
   Thermometer,
   Wifi,
+  type LucideIcon,
 } from "lucide-react";
 
 
 // Icon mapping function
 const getIcon = (iconName?: string) => {
-  const icons: Record<string, any> = {
+  const icons: Record<string, LucideIcon> = {
     tv: Tv,
     home: Home,
     monitor: Monitor,
@@ -243,7 +244,8 @@ export default async function LocationPage({ params }: Props) {
                 </h2>
                 <div className="location-services-grid">
                   {location.popularServices.map((service, index) => {
-                    const Icon = getIcon(service.icon);
+                    const iconImage = typeof service.icon === "object" ? service.icon : undefined;
+                    const Icon = getIcon(typeof service.icon === "string" ? service.icon : undefined);
                     return (
                       <Link 
                         key={index} 
@@ -252,7 +254,17 @@ export default async function LocationPage({ params }: Props) {
                       >
                         <div className="location-service-content">
                           <div className="location-service-icon">
-                            <Icon />
+                            {iconImage?.asset?.url ? (
+                              <Image
+                                src={iconImage.asset.url}
+                                alt={iconImage.alt || `${service.name} service icon`}
+                                width={28}
+                                height={28}
+                                style={{ objectFit: "contain" }}
+                              />
+                            ) : (
+                              <Icon />
+                            )}
                           </div>
                           <span className="location-service-name">
                             {service.name}
@@ -295,12 +307,12 @@ export default async function LocationPage({ params }: Props) {
 
                 <div className="location-coverage-wrapper">
                   <p className="location-zip-codes-label">
-                    ZIP Codes Served:
+                    Areas Served:
                   </p>
                   <div className="location-zip-codes">
-                    {location.neighborhoods.slice(0, 5).map((zip, index) => (
+                    {location.neighborhoods.map((area, index) => (
                       <span key={index} className="location-zip-code">
-                        {zip}
+                        {area}
                       </span>
                     ))}
                   </div>
