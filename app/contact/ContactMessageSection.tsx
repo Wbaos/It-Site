@@ -185,7 +185,7 @@ export default function ContactMessageSection() {
               <div className="contact-message-sideDivider" />
               <div className="contact-message-sideNote">
                 <span className="contact-message-sideNoteIcon" aria-hidden="true">📞</span>
-                Phone support available 24/7
+                  Emergency phone support available 24/7
               </div>
             </div>
 
