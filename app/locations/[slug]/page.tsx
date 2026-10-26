@@ -11,6 +11,8 @@ import {
   Star,
   CheckCircle2,
   ArrowLeft,
+  ArrowUpRight,
+  Droplets,
   Clock,
   Monitor,
   Home,
@@ -33,6 +35,24 @@ const getIcon = (iconName?: string) => {
     thermometer: Thermometer,
   };
   return icons[iconName?.toLowerCase() || 'monitor'] || Monitor;
+};
+
+const SPRINKLER_CITY_LINKS: Record<string, { label: string; href: string }[]> = {
+  "fort-lauderdale": [
+    { label: "Pembroke Pines", href: "/sprinkler-repair-pembroke-pines" },
+    { label: "Hollywood", href: "/sprinkler-repair-hollywood" },
+    { label: "Miramar", href: "/sprinkler-repair-miramar" },
+    { label: "Weston", href: "/sprinkler-repair-weston" },
+    { label: "Sunrise", href: "/sprinkler-repair-sunrise" },
+    { label: "Davie", href: "/sprinkler-repair-davie" },
+  ],
+  miami: [
+    { label: "Aventura", href: "/sprinkler-repair-aventura" },
+    { label: "Hialeah", href: "/sprinkler-repair-hialeah" },
+    { label: "Doral", href: "/sprinkler-repair-doral" },
+    { label: "Kendall", href: "/sprinkler-repair-kendall" },
+    { label: "Cutler Bay", href: "/sprinkler-repair-cutler-bay" },
+  ],
 };
 
 type Props = {
@@ -82,6 +102,7 @@ export default async function LocationPage({ params }: Props) {
     notFound();
   }
   const pageUrl = `https://www.calltechcare.com/locations/${slug}`;
+  const sprinklerCityLinks = SPRINKLER_CITY_LINKS[slug] || [];
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -318,6 +339,31 @@ export default async function LocationPage({ params }: Props) {
                   </div>
                 </div>
               </div>
+            )}
+
+            {/* Sprinkler Repair by City */}
+            {sprinklerCityLinks.length > 0 && (
+              <section className="location-section-card location-sprinkler-cities" aria-labelledby="sprinkler-cities-title">
+                <div className="location-sprinkler-eyebrow">
+                  <Droplets size={18} aria-hidden="true" />
+                  <span>Local irrigation services</span>
+                </div>
+                <h2 id="sprinkler-cities-title" className="location-section-title">
+                  Sprinkler Repair in {location.city} Area Cities
+                </h2>
+                <p className="location-section-text">
+                  Looking for sprinkler repair in a specific city? See our dedicated sprinkler repair pages:
+                </p>
+                <div className="location-sprinkler-city-grid">
+                  {sprinklerCityLinks.map((city) => (
+                    <Link key={city.href} href={city.href} className="location-sprinkler-city-link">
+                      <MapPin size={18} aria-hidden="true" />
+                      <span>{city.label}</span>
+                      <ArrowUpRight size={18} aria-hidden="true" />
+                    </Link>
+                  ))}
+                </div>
+              </section>
             )}
 
             {/* Testimonials */}
