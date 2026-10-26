@@ -10,7 +10,6 @@ import ServiceReviewsWrapper from "@/components/ServiceReviewsWrapper";
 import { getGoogleWriteReviewUrl } from "@/lib/google-reviews";
   const googleWriteReviewUrl = getGoogleWriteReviewUrl();
 import ServiceRating from "@/components/ServiceRating";
-import BookButtonWatcher from "@/components/BookButtonWatcher";
 import FaqAccordion from "@/components/FaqAccordion";
 import ServiceGroupList from "@/components/ServiceGroupList";
 import BeforeAfterSection from "@/components/BeforeAfterSection";
@@ -1046,18 +1045,6 @@ const isTvMounting = tvMountingSlugs.includes(slug);
       </div>
       </div>
 
-      <BookButtonWatcher />
-      <div id="floating-book-container" className="floating-book-hidden">
-        {service.showPrice && service.price != null ? (
-          <Link href={`/book/${slug}`} className="floating-book-btn">
-            Book Service
-          </Link>
-        ) : (
-          <a href="tel:+17863662729" className="floating-book-btn">
-            Call for Quote
-          </a>
-        )}
-      </div>
     </section>
 
     <ServiceAreasSection />
