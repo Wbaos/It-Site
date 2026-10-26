@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import { Providers } from "./Providers";
 import { LoadingProvider } from "@/lib/LoadingContext";
 import type { Metadata } from "next";
-import ChatWidget from "@/components/ChatWidget";
+import QuickCallButton from "@/components/QuickCallButton";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import CookieConsent from "@/components/CookieConsent";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -328,7 +328,7 @@ export default function RootLayout({
               <Navbar />
               <main className="main-content">{children}</main>
               <Footer />
-              <ChatWidget />
+              <QuickCallButton />
               <CookieConsent />
             </LoadingProvider>
           </Providers>

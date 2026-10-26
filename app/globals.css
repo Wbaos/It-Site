@@ -6541,6 +6541,7 @@ main {
 .announcement-bar-grid {
   height: 100%;
   display: flex;
+  gap: 0.75rem;
   grid-template-columns: 1fr auto 1fr;
   justify-content: space-around;
   align-items: center;
@@ -6554,11 +6555,13 @@ main {
 
 .announcement-center {
   display: flex;
+  flex: 1;
   justify-content: center;
 }
 
 .announcement-right {
   display: flex;
+  flex-shrink: 0;
   justify-content: flex-end;
 }
 
@@ -6600,9 +6603,6 @@ main {
   }
   .announcement-phone {
     font-size: 0.85rem;
-  }
-  .announcement-right {
-    display: none;
   }
 }
 
@@ -16373,6 +16373,53 @@ details[open] .faq-toggle {
 @media (prefers-reduced-motion: reduce) {
   .location-sprinkler-city-link {
     transition: none;
+  }
+}
+
+.quick-call-button {
+  position: fixed;
+  bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  right: 1.5rem;
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  min-height: 48px;
+  padding: 0.75rem 1.125rem;
+  border: 1px solid var(--brand-teal);
+  border-radius: 999px;
+  background: #0d1729;
+  color: #fff;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.quick-call-button:hover {
+  background: var(--brand-teal);
+}
+
+.quick-call-button svg {
+  color: var(--brand-teal);
+}
+
+.quick-call-button:hover svg {
+  color: #fff;
+}
+
+.quick-call-button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  .quick-call-button {
+    right: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    padding: 0.75rem 0.875rem;
+    font-size: 0.875rem;
   }
 }
 
