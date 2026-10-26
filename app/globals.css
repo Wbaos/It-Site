@@ -16301,6 +16301,81 @@ details[open] .faq-toggle {
   border-radius: 9999px;
 }
 
+.location-sprinkler-cities {
+  background: #0d1729;
+  border-color: #1e293b;
+}
+
+.location-sprinkler-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.875rem;
+  color: var(--brand-teal);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.location-sprinkler-cities .location-section-title {
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+}
+
+.location-sprinkler-cities .location-section-text {
+  line-height: 1.7;
+  color: #d1d5db;
+}
+
+.location-sprinkler-city-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.location-sprinkler-city-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3.5rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid #1e293b;
+  border-radius: 0.75rem;
+  background: #101a2b;
+  color: #e5e7eb;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.location-sprinkler-city-link svg {
+  flex-shrink: 0;
+  color: var(--brand-teal);
+}
+
+.location-sprinkler-city-link svg:last-child {
+  margin-left: auto;
+}
+
+.location-sprinkler-city-link:hover {
+  background: #101a2b;
+  border-color: var(--brand-teal);
+}
+
+.location-sprinkler-city-link:focus-visible {
+  outline: 2px solid var(--brand-teal);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .location-sprinkler-city-link {
+    transition: none;
+  }
+}
+
 .location-testimonials {
   display: flex;
   flex-direction: column;
