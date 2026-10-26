@@ -9,7 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const [locationSlugs, serviceItems, categoryItems, postItems] = await Promise.all([
         getAllLocationSlugs(),
-        sanity.fetch<Array<{ slug?: { current?: string }; _updatedAt?: string }>>( 
+        sanity.fetch<Array<{ slug?: { current?: string }; _updatedAt?: string }>>(
             `*[_type == "service" && enabled == true && defined(slug.current)]{ slug, _updatedAt }`
         ),
         sanity.fetch<Array<{ slug?: { current?: string }; _updatedAt?: string }>>(
@@ -71,6 +71,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ];
     });
 
+    // Code-based sprinkler landing pages (not in Sanity, so they are listed here)
+    const cityLandingUrls = [
+        "pembroke-pines",
+        "hollywood",
+        "miramar",
+        "weston",
+        "sunrise",
+        "davie",
+        "aventura",
+        "hialeah",
+        "doral",
+        "kendall",
+        "cutler-bay",
+    ].map((slug) => ({
+        url: `${baseUrl}/sprinkler-repair-${slug}`,
+        lastModified: now,
+        changeFrequency: 'weekly' as const,
+        priority: 0.9,
+    }));
+
 
     return [
         {
@@ -84,6 +104,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: now,
             changeFrequency: 'weekly',
             priority: 0.95,
+        },
+        {
+            url: `${baseUrl}/es/reparacion-de-sprinklers-miami`,
+            lastModified: now,
+            changeFrequency: 'weekly',
+            priority: 0.9,
         },
         {
             url: `${baseUrl}/services`,
@@ -140,6 +166,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.3,
         },
         ...locationUrls,
+        ...cityLandingUrls,
         ...serviceUrls,
         ...blogPostUrls,
     ];
