@@ -68,6 +68,21 @@ export default function Footer() {
               </Link>
             </li>
             <li>
+              <Link href="/services/sprinkler-leak-repair">
+                Sprinkler Leak Repair
+              </Link>
+            </li>
+            <li>
+              <Link href="/services/sprinkler-valve-repair">
+                Sprinkler Valve Repair
+              </Link>
+            </li>
+            <li>
+              <Link href="/services/sprinkler-pump-replacement">
+                Sprinkler Pump Replacement
+              </Link>
+            </li>
+            <li>
               <Link href="/services/home-security">
                 Security Camera Installation
               </Link>
@@ -80,21 +95,6 @@ export default function Footer() {
             <li>
               <Link href="/services/computer-and-printers">
                 Computer & Printer Support
-              </Link>
-            </li>
-            <li>
-              <Link href="/services/device-setup">
-                Device Setup & Configuration
-              </Link>
-            </li>
-            <li>
-              <Link href="/services/senior-help">
-                Senior-Friendly Tech Help
-              </Link>
-            </li>
-            <li>
-              <Link href="/services/smart-home">
-                Smart Home Setup
               </Link>
             </li>
           </ul>
