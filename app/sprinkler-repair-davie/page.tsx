@@ -138,16 +138,16 @@ function LeakIllustration() {
 }
 
 export const metadata: Metadata = {
-  title: "Sprinkler Repair Davie | CallTechCare",
+  title: "Sprinkler Repair in Davie, FL | Same-Day | CallTechCare",
   description:
-    "Fast and reliable sprinkler repair in Davie and Broward. CallTechCare also provides security camera installation and expert tech support.",
+    "Sprinkler repair in Davie, FL 33324: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
   alternates: {
     canonical: "https://www.calltechcare.com/sprinkler-repair-davie",
   },
   openGraph: {
-    title: "Sprinkler Repair Davie | CallTechCare",
+    title: "Sprinkler Repair in Davie, FL | Same-Day | CallTechCare",
     description:
-      "Fast and reliable sprinkler repair in Davie and Broward, plus security camera installation and expert tech support.",
+      "Sprinkler repair in Davie, FL 33324: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
     url: "https://www.calltechcare.com/sprinkler-repair-davie",
     siteName: "CallTechCare",
     images: [
@@ -161,9 +161,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sprinkler Repair Davie | CallTechCare",
+    title: "Sprinkler Repair in Davie, FL | Same-Day | CallTechCare",
     description:
-      "Fast and reliable sprinkler repair in Davie and Broward, plus security camera installation and expert tech support.",
+      "Sprinkler repair in Davie, FL 33324: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
     images: ["https://www.calltechcare.com/logo-og.png"],
   },
 };
@@ -227,6 +227,72 @@ export default function SprinklerRepairDaviePage() {
                   text: "Yes. We repair sprinkler leaks in Davie, including PVC pipe leaks, leaking valves, and broken heads, and we test the system after the repair.",
                 },
               },
+              {
+                "@type": "Question",
+                name: "Do you repair sprinklers on large lots and ranch properties in Davie?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Davie's larger lots and ranch properties need more zones and longer lines, and we repair and install systems sized for them, from Pine Island Ridge and Forest Ridge to the western ranch neighborhoods. Call (786) 366-2729 and we'll confirm coverage for your property.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What ZIP codes do you serve in Davie?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "We serve Davie in ZIP codes 33324, 33325, 33328, 33330 and 33331, including Pine Island Ridge, Forest Ridge, Shenandoah and the western ranch neighborhoods. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            name: "Sprinkler Repair in Davie",
+            provider: {
+              "@type": "LocalBusiness",
+              name: "CallTechCare",
+              telephone: "+1-786-366-2729",
+              url: "https://www.calltechcare.com",
+            },
+            areaServed: {
+              "@type": "City",
+              name: "Davie",
+              addressRegion: "FL",
+              postalCode: ["33324", "33325", "33328"],
+            },
+            url: "https://www.calltechcare.com/sprinkler-repair-davie",
+          }),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://www.calltechcare.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Sprinkler Repair Davie",
+                item: "https://www.calltechcare.com/sprinkler-repair-davie",
+              },
             ],
           }),
         }}
@@ -234,8 +300,8 @@ export default function SprinklerRepairDaviePage() {
 
       <Hero
         titleLine1="Sprinkler Repair Davie"
-        titleLine2="Irrigation • Cameras • Tech Services"
-        subtitle="Professional sprinkler repair and irrigation services in Davie and Broward. We also install security cameras and provide expert tech support."
+        titleLine2="Irrigation • Repairs • New Systems"
+        subtitle="Professional sprinkler repair and irrigation services in Davie and Broward — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Davie & Broward"
         primaryCtaText="Call Now"
         primaryCtaHref="tel:+17863662729"
@@ -250,7 +316,8 @@ export default function SprinklerRepairDaviePage() {
 
           <p>
             If you need sprinkler repair in Davie, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
-            poor coverage, controller issues, and irrigation troubleshooting across Davie and Broward.
+            poor coverage, controller issues, and irrigation repair across Pine Island Ridge, Forest Ridge, Shenandoah, Hawkes Bluff and
+            the western ranch neighborhoods of Davie, FL 33324, 33325 and 33328.
           </p>
 
           <Link
@@ -288,8 +355,13 @@ export default function SprinklerRepairDaviePage() {
           <h3 className="spr-landing-h3">Service area</h3>
 
           <p>
-            We serve Davie and nearby Broward cities, including Pembroke Pines, Weston, Sunrise, Hollywood, and Miramar, as well as all of
-            Miami-Dade and Broward. Davie is part of our Broward service area — see the full list on our{" "}
+            We serve Davie (33324, 33325 and 33328) and nearby Broward cities, including{" "}
+            <Link href="/sprinkler-repair-pembroke-pines">Pembroke Pines</Link>,{" "}
+            <Link href="/sprinkler-repair-weston">Weston</Link>,{" "}
+            <Link href="/sprinkler-repair-sunrise">Sunrise</Link>,{" "}
+            <Link href="/sprinkler-repair-hollywood">Hollywood</Link>, and{" "}
+            <Link href="/sprinkler-repair-miramar">Miramar</Link>, as well as all of
+            Miami-Dade and Broward. From Pine Island Ridge and Forest Ridge to Shenandoah, Hawkes Bluff and the western ranch neighborhoods, Davie is part of our Broward service area — see the full list on our{" "}
             <Link href="/locations/fort-lauderdale">Fort Lauderdale page</Link>. If you’re nearby
             and don’t see your city listed, reach out—we’ll confirm availability.
           </p>
@@ -313,7 +385,7 @@ export default function SprinklerRepairDaviePage() {
               <div className="spr-cardMedia">
                 <SprinklerIllustration />
               </div>
-              <h3 className="spr-cardTitle">Heads, coverage & zone issues</h3>
+              <h3 className="spr-cardTitle"><Link href="/services/sprinkler-valve-repair" style={{ color: "inherit", textDecoration: "none" }}>Heads, coverage & zone issues</Link></h3>
               <p className="spr-cardText">
                 Broken heads, uneven spray, low coverage, or a zone that won’t turn on—we’ll pinpoint the cause and get it working
                 correctly.
@@ -324,7 +396,7 @@ export default function SprinklerRepairDaviePage() {
               <div className="spr-cardMedia">
                 <ControllerIllustration />
               </div>
-              <h3 className="spr-cardTitle">Timer/controller troubleshooting</h3>
+              <h3 className="spr-cardTitle"><Link href="/services/sprinkler-timer-installation" style={{ color: "inherit", textDecoration: "none" }}>Timer/controller troubleshooting</Link></h3>
               <p className="spr-cardText">
                 If scheduling is off, zones run at the wrong time, or the controller isn’t responding, we’ll troubleshoot settings and
                 hardware.
@@ -335,7 +407,7 @@ export default function SprinklerRepairDaviePage() {
               <div className="spr-cardMedia">
                 <LeakIllustration />
               </div>
-              <h3 className="spr-cardTitle">Leaks & constant running water</h3>
+              <h3 className="spr-cardTitle"><Link href="/services/sprinkler-leak-repair" style={{ color: "inherit", textDecoration: "none" }}>Leaks & constant running water</Link></h3>
               <p className="spr-cardText">
                 Wet spots, pooling water, or a system that won’t shut off can point to valve or line problems—we’ll identify and address
                 the leak.
@@ -393,42 +465,42 @@ export default function SprinklerRepairDaviePage() {
           >
             <figure style={{ margin: 0 }}>
               <img
-                src="https://cdn.sanity.io/images/celkrwoq/production/6120f13ca37bb09c75a7687af063c8a045b82ed1-1320x904.jpg?w=900&auto=format"
-                alt="Sprinkler system watering a lawn"
+                src="https://cdn.sanity.io/images/celkrwoq/production/0b3bd0553df14df30766e219bc3824f877f89208-1024x768.jpg?w=900&auto=format"
+                alt="Sprinkler system watering a large lawn in Davie, FL"
                 loading="lazy"
                 style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
               />
-              <figcaption>New sprinkler system watering a lawn</figcaption>
+              <figcaption>Sprinkler system watering a large lawn in Davie</figcaption>
             </figure>
 
             <figure style={{ margin: 0 }}>
               <img
-                src="https://cdn.sanity.io/images/celkrwoq/production/bc5aa7c65e5c02afad22df4a6ab125528280eb2d-1232x1320.jpg?w=900&auto=format"
-                alt="Smart WiFi irrigation controller installed"
+                src="https://cdn.sanity.io/images/celkrwoq/production/d9ba54f86991f76f67b8287e7812e0c772381e58-768x1024.jpg?w=900&auto=format"
+                alt="Backflow preventer and valve setup in Davie, FL"
                 loading="lazy"
                 style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
               />
-              <figcaption>Smart WiFi controller installed</figcaption>
+              <figcaption>Backflow preventer and valve setup in Davie</figcaption>
             </figure>
 
             <figure style={{ margin: 0 }}>
               <img
-                src="https://cdn.sanity.io/images/celkrwoq/production/232c961b8b1512926ae7f989c6c6a16d0b3b414b-1200x1600.jpg?w=900&auto=format"
-                alt="Sprinkler leak repair"
+                src="https://cdn.sanity.io/images/celkrwoq/production/796b4b7e0d2dfb78f6ba0cbcb66e640a46e563f4-768x1024.jpg?w=900&auto=format"
+                alt="Rain Bird controller and pump setup in Davie, FL"
                 loading="lazy"
                 style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
               />
-              <figcaption>Sprinkler leak repaired</figcaption>
+              <figcaption>Rain Bird controller and pump setup in Davie</figcaption>
             </figure>
 
             <figure style={{ margin: 0 }}>
               <img
-                src="https://cdn.sanity.io/images/celkrwoq/production/21a2632358c4e5dde2158083c2d144f946340daa-1200x1600.jpg?w=900&auto=format"
-                alt="Valve manifold replacement"
+                src="https://cdn.sanity.io/images/celkrwoq/production/25453ff29f9a8edb19771a8917859b99ed6b8d5b-768x1024.jpg?w=900&auto=format"
+                alt="Sprinkler pump and index valve in Davie, FL"
                 loading="lazy"
                 style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
               />
-              <figcaption>Valve manifold replacement</figcaption>
+              <figcaption>Sprinkler pump and index valve in Davie</figcaption>
             </figure>
           </div>
         </div>
@@ -480,6 +552,20 @@ export default function SprinklerRepairDaviePage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">Yes. We repair sprinkler leaks in Davie, including PVC pipe leaks, leaking valves, and broken heads, and we test the system after the repair.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you repair sprinklers on large lots and ranch properties in Davie?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. Davie's larger lots and ranch properties need more zones and longer lines, and we repair and install systems sized for them, from Pine Island Ridge and Forest Ridge to the western ranch neighborhoods. Call (786) 366-2729 and we'll confirm coverage for your property.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>What ZIP codes do you serve in Davie?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">We serve Davie in ZIP codes 33324, 33325, 33328, 33330 and 33331, including Pine Island Ridge, Forest Ridge, Shenandoah and the western ranch neighborhoods. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.</p>
               </details>
             </div>
           </div>
