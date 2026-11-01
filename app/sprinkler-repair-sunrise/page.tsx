@@ -138,16 +138,16 @@ function LeakIllustration() {
 }
 
 export const metadata: Metadata = {
-  title: "Sprinkler Repair Sunrise | CallTechCare",
+  title: "Sprinkler Repair in Sunrise, FL | Same-Day | CallTechCare",
   description:
-    "Fast and reliable sprinkler repair in Sunrise and Broward. CallTechCare also provides security camera installation and expert tech support.",
+    "Sprinkler repair in Sunrise, FL 33323: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
   alternates: {
     canonical: "https://www.calltechcare.com/sprinkler-repair-sunrise",
   },
   openGraph: {
-    title: "Sprinkler Repair Sunrise | CallTechCare",
+    title: "Sprinkler Repair in Sunrise, FL | Same-Day | CallTechCare",
     description:
-      "Fast and reliable sprinkler repair in Sunrise and Broward, plus security camera installation and expert tech support.",
+      "Sprinkler repair in Sunrise, FL 33323: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
     url: "https://www.calltechcare.com/sprinkler-repair-sunrise",
     siteName: "CallTechCare",
     images: [
@@ -161,9 +161,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sprinkler Repair Sunrise | CallTechCare",
+    title: "Sprinkler Repair in Sunrise, FL | Same-Day | CallTechCare",
     description:
-      "Fast and reliable sprinkler repair in Sunrise and Broward, plus security camera installation and expert tech support.",
+      "Sprinkler repair in Sunrise, FL 33323: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
     images: ["https://www.calltechcare.com/logo-og.png"],
   },
 };
@@ -227,6 +227,72 @@ export default function SprinklerRepairSunrisePage() {
                   text: "Yes. We repair sprinkler leaks in Sunrise, including PVC pipe leaks, leaking valves, and broken heads, and we test the system after the repair.",
                 },
               },
+              {
+                "@type": "Question",
+                name: "Do you repair sprinklers in Sunrise condos and older homes?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Sunrise has both condo communities and older single-family homes, and we repair and install sprinklers in both, including Sunrise Lakes, Welleby, Sawgrass and Sunrise Golf Village. Call (786) 366-2729 and we'll confirm coverage for your neighborhood.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What ZIP codes do you serve in Sunrise?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "We serve all of Sunrise (ZIP codes 33323, 33322 and 33326), including Sunrise Lakes, Welleby, Sawgrass and Sunrise Golf Village. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.",
+                },
+              }
+            ],
+          }),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            name: "Sprinkler Repair in Sunrise",
+            provider: {
+              "@type": "LocalBusiness",
+              name: "CallTechCare",
+              telephone: "+1-786-366-2729",
+              url: "https://www.calltechcare.com",
+            },
+            areaServed: {
+              "@type": "City",
+              name: "Sunrise",
+              addressRegion: "FL",
+              postalCode: ["33323", "33322", "33326"],
+            },
+            url: "https://www.calltechcare.com/sprinkler-repair-sunrise",
+          }),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://www.calltechcare.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Sprinkler Repair Sunrise",
+                item: "https://www.calltechcare.com/sprinkler-repair-sunrise",
+              },
             ],
           }),
         }}
@@ -234,8 +300,8 @@ export default function SprinklerRepairSunrisePage() {
 
       <Hero
         titleLine1="Sprinkler Repair Sunrise"
-        titleLine2="Irrigation • Cameras • Tech Services"
-        subtitle="Professional sprinkler repair and irrigation services in Sunrise and Broward. We also install security cameras and provide expert tech support."
+        titleLine2="Irrigation • Repairs • New Systems"
+        subtitle="Professional sprinkler repair and irrigation services in Sunrise and Broward — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Sunrise & Broward"
         primaryCtaText="Call Now"
         primaryCtaHref="tel:+17863662729"
@@ -250,7 +316,8 @@ export default function SprinklerRepairSunrisePage() {
 
           <p>
             If you need sprinkler repair in Sunrise, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
-            poor coverage, controller issues, and irrigation troubleshooting across Sunrise and Broward.
+            poor coverage, controller issues, and irrigation repair across Sunrise Lakes, Welleby, Sawgrass and Sunrise Golf Village and
+            the rest of Sunrise, FL 33323, 33322 and 33326.
           </p>
 
           <Link
@@ -288,9 +355,8 @@ export default function SprinklerRepairSunrisePage() {
           <h3 className="spr-landing-h3">Service area</h3>
 
           <p>
-            We serve Sunrise and nearby Broward cities, including Weston, Davie, Pembroke Pines, Miramar, and Hollywood, as well as all of
-            Miami-Dade and Broward. Sunrise is part of our Broward service area — see the full list on our{" "}
-            <Link href="/locations/fort-lauderdale">Fort Lauderdale page</Link>. If you’re nearby
+            We serve all of Sunrise (33323, 33322 and 33326) and nearby Broward cities, including <Link href="/sprinkler-repair-weston">Weston</Link>, <Link href="/sprinkler-repair-davie">Davie</Link>, <Link href="/sprinkler-repair-pembroke-pines">Pembroke Pines</Link>, <Link href="/sprinkler-repair-miramar">Miramar</Link>, and <Link href="/sprinkler-repair-hollywood">Hollywood</Link>, as well as all of
+            Miami-Dade and Broward. From Sunrise Lakes and Welleby to Sawgrass and Sunrise Golf Village, Sunrise is part of our Broward service area — see the full list on our <Link href="/locations/fort-lauderdale">Fort Lauderdale page</Link>. If you’re nearby
             and don’t see your city listed, reach out—we’ll confirm availability.
           </p>
 
@@ -300,7 +366,6 @@ export default function SprinklerRepairSunrisePage() {
           </p>
         </div>
       </section>
-
       <section className="spr-landing-section" aria-label="Sprinkler repair highlights">
         <div className="spr-landing">
           <h2 className="spr-landing-title">Fix the sprinklers. Protect the yard. Stop wasting water.</h2>
@@ -316,7 +381,8 @@ export default function SprinklerRepairSunrisePage() {
               <h3 className="spr-cardTitle">Heads, coverage & zone issues</h3>
               <p className="spr-cardText">
                 Broken heads, uneven spray, low coverage, or a zone that won’t turn on—we’ll pinpoint the cause and get it working
-                correctly.
+                correctly. See our{" "}
+                <Link href="/services/sprinkler-valve-repair">valve repair service</Link> for zone problems.
               </p>
             </div>
 
@@ -327,7 +393,8 @@ export default function SprinklerRepairSunrisePage() {
               <h3 className="spr-cardTitle">Timer/controller troubleshooting</h3>
               <p className="spr-cardText">
                 If scheduling is off, zones run at the wrong time, or the controller isn’t responding, we’ll troubleshoot settings and
-                hardware.
+                hardware. See our{" "}
+                <Link href="/services/sprinkler-timer-installation">timer installation service</Link> for upgrades.
               </p>
             </div>
 
@@ -338,7 +405,8 @@ export default function SprinklerRepairSunrisePage() {
               <h3 className="spr-cardTitle">Leaks & constant running water</h3>
               <p className="spr-cardText">
                 Wet spots, pooling water, or a system that won’t shut off can point to valve or line problems—we’ll identify and address
-                the leak.
+                the leak. See our{" "}
+                <Link href="/services/sprinkler-leak-repair">leak repair service</Link> for details.
               </p>
             </div>
           </div>
@@ -377,6 +445,7 @@ export default function SprinklerRepairSunrisePage() {
           </p>
         </div>
       </section>
+
       <section className="spr-landing-section" aria-label="Our work">
         <div className="spr-landing">
           <h2 className="spr-landing-title">Our Work</h2>
@@ -480,6 +549,20 @@ export default function SprinklerRepairSunrisePage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">Yes. We repair sprinkler leaks in Sunrise, including PVC pipe leaks, leaking valves, and broken heads, and we test the system after the repair.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you repair sprinklers in Sunrise condos and older homes?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. Sunrise has both condo communities and older single-family homes, and we repair and install sprinklers in both, including Sunrise Lakes, Welleby, Sawgrass and Sunrise Golf Village. Call (786) 366-2729 and we'll confirm coverage for your neighborhood.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>What ZIP codes do you serve in Sunrise?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">We serve all of Sunrise (ZIP codes 33323, 33322 and 33326), including Sunrise Lakes, Welleby, Sawgrass and Sunrise Golf Village. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.</p>
               </details>
             </div>
           </div>

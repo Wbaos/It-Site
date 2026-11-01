@@ -240,7 +240,7 @@ export default function SprinklerRepairAventuraPage() {
                 name: "What ZIP codes do you serve in Aventura?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Our main Aventura ZIP is 33180, which covers most of the city including the Aventura Mall corridor, Turnberry Isle and Williams Island. Some Aventura addresses, mainly east-side condos, use 33160. If you are unsure, call (786) 366-2729 and we will confirm.",
+                  text: "We serve all of Aventura. Our main Aventura ZIP is 33180, which covers most of the city including the Aventura Mall corridor, Turnberry Isle and Williams Island. Some Aventura addresses, mainly east-side condos, use 33160. If you are unsure, call (786) 366-2729 and we will confirm.",
                 },
               },
             ],
@@ -567,7 +567,7 @@ export default function SprinklerRepairAventuraPage() {
                   <span>What ZIP codes do you serve in Aventura?</span>
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
-                <p className="faq-answer">Our main Aventura ZIP is 33180, which covers most of the city including the Aventura Mall corridor, Turnberry Isle and Williams Island. Some Aventura addresses, mainly east-side condos, use 33160. If you are unsure, call (786) 366-2729 and we will confirm.</p>
+                <p className="faq-answer">We serve all of Aventura. Our main Aventura ZIP is 33180, which covers most of the city including the Aventura Mall corridor, Turnberry Isle and Williams Island. Some Aventura addresses, mainly east-side condos, use 33160. If you are unsure, call (786) 366-2729 and we will confirm.</p>
               </details>
             </div>
           </div>
