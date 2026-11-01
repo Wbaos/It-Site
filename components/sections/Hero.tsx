@@ -30,7 +30,7 @@ export default function Hero({
   phoneNumber = "+17863662729",
   showCallButton = true,
   stats = [
-    { value: "500+", label: "Local Clients Helped" },
+    { value: "1500+", label: "Local Clients Helped" },
     { value: "5/5", label: "Customer Satisfaction" },
     { value: "Same-Day", label: "Appointments Available" },
   ],

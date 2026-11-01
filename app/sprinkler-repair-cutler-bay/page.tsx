@@ -138,16 +138,16 @@ function LeakIllustration() {
 }
 
 export const metadata: Metadata = {
-  title: "Sprinkler Repair Cutler Bay | CallTechCare",
+  title: "Sprinkler Repair in Cutler Bay, FL | Same-Day | CallTechCare",
   description:
-    "Fast and reliable sprinkler repair in Cutler Bay and Miami-Dade. CallTechCare also provides security camera installation and expert tech support.",
+    "Sprinkler repair in Cutler Bay, FL 33157: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
   alternates: {
     canonical: "https://www.calltechcare.com/sprinkler-repair-cutler-bay",
   },
   openGraph: {
-    title: "Sprinkler Repair Cutler Bay | CallTechCare",
+    title: "Sprinkler Repair in Cutler Bay, FL | Same-Day | CallTechCare",
     description:
-      "Fast and reliable sprinkler repair in Cutler Bay and Miami-Dade, plus security camera installation and expert tech support.",
+      "Sprinkler repair in Cutler Bay, FL 33157: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
     url: "https://www.calltechcare.com/sprinkler-repair-cutler-bay",
     siteName: "CallTechCare",
     images: [
@@ -161,9 +161,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sprinkler Repair Cutler Bay | CallTechCare",
+    title: "Sprinkler Repair in Cutler Bay, FL | Same-Day | CallTechCare",
     description:
-      "Fast and reliable sprinkler repair in Cutler Bay and Miami-Dade, plus security camera installation and expert tech support.",
+      "Sprinkler repair in Cutler Bay, FL 33157: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
     images: ["https://www.calltechcare.com/logo-og.png"],
   },
 };
@@ -227,6 +227,72 @@ export default function SprinklerRepairCutlerBayPage() {
                   text: "Yes. We repair sprinkler leaks in Cutler Bay, including PVC pipe leaks, leaking valves, and broken heads, and we test the system after the repair.",
                 },
               },
+              {
+                "@type": "Question",
+                name: "Do you repair sprinklers in Cutler Bay HOA communities?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. We repair and install sprinklers in homes across Cutler Bay's HOA communities, including Lakes by the Bay, Saga Bay and Whispering Pines. Call (786) 366-2729 and we'll confirm coverage for your neighborhood.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What ZIP codes do you serve in Cutler Bay?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "We serve Cutler Bay in ZIP codes 33157 and 33189, including Cutler Ridge, Lakes by the Bay, Saga Bay and Whispering Pines. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            name: "Sprinkler Repair in Cutler Bay",
+            provider: {
+              "@type": "LocalBusiness",
+              name: "CallTechCare",
+              telephone: "+1-786-366-2729",
+              url: "https://www.calltechcare.com",
+            },
+            areaServed: {
+              "@type": "City",
+              name: "Cutler Bay",
+              addressRegion: "FL",
+              postalCode: ["33157", "33189"],
+            },
+            url: "https://www.calltechcare.com/sprinkler-repair-cutler-bay",
+          }),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://www.calltechcare.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Sprinkler Repair Cutler Bay",
+                item: "https://www.calltechcare.com/sprinkler-repair-cutler-bay",
+              },
             ],
           }),
         }}
@@ -234,8 +300,8 @@ export default function SprinklerRepairCutlerBayPage() {
 
       <Hero
         titleLine1="Sprinkler Repair Cutler Bay"
-        titleLine2="Irrigation • Cameras • Tech Services"
-        subtitle="Professional sprinkler repair and irrigation services in Cutler Bay and Miami-Dade. We also install security cameras and provide expert tech support."
+        titleLine2="Irrigation • Repairs • New Systems"
+        subtitle="Professional sprinkler repair and irrigation services in Cutler Bay and Miami-Dade — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Cutler Bay & Miami-Dade"
         primaryCtaText="Call Now"
         primaryCtaHref="tel:+17863662729"
@@ -250,7 +316,8 @@ export default function SprinklerRepairCutlerBayPage() {
 
           <p>
             If you need sprinkler repair in Cutler Bay, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
-            poor coverage, controller issues, and irrigation troubleshooting across Cutler Bay and Miami-Dade.
+            poor coverage, controller issues, and irrigation repair across Cutler Ridge, Lakes by the Bay, Saga Bay, Whispering Pines and
+            the rest of Cutler Bay, FL 33157 and 33189.
           </p>
 
           <Link
@@ -288,8 +355,12 @@ export default function SprinklerRepairCutlerBayPage() {
           <h3 className="spr-landing-h3">Service area</h3>
 
           <p>
-            We serve Cutler Bay and nearby Miami-Dade cities, including Aventura, Hialeah, Doral, and Kendall, as well as all of
-            Miami-Dade and Broward. Cutler Bay is part of our Miami service area — see the full list on our{" "}
+            We serve Cutler Bay (33157 and 33189) and nearby Miami-Dade cities, including{" "}
+            <Link href="/sprinkler-repair-aventura">Aventura</Link>,{" "}
+            <Link href="/sprinkler-repair-hialeah">Hialeah</Link>,{" "}
+            <Link href="/sprinkler-repair-doral">Doral</Link>, and{" "}
+            <Link href="/sprinkler-repair-kendall">Kendall</Link>, as well as all of
+            Miami-Dade and Broward. From Cutler Ridge and Lakes by the Bay to Saga Bay, Whispering Pines and Old Cutler Bay, Cutler Bay is part of our Miami service area — see the full list on our{" "}
             <Link href="/locations/miami">Miami page</Link>. If you’re nearby
             and don’t see your city listed, reach out—we’ll confirm availability.
           </p>
@@ -313,7 +384,7 @@ export default function SprinklerRepairCutlerBayPage() {
               <div className="spr-cardMedia">
                 <SprinklerIllustration />
               </div>
-              <h3 className="spr-cardTitle">Heads, coverage & zone issues</h3>
+              <h3 className="spr-cardTitle"><Link href="/services/sprinkler-valve-repair" style={{ color: "inherit", textDecoration: "none" }}>Heads, coverage & zone issues</Link></h3>
               <p className="spr-cardText">
                 Broken heads, uneven spray, low coverage, or a zone that won’t turn on—we’ll pinpoint the cause and get it working
                 correctly.
@@ -324,7 +395,7 @@ export default function SprinklerRepairCutlerBayPage() {
               <div className="spr-cardMedia">
                 <ControllerIllustration />
               </div>
-              <h3 className="spr-cardTitle">Timer/controller troubleshooting</h3>
+              <h3 className="spr-cardTitle"><Link href="/services/sprinkler-timer-installation" style={{ color: "inherit", textDecoration: "none" }}>Timer/controller troubleshooting</Link></h3>
               <p className="spr-cardText">
                 If scheduling is off, zones run at the wrong time, or the controller isn’t responding, we’ll troubleshoot settings and
                 hardware.
@@ -335,7 +406,7 @@ export default function SprinklerRepairCutlerBayPage() {
               <div className="spr-cardMedia">
                 <LeakIllustration />
               </div>
-              <h3 className="spr-cardTitle">Leaks & constant running water</h3>
+              <h3 className="spr-cardTitle"><Link href="/services/sprinkler-leak-repair" style={{ color: "inherit", textDecoration: "none" }}>Leaks & constant running water</Link></h3>
               <p className="spr-cardText">
                 Wet spots, pooling water, or a system that won’t shut off can point to valve or line problems—we’ll identify and address
                 the leak.
@@ -394,42 +465,42 @@ export default function SprinklerRepairCutlerBayPage() {
           >
             <figure style={{ margin: 0 }}>
               <img
-                src="https://cdn.sanity.io/images/celkrwoq/production/6120f13ca37bb09c75a7687af063c8a045b82ed1-1320x904.jpg?w=900&auto=format"
-                alt="Sprinkler system watering a lawn"
+                src="https://cdn.sanity.io/images/celkrwoq/production/b893ef26a1bdeef8271d9573c0351ab9bb4a8954-768x1024.jpg?w=900&auto=format"
+                alt="Sprinkler system watering a hedge line in Cutler Bay, FL"
                 loading="lazy"
                 style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
               />
-              <figcaption>New sprinkler system watering a lawn</figcaption>
+              <figcaption>Sprinkler system watering a hedge line in Cutler Bay</figcaption>
             </figure>
 
             <figure style={{ margin: 0 }}>
               <img
-                src="https://cdn.sanity.io/images/celkrwoq/production/bc5aa7c65e5c02afad22df4a6ab125528280eb2d-1232x1320.jpg?w=900&auto=format"
-                alt="Smart WiFi irrigation controller installed"
+                src="https://cdn.sanity.io/images/celkrwoq/production/3c7c315f5ca88cd2dc833f4187fa803c4a2e4a13-768x1024.jpg?w=900&auto=format"
+                alt="Rain Bird irrigation controller in Cutler Bay, FL"
                 loading="lazy"
                 style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
               />
-              <figcaption>Smart WiFi controller installed</figcaption>
+              <figcaption>Rain Bird irrigation controller in Cutler Bay</figcaption>
             </figure>
 
             <figure style={{ margin: 0 }}>
               <img
-                src="https://cdn.sanity.io/images/celkrwoq/production/232c961b8b1512926ae7f989c6c6a16d0b3b414b-1200x1600.jpg?w=900&auto=format"
-                alt="Sprinkler leak repair"
+                src="https://cdn.sanity.io/images/celkrwoq/production/b313d38c53d2b4590d4d0898f54d4a20cfd28d42-768x1024.jpg?w=900&auto=format"
+                alt="K-Rain index valve in Cutler Bay, FL"
                 loading="lazy"
                 style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
               />
-              <figcaption>Sprinkler leak repaired</figcaption>
+              <figcaption>K-Rain index valve in Cutler Bay</figcaption>
             </figure>
 
             <figure style={{ margin: 0 }}>
               <img
-                src="https://cdn.sanity.io/images/celkrwoq/production/21a2632358c4e5dde2158083c2d144f946340daa-1200x1600.jpg?w=900&auto=format"
-                alt="Valve manifold replacement"
+                src="https://cdn.sanity.io/images/celkrwoq/production/3d495269e52ed93bb03e5191f5fd5c2082be1bcd-1024x768.jpg?w=900&auto=format"
+                alt="Sprinkler system watering a large lot in Cutler Bay, FL"
                 loading="lazy"
                 style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
               />
-              <figcaption>Valve manifold replacement</figcaption>
+              <figcaption>Sprinkler system watering a large lot in Cutler Bay</figcaption>
             </figure>
           </div>
         </div>
@@ -481,6 +552,20 @@ export default function SprinklerRepairCutlerBayPage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">Yes. We repair sprinkler leaks in Cutler Bay, including PVC pipe leaks, leaking valves, and broken heads, and we test the system after the repair.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you repair sprinklers in Cutler Bay HOA communities?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. We repair and install sprinklers in homes across Cutler Bay's HOA communities, including Lakes by the Bay, Saga Bay and Whispering Pines. Call (786) 366-2729 and we'll confirm coverage for your neighborhood.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>What ZIP codes do you serve in Cutler Bay?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">We serve Cutler Bay in ZIP codes 33157 and 33189, including Cutler Ridge, Lakes by the Bay, Saga Bay and Whispering Pines. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.</p>
               </details>
             </div>
           </div>
