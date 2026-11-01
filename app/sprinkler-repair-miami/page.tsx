@@ -250,7 +250,7 @@ export default function SprinklerRepairMiamiPage() {
             <Link href="/es/reparacion-de-sprinklers-miami">Ver esta página en español →</Link>
           </p>
 
-          <h2 className="seo-intro-title">Sprinkler Repair & Irrigation Services in Miami and Broward</h2>
+          <h2 className="seo-intro-title">Sprinkler System Repair & Irrigation Services in Miami and Broward</h2>
 
           <p>
             If you need sprinkler repair in Miami, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
