@@ -50,33 +50,35 @@ export async function generateMetadata({
     `*[_type == "service" && slug.current == $slug][0]{
       title,
       description,
+      metaTitle,
+      metaDescription,
       image { asset->{ url }, alt }
     }`,
     { slug }
   );
 
     if (service) {
+    const title =
+      service.metaTitle || `${service.title} in Miami & Broward | CallTechCare`;
+    const description =
+      service.metaDescription ||
+      service.description ||
+      `Professional ${service.title} service in Miami, Fort Lauderdale, and Broward County.`;
     return {
-      title: `${service.title} in Miami & Broward | CallTechCare`,
-      description:
-        service.description ||
-        `Professional ${service.title} service in Miami, Fort Lauderdale, and Broward County.`,
+      title,
+      description,
       alternates: { canonical: url },
       openGraph: {
-        title: `${service.title} in Miami & Broward | CallTechCare`,
-        description:
-          service.description ||
-          `Professional ${service.title} service in Miami, Fort Lauderdale, and Broward County.`,
+        title,
+        description,
         url,
         images: service.image?.asset?.url
           ? [{ url: service.image.asset.url, alt: service.image.alt || service.title }]
           : [],
       },
       twitter: {
-        title: `${service.title} in Miami & Broward | CallTechCare`,
-        description:
-          service.description ||
-          `Professional ${service.title} service in Miami, Fort Lauderdale, and Broward County.`,
+        title,
+        description,
         images: service.image?.asset?.url ? [service.image.asset.url] : [],
       },
     };
@@ -224,6 +226,7 @@ export default async function ServicePage({
       category-> { title },
       rating,
       reviewsCount,
+      warranty,
       image { asset->{ url }, alt },
       gallery[]{
         asset-> { url },
@@ -953,6 +956,12 @@ const isTvMounting = tvMountingSlugs.includes(slug);
 
             {service.description && (
               <p className="service-description">{service.description}</p>
+            )}
+
+            {service.warranty && (
+              <p className="service-warranty">
+                Warranty: {service.warranty} when CallTechCare performs the work and provides the materials.
+              </p>
             )}
 
             <hr />
