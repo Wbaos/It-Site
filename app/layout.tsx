@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 
   /* Fallback description */
   description:
-  "Professional sprinkler repair and irrigation services in Miami and Broward. We also install security cameras and provide expert tech support for homes and businesses. Fast, reliable service.",
+  "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service, free estimates.",
   keywords: [
       "Sprinkler repair Miami",
       "Irrigation repair Miami",
@@ -42,7 +42,6 @@ export const metadata: Metadata = {
       "TV mounting Miami",
       "TV wall mount installation Miami",
       "TV mounting Miramar",
-      "Tree trimming Miami",
       "IT support Miami",
     ],
 
@@ -50,7 +49,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "CallTechCare | Sprinkler Repair Miami, Irrigation, Cameras & Tech Services",  
     description:
-      "Professional sprinkler repair and irrigation services in Miami and Broward. Security camera installation and expert tech support for homes and businesses.", 
+      "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service, free estimates.", 
     siteName: "CallTechCare",
     locale: "en_US",
     type: "website",
@@ -69,7 +68,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "CallTechCare | Sprinkler Repair Miami, Irrigation, Cameras & Tech Services",  
     description:
-        "Professional sprinkler repair and irrigation services in Miami and Broward. Security camera installation and expert tech support for homes and businesses.",
+        "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service, free estimates.",
     images: ["/logo-og.png"],
   },
 
@@ -123,7 +122,7 @@ export default function RootLayout({
       height: 512,
     },
     description:
-        "Professional sprinkler repair and irrigation services in Miami and Broward. We also provide security camera installation and expert tech support for homes and businesses.",
+        "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service, free estimates.",
     telephone: "+1-786-366-2729",
     priceRange: "$$",
     areaServed: [
@@ -185,10 +184,8 @@ export default function RootLayout({
       "WiFi Troubleshooting",
       "Computer Repair & Support",
       "Printer Setup & Support",
-      "Senior Tech Support",
       "Smart Home Installation",
       "TV Wall Mount Installation",
-      "Tree Trimming Service",
     ],
     paymentAccepted: ["Cash", "Credit Card", "Zelle"],
   };

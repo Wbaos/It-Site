@@ -78,6 +78,11 @@ const nextConfig: NextConfig = {
         destination: "/services/computer-and-printers",
         permanent: true,
       },
+      {
+        source: "/services/senior-tech-help",
+        destination: "/services",
+        permanent: true,
+      },
     ];
   },
 
