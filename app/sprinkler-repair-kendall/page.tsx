@@ -138,16 +138,16 @@ function LeakIllustration() {
 }
 
 export const metadata: Metadata = {
-  title: "Sprinkler Repair Kendall | CallTechCare",
+  title: "Sprinkler Repair in Kendall, FL | Same-Day | CallTechCare",
   description:
-    "Fast and reliable sprinkler repair in Kendall and Miami-Dade. CallTechCare also provides security camera installation and expert tech support.",
+    "Sprinkler repair in Kendall, FL 33176: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
   alternates: {
     canonical: "https://www.calltechcare.com/sprinkler-repair-kendall",
   },
   openGraph: {
-    title: "Sprinkler Repair Kendall | CallTechCare",
+    title: "Sprinkler Repair in Kendall, FL | Same-Day | CallTechCare",
     description:
-      "Fast and reliable sprinkler repair in Kendall and Miami-Dade, plus security camera installation and expert tech support.",
+      "Sprinkler repair in Kendall, FL 33176: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
     url: "https://www.calltechcare.com/sprinkler-repair-kendall",
     siteName: "CallTechCare",
     images: [
@@ -161,9 +161,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sprinkler Repair Kendall | CallTechCare",
+    title: "Sprinkler Repair in Kendall, FL | Same-Day | CallTechCare",
     description:
-      "Fast and reliable sprinkler repair in Kendall and Miami-Dade, plus security camera installation and expert tech support.",
+      "Sprinkler repair in Kendall, FL 33176: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
     images: ["https://www.calltechcare.com/logo-og.png"],
   },
 };
@@ -227,6 +227,72 @@ export default function SprinklerRepairKendallPage() {
                   text: "Yes. We repair sprinkler leaks in Kendall, including PVC pipe leaks, leaking valves, and broken heads, and we test the system after the repair.",
                 },
               },
+              {
+                "@type": "Question",
+                name: "Do you repair sprinklers in Kendall's planned communities and HOAs?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Kendall is built around planned communities, and we repair and install sprinklers in single-family homes, townhomes and condos across The Hammocks, Country Walk, Kendale Lakes and The Crossings. Call (786) 366-2729 and we'll confirm coverage for your neighborhood.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What ZIP codes do you serve in Kendall?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "We serve all of Kendall (ZIP codes 33176, 33183 and 33186), including The Hammocks, Country Walk, Kendale Lakes and The Crossings. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.",
+                },
+              }
+            ],
+          }),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            name: "Sprinkler Repair in Kendall",
+            provider: {
+              "@type": "LocalBusiness",
+              name: "CallTechCare",
+              telephone: "+1-786-366-2729",
+              url: "https://www.calltechcare.com",
+            },
+            areaServed: {
+              "@type": "City",
+              name: "Kendall",
+              addressRegion: "FL",
+              postalCode: ["33176", "33183", "33186"],
+            },
+            url: "https://www.calltechcare.com/sprinkler-repair-kendall",
+          }),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://www.calltechcare.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Sprinkler Repair Kendall",
+                item: "https://www.calltechcare.com/sprinkler-repair-kendall",
+              },
             ],
           }),
         }}
@@ -234,8 +300,8 @@ export default function SprinklerRepairKendallPage() {
 
       <Hero
         titleLine1="Sprinkler Repair Kendall"
-        titleLine2="Irrigation • Cameras • Tech Services"
-        subtitle="Professional sprinkler repair and irrigation services in Kendall and Miami-Dade. We also install security cameras and provide expert tech support."
+        titleLine2="Irrigation • Repairs • New Systems"
+        subtitle="Professional sprinkler repair and irrigation services in Kendall and Miami-Dade — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Kendall & Miami-Dade"
         primaryCtaText="Call Now"
         primaryCtaHref="tel:+17863662729"
@@ -250,7 +316,8 @@ export default function SprinklerRepairKendallPage() {
 
           <p>
             If you need sprinkler repair in Kendall, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
-            poor coverage, controller issues, and irrigation troubleshooting across Kendall and Miami-Dade.
+            poor coverage, controller issues, and irrigation repair across The Hammocks, Country Walk, Kendale Lakes and The Crossings and
+            the rest of Kendall, FL 33176, 33183 and 33186.
           </p>
 
           <Link
@@ -288,9 +355,8 @@ export default function SprinklerRepairKendallPage() {
           <h3 className="spr-landing-h3">Service area</h3>
 
           <p>
-            We serve Kendall and nearby Miami-Dade cities, including Aventura, Hialeah, Doral, and Cutler Bay, as well as all of
-            Miami-Dade and Broward. Kendall is part of our Miami service area — see the full list on our{" "}
-            <Link href="/locations/miami">Miami page</Link>. If you’re nearby
+            We serve all of Kendall (33176, 33183 and 33186) and nearby Miami-Dade cities, including <Link href="/sprinkler-repair-aventura">Aventura</Link>, <Link href="/sprinkler-repair-hialeah">Hialeah</Link>, <Link href="/sprinkler-repair-doral">Doral</Link>, and <Link href="/sprinkler-repair-cutler-bay">Cutler Bay</Link>, as well as all of
+            Miami-Dade and Broward. From The Hammocks and Country Walk to Kendale Lakes and The Crossings, Kendall is part of our Miami-Dade service area — see the full list on our <Link href="/locations/miami">Miami page</Link>. If you’re nearby
             and don’t see your city listed, reach out—we’ll confirm availability.
           </p>
 
@@ -300,7 +366,6 @@ export default function SprinklerRepairKendallPage() {
           </p>
         </div>
       </section>
-
       <section className="spr-landing-section" aria-label="Sprinkler repair highlights">
         <div className="spr-landing">
           <h2 className="spr-landing-title">Fix the sprinklers. Protect the yard. Stop wasting water.</h2>
@@ -316,7 +381,8 @@ export default function SprinklerRepairKendallPage() {
               <h3 className="spr-cardTitle">Heads, coverage & zone issues</h3>
               <p className="spr-cardText">
                 Broken heads, uneven spray, low coverage, or a zone that won’t turn on—we’ll pinpoint the cause and get it working
-                correctly.
+                correctly. See our{" "}
+                <Link href="/services/sprinkler-valve-repair">valve repair service</Link> for zone problems.
               </p>
             </div>
 
@@ -327,7 +393,8 @@ export default function SprinklerRepairKendallPage() {
               <h3 className="spr-cardTitle">Timer/controller troubleshooting</h3>
               <p className="spr-cardText">
                 If scheduling is off, zones run at the wrong time, or the controller isn’t responding, we’ll troubleshoot settings and
-                hardware.
+                hardware. See our{" "}
+                <Link href="/services/sprinkler-timer-installation">timer installation service</Link> for upgrades.
               </p>
             </div>
 
@@ -338,7 +405,8 @@ export default function SprinklerRepairKendallPage() {
               <h3 className="spr-cardTitle">Leaks & constant running water</h3>
               <p className="spr-cardText">
                 Wet spots, pooling water, or a system that won’t shut off can point to valve or line problems—we’ll identify and address
-                the leak.
+                the leak. See our{" "}
+                <Link href="/services/sprinkler-leak-repair">leak repair service</Link> for details.
               </p>
             </div>
           </div>
@@ -481,6 +549,20 @@ export default function SprinklerRepairKendallPage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">Yes. We repair sprinkler leaks in Kendall, including PVC pipe leaks, leaking valves, and broken heads, and we test the system after the repair.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you repair sprinklers in Kendall's planned communities and HOAs?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. Kendall is built around planned communities, and we repair and install sprinklers in single-family homes, townhomes and condos across The Hammocks, Country Walk, Kendale Lakes and The Crossings. Call (786) 366-2729 and we'll confirm coverage for your neighborhood.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>What ZIP codes do you serve in Kendall?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">We serve all of Kendall (ZIP codes 33176, 33183 and 33186), including The Hammocks, Country Walk, Kendale Lakes and The Crossings. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.</p>
               </details>
             </div>
           </div>

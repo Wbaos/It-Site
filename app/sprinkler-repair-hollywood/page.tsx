@@ -138,16 +138,16 @@ function LeakIllustration() {
 }
 
 export const metadata: Metadata = {
-  title: "Sprinkler Repair Hollywood, FL | CallTechCare",
+  title: "Sprinkler Repair in Hollywood, FL | Same-Day | CallTechCare",
   description:
-    "Fast and reliable sprinkler repair in Hollywood, FL and Broward. CallTechCare also provides security camera installation and expert tech support.",
+    "Sprinkler repair in Hollywood, FL 33020: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
   alternates: {
     canonical: "https://www.calltechcare.com/sprinkler-repair-hollywood",
   },
   openGraph: {
-    title: "Sprinkler Repair Hollywood, FL | CallTechCare",
+    title: "Sprinkler Repair in Hollywood, FL | Same-Day | CallTechCare",
     description:
-      "Fast and reliable sprinkler repair in Hollywood, FL and Broward, plus security camera installation and expert tech support.",
+      "Sprinkler repair in Hollywood, FL 33020: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
     url: "https://www.calltechcare.com/sprinkler-repair-hollywood",
     siteName: "CallTechCare",
     images: [
@@ -161,9 +161,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sprinkler Repair Hollywood, FL | CallTechCare",
+    title: "Sprinkler Repair in Hollywood, FL | Same-Day | CallTechCare",
     description:
-      "Fast and reliable sprinkler repair in Hollywood, FL and Broward, plus security camera installation and expert tech support.",
+      "Sprinkler repair in Hollywood, FL 33020: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
     images: ["https://www.calltechcare.com/logo-og.png"],
   },
 };
@@ -227,6 +227,72 @@ export default function SprinklerRepairHollywoodPage() {
                   text: "Yes. We repair sprinkler leaks in Hollywood, including PVC pipe leaks, leaking valves, and broken heads, and we test the system after the repair.",
                 },
               },
+              {
+                "@type": "Question",
+                name: "Do you repair sprinklers in Hollywood condos and beachfront properties?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. We repair and install sprinklers in Hollywood's beachfront condos, Downtown Hollywood and single-family neighborhoods, including Hollywood Beach, Emerald Hills, Hollywood Lakes and Driftwood. Call (786) 366-2729 and we'll confirm coverage for your property.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What ZIP codes do you serve in Hollywood, FL?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "We serve all of Hollywood, FL (ZIP codes 33019, 33020 and 33021), including Hollywood Beach, Downtown Hollywood, Emerald Hills, Hollywood Lakes and Driftwood. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            name: "Sprinkler Repair in Hollywood, FL",
+            provider: {
+              "@type": "LocalBusiness",
+              name: "CallTechCare",
+              telephone: "+1-786-366-2729",
+              url: "https://www.calltechcare.com",
+            },
+            areaServed: {
+              "@type": "City",
+              name: "Hollywood",
+              addressRegion: "FL",
+              postalCode: ["33019", "33020", "33021"],
+            },
+            url: "https://www.calltechcare.com/sprinkler-repair-hollywood",
+          }),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://www.calltechcare.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Sprinkler Repair Hollywood, FL",
+                item: "https://www.calltechcare.com/sprinkler-repair-hollywood",
+              },
             ],
           }),
         }}
@@ -234,8 +300,8 @@ export default function SprinklerRepairHollywoodPage() {
 
       <Hero
         titleLine1="Sprinkler Repair Hollywood, FL"
-        titleLine2="Irrigation • Cameras • Tech Services"
-        subtitle="Professional sprinkler repair and irrigation services in Hollywood, FL and Broward. We also install security cameras and provide expert tech support."
+        titleLine2="Irrigation • Repairs • New Systems"
+        subtitle="Professional sprinkler repair and irrigation services in Hollywood, FL and Broward — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Hollywood & Broward"
         primaryCtaText="Call Now"
         primaryCtaHref="tel:+17863662729"
@@ -250,7 +316,8 @@ export default function SprinklerRepairHollywoodPage() {
 
           <p>
             If you need sprinkler repair in Hollywood, FL, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
-            poor coverage, controller issues, and irrigation troubleshooting across Hollywood and Broward.
+            poor coverage, controller issues, and irrigation repair across Hollywood Beach, Downtown Hollywood, Emerald Hills, Hollywood Lakes,
+            Driftwood and the rest of Hollywood, FL 33019, 33020 and 33021.
           </p>
 
           <Link
@@ -288,8 +355,13 @@ export default function SprinklerRepairHollywoodPage() {
           <h3 className="spr-landing-h3">Service area</h3>
 
           <p>
-            We serve Hollywood and nearby Broward cities, including Pembroke Pines, Miramar, Weston, Davie, and Sunrise, as well as all of
-            Miami-Dade and Broward. Hollywood is part of our Broward service area — see the full list on our{" "}
+            We serve all of Hollywood, FL (33019, 33020 and 33021) and nearby Broward cities, including{" "}
+            <Link href="/sprinkler-repair-pembroke-pines">Pembroke Pines</Link>,{" "}
+            <Link href="/sprinkler-repair-miramar">Miramar</Link>,{" "}
+            <Link href="/sprinkler-repair-weston">Weston</Link>,{" "}
+            <Link href="/sprinkler-repair-davie">Davie</Link>, and{" "}
+            <Link href="/sprinkler-repair-sunrise">Sunrise</Link>, as well as all of
+            Miami-Dade and Broward. From Hollywood Beach and Downtown Hollywood to Emerald Hills, Hollywood Lakes and Driftwood, Hollywood is part of our Broward service area — see the full list on our{" "}
             <Link href="/locations/fort-lauderdale">Fort Lauderdale page</Link>. If you’re nearby
             and don’t see your city listed, reach out—we’ll confirm availability.
           </p>
@@ -316,7 +388,8 @@ export default function SprinklerRepairHollywoodPage() {
               <h3 className="spr-cardTitle">Heads, coverage & zone issues</h3>
               <p className="spr-cardText">
                 Broken heads, uneven spray, low coverage, or a zone that won’t turn on—we’ll pinpoint the cause and get it working
-                correctly.
+                correctly. See our{" "}
+                <Link href="/services/sprinkler-valve-repair">valve repair service</Link> for zone problems.
               </p>
             </div>
 
@@ -327,7 +400,8 @@ export default function SprinklerRepairHollywoodPage() {
               <h3 className="spr-cardTitle">Timer/controller troubleshooting</h3>
               <p className="spr-cardText">
                 If scheduling is off, zones run at the wrong time, or the controller isn’t responding, we’ll troubleshoot settings and
-                hardware.
+                hardware. See our{" "}
+                <Link href="/services/sprinkler-timer-installation">timer installation service</Link> for upgrades.
               </p>
             </div>
 
@@ -338,7 +412,8 @@ export default function SprinklerRepairHollywoodPage() {
               <h3 className="spr-cardTitle">Leaks & constant running water</h3>
               <p className="spr-cardText">
                 Wet spots, pooling water, or a system that won’t shut off can point to valve or line problems—we’ll identify and address
-                the leak.
+                the leak. See our{" "}
+                <Link href="/services/sprinkler-leak-repair">leak repair service</Link> for details.
               </p>
             </div>
           </div>
@@ -480,6 +555,20 @@ export default function SprinklerRepairHollywoodPage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">Yes. We repair sprinkler leaks in Hollywood, including PVC pipe leaks, leaking valves, and broken heads, and we test the system after the repair.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you repair sprinklers in Hollywood condos and beachfront properties?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. We repair and install sprinklers in Hollywood's beachfront condos, Downtown Hollywood and single-family neighborhoods, including Hollywood Beach, Emerald Hills, Hollywood Lakes and Driftwood. Call (786) 366-2729 and we'll confirm coverage for your property.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>What ZIP codes do you serve in Hollywood, FL?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">We serve all of Hollywood, FL (ZIP codes 33019, 33020 and 33021), including Hollywood Beach, Downtown Hollywood, Emerald Hills, Hollywood Lakes and Driftwood. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.</p>
               </details>
             </div>
           </div>

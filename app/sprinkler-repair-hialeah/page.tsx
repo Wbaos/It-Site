@@ -138,16 +138,16 @@ function LeakIllustration() {
 }
 
 export const metadata: Metadata = {
-  title: "Sprinkler Repair Hialeah | CallTechCare",
+  title: "Sprinkler Repair in Hialeah, FL | Same-Day | CallTechCare",
   description:
-    "Fast and reliable sprinkler repair in Hialeah and Miami-Dade. CallTechCare also provides security camera installation and expert tech support.",
+    "Sprinkler repair in Hialeah, FL 33012: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
   alternates: {
     canonical: "https://www.calltechcare.com/sprinkler-repair-hialeah",
   },
   openGraph: {
-    title: "Sprinkler Repair Hialeah | CallTechCare",
+    title: "Sprinkler Repair in Hialeah, FL | Same-Day | CallTechCare",
     description:
-      "Fast and reliable sprinkler repair in Hialeah and Miami-Dade, plus security camera installation and expert tech support.",
+      "Sprinkler repair in Hialeah, FL 33012: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
     url: "https://www.calltechcare.com/sprinkler-repair-hialeah",
     siteName: "CallTechCare",
     images: [
@@ -161,9 +161,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sprinkler Repair Hialeah | CallTechCare",
+    title: "Sprinkler Repair in Hialeah, FL | Same-Day | CallTechCare",
     description:
-      "Fast and reliable sprinkler repair in Hialeah and Miami-Dade, plus security camera installation and expert tech support.",
+      "Sprinkler repair in Hialeah, FL 33012: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
     images: ["https://www.calltechcare.com/logo-og.png"],
   },
 };
@@ -227,6 +227,72 @@ export default function SprinklerRepairHialeahPage() {
                   text: "Yes. We repair sprinkler leaks in Hialeah, including PVC pipe leaks, leaking valves, and broken heads, and we test the system after the repair.",
                 },
               },
+              {
+                "@type": "Question",
+                name: "Do you repair older sprinkler systems in Hialeah?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Much of Hialeah's housing dates to the 1950s–1970s, and we repair and upgrade older sprinkler systems — old valves, worn heads and aging lines — as well as install new ones. Call (786) 366-2729 and we'll confirm coverage for your neighborhood.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What ZIP codes do you serve in Hialeah?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "We serve all of Hialeah (ZIP codes 33012, 33010 and 33013), including East Hialeah, West Hialeah, Hialeah Park and Palm Springs. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            name: "Sprinkler Repair in Hialeah",
+            provider: {
+              "@type": "LocalBusiness",
+              name: "CallTechCare",
+              telephone: "+1-786-366-2729",
+              url: "https://www.calltechcare.com",
+            },
+            areaServed: {
+              "@type": "City",
+              name: "Hialeah",
+              addressRegion: "FL",
+              postalCode: ["33012", "33010", "33013"],
+            },
+            url: "https://www.calltechcare.com/sprinkler-repair-hialeah",
+          }),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://www.calltechcare.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Sprinkler Repair Hialeah",
+                item: "https://www.calltechcare.com/sprinkler-repair-hialeah",
+              },
             ],
           }),
         }}
@@ -234,8 +300,8 @@ export default function SprinklerRepairHialeahPage() {
 
       <Hero
         titleLine1="Sprinkler Repair Hialeah"
-        titleLine2="Irrigation • Cameras • Tech Services"
-        subtitle="Professional sprinkler repair and irrigation services in Hialeah and Miami-Dade. We also install security cameras and provide expert tech support."
+        titleLine2="Irrigation • Repairs • New Systems"
+        subtitle="Professional sprinkler repair and irrigation services in Hialeah and Miami-Dade — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Hialeah & Miami-Dade"
         primaryCtaText="Call Now"
         primaryCtaHref="tel:+17863662729"
@@ -250,7 +316,8 @@ export default function SprinklerRepairHialeahPage() {
 
           <p>
             If you need sprinkler repair in Hialeah, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
-            poor coverage, controller issues, and irrigation troubleshooting across Hialeah and Miami-Dade.
+            poor coverage, controller issues, and irrigation repair across East Hialeah, West Hialeah, Hialeah Park, Palm Springs and
+            the rest of Hialeah, FL 33012, 33010 and 33013.
           </p>
 
           <Link
@@ -288,8 +355,12 @@ export default function SprinklerRepairHialeahPage() {
           <h3 className="spr-landing-h3">Service area</h3>
 
           <p>
-            We serve Hialeah and nearby Miami-Dade cities, including Aventura, Doral, Kendall, and Cutler Bay, as well as all of
-            Miami-Dade and Broward. Hialeah is part of our Miami service area — see the full list on our{" "}
+            We serve all of Hialeah (33012, 33010 and 33013) and nearby Miami-Dade cities, including{" "}
+            <Link href="/sprinkler-repair-aventura">Aventura</Link>,{" "}
+            <Link href="/sprinkler-repair-doral">Doral</Link>,{" "}
+            <Link href="/sprinkler-repair-kendall">Kendall</Link>, and{" "}
+            <Link href="/sprinkler-repair-cutler-bay">Cutler Bay</Link>, as well as all of
+            Miami-Dade and Broward. From East Hialeah and West Hialeah to Hialeah Park and Palm Springs, Hialeah is part of our Miami service area — see the full list on our{" "}
             <Link href="/locations/miami">Miami page</Link>. If you’re nearby
             and don’t see your city listed, reach out—we’ll confirm availability.
           </p>
@@ -316,7 +387,8 @@ export default function SprinklerRepairHialeahPage() {
               <h3 className="spr-cardTitle">Heads, coverage & zone issues</h3>
               <p className="spr-cardText">
                 Broken heads, uneven spray, low coverage, or a zone that won’t turn on—we’ll pinpoint the cause and get it working
-                correctly.
+                correctly. See our{" "}
+                <Link href="/services/sprinkler-valve-repair">valve repair service</Link> for zone problems.
               </p>
             </div>
 
@@ -327,7 +399,8 @@ export default function SprinklerRepairHialeahPage() {
               <h3 className="spr-cardTitle">Timer/controller troubleshooting</h3>
               <p className="spr-cardText">
                 If scheduling is off, zones run at the wrong time, or the controller isn’t responding, we’ll troubleshoot settings and
-                hardware.
+                hardware. See our{" "}
+                <Link href="/services/sprinkler-timer-installation">timer installation service</Link> for upgrades.
               </p>
             </div>
 
@@ -338,7 +411,8 @@ export default function SprinklerRepairHialeahPage() {
               <h3 className="spr-cardTitle">Leaks & constant running water</h3>
               <p className="spr-cardText">
                 Wet spots, pooling water, or a system that won’t shut off can point to valve or line problems—we’ll identify and address
-                the leak.
+                the leak. See our{" "}
+                <Link href="/services/sprinkler-leak-repair">leak repair service</Link> for details.
               </p>
             </div>
           </div>
@@ -481,6 +555,20 @@ export default function SprinklerRepairHialeahPage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">Yes. We repair sprinkler leaks in Hialeah, including PVC pipe leaks, leaking valves, and broken heads, and we test the system after the repair.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you repair older sprinkler systems in Hialeah?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. Much of Hialeah's housing dates to the 1950s–1970s, and we repair and upgrade older sprinkler systems — old valves, worn heads and aging lines — as well as install new ones. Call (786) 366-2729 and we'll confirm coverage for your neighborhood.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>What ZIP codes do you serve in Hialeah?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">We serve all of Hialeah (ZIP codes 33012, 33010 and 33013), including East Hialeah, West Hialeah, Hialeah Park and Palm Springs. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.</p>
               </details>
             </div>
           </div>

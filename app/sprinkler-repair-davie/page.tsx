@@ -240,7 +240,7 @@ export default function SprinklerRepairDaviePage() {
                 name: "What ZIP codes do you serve in Davie?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "We serve Davie in ZIP codes 33324, 33325, 33328, 33330 and 33331, including Pine Island Ridge, Forest Ridge, Shenandoah and the western ranch neighborhoods. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.",
+                  text: "We serve all of Davie (ZIP codes 33324, 33325, 33328, 33330 and 33331), including Pine Island Ridge, Forest Ridge, Shenandoah and the western ranch neighborhoods. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.",
                 },
               },
             ],
@@ -355,7 +355,7 @@ export default function SprinklerRepairDaviePage() {
           <h3 className="spr-landing-h3">Service area</h3>
 
           <p>
-            We serve Davie (33324, 33325 and 33328) and nearby Broward cities, including{" "}
+            We serve all of Davie (33324, 33325 and 33328) and nearby Broward cities, including{" "}
             <Link href="/sprinkler-repair-pembroke-pines">Pembroke Pines</Link>,{" "}
             <Link href="/sprinkler-repair-weston">Weston</Link>,{" "}
             <Link href="/sprinkler-repair-sunrise">Sunrise</Link>,{" "}
@@ -565,7 +565,7 @@ export default function SprinklerRepairDaviePage() {
                   <span>What ZIP codes do you serve in Davie?</span>
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
-                <p className="faq-answer">We serve Davie in ZIP codes 33324, 33325, 33328, 33330 and 33331, including Pine Island Ridge, Forest Ridge, Shenandoah and the western ranch neighborhoods. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.</p>
+                <p className="faq-answer">We serve all of Davie (ZIP codes 33324, 33325, 33328, 33330 and 33331), including Pine Island Ridge, Forest Ridge, Shenandoah and the western ranch neighborhoods. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.</p>
               </details>
             </div>
           </div>
