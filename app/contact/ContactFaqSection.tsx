@@ -27,7 +27,7 @@ const DEFAULT_FAQS: FaqItem[] = [
   },
   {
     q: "Do you offer warranties on your services?",
-    a: "Yes. CallTechCare offers a 1-year warranty on services such as TV mounting, security camera installation, Wi-Fi troubleshooting, computer support, and other home tech services.",
+    a: "Yes. CallTechCare offers a 1-year warranty on sprinkler services and security camera installation.",
   },
   {
     q: "Do you handle sprinkler emergencies?",

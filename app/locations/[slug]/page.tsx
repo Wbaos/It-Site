@@ -248,12 +248,7 @@ export default async function LocationPage({ params }: Props) {
               </h2>
               <p className="location-section-text">{location.description}</p>
               <p className="location-section-text">
-                Our {location.city} team consists of certified technicians who
-                help with security camera installation, TV mounting, WiFi & internet
-                troubleshooting, computer and printer support, phone & tablet setup,
-                and senior-friendly tech help — and we also support common outdoor
-                services like sprinkler & irrigation work, and tree
-                trimming.
+                Our {location.city} team consists of certified technicians who help with security camera installation and sprinkler & irrigation work.
                 We pride ourselves on providing same-day service, transparent pricing,
                 and exceptional customer service to the {location.city}, {location.state} area.
               </p>
@@ -553,27 +548,17 @@ export default async function LocationPage({ params }: Props) {
           </h2>
           <div className="location-seo-content">
             <p>
-              Looking for reliable service in {location.city}? CallTechCare is a trusted
-              local provider for home, outdoor, and tech services. Whether you need help
-              with security camera installation, TV mounting, WiFi & internet troubleshooting,
-              computer and printer support, phone & tablet help, senior-friendly tech support,
-              sprinkler & irrigation service, our team in {location.city} is here to help.
+              Looking for reliable service in {location.city}? CallTechCare is a trusted local provider for sprinkler & irrigation service and security camera installation. Our team in {location.city} is here to help.
             </p>
             <p>
               We understand the unique needs of {location.city} residents
               and businesses. That&apos;s why we offer flexible scheduling,
               transparent pricing, and guaranteed satisfaction on every
-              service call. From simple TV mounting to complex whole-home
-              automation, we have the experience to handle a wide range of projects.
+              service call. From sprinkler repairs to new system installations and security camera setups, we have the experience to handle a wide range of projects.
             </p>
             <p>
               <strong>
-                Services we provide in {location.city} include:
-              </strong>{" "}
-              Security camera installation, TV mounting and basic home theater setup, WiFi &
-              internet support, computer and printer support, phone & tablet help, senior-friendly
-              tech support, smart home installation and automation, plus sprinkler & irrigation
-              service. Contact us today to schedule service
+                Services we provide in {location.city} include:</strong>{" "}sprinkler & irrigation service and security camera installation. Contact us today to schedule service
               in {location.city}, {location.state}.
             </p>
           </div>

@@ -17,7 +17,7 @@ export default async function HowItWorks() {
       <div className="site-container-how">
         <h2 className="how-heading">How It Works</h2>
         <p className="how-sub">
-          Simple steps to get the tech support you need.
+          Simple steps to get the sprinkler or camera help you need.
         </p>
 
         <div className="how-grid">

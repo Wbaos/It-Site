@@ -8,7 +8,6 @@ import Pricing from "@/components/sections/PricingServer";
 import Contact from "@/components/sections/Contact";
 import HighlightsServer from "@/components/sections/HighLigthsServer";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
-import SpeedTestCTA from "@/components/sections/SpeedTestCTA";
 type Section = {
   key:
     | "hero"
@@ -60,7 +59,7 @@ export const homeSections: Section[] = [
         titleLine2: "Irrigation • Repairs • New Systems",
 
         subtitle:
-          "Professional sprinkler repair and irrigation services in Miami and Broward. We also install security cameras and provide expert tech support.",
+          "Professional sprinkler repair and irrigation services in Miami and Broward. We also install security cameras.",
         badgeText: "Sprinkler Repair & Irrigation in Miami & Broward",
 
         primaryCtaText: "Call Now",
@@ -83,8 +82,6 @@ export const homeSections: Section[] = [
   { key: "highlights", Component: HighlightsServer, props: {} },
 
   { key: "services", Component: Services },
-
-  { key: "speed-test-cta", Component: SpeedTestCTA, props: {} },
 
   { key: "seo-intro", Component: SEOIntro, props: {}, },
   { key: "why", Component: WhyChooseUs },

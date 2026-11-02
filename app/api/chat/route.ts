@@ -190,8 +190,8 @@ export async function POST(req: Request) {
         const wantsToBook = bookingKeywords.test(message) || bookingKeywords.test(aiReply);
 
         const suggestions = lang === "es"
-            ? ["🌱 Reparación de sprinklers", "📋 Ver todos los servicios", "⚡ Prueba de velocidad", "💬 Hablar con soporte"]
-            : ["🌱 Sprinkler repair", "📋 View all services", "⚡ Speed Test", "💬 Contact support"];
+            ? ["🌱 Reparación de sprinklers", "📋 Ver todos los servicios", "📷 Cámaras de seguridad", "💬 Hablar con soporte"]
+            : ["🌱 Sprinkler repair", "📋 View all services", "📷 Security cameras", "💬 Contact support"];
 
         return NextResponse.json({
             reply: aiReply,

@@ -354,9 +354,7 @@ export default function ReparacionDeSprinklersMiamiPage() {
           </p>
 
           <p>
-            Después del servicio de reparación de sprinklers e irrigación, también ofrecemos <Link href="/services/wireless-camera-installation">instalación de cámaras inalámbricas</Link> y
-            {" "}
-            <Link href="/services">soporte técnico</Link> (Wi-Fi, computadoras, impresoras y más) para hogares y pequeños negocios.
+            Después del servicio de reparación de sprinklers e irrigación, también ofrecemos <Link href="/services/wireless-camera-installation">instalación de cámaras inalámbricas</Link> para hogares y pequeños negocios.
           </p>
 
           <h3 className="spr-landing-h3">Área de servicio</h3>

@@ -24,43 +24,43 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/services/smart-tv",
-        destination: "/services/tv-wall-mount-installation-services",
+        destination: "/services",
         permanent: true,
       },
       {
         source: "/services/tv-mounting",
-        destination: "/services/tv-wall-mount-installation-services",
+        destination: "/services",
         permanent: true,
       },
         {
         source: "/services/tv-mounting-and-setup",
-        destination: "/services/tv-wall-mount-installation-services",
+        destination: "/services",
         permanent: true,
       },
       {
         source: "/services/large-tv",
-        destination: "/services/tv-wall-mount-installation-services",
+        destination: "/services",
         permanent: true,
       },
       {
         source: "/services/small-tv-mounting-up-to-32",
-        destination: "/services/small-tv-up-to-32",
+        destination: "/services",
         permanent: true,
       },
       {
         source: "/services/standard-tv",
-        destination: "/services/tv-wall-mount-installation-services",
+        destination: "/services",
         permanent: true,
       },
 
       {
         source: "/services/wi-fi-network-setup",
-        destination: "/services/wifi-and-internet",
+        destination: "/services",
         permanent: true,
       },
       {
         source: "/services/virus-malware-removal",
-        destination: "/services/computer-and-printers",
+        destination: "/services",
         permanent: true,
       },
       {
@@ -70,7 +70,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/services/computer",
-        destination: "/services/computer-and-printers",
+        destination: "/services",
         permanent: true,
       },
       {
@@ -85,7 +85,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/services/computer-and-printer-support",
-        destination: "/services/computer-and-printers",
+        destination: "/services",
         permanent: true,
       },
       {
@@ -140,6 +140,101 @@ const nextConfig: NextConfig = {
             ].join("; "),
           },
         ],
+      },
+      {
+        source: "/services/internet-setup",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/modem-and-router-replacement",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/new-wi-fi",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/router-modem-relocation-or-upgrade",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/whole-home-wi-fi-assessment",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/wi-fi-access-point-extender",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/wi-fi-speed-boost",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/wi-fi-troubleshooting",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/computer-setup",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/printer-troubleshooting",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/wireless-printer-setup",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/large-tv-61",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/small-tv-up-to-32",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/standard-tv-33-60",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/wifi-and-internet",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/computer-and-printers",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/tv-wall-mount-installation-services",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/speed-test",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/assessment/free-wi-fi-speed-and-coverage-assessment",
+        destination: "/assessment",
+        permanent: true,
       },
     ];
   },

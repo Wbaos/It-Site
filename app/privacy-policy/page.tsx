@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy | CallTechCare",
 
   description:
-    "Read the CallTechCare privacy policy to understand how we collect, use, and protect your personal information when you request or use our services in Miami and Broward—including sprinkler repair & irrigation, security camera installation, and tech support.",
+    "Read the CallTechCare privacy policy to understand how we collect, use, and protect your personal information when you request or use our services in Miami and Broward—including sprinkler repair & irrigation and security camera installation.",
 
   alternates: {
     canonical: "https://www.calltechcare.com/privacy-policy",
@@ -99,13 +99,6 @@ export default function PrivacyPolicyPage() {
               IP address, browser type, device information, referring URLs,
               and pages viewed. This helps us improve site performance and
               diagnose issues.
-            </p>
-
-            <p className="legal-highlight">Service Data</p>
-            <p>
-              During tech support sessions, we may access diagnostic logs or
-              system data strictly to troubleshoot and resolve technical
-              problems.
             </p>
           </div>
 

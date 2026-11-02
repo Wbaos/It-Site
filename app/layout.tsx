@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
   /* Fallback title only (pages override this) */
   title: {
-    default: "CallTechCare | Sprinkler Repair Miami, Irrigation, Cameras & Tech Services",
+    default: "CallTechCare | Sprinkler Repair Miami, Irrigation & Security Cameras",
     template: "%s",
   },
 
@@ -34,20 +34,11 @@ export const metadata: Metadata = {
       "Sprinkler repair Broward County",
       "Security camera installation Miami",
       "Security camera installation Pembroke Pines",
-      "WiFi troubleshooting Miami",
-      "Computer support Miami",
-      "Printer setup Miami",
-      "Tech support Miami",
-      "Smart home installation Miami",
-      "TV mounting Miami",
-      "TV wall mount installation Miami",
-      "TV mounting Miramar",
-      "IT support Miami",
     ],
 
   /* Open Graph fallback */
   openGraph: {
-    title: "CallTechCare | Sprinkler Repair Miami, Irrigation, Cameras & Tech Services",  
+    title: "CallTechCare | Sprinkler Repair Miami, Irrigation & Security Cameras",  
     description:
       "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service, free estimates.", 
     siteName: "CallTechCare",
@@ -66,7 +57,7 @@ export const metadata: Metadata = {
   /* Twitter fallback */
   twitter: {
     card: "summary_large_image",
-    title: "CallTechCare | Sprinkler Repair Miami, Irrigation, Cameras & Tech Services",  
+    title: "CallTechCare | Sprinkler Repair Miami, Irrigation & Security Cameras",  
     description:
         "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service, free estimates.",
     images: ["/logo-og.png"],
