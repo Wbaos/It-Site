@@ -243,6 +243,14 @@ export default function SprinklerRepairDoralPage() {
                   text: "We serve all of Doral (ZIP codes 33172 and 33178), including Downtown Doral, Doral Isles, Costa Del Sol and Doral Park. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.",
                 },
               },
+              {
+                "@type": "Question",
+                name: "Do you offer sprinkler repair near me in Doral?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. CallTechCare offers sprinkler repair near you in Doral — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.",
+                },
+              },
             ],
           }),
         }}
@@ -299,7 +307,7 @@ export default function SprinklerRepairDoralPage() {
       />
 
       <Hero
-        titleLine1="Sprinkler Repair Doral"
+        titleLine1="Sprinkler Repair in Doral"
         titleLine2="Irrigation • Repairs • New Systems"
         subtitle="Professional sprinkler repair and irrigation services in Doral and Miami-Dade — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Doral & Miami-Dade"
@@ -315,7 +323,7 @@ export default function SprinklerRepairDoralPage() {
           <h2 className="seo-intro-title">Sprinkler Repair & Irrigation Services in Doral and Miami-Dade</h2>
 
           <p>
-            If you need sprinkler repair in Doral, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
+            If you need sprinkler repair in Doral, CallTechCare provides fast, straightforward sprinkler system repair for sprinkler leaks, broken heads,
             poor coverage, controller issues, and irrigation repair across Downtown Doral, Doral Isles, Costa Del Sol, Doral Park and
             the rest of Doral, FL 33172 and 33178.
           </p>
@@ -569,6 +577,13 @@ export default function SprinklerRepairDoralPage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">We serve all of Doral (ZIP codes 33172 and 33178), including Downtown Doral, Doral Isles, Costa Del Sol and Doral Park. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you offer sprinkler repair near me in Doral?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. CallTechCare offers sprinkler repair near you in Doral — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.</p>
               </details>
             </div>
           </div>

@@ -36,6 +36,50 @@ type SubService = {
 
 export const revalidate = 60;
 
+const SPRINKLER_CITY_LINKS = [
+  { name: "Sunrise", href: "/sprinkler-repair-sunrise" },
+  { name: "Fort Lauderdale", href: "/sprinkler-repair-fort-lauderdale" },
+  { name: "Dania Beach", href: "/sprinkler-repair-dania-beach" },
+  { name: "Weston", href: "/sprinkler-repair-weston" },
+  { name: "Davie", href: "/sprinkler-repair-davie" },
+  { name: "Southwest Ranches", href: "/sprinkler-repair-southwest-ranches" },
+  { name: "Hollywood", href: "/sprinkler-repair-hollywood" },
+  { name: "West Park", href: "/sprinkler-repair-west-park" },
+  { name: "Pembroke Pines", href: "/sprinkler-repair-pembroke-pines" },
+  { name: "Miramar", href: "/sprinkler-repair-miramar" },
+  { name: "Miami Gardens", href: "/sprinkler-repair-miami-gardens" },
+  { name: "Miami Lakes", href: "/sprinkler-repair-miami-lakes" },
+  { name: "Country Club", href: "/sprinkler-repair-country-club" },
+  { name: "Aventura", href: "/sprinkler-repair-aventura" },
+  { name: "Sunny Isles Beach", href: "/sprinkler-repair-sunny-isles-beach" },
+  { name: "North Miami", href: "/sprinkler-repair-north-miami" },
+  { name: "Surfside", href: "/sprinkler-repair-surfside" },
+  { name: "North Bay Village", href: "/sprinkler-repair-north-bay-village" },
+  { name: "Miami Beach", href: "/sprinkler-repair-miami-beach" },
+  { name: "Hialeah", href: "/sprinkler-repair-hialeah" },
+  { name: "Doral", href: "/sprinkler-repair-doral" },
+  { name: "Fontainebleau", href: "/sprinkler-repair-fontainebleau" },
+  { name: "Tamiami", href: "/sprinkler-repair-tamiami" },
+  { name: "Miami", href: "/sprinkler-repair-miami" },
+  { name: "Coral Gables", href: "/sprinkler-repair-coral-gables" },
+  { name: "Key Biscayne", href: "/sprinkler-repair-key-biscayne" },
+  { name: "Kendall", href: "/sprinkler-repair-kendall" },
+  { name: "Kendale Lakes", href: "/sprinkler-repair-kendale-lakes" },
+  { name: "Country Walk", href: "/sprinkler-repair-country-walk" },
+  { name: "Cutler Bay", href: "/sprinkler-repair-cutler-bay" },
+];
+
+const SPRINKLER_SERVICE_LINKS = [
+  { slug: "sprinkler-repair-and-installation", title: "Sprinkler Repair & Installation" },
+  { slug: "sprinkler-leak-repair", title: "Sprinkler Leak Repair" },
+  { slug: "sprinkler-valve-repair", title: "Sprinkler Valve Repair" },
+  { slug: "sprinkler-timer-installation", title: "Sprinkler Timer Installation" },
+  { slug: "sprinkler-pump-replacement", title: "Sprinkler Pump Replacement" },
+  { slug: "rain-sensor-installation", title: "Rain Sensor Installation" },
+  { slug: "wifi-sprinkler-controller-upgrade", title: "WiFi Sprinkler Controller Upgrade" },
+  { slug: "new-irrigation-installation", title: "New Irrigation Installation" },
+];
+
 export async function generateMetadata({
   params,
 }: {
@@ -205,6 +249,27 @@ export default async function ServicePage({
                   className="service-area-icon"
                 />
                 {area.city}
+              </Link>
+            ))}
+          </div>
+          <p className="service-areas-subtitle">
+            We serve these cities:
+          </p>
+          <div className="service-areas-pills">
+            {SPRINKLER_CITY_LINKS.map((city) => (
+              <Link
+                key={city.href}
+                href={city.href}
+                className="service-area-pill"
+                aria-label={`Sprinkler repair in ${city.name}`}
+              >
+                <SvgIcon
+                  name="map-pin"
+                  size={14}
+                  color="var(--brand-teal)"
+                  className="service-area-icon"
+                />
+                {city.name}
               </Link>
             ))}
           </div>
@@ -1055,6 +1120,28 @@ const isTvMounting = tvMountingSlugs.includes(slug);
       </div>
 
     </section>
+
+    {SPRINKLER_SERVICE_LINKS.some((s) => s.slug === slug) && (
+      <section className="service-areas-section">
+        <div className="site-container">
+          <div className="service-areas-inner">
+            <h2 className="service-areas-title">Related sprinkler services</h2>
+            <div className="service-areas-pills">
+              {SPRINKLER_SERVICE_LINKS.filter((s) => s.slug !== slug).map((s) => (
+                <Link
+                  key={s.slug}
+                  href={`/services/${s.slug}`}
+                  className="service-area-pill"
+                  aria-label={s.title}
+                >
+                  {s.title}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
 
     <ServiceAreasSection />
   </>

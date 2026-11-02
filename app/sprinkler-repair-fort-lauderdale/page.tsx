@@ -138,14 +138,14 @@ function LeakIllustration() {
 }
 
 export const metadata: Metadata = {
-  title: "Sprinkler Repair in Fort Lauderdale | Same-Day | CallTechCare",
+  title: "Sprinkler Repair Fort Lauderdale | Same-Day | CallTechCare",
   description:
     "Sprinkler repair in Fort Lauderdale, FL 33301: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
   alternates: {
     canonical: "https://www.calltechcare.com/sprinkler-repair-fort-lauderdale",
   },
   openGraph: {
-    title: "Sprinkler Repair in Fort Lauderdale | Same-Day | CallTechCare",
+    title: "Sprinkler Repair Fort Lauderdale | Same-Day | CallTechCare",
     description:
       "Sprinkler repair in Fort Lauderdale, FL 33301: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
     url: "https://www.calltechcare.com/sprinkler-repair-fort-lauderdale",
@@ -161,7 +161,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sprinkler Repair in Fort Lauderdale | Same-Day | CallTechCare",
+    title: "Sprinkler Repair Fort Lauderdale | Same-Day | CallTechCare",
     description:
       "Sprinkler repair in Fort Lauderdale, FL 33301: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
     images: ["https://www.calltechcare.com/logo-og.png"],
@@ -242,6 +242,14 @@ export default function SprinklerRepairFortLauderdalePage() {
                   "@type": "Answer",
                   text: "We serve all of Fort Lauderdale (ZIP codes 33301, 33304 and 33308), including Downtown Fort Lauderdale, Las Olas, Victoria Park and Coral Ridge. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.",
                 },
+              },
+              {
+                "@type": "Question",
+                name: "Do you offer sprinkler repair near me in Fort Lauderdale?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. CallTechCare offers sprinkler repair near you in Fort Lauderdale — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.",
+                },
               }
             ],
           }),
@@ -299,7 +307,7 @@ export default function SprinklerRepairFortLauderdalePage() {
       />
 
       <Hero
-        titleLine1="Sprinkler Repair Fort Lauderdale"
+        titleLine1="Sprinkler Repair in Fort Lauderdale"
         titleLine2="Irrigation • Repairs • New Systems"
         subtitle="Professional sprinkler repair and irrigation services in Fort Lauderdale and Broward — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Fort Lauderdale & Broward"
@@ -315,7 +323,7 @@ export default function SprinklerRepairFortLauderdalePage() {
           <h2 className="seo-intro-title">Sprinkler Repair & Irrigation Services in Fort Lauderdale and Broward</h2>
 
           <p>
-            If you need sprinkler repair in Fort Lauderdale, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
+            If you need sprinkler repair in Fort Lauderdale, CallTechCare provides fast, straightforward sprinkler system repair for sprinkler leaks, broken heads,
             poor coverage, controller issues, and irrigation repair across Downtown Fort Lauderdale, Las Olas, Victoria Park and Coral Ridge and
             the rest of Fort Lauderdale, FL 33301, 33304 and 33308.
           </p>
@@ -563,6 +571,13 @@ export default function SprinklerRepairFortLauderdalePage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">We serve all of Fort Lauderdale (ZIP codes 33301, 33304 and 33308), including Downtown Fort Lauderdale, Las Olas, Victoria Park and Coral Ridge. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you offer sprinkler repair near me in Fort Lauderdale?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. CallTechCare offers sprinkler repair near you in Fort Lauderdale — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.</p>
               </details>
             </div>
           </div>

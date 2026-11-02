@@ -242,6 +242,14 @@ export default function SprinklerRepairFontainebleauPage() {
                   "@type": "Answer",
                   text: "We serve all of Fontainebleau (ZIP codes 33174, 33172 and 33126), including Fontainebleau East, Fontainebleau Park West, Flagler Park and International Gardens. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.",
                 },
+              },
+              {
+                "@type": "Question",
+                name: "Do you offer sprinkler repair near me in Fontainebleau?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. CallTechCare offers sprinkler repair near you in Fontainebleau — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.",
+                },
               }
             ],
           }),
@@ -299,7 +307,7 @@ export default function SprinklerRepairFontainebleauPage() {
       />
 
       <Hero
-        titleLine1="Sprinkler Repair Fontainebleau"
+        titleLine1="Sprinkler Repair in Fontainebleau"
         titleLine2="Irrigation • Repairs • New Systems"
         subtitle="Professional sprinkler repair and irrigation services in Fontainebleau and Miami-Dade — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Fontainebleau & Miami-Dade"
@@ -315,7 +323,7 @@ export default function SprinklerRepairFontainebleauPage() {
           <h2 className="seo-intro-title">Sprinkler Repair & Irrigation Services in Fontainebleau and Miami-Dade</h2>
 
           <p>
-            If you need sprinkler repair in Fontainebleau, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
+            If you need sprinkler repair in Fontainebleau, CallTechCare provides fast, straightforward sprinkler system repair for sprinkler leaks, broken heads,
             poor coverage, controller issues, and irrigation repair across Fontainebleau East, Fontainebleau Park West, Flagler Park and International Gardens and
             the rest of Fontainebleau, FL 33174, 33172 and 33126.
           </p>
@@ -563,6 +571,13 @@ export default function SprinklerRepairFontainebleauPage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">We serve all of Fontainebleau (ZIP codes 33174, 33172 and 33126), including Fontainebleau East, Fontainebleau Park West, Flagler Park and International Gardens. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you offer sprinkler repair near me in Fontainebleau?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. CallTechCare offers sprinkler repair near you in Fontainebleau — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.</p>
               </details>
             </div>
           </div>

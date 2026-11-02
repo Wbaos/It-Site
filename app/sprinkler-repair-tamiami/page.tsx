@@ -242,6 +242,14 @@ export default function SprinklerRepairTamiamiPage() {
                   "@type": "Answer",
                   text: "We serve all of Tamiami (ZIP codes 33184, 33175 and 33182), including International Gardens, Lake Pointe, Southern Estates and Sweetwater Estates. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.",
                 },
+              },
+              {
+                "@type": "Question",
+                name: "Do you offer sprinkler repair near me in Tamiami?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. CallTechCare offers sprinkler repair near you in Tamiami — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.",
+                },
               }
             ],
           }),
@@ -299,7 +307,7 @@ export default function SprinklerRepairTamiamiPage() {
       />
 
       <Hero
-        titleLine1="Sprinkler Repair Tamiami"
+        titleLine1="Sprinkler Repair in Tamiami"
         titleLine2="Irrigation • Repairs • New Systems"
         subtitle="Professional sprinkler repair and irrigation services in Tamiami and Miami-Dade — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Tamiami & Miami-Dade"
@@ -315,7 +323,7 @@ export default function SprinklerRepairTamiamiPage() {
           <h2 className="seo-intro-title">Sprinkler Repair & Irrigation Services in Tamiami and Miami-Dade</h2>
 
           <p>
-            If you need sprinkler repair in Tamiami, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
+            If you need sprinkler repair in Tamiami, CallTechCare provides fast, straightforward sprinkler system repair for sprinkler leaks, broken heads,
             poor coverage, controller issues, and irrigation repair across International Gardens, Lake Pointe, Southern Estates and Sweetwater Estates and
             the rest of Tamiami, FL 33184, 33175 and 33182.
           </p>
@@ -563,6 +571,13 @@ export default function SprinklerRepairTamiamiPage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">We serve all of Tamiami (ZIP codes 33184, 33175 and 33182), including International Gardens, Lake Pointe, Southern Estates and Sweetwater Estates. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you offer sprinkler repair near me in Tamiami?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. CallTechCare offers sprinkler repair near you in Tamiami — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.</p>
               </details>
             </div>
           </div>

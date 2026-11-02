@@ -243,6 +243,14 @@ export default function SprinklerRepairAventuraPage() {
                   text: "We serve all of Aventura. Our main Aventura ZIP is 33180, which covers most of the city including the Aventura Mall corridor, Turnberry Isle and Williams Island. Some Aventura addresses, mainly east-side condos, use 33160. If you are unsure, call (786) 366-2729 and we will confirm.",
                 },
               },
+              {
+                "@type": "Question",
+                name: "Do you offer sprinkler repair near me in Aventura?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. CallTechCare offers sprinkler repair near you in Aventura — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.",
+                },
+              },
             ],
           }),
         }}
@@ -301,7 +309,7 @@ export default function SprinklerRepairAventuraPage() {
       />
 
       <Hero
-        titleLine1="Sprinkler Repair Aventura"
+        titleLine1="Sprinkler Repair in Aventura"
         titleLine2="Irrigation • Repairs • New Systems"
         subtitle="Professional sprinkler repair and irrigation services in Aventura and Miami-Dade — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Aventura & Miami-Dade"
@@ -317,7 +325,7 @@ export default function SprinklerRepairAventuraPage() {
           <h2 className="seo-intro-title">Sprinkler Repair & Irrigation Services in Aventura and Miami-Dade</h2>
 
           <p>
-            If you need sprinkler repair in Aventura, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
+            If you need sprinkler repair in Aventura, CallTechCare provides fast, straightforward sprinkler system repair for sprinkler leaks, broken heads,
             poor coverage, controller issues, and irrigation repair across Aventura — from the high-rise condos of Williams Island and
             Turnberry Isle to the gated community of Aventura Lakes and the Aventura Mall corridor — in ZIP code 33180 and nearby
             Aventura addresses in 33160.
@@ -568,6 +576,13 @@ export default function SprinklerRepairAventuraPage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">We serve all of Aventura. Our main Aventura ZIP is 33180, which covers most of the city including the Aventura Mall corridor, Turnberry Isle and Williams Island. Some Aventura addresses, mainly east-side condos, use 33160. If you are unsure, call (786) 366-2729 and we will confirm.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you offer sprinkler repair near me in Aventura?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. CallTechCare offers sprinkler repair near you in Aventura — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.</p>
               </details>
             </div>
           </div>

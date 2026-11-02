@@ -242,6 +242,14 @@ export default function SprinklerRepairKendaleLakesPage() {
                   "@type": "Answer",
                   text: "We serve all of Kendale Lakes (ZIP codes 33183 and 33175), including Kendale Lakes Park area, Miccosukee Golf and Country Club area, Lindgren Acres and El Dorado Boulevard corridor. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.",
                 },
+              },
+              {
+                "@type": "Question",
+                name: "Do you offer sprinkler repair near me in Kendale Lakes?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. CallTechCare offers sprinkler repair near you in Kendale Lakes — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.",
+                },
               }
             ],
           }),
@@ -299,7 +307,7 @@ export default function SprinklerRepairKendaleLakesPage() {
       />
 
       <Hero
-        titleLine1="Sprinkler Repair Kendale Lakes"
+        titleLine1="Sprinkler Repair in Kendale Lakes"
         titleLine2="Irrigation • Repairs • New Systems"
         subtitle="Professional sprinkler repair and irrigation services in Kendale Lakes and Miami-Dade — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Kendale Lakes & Miami-Dade"
@@ -315,7 +323,7 @@ export default function SprinklerRepairKendaleLakesPage() {
           <h2 className="seo-intro-title">Sprinkler Repair & Irrigation Services in Kendale Lakes and Miami-Dade</h2>
 
           <p>
-            If you need sprinkler repair in Kendale Lakes, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
+            If you need sprinkler repair in Kendale Lakes, CallTechCare provides fast, straightforward sprinkler system repair for sprinkler leaks, broken heads,
             poor coverage, controller issues, and irrigation repair across Kendale Lakes Park area, Miccosukee Golf and Country Club area, Lindgren Acres and El Dorado Boulevard corridor and
             the rest of Kendale Lakes, FL 33183 and 33175.
           </p>
@@ -563,6 +571,13 @@ export default function SprinklerRepairKendaleLakesPage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">We serve all of Kendale Lakes (ZIP codes 33183 and 33175), including Kendale Lakes Park area, Miccosukee Golf and Country Club area, Lindgren Acres and El Dorado Boulevard corridor. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you offer sprinkler repair near me in Kendale Lakes?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. CallTechCare offers sprinkler repair near you in Kendale Lakes — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.</p>
               </details>
             </div>
           </div>

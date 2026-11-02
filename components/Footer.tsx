@@ -6,6 +6,39 @@ import SvgIcon from "./common/SvgIcons";
 export default function Footer() {
   const year = new Date().getFullYear();
 
+  const footerAreas = [
+    { name: "Sunrise", href: "/sprinkler-repair-sunrise" },
+    { name: "Fort Lauderdale", href: "/sprinkler-repair-fort-lauderdale" },
+    { name: "Dania Beach", href: "/sprinkler-repair-dania-beach" },
+    { name: "Weston", href: "/sprinkler-repair-weston" },
+    { name: "Davie", href: "/sprinkler-repair-davie" },
+    { name: "Southwest Ranches", href: "/sprinkler-repair-southwest-ranches" },
+    { name: "Hollywood", href: "/sprinkler-repair-hollywood" },
+    { name: "West Park", href: "/sprinkler-repair-west-park" },
+    { name: "Pembroke Pines", href: "/sprinkler-repair-pembroke-pines" },
+    { name: "Miramar", href: "/sprinkler-repair-miramar" },
+    { name: "Miami Gardens", href: "/sprinkler-repair-miami-gardens" },
+    { name: "Miami Lakes", href: "/sprinkler-repair-miami-lakes" },
+    { name: "Country Club", href: "/sprinkler-repair-country-club" },
+    { name: "Aventura", href: "/sprinkler-repair-aventura" },
+    { name: "Sunny Isles Beach", href: "/sprinkler-repair-sunny-isles-beach" },
+    { name: "North Miami", href: "/sprinkler-repair-north-miami" },
+    { name: "Surfside", href: "/sprinkler-repair-surfside" },
+    { name: "North Bay Village", href: "/sprinkler-repair-north-bay-village" },
+    { name: "Miami Beach", href: "/sprinkler-repair-miami-beach" },
+    { name: "Hialeah", href: "/sprinkler-repair-hialeah" },
+    { name: "Doral", href: "/sprinkler-repair-doral" },
+    { name: "Fontainebleau", href: "/sprinkler-repair-fontainebleau" },
+    { name: "Tamiami", href: "/sprinkler-repair-tamiami" },
+    { name: "Miami", href: "/sprinkler-repair-miami" },
+    { name: "Coral Gables", href: "/sprinkler-repair-coral-gables" },
+    { name: "Key Biscayne", href: "/sprinkler-repair-key-biscayne" },
+    { name: "Kendall", href: "/sprinkler-repair-kendall" },
+    { name: "Kendale Lakes", href: "/sprinkler-repair-kendale-lakes" },
+    { name: "Country Walk", href: "/sprinkler-repair-country-walk" },
+    { name: "Cutler Bay", href: "/sprinkler-repair-cutler-bay" },
+  ];
+
   return (
     <footer className="site-footer">
       {/* ===== Top Section ===== */}
@@ -83,6 +116,26 @@ export default function Footer() {
               </Link>
             </li>
             <li>
+              <Link href="/services/sprinkler-timer-installation">
+                Sprinkler Timer Installation
+              </Link>
+            </li>
+            <li>
+              <Link href="/services/wifi-sprinkler-controller-upgrade">
+                WiFi Sprinkler Controller Upgrade
+              </Link>
+            </li>
+            <li>
+              <Link href="/services/rain-sensor-installation">
+                Rain Sensor Installation
+              </Link>
+            </li>
+            <li>
+              <Link href="/services/new-irrigation-installation">
+                New Irrigation Installation
+              </Link>
+            </li>
+            <li>
               <Link href="/services/home-security">
                 Security Camera Installation
               </Link>
@@ -124,14 +177,12 @@ export default function Footer() {
           <div className="footer-areas">
             <p className="areas-title">📍 Service Areas</p>
             <p className="areas-list">
-              Sunrise • Fort Lauderdale • Dania Beach • Weston • Davie •
-              Southwest Ranches • Hollywood • West Park • Pembroke Pines •
-              Miramar • Miami Gardens • Miami Lakes • Country Club •
-              Aventura • Sunny Isles Beach • North Miami • Surfside •
-              North Bay Village • Miami Beach • Hialeah • Doral •
-              Fontainebleau • Tamiami • Miami • Coral Gables •
-              Key Biscayne • Kendall • Kendale Lakes • Country Walk •
-              Cutler Bay
+              {footerAreas.map((area, i) => (
+                <span key={area.href}>
+                  {i > 0 && " • "}
+                  <Link href={area.href}>{area.name}</Link>
+                </span>
+              ))}
             </p>
           </div>
         </div>
