@@ -171,9 +171,9 @@ export default function TermsAndConditionsPage() {
                                 </div>
 
                                 <div className="terms-callout">
-                                    <p className="terms-callout-title">30‑Day Workmanship Warranty</p>
+                                    <p className="terms-callout-title">1-Year Workmanship Warranty</p>
                                     <p className="terms-callout-text">
-                                        All services come with a 30‑day warranty covering workmanship issues.
+                                        All services come with a 1-year warranty covering workmanship issues.
                                         If a problem is related to our work within this period, we will return
                                         to fix it at no additional charge.
                                     </p>

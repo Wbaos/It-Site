@@ -202,7 +202,7 @@ export async function POST(req: Request) {
 
       const defaultTechnicianName = String(process.env.DEFAULT_TECHNICIAN_NAME || "Wilber Banos").trim();
       const defaultTechnicianPhone = String(process.env.DEFAULT_TECHNICIAN_PHONE || "").trim() || null;
-      const defaultWarrantyText = String(process.env.DEFAULT_WARRANTY_TEXT || "90-Day Warranty").trim();
+      const defaultWarrantyText = String(process.env.DEFAULT_WARRANTY_TEXT || "1-Year Warranty").trim();
 
       const serviceDescription =
         buildServiceDescriptionFromItems(cart?.items || []) ||

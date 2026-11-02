@@ -49,7 +49,7 @@ export async function GET() {
 
         // Best-effort backfill for older orders missing UI fields
         const defaultTechnicianName = String(process.env.DEFAULT_TECHNICIAN_NAME || "Wilber Banos").trim();
-        const defaultWarrantyText = String(process.env.DEFAULT_WARRANTY_TEXT || "90-Day Warranty").trim();
+        const defaultWarrantyText = String(process.env.DEFAULT_WARRANTY_TEXT || "1-Year Warranty").trim();
 
         const maxBackfill = 10;
         for (const raw of orders.slice(0, maxBackfill) as any[]) {
