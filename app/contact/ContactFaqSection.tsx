@@ -30,6 +30,10 @@ const DEFAULT_FAQS: FaqItem[] = [
     a: "Yes. CallTechCare offers a 1-year warranty on services such as TV mounting, security camera installation, Wi-Fi troubleshooting, computer support, and other home tech services.",
   },
   {
+    q: "Do you handle sprinkler emergencies?",
+    a: "Yes. If you have a sprinkler emergency, such as a major leak or a zone that won't turn off, call us and we'll prioritize same-day service during our business hours (Monday–Saturday 8am–7pm, Sunday 9am–6pm).",
+  },
+  {
     q: "Can I cancel or reschedule my appointment?",
     a: "Yes. Please contact us as soon as possible to cancel or reschedule your appointment. There are no cancellation fees if you cancel at least 24 hours in advance.",
   },
