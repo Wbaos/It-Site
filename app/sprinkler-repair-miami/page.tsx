@@ -143,6 +143,10 @@ export const metadata: Metadata = {
     "Sprinkler repair in Miami, FL 33130: leaks, broken heads, valves, timers & new systems. Same-day service, free estimates. Call (786) 366-2729.",
   alternates: {
     canonical: "https://www.calltechcare.com/sprinkler-repair-miami",
+    languages: {
+      en: "https://www.calltechcare.com/sprinkler-repair-miami",
+      es: "https://www.calltechcare.com/es/reparacion-de-sprinklers-miami",
+    },
   },
   openGraph: {
     title: "Sprinkler Repair in Miami, FL | Same-Day | CallTechCare",

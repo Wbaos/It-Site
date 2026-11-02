@@ -2,7 +2,7 @@
   "id": "/",
   "name": "CallTechCare",
   "short_name": "CallTechCare",
-  "description": "Friendly, professional tech support for all ages — setup, troubleshoot, and optimize your devices at home or remotely.",
+  "description": "Sprinkler repair and irrigation in Miami and Broward. Same-day service, free estimates, leaks, valves, timers and new systems.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -33,9 +33,9 @@
 
   "shortcuts": [
     {
-      "name": "Book Tech Support",
-      "short_name": "Book",
-      "url": "/book",
+      "name": "Request a Free Quote",
+      "short_name": "Quote",
+      "url": "/request-quote",
       "icons": [
         {
           "src": "/favicon-96x96.png",
