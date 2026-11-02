@@ -111,7 +111,6 @@ export default function TermsAndConditionsPage() {
                                     <li>Computer and printer support</li>
                                     <li>Phone and tablet support</li>
                                     <li>Senior-friendly in-home tech help</li>
-                                    <li>Tree trimming assistance</li>
                                     <li>Software installation and optimization</li>
                                     <li>General IT consulting</li>
                                 </ul>

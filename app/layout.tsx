@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   /* Fallback title only (pages override this) */
   title: {
     default: "CallTechCare | Sprinkler Repair Miami, Irrigation, Cameras & Tech Services",
-    template: "%s | CallTechCare",
+    template: "%s",
   },
 
   /* Fallback description */

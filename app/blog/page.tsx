@@ -139,7 +139,7 @@ export default async function BlogPage() {
             computer and printer support
           </Link>,{" "}
           <Link href="/services/landscaping">
-            sprinkler, irrigation, and tree trimming services
+            sprinkler and irrigation services
           </Link>{" "}
           across Miami and South Florida.
         </p>
