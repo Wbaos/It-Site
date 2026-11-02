@@ -242,6 +242,14 @@ export default function SprinklerRepairPembrokePinesPage() {
                   "@type": "Answer",
                   text: "We serve all of Pembroke Pines (ZIP codes 33028, 33029 and 33026), including Chapel Trail, SilverLakes, Pembroke Lakes and Pembroke Falls. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.",
                 },
+              },
+              {
+                "@type": "Question",
+                name: "Do you offer sprinkler repair near me in Pembroke Pines?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. CallTechCare offers sprinkler repair near you in Pembroke Pines — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.",
+                },
               }
             ],
           }),
@@ -299,7 +307,7 @@ export default function SprinklerRepairPembrokePinesPage() {
       />
 
       <Hero
-        titleLine1="Sprinkler Repair Pembroke Pines"
+        titleLine1="Sprinkler Repair in Pembroke Pines"
         titleLine2="Irrigation • Repairs • New Systems"
         subtitle="Professional sprinkler repair and irrigation services in Pembroke Pines and Broward — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Pembroke Pines & Broward"
@@ -315,7 +323,7 @@ export default function SprinklerRepairPembrokePinesPage() {
           <h2 className="seo-intro-title">Sprinkler Repair & Irrigation Services in Pembroke Pines and Broward</h2>
 
           <p>
-            If you need sprinkler repair in Pembroke Pines, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
+            If you need sprinkler repair in Pembroke Pines, CallTechCare provides fast, straightforward sprinkler system repair for sprinkler leaks, broken heads,
             poor coverage, controller issues, and irrigation repair across Chapel Trail, SilverLakes, Pembroke Lakes and Pembroke Falls and
             the rest of Pembroke Pines, FL 33028, 33029 and 33026.
           </p>
@@ -563,6 +571,13 @@ export default function SprinklerRepairPembrokePinesPage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">We serve all of Pembroke Pines (ZIP codes 33028, 33029 and 33026), including Chapel Trail, SilverLakes, Pembroke Lakes and Pembroke Falls. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you offer sprinkler repair near me in Pembroke Pines?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. CallTechCare offers sprinkler repair near you in Pembroke Pines — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.</p>
               </details>
             </div>
           </div>

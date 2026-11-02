@@ -242,6 +242,14 @@ export default function SprinklerRepairSunrisePage() {
                   "@type": "Answer",
                   text: "We serve all of Sunrise (ZIP codes 33323, 33322 and 33326), including Sunrise Lakes, Welleby, Sawgrass and Sunrise Golf Village. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.",
                 },
+              },
+              {
+                "@type": "Question",
+                name: "Do you offer sprinkler repair near me in Sunrise?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. CallTechCare offers sprinkler repair near you in Sunrise — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.",
+                },
               }
             ],
           }),
@@ -299,7 +307,7 @@ export default function SprinklerRepairSunrisePage() {
       />
 
       <Hero
-        titleLine1="Sprinkler Repair Sunrise"
+        titleLine1="Sprinkler Repair in Sunrise"
         titleLine2="Irrigation • Repairs • New Systems"
         subtitle="Professional sprinkler repair and irrigation services in Sunrise and Broward — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Sunrise & Broward"
@@ -315,7 +323,7 @@ export default function SprinklerRepairSunrisePage() {
           <h2 className="seo-intro-title">Sprinkler Repair & Irrigation Services in Sunrise and Broward</h2>
 
           <p>
-            If you need sprinkler repair in Sunrise, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
+            If you need sprinkler repair in Sunrise, CallTechCare provides fast, straightforward sprinkler system repair for sprinkler leaks, broken heads,
             poor coverage, controller issues, and irrigation repair across Sunrise Lakes, Welleby, Sawgrass and Sunrise Golf Village and
             the rest of Sunrise, FL 33323, 33322 and 33326.
           </p>
@@ -563,6 +571,13 @@ export default function SprinklerRepairSunrisePage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">We serve all of Sunrise (ZIP codes 33323, 33322 and 33326), including Sunrise Lakes, Welleby, Sawgrass and Sunrise Golf Village. If you're nearby in Broward or Miami-Dade, call us and we'll confirm availability.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you offer sprinkler repair near me in Sunrise?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. CallTechCare offers sprinkler repair near you in Sunrise — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.</p>
               </details>
             </div>
           </div>

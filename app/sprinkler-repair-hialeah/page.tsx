@@ -243,6 +243,14 @@ export default function SprinklerRepairHialeahPage() {
                   text: "We serve all of Hialeah (ZIP codes 33012, 33010 and 33013), including East Hialeah, West Hialeah, Hialeah Park and Palm Springs. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.",
                 },
               },
+              {
+                "@type": "Question",
+                name: "Do you offer sprinkler repair near me in Hialeah?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. CallTechCare offers sprinkler repair near you in Hialeah — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.",
+                },
+              },
             ],
           }),
         }}
@@ -299,7 +307,7 @@ export default function SprinklerRepairHialeahPage() {
       />
 
       <Hero
-        titleLine1="Sprinkler Repair Hialeah"
+        titleLine1="Sprinkler Repair in Hialeah"
         titleLine2="Irrigation • Repairs • New Systems"
         subtitle="Professional sprinkler repair and irrigation services in Hialeah and Miami-Dade — same-day appointments, free estimates."
         badgeText="Sprinkler Repair & Irrigation in Hialeah & Miami-Dade"
@@ -315,7 +323,7 @@ export default function SprinklerRepairHialeahPage() {
           <h2 className="seo-intro-title">Sprinkler Repair & Irrigation Services in Hialeah and Miami-Dade</h2>
 
           <p>
-            If you need sprinkler repair in Hialeah, CallTechCare provides fast, straightforward help for sprinkler leaks, broken heads,
+            If you need sprinkler repair in Hialeah, CallTechCare provides fast, straightforward sprinkler system repair for sprinkler leaks, broken heads,
             poor coverage, controller issues, and irrigation repair across East Hialeah, West Hialeah, Hialeah Park, Palm Springs and
             the rest of Hialeah, FL 33012, 33010 and 33013.
           </p>
@@ -569,6 +577,13 @@ export default function SprinklerRepairHialeahPage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">We serve all of Hialeah (ZIP codes 33012, 33010 and 33013), including East Hialeah, West Hialeah, Hialeah Park and Palm Springs. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>Do you offer sprinkler repair near me in Hialeah?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Yes. CallTechCare offers sprinkler repair near you in Hialeah — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.</p>
               </details>
             </div>
           </div>
