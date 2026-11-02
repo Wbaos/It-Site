@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About CallTechCare | Sprinkler Repair & Irrigation in Miami & Broward",
-  description:
-    "Learn about CallTechCare, a trusted local provider of sprinkler repair & irrigation services in Miami and Broward—with security camera installation and expert tech support available as secondary services.",
+  title: "About CallTechCare | Sprinkler Repair in Miami & Broward",
+  description: "Learn about CallTechCare, Miami and Broward's sprinkler repair and irrigation company. Same-day service, free estimates, and a 1-year warranty on our work.",
+  alternates: {
+    canonical: "https://www.calltechcare.com/about",
+  },
 };
 
 export default function AboutPage() {

@@ -140,7 +140,7 @@ function LeakIllustration() {
 export const metadata: Metadata = {
   title: "Reparación de Sprinklers en Miami | CallTechCare",
   description:
-    "Reparación rápida y confiable de sprinklers en Miami y Broward. CallTechCare también instala cámaras de seguridad y ofrece soporte técnico experto.",
+    "Reparación de sprinklers en Miami, FL 33130: fugas, cabezales rotos, válvulas, temporizadores y sistemas nuevos. Servicio el mismo día, estimados gratis. Llama al (786) 366-2729.",
   alternates: {
     canonical: "https://www.calltechcare.com/es/reparacion-de-sprinklers-miami",
     languages: {
@@ -151,7 +151,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Reparación de Sprinklers en Miami | CallTechCare",
     description:
-      "Reparación rápida y confiable de sprinklers en Miami y Broward, además de instalación de cámaras de seguridad y soporte técnico experto.",
+      "Reparación de sprinklers en Miami, FL 33130: fugas, cabezales rotos, válvulas, temporizadores y sistemas nuevos. Servicio el mismo día, estimados gratis. Llama al (786) 366-2729.",
     url: "https://www.calltechcare.com/es/reparacion-de-sprinklers-miami",
     siteName: "CallTechCare",
     images: [
@@ -167,7 +167,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Reparación de Sprinklers en Miami | CallTechCare",
     description:
-      "Reparación rápida y confiable de sprinklers en Miami y Broward, además de instalación de cámaras de seguridad y soporte técnico experto.",
+      "Reparación de sprinklers en Miami, FL 33130: fugas, cabezales rotos, válvulas, temporizadores y sistemas nuevos. Servicio el mismo día, estimados gratis. Llama al (786) 366-2729.",
     images: ["https://www.calltechcare.com/logo-og.png"],
   },
 };
@@ -204,7 +204,7 @@ export default function ReparacionDeSprinklersMiamiPage() {
                 name: "¿Qué áreas atienden?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Atendemos 13 ciudades en Miami-Dade y Broward, desde Sunrise hasta Cutler Bay, incluyendo Sunrise, Fort Lauderdale, Weston, Davie, Hollywood, Pembroke Pines, Miramar, Aventura, Hialeah, Doral, Miami, Kendall y Cutler Bay.",
+                  text: "Atendemos 30 ciudades en Miami-Dade y Broward, desde Sunrise hasta Cutler Bay, incluyendo Sunrise, Fort Lauderdale, Dania Beach, Weston, Davie, Southwest Ranches, Hollywood, West Park, Pembroke Pines, Miramar, Miami Gardens, Miami Lakes, Country Club, Aventura, Sunny Isles Beach, North Miami, Surfside, North Bay Village, Miami Beach, Hialeah, Doral, Fontainebleau, Tamiami, Miami, Coral Gables, Key Biscayne, Kendall, Kendale Lakes, Country Walk y Cutler Bay.",
                 },
               },
               {
@@ -229,6 +229,22 @@ export default function ReparacionDeSprinklersMiamiPage() {
                 acceptedAnswer: {
                   "@type": "Answer",
                   text: "Sí. Reparamos fugas de sprinklers, incluyendo fugas en tuberías de PVC, válvulas con fuga y cabezales rotos, y probamos el sistema después de la reparación.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "¿Reparan sprinklers en condominios y edificios altos de Miami?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Sí. Reparamos e instalamos sprinklers en condominios y edificios altos de Miami, incluyendo Downtown Miami y Brickell, así como en casas unifamiliares en toda el área. Llama al (786) 366-2729 y te confirmamos la cobertura de tu edificio.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "¿Atienden Coral Gables y Miami Beach?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Sí. Coral Gables y Miami Beach son parte de nuestra área de servicio de Miami, junto con Downtown Miami, Brickell y todo Miami-Dade y Broward. Llama al (786) 366-2729 y te confirmamos disponibilidad.",
                 },
               },
             ],
@@ -288,8 +304,8 @@ export default function ReparacionDeSprinklersMiamiPage() {
 
       <Hero
         titleLine1="Reparación de Sprinklers en Miami"
-        titleLine2="Irrigación • Cámaras • Servicios Técnicos"
-        subtitle="Servicios profesionales de reparación de sprinklers e irrigación en Miami y Broward. También instalamos cámaras de seguridad y ofrecemos soporte técnico experto."
+        titleLine2="Irrigación • Reparaciones • Sistemas Nuevos"
+        subtitle="Servicios profesionales de reparación de sprinklers e irrigación en Miami y Broward. Citas el mismo día y estimados gratis."
         badgeText="Reparación de Sprinklers e Irrigación en Miami y Broward"
         primaryCtaText="Llama ahora"
         primaryCtaHref="tel:+17863662729"
@@ -346,7 +362,7 @@ export default function ReparacionDeSprinklersMiamiPage() {
           <h3 className="spr-landing-h3">Área de servicio</h3>
 
           <p>
-            Atendemos Miami-Dade y Broward, incluyendo Sunrise, Fort Lauderdale, Weston, Davie, Hollywood, Pembroke Pines, Miramar, Aventura, Hialeah, Doral, Miami, Kendall y Cutler Bay. Si estás cerca
+            Atendemos todo Miami-Dade y Broward, incluyendo <Link href="/sprinkler-repair-sunrise">Sunrise</Link>, <Link href="/locations/fort-lauderdale">Fort Lauderdale</Link>, <Link href="/sprinkler-repair-dania-beach">Dania Beach</Link>, <Link href="/sprinkler-repair-weston">Weston</Link>, <Link href="/sprinkler-repair-davie">Davie</Link>, <Link href="/sprinkler-repair-southwest-ranches">Southwest Ranches</Link>, <Link href="/sprinkler-repair-hollywood">Hollywood</Link>, <Link href="/sprinkler-repair-west-park">West Park</Link>, <Link href="/sprinkler-repair-pembroke-pines">Pembroke Pines</Link>, <Link href="/sprinkler-repair-miramar">Miramar</Link>, <Link href="/sprinkler-repair-miami-gardens">Miami Gardens</Link>, <Link href="/sprinkler-repair-miami-lakes">Miami Lakes</Link>, <Link href="/sprinkler-repair-country-club">Country Club</Link>, <Link href="/sprinkler-repair-aventura">Aventura</Link>, <Link href="/sprinkler-repair-sunny-isles-beach">Sunny Isles Beach</Link>, <Link href="/sprinkler-repair-north-miami">North Miami</Link>, <Link href="/sprinkler-repair-surfside">Surfside</Link>, <Link href="/sprinkler-repair-north-bay-village">North Bay Village</Link>, <Link href="/sprinkler-repair-miami-beach">Miami Beach</Link>, <Link href="/sprinkler-repair-hialeah">Hialeah</Link>, <Link href="/sprinkler-repair-doral">Doral</Link>, <Link href="/sprinkler-repair-fontainebleau">Fontainebleau</Link>, <Link href="/sprinkler-repair-tamiami">Tamiami</Link>, <Link href="/sprinkler-repair-coral-gables">Coral Gables</Link>, <Link href="/sprinkler-repair-key-biscayne">Key Biscayne</Link>, <Link href="/sprinkler-repair-kendall">Kendall</Link>, <Link href="/sprinkler-repair-kendale-lakes">Kendale Lakes</Link>, <Link href="/sprinkler-repair-country-walk">Country Walk</Link> y <Link href="/sprinkler-repair-cutler-bay">Cutler Bay</Link>. Si estás cerca
             y no ves tu ciudad en la lista, escríbenos y te confirmamos disponibilidad.
           </p>
 
@@ -514,7 +530,7 @@ export default function ReparacionDeSprinklersMiamiPage() {
                   <span>¿Qué áreas atienden?</span>
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
-                <p className="faq-answer">Atendemos 13 ciudades en Miami-Dade y Broward, desde Sunrise hasta Cutler Bay, incluyendo Sunrise, Fort Lauderdale, Weston, Davie, Hollywood, Pembroke Pines, Miramar, Aventura, Hialeah, Doral, Miami, Kendall y Cutler Bay.</p>
+                <p className="faq-answer">Atendemos 30 ciudades en Miami-Dade y Broward, desde Sunrise hasta Cutler Bay, incluyendo Sunrise, Fort Lauderdale, Dania Beach, Weston, Davie, Southwest Ranches, Hollywood, West Park, Pembroke Pines, Miramar, Miami Gardens, Miami Lakes, Country Club, Aventura, Sunny Isles Beach, North Miami, Surfside, North Bay Village, Miami Beach, Hialeah, Doral, Fontainebleau, Tamiami, Miami, Coral Gables, Key Biscayne, Kendall, Kendale Lakes, Country Walk y Cutler Bay.</p>
               </details>
               <details className="faq-item">
                 <summary className="faq-question">
@@ -536,6 +552,20 @@ export default function ReparacionDeSprinklersMiamiPage() {
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
                 <p className="faq-answer">Sí. Reparamos fugas de sprinklers, incluyendo fugas en tuberías de PVC, válvulas con fuga y cabezales rotos, y probamos el sistema después de la reparación.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>¿Reparan sprinklers en condominios y edificios altos de Miami?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Sí. Reparamos e instalamos sprinklers en condominios y edificios altos de Miami, incluyendo Downtown Miami y Brickell, así como en casas unifamiliares en toda el área. Llama al (786) 366-2729 y te confirmamos la cobertura de tu edificio.</p>
+              </details>
+              <details className="faq-item">
+                <summary className="faq-question">
+                  <span>¿Atienden Coral Gables y Miami Beach?</span>
+                  <span className="faq-toggle" aria-hidden="true">+</span>
+                </summary>
+                <p className="faq-answer">Sí. Coral Gables y Miami Beach son parte de nuestra área de servicio de Miami, junto con Downtown Miami, Brickell y todo Miami-Dade y Broward. Llama al (786) 366-2729 y te confirmamos disponibilidad.</p>
               </details>
             </div>
           </div>

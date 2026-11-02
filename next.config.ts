@@ -103,6 +103,11 @@ const nextConfig: NextConfig = {
         destination: "/blog",
         permanent: true,
       },
+      {
+        source: "/blog/tree-trimming-near-me-miami",
+        destination: "/blog",
+        permanent: true,
+      },
     ];
   },
 

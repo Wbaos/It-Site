@@ -2,19 +2,19 @@ import type { Metadata } from "next";
 import LocationsClient from "./LocationsClient";
 
 export const metadata: Metadata = {
-  title: "Service Areas in South Florida | CallTechCare",
+  title: "Sprinkler Repair Service Areas | Miami & Broward | CallTechCare",
 
   description:
-    "Explore the cities and communities CallTechCare serves across Miami-Dade and Broward County for TV mounting, security camera installation, Wi-Fi troubleshooting, computer support, sprinkler repair, and home services.",
+    "Explore the 30 cities CallTechCare serves across Miami-Dade and Broward County for sprinkler repair, irrigation installation, valve and timer replacement.",
 
   alternates: {
     canonical: "https://www.calltechcare.com/locations",
   },
 
   openGraph: {
-    title: "CallTechCare Service Areas | South Florida",
+    title: "Sprinkler Repair Service Areas | Miami & Broward",
     description:
-      "Browse the cities and communities CallTechCare serves across Miami-Dade and Broward County for home, outdoor, and tech services.",
+      "Explore the 30 cities CallTechCare serves across Miami-Dade and Broward County for sprinkler repair, irrigation installation, valve and timer replacement.",
     url: "https://www.calltechcare.com/locations",
     siteName: "CallTechCare",
     images: [
@@ -40,16 +40,33 @@ export default function LocationsPage() {
       areaServed: [
         "Sunrise",
         "Fort Lauderdale",
+        "Dania Beach",
         "Weston",
         "Davie",
+        "Southwest Ranches",
         "Hollywood",
+        "West Park",
         "Pembroke Pines",
         "Miramar",
+        "Miami Gardens",
+        "Miami Lakes",
+        "Country Club",
         "Aventura",
+        "Sunny Isles Beach",
+        "North Miami",
+        "Surfside",
+        "North Bay Village",
+        "Miami Beach",
         "Hialeah",
         "Doral",
+        "Fontainebleau",
+        "Tamiami",
         "Miami",
+        "Coral Gables",
+        "Key Biscayne",
         "Kendall",
+        "Kendale Lakes",
+        "Country Walk",
         "Cutler Bay"
       ]
     }

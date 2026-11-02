@@ -240,7 +240,7 @@ export default function SprinklerRepairCutlerBayPage() {
                 name: "What ZIP codes do you serve in Cutler Bay?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "We serve all of Cutler Bay (ZIP codes 33157 and 33189), plus nearby 33177, including Cutler Ridge, Lakes by the Bay, Saga Bay and Whispering Pines. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.",
+                  text: "We serve all of Cutler Bay (ZIP codes 33157, 33189 and 33190), plus nearby 33177, including Cutler Ridge, Lakes by the Bay, Saga Bay and Whispering Pines. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.",
                 },
               },
               {
@@ -274,7 +274,7 @@ export default function SprinklerRepairCutlerBayPage() {
               "@type": "City",
               name: "Cutler Bay",
               addressRegion: "FL",
-              postalCode: ["33157", "33189", "33177"],
+              postalCode: ["33157", "33189", "33190", "33177"],
             },
             url: "https://www.calltechcare.com/sprinkler-repair-cutler-bay",
           }),
@@ -325,7 +325,7 @@ export default function SprinklerRepairCutlerBayPage() {
           <p>
             If you need sprinkler repair in Cutler Bay, CallTechCare provides fast, straightforward sprinkler system repair for sprinkler leaks, broken heads,
             poor coverage, controller issues, and irrigation repair across Cutler Ridge, Lakes by the Bay, Saga Bay, Whispering Pines and
-            the rest of Cutler Bay, FL 33157 and 33189.
+            the rest of Cutler Bay, FL 33157, 33189 and 33190.
           </p>
 
           <Link
@@ -363,7 +363,7 @@ export default function SprinklerRepairCutlerBayPage() {
           <h3 className="spr-landing-h3">Service area</h3>
 
           <p>
-            We serve all of Cutler Bay (33157 and 33189) and nearby 33177, as well as nearby Miami-Dade cities, including{" "}
+            We serve all of Cutler Bay (33157, 33189 and 33190) and nearby 33177, as well as nearby Miami-Dade cities, including{" "}
             <Link href="/sprinkler-repair-aventura">Aventura</Link>,{" "}
             <Link href="/sprinkler-repair-hialeah">Hialeah</Link>,{" "}
             <Link href="/sprinkler-repair-doral">Doral</Link>, and{" "}
@@ -573,7 +573,7 @@ export default function SprinklerRepairCutlerBayPage() {
                   <span>What ZIP codes do you serve in Cutler Bay?</span>
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
-                <p className="faq-answer">We serve all of Cutler Bay (ZIP codes 33157 and 33189), plus nearby 33177, including Cutler Ridge, Lakes by the Bay, Saga Bay and Whispering Pines. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.</p>
+                <p className="faq-answer">We serve all of Cutler Bay (ZIP codes 33157, 33189 and 33190), plus nearby 33177, including Cutler Ridge, Lakes by the Bay, Saga Bay and Whispering Pines. If you're nearby in Miami-Dade or Broward, call us and we'll confirm availability.</p>
               </details>
               <details className="faq-item">
                 <summary className="faq-question">
