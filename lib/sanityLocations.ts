@@ -48,6 +48,7 @@ export interface Location {
   heroImage?: SanityImageSource;
   services?: string[];
   neighborhoods?: string[];
+  zipCodes?: string[];
   testimonials?: LocationTestimonial[];
   stats?: LocationStat[];
   ctaTitle?: string;
@@ -115,6 +116,7 @@ export async function getLocationBySlug(slug: string): Promise<Location | null> 
     heroImage,
     services,
     neighborhoods,
+    zipCodes,
     testimonials,
     stats,
     ctaTitle,

@@ -45,6 +45,10 @@ const SPRINKLER_CITY_LINKS: Record<string, { label: string; href: string }[]> = 
     { label: "Weston", href: "/sprinkler-repair-weston" },
     { label: "Sunrise", href: "/sprinkler-repair-sunrise" },
     { label: "Davie", href: "/sprinkler-repair-davie" },
+    { label: "Dania Beach", href: "/sprinkler-repair-dania-beach" },
+    { label: "West Park", href: "/sprinkler-repair-west-park" },
+    { label: "Southwest Ranches", href: "/sprinkler-repair-southwest-ranches" },
+    { label: "Fort Lauderdale", href: "/sprinkler-repair-fort-lauderdale" },
   ],
   miami: [
     { label: "Aventura", href: "/sprinkler-repair-aventura" },
@@ -52,6 +56,21 @@ const SPRINKLER_CITY_LINKS: Record<string, { label: string; href: string }[]> = 
     { label: "Doral", href: "/sprinkler-repair-doral" },
     { label: "Kendall", href: "/sprinkler-repair-kendall" },
     { label: "Cutler Bay", href: "/sprinkler-repair-cutler-bay" },
+    { label: "North Miami", href: "/sprinkler-repair-north-miami" },
+    { label: "Miami Gardens", href: "/sprinkler-repair-miami-gardens" },
+    { label: "Miami Lakes", href: "/sprinkler-repair-miami-lakes" },
+    { label: "Country Club", href: "/sprinkler-repair-country-club" },
+    { label: "Fontainebleau", href: "/sprinkler-repair-fontainebleau" },
+    { label: "Tamiami", href: "/sprinkler-repair-tamiami" },
+    { label: "Kendale Lakes", href: "/sprinkler-repair-kendale-lakes" },
+    { label: "Country Walk", href: "/sprinkler-repair-country-walk" },
+    { label: "Key Biscayne", href: "/sprinkler-repair-key-biscayne" },
+    { label: "North Bay Village", href: "/sprinkler-repair-north-bay-village" },
+    { label: "Surfside", href: "/sprinkler-repair-surfside" },
+    { label: "Sunny Isles Beach", href: "/sprinkler-repair-sunny-isles-beach" },
+    { label: "Coral Gables", href: "/sprinkler-repair-coral-gables" },
+    { label: "Miami Beach", href: "/sprinkler-repair-miami-beach" },
+    { label: "Miami", href: "/sprinkler-repair-miami" },
   ],
 };
 
@@ -338,6 +357,20 @@ export default async function LocationPage({ params }: Props) {
                     ))}
                   </div>
                 </div>
+                {location.zipCodes && location.zipCodes.length > 0 && (
+                  <div className="location-coverage-wrapper">
+                    <p className="location-zip-codes-label">
+                      ZIP Codes Served:
+                    </p>
+                    <div className="location-zip-codes">
+                      {location.zipCodes.map((zip, index) => (
+                        <span key={index} className="location-zip-code">
+                          {zip}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
