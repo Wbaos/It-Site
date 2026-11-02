@@ -236,6 +236,56 @@ export default function ReparacionDeSprinklersMiamiPage() {
         }}
       />
 
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            name: "Reparación de Sprinklers en Miami",
+            provider: {
+              "@type": "LocalBusiness",
+              name: "CallTechCare",
+              telephone: "+1-786-366-2729",
+              url: "https://www.calltechcare.com",
+            },
+            areaServed: {
+              "@type": "City",
+              name: "Miami",
+              addressRegion: "FL",
+              postalCode: ["33130", "33131", "33132"],
+            },
+            url: "https://www.calltechcare.com/es/reparacion-de-sprinklers-miami",
+          }),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://www.calltechcare.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Reparación de Sprinklers en Miami",
+                item: "https://www.calltechcare.com/es/reparacion-de-sprinklers-miami",
+              },
+            ],
+          }),
+        }}
+      />
+
       <Hero
         titleLine1="Reparación de Sprinklers en Miami"
         titleLine2="Irrigación • Cámaras • Servicios Técnicos"
