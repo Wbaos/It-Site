@@ -826,7 +826,7 @@ export default function CheckoutClient() {
             <div className={styles.perksCard}>
               <div className={styles.perkRow}>
                 <ShieldCheck size={18} className={styles.perkIcon} />
-                90-Day Warranty
+                1-Year Warranty
               </div>
               <div className={styles.perkRow}>
                 <BadgeCheck size={18} className={styles.perkIcon} />

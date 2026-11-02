@@ -705,7 +705,7 @@ export default function BookingCustomizeClient({ slug }: { slug: string }) {
               <div className={styles.perks}>
                 <div className={styles.perkItem}>
                   <ShieldCheck size={18} color="var(--brand-teal)" />
-                  90-Day Warranty
+                  1-Year Warranty
                 </div>
                 <div className={styles.perkItem}>
                   <ShieldCheck size={18} color="var(--brand-teal)" />
