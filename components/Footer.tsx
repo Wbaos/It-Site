@@ -124,9 +124,14 @@ export default function Footer() {
           <div className="footer-areas">
             <p className="areas-title">📍 Service Areas</p>
             <p className="areas-list">
-              Sunrise • Fort Lauderdale • Weston • Davie • Hollywood •
-              Pembroke Pines • Miramar • Aventura • Hialeah • Doral • Miami •
-              Kendall • Cutler Bay
+              Sunrise • Fort Lauderdale • Dania Beach • Weston • Davie •
+              Southwest Ranches • Hollywood • West Park • Pembroke Pines •
+              Miramar • Miami Gardens • Miami Lakes • Country Club •
+              Aventura • Sunny Isles Beach • North Miami • Surfside •
+              North Bay Village • Miami Beach • Hialeah • Doral •
+              Fontainebleau • Tamiami • Miami • Coral Gables •
+              Key Biscayne • Kendall • Kendale Lakes • Country Walk •
+              Cutler Bay
             </p>
           </div>
         </div>
