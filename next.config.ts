@@ -78,6 +78,31 @@ const nextConfig: NextConfig = {
         destination: "/services",
         permanent: true,
       },
+      {
+        source: "/services/senior-help",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/computer-and-printer-support",
+        destination: "/services/computer-and-printers",
+        permanent: true,
+      },
+      {
+        source: "/blog/home-office-setup-guide",
+        destination: "/blog",
+        permanent: true,
+      },
+      {
+        source: "/blog/network-infrastructure-upgrade-when-and-why",
+        destination: "/blog",
+        permanent: true,
+      },
+      {
+        source: "/blog/how-to-set-up-your-new-phone-or-tablet-like-a-pro",
+        destination: "/blog",
+        permanent: true,
+      },
     ];
   },
 
