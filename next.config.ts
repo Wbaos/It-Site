@@ -63,14 +63,9 @@ const nextConfig: NextConfig = {
         destination: "/services/computer-and-printers",
         permanent: true,
       },
-         {
-        source: "/services/smart-home-device",
-        destination: "/services/smart-home",
-        permanent: true,
-      },
       {
         source: "/services/smart-home-device",
-        destination: "/services/smart-home",
+        destination: "/services",
         permanent: true,
       },
       {

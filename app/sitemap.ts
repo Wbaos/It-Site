@@ -79,6 +79,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         "weston",
         "sunrise",
         "davie",
+        "fort-lauderdale",
         "aventura",
         "hialeah",
         "doral",
