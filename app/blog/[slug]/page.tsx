@@ -340,7 +340,7 @@ export default async function BlogPost({
               Need Expert Help?
             </h2>
             <p className="single-blog-cta-text">
-              Our team is ready to help with home, outdoor, and tech services
+              Our team is ready to help with sprinkler, irrigation, and security camera services
             </p>
 
             <Link href="/#contact" className="single-blog-cta-btn">

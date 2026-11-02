@@ -79,7 +79,7 @@ export default function ContactPage() {
 
             <p className="contact-support-subtitle">
               We're here to help. Contact CallTechCare for service requests,
-              quotes, or questions about our home, outdoor, and tech services
+              quotes, or questions about our sprinkler, irrigation, and security camera services
               across Miami and South Florida.
             </p>
 

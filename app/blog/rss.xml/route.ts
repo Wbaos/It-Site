@@ -84,7 +84,7 @@ export async function GET() {
     <link>${siteUrl}/blog</link>
 
     <description>
-    Home, outdoor, and tech tips for South Florida — including Wi-Fi &amp; internet guides, security camera and smart home tips, TV mounting advice, computer/printer help, and practical maintenance insights.
+    Sprinkler, irrigation, and security camera tips for South Florida — including sprinkler maintenance, irrigation guides, security camera advice, and practical maintenance insights.
     </description>
 
     <generator>CallTechCare Blog RSS</generator>

@@ -7,7 +7,7 @@ export const revalidate = 60;
 export const metadata: Metadata = {
   title: "Request a Free Quote in Miami & Broward | CallTechCare",
   description:
-    "Request a free quote from CallTechCare for sprinkler repair, irrigation and home services in Miami and Broward. We respond within 24 hours.",
+    "Request a free quote from CallTechCare for sprinkler repair, irrigation and security camera installation in Miami and Broward. We respond within 24 hours.",
   alternates: {
     canonical: "https://www.calltechcare.com/request-quote",
   },

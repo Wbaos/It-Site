@@ -43,11 +43,7 @@ const DEFAULT_FAQS: FaqItem[] = [
   },
   {
     q: "What areas do you serve?",
-    a: "CallTechCare provides in-home and remote support across Miami, Miramar, Pembroke Pines, Hollywood, Fort Lauderdale, and surrounding South Florida communities.",
-  },
-  {
-    q: "Do you install TV wall mounts in Miami?",
-    a: "Yes. CallTechCare provides professional TV wall mount installation services across Miami and surrounding South Florida areas, helping ensure the best viewing height and a clean installation.",
+    a: "CallTechCare provides in-home service across Miami-Dade and Broward County, including Miami, Miramar, Pembroke Pines, Hollywood, Fort Lauderdale, and surrounding South Florida communities.",
   },
 ];
 

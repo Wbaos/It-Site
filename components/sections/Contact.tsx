@@ -107,7 +107,7 @@ export default function Contact({
             <textarea
               name="message"
               className="textarea"
-              placeholder="Tell us what you need help with (sprinkler repair/irrigation, cameras, or tech support)..."
+              placeholder="Tell us what you need help with (sprinkler repair/irrigation or security cameras)..."
               required
             />
           </div>
