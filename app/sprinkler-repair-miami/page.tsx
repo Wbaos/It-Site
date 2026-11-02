@@ -200,7 +200,7 @@ export default function SprinklerRepairMiamiPage() {
                 name: "What areas do you serve?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "We serve 13 cities across Miami-Dade and Broward, from Sunrise to Cutler Bay, including Sunrise, Fort Lauderdale, Weston, Davie, Hollywood, Pembroke Pines, Miramar, Aventura, Hialeah, Doral, Miami, Kendall, and Cutler Bay.",
+                  text: "We serve 30 cities across Miami-Dade and Broward, from Sunrise to Cutler Bay, including Sunrise, Fort Lauderdale, Dania Beach, Weston, Davie, Southwest Ranches, Hollywood, West Park, Pembroke Pines, Miramar, Miami Gardens, Miami Lakes, Country Club, Aventura, Sunny Isles Beach, North Miami, Surfside, North Bay Village, Miami Beach, Hialeah, Doral, Fontainebleau, Tamiami, Miami, Coral Gables, Key Biscayne, Kendall, Kendale Lakes, Country Walk, and Cutler Bay.",
                 },
               },
               {
@@ -359,7 +359,7 @@ export default function SprinklerRepairMiamiPage() {
           <h3 className="spr-landing-h3">Service area</h3>
 
           <p>
-            We serve all of Miami-Dade and Broward, including <Link href="/sprinkler-repair-sunrise">Sunrise</Link>, <Link href="/locations/fort-lauderdale">Fort Lauderdale</Link>, <Link href="/sprinkler-repair-weston">Weston</Link>, <Link href="/sprinkler-repair-davie">Davie</Link>, <Link href="/sprinkler-repair-hollywood">Hollywood</Link>, <Link href="/sprinkler-repair-pembroke-pines">Pembroke Pines</Link>, <Link href="/sprinkler-repair-miramar">Miramar</Link>, <Link href="/sprinkler-repair-aventura">Aventura</Link>, <Link href="/sprinkler-repair-hialeah">Hialeah</Link>, <Link href="/sprinkler-repair-doral">Doral</Link>, Miami, <Link href="/sprinkler-repair-kendall">Kendall</Link>, and <Link href="/sprinkler-repair-cutler-bay">Cutler Bay</Link>. If you’re nearby
+            We serve all of Miami-Dade and Broward, including <Link href="/sprinkler-repair-sunrise">Sunrise</Link>, <Link href="/locations/fort-lauderdale">Fort Lauderdale</Link>, <Link href="/sprinkler-repair-dania-beach">Dania Beach</Link>, <Link href="/sprinkler-repair-weston">Weston</Link>, <Link href="/sprinkler-repair-davie">Davie</Link>, <Link href="/sprinkler-repair-southwest-ranches">Southwest Ranches</Link>, <Link href="/sprinkler-repair-hollywood">Hollywood</Link>, <Link href="/sprinkler-repair-west-park">West Park</Link>, <Link href="/sprinkler-repair-pembroke-pines">Pembroke Pines</Link>, <Link href="/sprinkler-repair-miramar">Miramar</Link>, <Link href="/sprinkler-repair-miami-gardens">Miami Gardens</Link>, <Link href="/sprinkler-repair-miami-lakes">Miami Lakes</Link>, <Link href="/sprinkler-repair-country-club">Country Club</Link>, <Link href="/sprinkler-repair-aventura">Aventura</Link>, <Link href="/sprinkler-repair-sunny-isles-beach">Sunny Isles Beach</Link>, <Link href="/sprinkler-repair-north-miami">North Miami</Link>, <Link href="/sprinkler-repair-surfside">Surfside</Link>, <Link href="/sprinkler-repair-north-bay-village">North Bay Village</Link>, <Link href="/sprinkler-repair-miami-beach">Miami Beach</Link>, <Link href="/sprinkler-repair-hialeah">Hialeah</Link>, <Link href="/sprinkler-repair-doral">Doral</Link>, <Link href="/sprinkler-repair-fontainebleau">Fontainebleau</Link>, <Link href="/sprinkler-repair-tamiami">Tamiami</Link>, Miami, <Link href="/sprinkler-repair-coral-gables">Coral Gables</Link>, <Link href="/sprinkler-repair-key-biscayne">Key Biscayne</Link>, <Link href="/sprinkler-repair-kendall">Kendall</Link>, <Link href="/sprinkler-repair-kendale-lakes">Kendale Lakes</Link>, <Link href="/sprinkler-repair-country-walk">Country Walk</Link>, and <Link href="/sprinkler-repair-cutler-bay">Cutler Bay</Link>. If you’re nearby
             and don’t see your city listed, reach out—we’ll confirm availability. Miami is the hub of our
             service area — see the full list on our <Link href="/locations/miami">Miami locations page</Link>.
           </p>
@@ -531,7 +531,7 @@ export default function SprinklerRepairMiamiPage() {
                   <span>What areas do you serve?</span>
                   <span className="faq-toggle" aria-hidden="true">+</span>
                 </summary>
-                <p className="faq-answer">We serve 13 cities across Miami-Dade and Broward, from Sunrise to Cutler Bay, including Sunrise, Fort Lauderdale, Weston, Davie, Hollywood, Pembroke Pines, Miramar, Aventura, Hialeah, Doral, Miami, Kendall, and Cutler Bay.</p>
+                <p className="faq-answer">We serve 30 cities across Miami-Dade and Broward, from Sunrise to Cutler Bay, including Sunrise, Fort Lauderdale, Dania Beach, Weston, Davie, Southwest Ranches, Hollywood, West Park, Pembroke Pines, Miramar, Miami Gardens, Miami Lakes, Country Club, Aventura, Sunny Isles Beach, North Miami, Surfside, North Bay Village, Miami Beach, Hialeah, Doral, Fontainebleau, Tamiami, Miami, Coral Gables, Key Biscayne, Kendall, Kendale Lakes, Country Walk, and Cutler Bay.</p>
               </details>
               <details className="faq-item">
                 <summary className="faq-question">
