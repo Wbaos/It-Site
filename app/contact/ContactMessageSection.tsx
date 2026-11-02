@@ -185,7 +185,7 @@ export default function ContactMessageSection() {
               <div className="contact-message-sideDivider" />
               <div className="contact-message-sideNote">
                 <span className="contact-message-sideNoteIcon" aria-hidden="true">📞</span>
-                  Emergency phone support available 24/7
+                  Emergency phone support during business hours
               </div>
             </div>
 
@@ -212,7 +212,7 @@ export default function ContactMessageSection() {
               </div>
 
               <div className="contact-message-emergencyText">
-                For urgent issues outside business hours, call our hotline.
+                For urgent sprinkler issues, call us for same-day priority.
               </div>
               <div className="contact-message-emergencyNumber">+1 (786) 366-2729</div>
             </a>

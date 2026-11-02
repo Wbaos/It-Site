@@ -824,7 +824,7 @@ function OrdersTab({
                                                 <ShieldCheck className="accountMetaIcon" aria-hidden="true" />
                                                 <p className="accountCardTitle">Warranty</p>
                                             </div>
-                                            <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{selectedOrder.warrantyText || "90-Day Warranty"}</p>
+                                            <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{selectedOrder.warrantyText || "1-Year Warranty"}</p>
                                         </div>
                                     </div>
                                 </div>
