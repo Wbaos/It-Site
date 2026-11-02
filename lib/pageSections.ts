@@ -57,7 +57,7 @@ export const homeSections: Section[] = [
         // imageSrc: "/helping2.jpg",
 
         titleLine1: "Sprinkler Repair Miami",
-        titleLine2: "Irrigation • Cameras • Tech Services",
+        titleLine2: "Irrigation • Repairs • New Systems",
 
         subtitle:
           "Professional sprinkler repair and irrigation services in Miami and Broward. We also install security cameras and provide expert tech support.",

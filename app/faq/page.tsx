@@ -43,8 +43,8 @@ export default function FAQPage() {
       a: "Yes. We provide professional TV mounting and can also help with smart TV setup, streaming devices, cable management, and basic audio configuration.",
     },
     {
-      q: "Do you help with landscaping or tree trimming?",
-      a: "Yes. We provide assistance with tree trimming and basic landscaping services for common residential needs.",
+      q: "Do you repair sprinkler systems in HOA communities?",
+      a: "Yes. We repair and install sprinkler systems in HOA communities across Miami and Broward. Call (786) 366-2729 and we'll confirm coverage for your community.",
     },
     {
       q: "Do you help seniors with basic tech setups?",

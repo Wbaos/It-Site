@@ -524,7 +524,7 @@ export default async function LocationPage({ params }: Props) {
               local provider for home, outdoor, and tech services. Whether you need help
               with security camera installation, TV mounting, WiFi & internet troubleshooting,
               computer and printer support, phone & tablet help, senior-friendly tech support,
-              sprinkler & irrigation service, and tree trimming, our team in {location.city} is here to help.
+              sprinkler & irrigation service, our team in {location.city} is here to help.
             </p>
             <p>
               We understand the unique needs of {location.city} residents
@@ -540,7 +540,7 @@ export default async function LocationPage({ params }: Props) {
               Security camera installation, TV mounting and basic home theater setup, WiFi &
               internet support, computer and printer support, phone & tablet help, senior-friendly
               tech support, smart home installation and automation, plus sprinkler & irrigation
-              service, and tree trimming. Contact us today to schedule service
+              service. Contact us today to schedule service
               in {location.city}, {location.state}.
             </p>
           </div>
