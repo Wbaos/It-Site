@@ -7,7 +7,7 @@ import ReactMarkdown from "react-markdown";
 const INITIAL_MESSAGES: Msg[] = [
     {
         from: "bot",
-        text: "Hi! I’m **Sofía** from CallTechCare. What can we help you with today—**sprinkler/irrigation repair**, **security cameras**, or **tech support** (Wi‑Fi, computer, printer, TV, etc.)?",
+        text: "Hi! I’m **Sofía** from CallTechCare. What can we help you with today—**sprinkler/irrigation repair**, **security cameras**?",
     },
 ];
 

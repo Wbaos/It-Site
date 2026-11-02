@@ -33,13 +33,6 @@ const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
     verified: true,
   },
   {
-    name: "Brian T.",
-    text: "Set up our Wi-Fi and TV in one visit. Great service!",
-    date: "2025-04-29",
-    rating: 5,
-    verified: true,
-  },
-  {
     name: "María L.",
     text: "Very respectful and helpful. Highly recommended.",
     date: "2025-03-03",

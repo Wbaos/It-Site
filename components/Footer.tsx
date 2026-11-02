@@ -140,16 +140,6 @@ export default function Footer() {
                 Security Camera Installation
               </Link>
             </li>
-            <li>
-              <Link href="/services/wifi-and-internet">
-                Wi-Fi & Internet Support
-              </Link>
-            </li>
-            <li>
-              <Link href="/services/computer-and-printers">
-                Computer & Printer Support
-              </Link>
-            </li>
           </ul>
         </div>
 

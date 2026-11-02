@@ -96,7 +96,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title:
       location.metaTitle ||
-      `${location.title} | Home, Outdoor & Tech Services`,
+      `${location.title} | Sprinkler Repair, Irrigation & Security Cameras`,
     description: location.metaDescription || location.description,
     alternates: {
       canonical: `https://www.calltechcare.com/locations/${slug}`,
@@ -165,7 +165,7 @@ export default async function LocationPage({ params }: Props) {
   const locationServiceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: `Home, Outdoor & Tech Services in ${location.city}, ${location.state}`,
+    name: `Sprinkler Repair, Irrigation & Security Cameras in ${location.city}, ${location.state}`,
     url: pageUrl,
     description: location.metaDescription || location.description,
     areaServed: {
@@ -231,7 +231,7 @@ export default async function LocationPage({ params }: Props) {
             {location.city}, {location.state}
           </h1>
           <p className="location-hero-subtitle">
-            Professional Home, Outdoor & Tech Services in {location.city}
+            Professional Sprinkler Repair, Irrigation & Security Cameras in {location.city}
           </p>
         </div>
       </section>
@@ -334,7 +334,7 @@ export default async function LocationPage({ params }: Props) {
                     {location.serviceRadius?.population && (
                       <> Serving a population of approximately{" "}
                         {location.serviceRadius.population} residents with
-                        professional home, outdoor, and tech services.
+                        professional sprinkler, irrigation, and security camera services.
                       </>
                     )}
                   </p>
@@ -544,7 +544,7 @@ export default async function LocationPage({ params }: Props) {
       <section className="location-seo-section">
         <div className="location-section-card">
           <h2 className="location-section-title">
-            Professional Home, Outdoor & Tech Services in {location.city}, {location.state}
+            Professional Sprinkler Repair, Irrigation & Security Cameras in {location.city}, {location.state}
           </h2>
           <div className="location-seo-content">
             <p>

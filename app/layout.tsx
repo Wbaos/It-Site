@@ -197,11 +197,6 @@ export default function RootLayout({
       "Sprinkler System Repair",
       "Irrigation System Installation",
       "Security Camera Installation",
-      "WiFi Troubleshooting",
-      "Computer Repair & Support",
-      "Printer Setup & Support",
-      "Smart Home Installation",
-      "TV Wall Mount Installation",
     ],
     paymentAccepted: ["Cash", "Credit Card", "Zelle"],
   };

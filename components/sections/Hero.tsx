@@ -20,8 +20,8 @@ type Props = {
 
 export default function Hero({
   titleLine1 = "Sprinkler Repair Miami",
-  titleLine2 = "Irrigation • Cameras • Tech Services",
-  subtitle = "Professional sprinkler repair and irrigation services in Miami and Broward. We also install security cameras and provide expert tech support for homes and businesses.",
+  titleLine2 = "Irrigation • Repairs • New Systems",
+  subtitle = "Professional sprinkler repair and irrigation services in Miami and Broward. We also install security cameras.",
   badgeText = "Sprinkler Repair & Irrigation in Miami & Broward",
   primaryCtaText = "Call Now",
   primaryCtaHref = "tel:+17863662729",
