@@ -16,8 +16,7 @@ export default function SEOIntro() {
         </p>
 
         <p>
-          After sprinkler repair and irrigation service, we also provide security camera installation and expert tech support—including
-          Wi-Fi and internet troubleshooting, computer and printer support, and device setup for homes and small businesses.
+          After sprinkler repair and irrigation service, we also provide security camera installation  for homes and small businesses.
         </p>
 
         <p>

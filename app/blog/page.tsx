@@ -10,7 +10,7 @@ export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Sprinkler Repair & Home Tech Tips | CallTechCare Blog",
-  description: "Helpful guides on sprinkler repair, irrigation, TV mounting, security cameras, Wi-Fi, and smart home tips for homeowners in Miami and South Florida.",  
+  description: "Helpful guides on sprinkler repair, irrigation, security cameras, and home maintenance tips for homeowners in Miami and South Florida.",  
   alternates: {
     canonical: "https://www.calltechcare.com/blog",
   },
@@ -57,7 +57,7 @@ export default async function BlogPage() {
     "@type": "Blog",
     name: "CallTechCare Blog",
     description:
-      "Guides and tips about TV mounting, security cameras, Wi-Fi troubleshooting, smart home setup, and home services.",
+      "Guides and tips about sprinkler repair, irrigation, security cameras, and home services.",
     url: pageUrl,
     publisher: {
       "@type": "Organization",
@@ -120,23 +120,14 @@ export default async function BlogPage() {
         </h1>
 
         <p className="blog-subtitle">
-          Helpful guides on TV mounting, security cameras, Wi-Fi troubleshooting, smart home setup, and home maintenance tips for Miami and South Florida homeowners.
+          Helpful guides on sprinkler repair, irrigation, security cameras, and home maintenance tips for Miami and South Florida homeowners.
         </p>
 
         <p className="blog-intro">
           Looking for professional help? CallTechCare also provides{" "}
-          <Link href="/services/tv-wall-mount-installation-services">
-            TV mounting
-          </Link>,{" "}
           <Link href="/services/home-security">
             security camera installation
-          </Link>,{" "}
-          <Link href="/services/wifi-and-internet">
-            Wi-Fi troubleshooting
-          </Link>,{" "}
-          <Link href="/services/computer-and-printers">
-            computer and printer support
-          </Link>,{" "}
+          </Link> and{" "}
           <Link href="/services/landscaping">
             sprinkler and irrigation services
           </Link>{" "}

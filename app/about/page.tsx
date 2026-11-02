@@ -26,7 +26,7 @@ export default function AboutPage() {
           <p className="about-text">
             At CallTechCare, our mission is to make service simple, safe, and accessible for homeowners and small businesses.
             Our primary focus is <Link href="/sprinkler-repair-miami">sprinkler repair and irrigation troubleshooting in Miami and Broward</Link>.
-            We also provide security camera installation and expert tech support (Wi-Fi, computers, printers, and device setup)
+            We also provide security camera installation
             when you need help beyond irrigation.
           </p>
         </section>
@@ -35,9 +35,7 @@ export default function AboutPage() {
           <h2 className="about-heading">Our Story</h2>
           <p className="about-text">
             We started CallTechCare after realizing how many people — particularly older adults —
-            felt frustrated or left behind by constant technology changes. Whether it’s setting up
-            a smart TV, syncing a phone, or troubleshooting Wi-Fi, we’re here to help with honesty
-            and patience.
+            felt frustrated or left behind by constant technology changes. Whether it’s a sprinkler system that won’t run, a leak in the yard, or cameras that need placing, we’re here to help with honesty and patience.
           </p>
 
           <p className="about-text">
@@ -74,7 +72,7 @@ export default function AboutPage() {
           <h2>Need Help Today?</h2>
           <p>
             Book a trusted service visit for sprinkler repair and irrigation troubleshooting in Miami and Broward.
-            We also provide security camera installation and expert tech support (Wi-Fi, computers, printers, and device setup).
+            We also provide security camera installation.
             If you're looking for <Link href="/sprinkler-repair-miami">Sprinkler Repair Miami</Link>, start here.
           </p>
 

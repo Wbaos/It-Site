@@ -166,10 +166,10 @@ export default async function ServicesPage() {
             <Briefcase />
           </div>
 
-          <h1>Sprinkler Repair, Irrigation & Home Services in Miami</h1>
+          <h1>Sprinkler Repair, Irrigation & Security Cameras in Miami</h1>
 
           <p className="services-list-hero-subtitle">
-            Sprinkler repair & irrigation services in Miami and Broward, plus security camera installation and expert tech support.
+            Sprinkler repair & irrigation services in Miami and Broward, plus security camera installation.
           </p>
 
           <p className="services-list-hero-subtitle">

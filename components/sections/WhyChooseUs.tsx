@@ -5,7 +5,7 @@ export default function WhyChooseUs() {
     {
       icon: <Smile size={32} strokeWidth={1.5} />,
       title: "Patient & Friendly Experts",
-      text: "We help homeowners and small businesses with clear explanations and reliable, on-site service—from sprinkler repairs to cameras and tech support.",
+      text: "We help homeowners and small businesses with clear explanations and reliable, on-site service—from sprinkler repairs to security cameras.",
     },
     {
       icon: <Clock size={32} strokeWidth={1.5} />,
@@ -14,18 +14,18 @@ export default function WhyChooseUs() {
     },
     {
       icon: <Network size={32} strokeWidth={1.5} />,
-      title: "WiFi, Internet & Smart Setup",
-      text: "We troubleshoot slow internet, optimize Wi-Fi, and set up connected systems—including security cameras and smart irrigation controllers.",
+      title: "Security Camera Installation",
+      text: "We install wireless security cameras in the right spots, with the best coverage and viewing angles, for homes and small businesses.",
     },
     {
       icon: <Cpu size={32} strokeWidth={1.5} />,
       title: "Hands-On Installations",
-      text: "From sprinkler repair and irrigation troubleshooting to security cameras and tech setup (Wi-Fi, computers, printers)—we handle the details.",
+      text: "From sprinkler repair and irrigation troubleshooting to security camera installation—we handle the details.",
     },
     {
       icon: <Users size={32} strokeWidth={1.5} />,
       title: "Trusted by Homes & Small Businesses",
-      text: "From single-device help to full office setups, we support homes, seniors, home offices, and small businesses.",
+      text: "From a single sprinkler repair to a full new system or a camera setup, we support homes, seniors, home offices, and small businesses.",
     },
     {
       icon: <ShieldCheck size={32} strokeWidth={1.5} />,
@@ -47,7 +47,7 @@ export default function WhyChooseUs() {
             Why Choose <span className="brand">CallTechCare</span> for Sprinkler Repair in Miami & Broward?
           </h2>
           <p>
-            Sprinkler repair & irrigation first—with security camera installation and expert tech support available across Miami and Broward.
+            Sprinkler repair & irrigation first—with security camera installation available across Miami and Broward.
           </p>
         </div>
 

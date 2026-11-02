@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Terms of Service | CallTechCare",
 
   description:
-        "Read the CallTechCare Terms of Service outlining policies, payments, warranties, and responsibilities for services in Miami and Broward, including sprinkler repair & irrigation, security camera installation, and tech support.",
+        "Read the CallTechCare Terms of Service outlining policies, payments, warranties, and responsibilities for services in Miami and Broward, including sprinkler repair & irrigation and security camera installation.",
 
   alternates: {
     canonical: "https://www.calltechcare.com/terms-and-conditions",
@@ -104,15 +104,6 @@ export default function TermsAndConditionsPage() {
                                 <ul>
                                     <li>Sprinkler repair & irrigation service (repairs and installations)</li>
                                     <li>Security camera installation and setup</li>
-                                    <li>Remote and on-site troubleshooting</li>
-                                    <li>Device setup and configuration</li>
-                                    <li>Network and Wi-Fi support</li>
-                                    <li>TV mounting and basic setup</li>
-                                    <li>Computer and printer support</li>
-                                    <li>Phone and tablet support</li>
-                                    <li>Senior-friendly in-home tech help</li>
-                                    <li>Software installation and optimization</li>
-                                    <li>General IT consulting</li>
                                 </ul>
                             </div>
 
@@ -188,7 +179,6 @@ export default function TermsAndConditionsPage() {
                                 <p>CallTechCare is not liable for:</p>
                                 <ul>
                                     <li>Pre-existing damage to equipment or property</li>
-                                    <li>Data loss during computer repairs (customers should back up data)</li>
                                     <li>Damage caused by customer misuse after service completion</li>
                                     <li>Third-party equipment defects or failures</li>
                                 </ul>
