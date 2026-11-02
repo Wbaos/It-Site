@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import RequestQuoteClient from "./RequestQuoteClient";
 import { getRequestQuoteContent, getServiceCategories } from "@/lib/request-quote-data";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "Request a Free Quote in Miami & Broward | CallTechCare",
+  description:
+    "Request a free quote from CallTechCare for sprinkler repair, irrigation and home services in Miami and Broward. We respond within 24 hours.",
+  alternates: {
+    canonical: "https://www.calltechcare.com/request-quote",
+  },
+};
 
 export default async function RequestQuotePage({
   searchParams,

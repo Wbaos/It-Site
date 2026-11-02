@@ -20,10 +20,9 @@ import ContactMessageSection from "./ContactMessageSection";
 ========================= */
 
 export const metadata: Metadata = {
-  title: "Contact Us – CallTechCare | Local Home, Outdoor & Tech Services",
+  title: "Contact CallTechCare | Sprinkler Repair Miami & Broward",
 
-  description:
-    "Contact CallTechCare for TV mounting, security camera installation, Wi-Fi troubleshooting, computer support, sprinkler repair, and home services across Miami and South Florida.",
+  description: "Contact CallTechCare for sprinkler repair and irrigation in Miami and Broward. Call (786) 366-2729 or send a message — we respond within 24 hours.",
 
   alternates: {
     canonical: "https://www.calltechcare.com/contact",
@@ -75,7 +74,7 @@ export default function ContactPage() {
             </div>
 
             <h1 className="contact-support-title">
-              Customer Support
+              Contact Us
             </h1>
 
             <p className="contact-support-subtitle">

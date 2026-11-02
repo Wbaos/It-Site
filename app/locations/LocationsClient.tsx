@@ -50,13 +50,13 @@ export default function LocationsClient() {
           <div className="locations-icon-wrapper">
             <MapPin />
           </div>
-          <h1>Service Areas in South Florida</h1>
+          <h1>Sprinkler Repair Service Areas in Miami & Broward</h1>
           <p className="locations-hero-subtitle">
             Browse the cities and communities CallTechCare serves across
             Miami-Dade, Broward County, and surrounding South Florida areas.
           </p>
           <p className="locations-hero-badge">
-            ✦ Serving 13 cities across Miami-Dade & Broward
+            ✦ Serving 30 cities across Miami-Dade & Broward
           </p>
         </div>
       </section>
@@ -185,7 +185,7 @@ export default function LocationsClient() {
                 <div className="location-stat-label">County</div>
               </div>
               <div>
-                <div className="location-stat-value">13</div>
+                <div className="location-stat-value">30</div>
                 <div className="location-stat-label">Cities Served</div>
               </div>
               <div>
@@ -206,6 +206,18 @@ export default function LocationsClient() {
             <Link href="/#contact" className="locations-cta-button">
               Request Specific Service
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* All Cities Section */}
+      <section className="locations-coverage-section">
+        <div className="locations-coverage-container">
+          <div className="locations-coverage-card">
+            <h2 className="locations-coverage-title">All 30 Cities We Serve</h2>
+            <p className="locations-coverage-description">
+              Sprinkler repair and irrigation across Miami-Dade and Broward: <Link href="/sprinkler-repair-sunrise">Sunrise</Link>, <Link href="/locations/fort-lauderdale">Fort Lauderdale</Link>, <Link href="/sprinkler-repair-dania-beach">Dania Beach</Link>, <Link href="/sprinkler-repair-weston">Weston</Link>, <Link href="/sprinkler-repair-davie">Davie</Link>, <Link href="/sprinkler-repair-southwest-ranches">Southwest Ranches</Link>, <Link href="/sprinkler-repair-hollywood">Hollywood</Link>, <Link href="/sprinkler-repair-west-park">West Park</Link>, <Link href="/sprinkler-repair-pembroke-pines">Pembroke Pines</Link>, <Link href="/sprinkler-repair-miramar">Miramar</Link>, <Link href="/sprinkler-repair-miami-gardens">Miami Gardens</Link>, <Link href="/sprinkler-repair-miami-lakes">Miami Lakes</Link>, <Link href="/sprinkler-repair-country-club">Country Club</Link>, <Link href="/sprinkler-repair-aventura">Aventura</Link>, <Link href="/sprinkler-repair-sunny-isles-beach">Sunny Isles Beach</Link>, <Link href="/sprinkler-repair-north-miami">North Miami</Link>, <Link href="/sprinkler-repair-surfside">Surfside</Link>, <Link href="/sprinkler-repair-north-bay-village">North Bay Village</Link>, <Link href="/sprinkler-repair-miami-beach">Miami Beach</Link>, <Link href="/sprinkler-repair-hialeah">Hialeah</Link>, <Link href="/sprinkler-repair-doral">Doral</Link>, <Link href="/sprinkler-repair-fontainebleau">Fontainebleau</Link>, <Link href="/sprinkler-repair-tamiami">Tamiami</Link>, <Link href="/locations/miami">Miami</Link>, <Link href="/sprinkler-repair-coral-gables">Coral Gables</Link>, <Link href="/sprinkler-repair-key-biscayne">Key Biscayne</Link>, <Link href="/sprinkler-repair-kendall">Kendall</Link>, <Link href="/sprinkler-repair-kendale-lakes">Kendale Lakes</Link>, <Link href="/sprinkler-repair-country-walk">Country Walk</Link> y <Link href="/sprinkler-repair-cutler-bay">Cutler Bay</Link>.
+            </p>
           </div>
         </div>
       </section>

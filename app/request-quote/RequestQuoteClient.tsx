@@ -27,7 +27,7 @@ const steps = [
   },
   {
     title: "Receive Your Quote",
-    desc: "We’ll review your request and send a detailed quote within 2-4 hours.",
+    desc: "We’ll review your request and send a detailed quote within 24 hours.",
   },
   {
     title: "Schedule Service",

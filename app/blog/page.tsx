@@ -9,9 +9,8 @@ import BlogPageClient from "@/app/blog/BlogPageClient";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Home Tech, TV Mounting & Smart Home Tips | CallTechCare Blog",
-  description:
-    "Helpful guides on TV mounting, security camera installation, Wi-Fi troubleshooting, smart home setup, sprinkler repair, and home technology tips for homeowners across Miami and South Florida.",  
+  title: "Sprinkler Repair & Home Tech Tips | CallTechCare Blog",
+  description: "Helpful guides on sprinkler repair, irrigation, TV mounting, security cameras, Wi-Fi, and smart home tips for homeowners in Miami and South Florida.",  
   alternates: {
     canonical: "https://www.calltechcare.com/blog",
   },
@@ -117,7 +116,7 @@ export default async function BlogPage() {
         </div>
 
         <h1 className="blog-title">
-          Home Tech, TV Mounting & Smart Home Guides
+          Sprinkler Repair & Home Tech Guides
         </h1>
 
         <p className="blog-subtitle">

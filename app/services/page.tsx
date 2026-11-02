@@ -6,19 +6,17 @@ import { Briefcase } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sprinkler Repair, Irrigation & Home Services Miami | CallTechCare",
+  title: "Sprinkler Repair & Irrigation Services | CallTechCare",
 
-  description:
-    "Explore CallTechCare services in Miami and Broward: sprinkler repair & irrigation, security camera installation, and expert tech support (Wi-Fi, computers, printers, and more).",
+  description: "Explore CallTechCare services in Miami and Broward: sprinkler repair, irrigation installation, valve and timer replacement, leak repair, and new systems.",
 
   alternates: {
     canonical: "https://www.calltechcare.com/services",
   },
 
   openGraph: {
-    title: "Sprinkler Repair, Irrigation, Cameras & Tech Services | CallTechCare",
-    description:
-      "Sprinkler repair & irrigation services in Miami and Broward, plus security camera installation and expert tech support.",
+    title: "Sprinkler Repair & Irrigation Services | CallTechCare",
+    description: "Explore CallTechCare services in Miami and Broward: sprinkler repair, irrigation installation, valve and timer replacement, leak repair, and new systems.",
     url: "https://www.calltechcare.com/services",
     siteName: "CallTechCare",
     images: [

@@ -57,7 +57,6 @@ export async function middleware(request: NextRequest) {
   // Protected Routes - Require Authentication
   const protectedPaths = [
     '/account',
-    '/services/[slug]/book',
     '/reviews/write'
   ];
 

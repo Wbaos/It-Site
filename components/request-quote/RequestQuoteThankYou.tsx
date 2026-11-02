@@ -85,7 +85,7 @@ export default function RequestQuoteThankYou(props: {
                     <span className="rq-thankyou__accent">
                       {props.contactEmail.trim() || "your email"}
                     </span>{" "}
-                    within 2-4 hours.
+                    within 24 hours.
                   </div>
                 </div>
               </div>
