@@ -6,6 +6,7 @@ export async function GET() {
       `*[_type == "service" && popular == true]{
         _id,
         title,
+        titleEs,
         "slug": slug.current,
         "icon": icon,
         "emoji": emoji,
