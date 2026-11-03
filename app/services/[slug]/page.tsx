@@ -108,10 +108,22 @@ export async function generateMetadata({
       service.metaDescription ||
       service.description ||
       `Professional ${service.title} service in Miami, Fort Lauderdale, and Broward County.`;
+    // Spanish twin exists only for the main sprinkler service (phase 1).
+    const isMainSprinklerService =
+      slug === "sprinkler-repair-and-installation";
     return {
       title,
       description,
-      alternates: { canonical: url },
+      alternates: isMainSprinklerService
+        ? {
+            canonical: url,
+            languages: {
+              es: "https://www.calltechcare.com/es/reparacion-e-instalacion-de-sprinklers",
+              en: url,
+              "x-default": url,
+            },
+          }
+        : { canonical: url },
       openGraph: {
         title,
         description,

@@ -35,6 +35,24 @@ export default function Navbar() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [mobileServicesPanel, setMobileServicesPanel] = useState(false);
 
+  // Language switcher: pages with a Spanish twin link to it; every other page
+  // falls back to the Spanish hub (never a broken page). Spanish pages link
+  // back to their English twin, or to the English home when there is none.
+  const ES_HUB_HREF = "/es/reparacion-de-sprinklers-miami";
+  const EN_TO_ES: Record<string, string> = {
+    "/sprinkler-repair-miami": "/es/reparacion-de-sprinklers-miami",
+    "/services/sprinkler-repair-and-installation":
+      "/es/reparacion-e-instalacion-de-sprinklers",
+  };
+  const ES_TO_EN: Record<string, string> = {
+    "/es/reparacion-de-sprinklers-miami": "/sprinkler-repair-miami",
+    "/es/reparacion-e-instalacion-de-sprinklers":
+      "/services/sprinkler-repair-and-installation",
+  };
+  const isSpanishPage = (pathname ?? "").startsWith("/es/");
+  const spanishHref = EN_TO_ES[pathname ?? ""] ?? ES_HUB_HREF;
+  const englishHref = ES_TO_EN[pathname ?? ""] ?? "/";
+
   const NavLinks = ({ attachDropdownRef }: { attachDropdownRef: boolean }) => (
     <>
       <div className="nav-item dropdown" ref={attachDropdownRef ? dropdownRef : undefined}>
@@ -229,6 +247,54 @@ export default function Navbar() {
       <Link href="/contact" className="support-btn" onClick={closeAllMenus}>
         Get Support
       </Link>
+
+      {/* LANGUAGE SWITCHER */}
+      <span
+        className="lang-switcher"
+        aria-label="Language switcher"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "6px",
+          padding: "6px 10px",
+          border: "1px solid rgba(255, 255, 255, 0.35)",
+          borderRadius: "999px",
+          fontSize: "13px",
+          lineHeight: "1",
+        }}
+      >
+        {isSpanishPage ? (
+          <>
+            <span aria-current="true" style={{ fontWeight: 700 }}>
+              ES
+            </span>
+            <span aria-hidden="true">|</span>
+            <Link
+              href={englishHref}
+              onClick={closeAllMenus}
+              aria-label="View this page in English"
+              style={{ textDecoration: "none", color: "inherit", opacity: 0.8 }}
+            >
+              EN
+            </Link>
+          </>
+        ) : (
+          <>
+            <span aria-current="true" style={{ fontWeight: 700 }}>
+              EN
+            </span>
+            <span aria-hidden="true">|</span>
+            <Link
+              href={spanishHref}
+              onClick={closeAllMenus}
+              aria-label="Ver esta página en español"
+              style={{ textDecoration: "none", color: "inherit", opacity: 0.8 }}
+            >
+              ES
+            </Link>
+          </>
+        )}
+      </span>
     </>
   );
 
