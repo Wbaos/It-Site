@@ -12,6 +12,7 @@ import { getGoogleWriteReviewUrl } from "@/lib/google-reviews";
 import ServiceRating from "@/components/ServiceRating";
 import FaqAccordion from "@/components/FaqAccordion";
 import ServiceGroupList from "@/components/ServiceGroupList";
+import { SERVICE_ES_PATHS, serviceHref } from "@/lib/serviceTwins";
 import BeforeAfterSection from "@/components/BeforeAfterSection";
 import { PortableText } from "@portabletext/react";
 import type { Metadata } from "next";
@@ -108,17 +109,17 @@ export async function generateMetadata({
       service.metaDescription ||
       service.description ||
       `Professional ${service.title} service in Miami, Fort Lauderdale, and Broward County.`;
-    // Spanish twin exists only for the main sprinkler service (phase 1).
-    const isMainSprinklerService =
-      slug === "sprinkler-repair-and-installation";
+    // Spanish twin exists for all nine services (main service since phase 1,
+    // the other eight since the Spanish services lot).
+    const esTwinPath = SERVICE_ES_PATHS[slug];
     return {
       title,
       description,
-      alternates: isMainSprinklerService
+      alternates: esTwinPath
         ? {
             canonical: url,
             languages: {
-              es: "https://www.calltechcare.com/es/reparacion-e-instalacion-de-sprinklers",
+              es: `https://www.calltechcare.com${esTwinPath}`,
               en: url,
               "x-default": url,
             },
@@ -201,7 +202,7 @@ export default async function ServicePage({
 
   const pageUrl =
     locale === "es"
-      ? "https://www.calltechcare.com/es/reparacion-e-instalacion-de-sprinklers"
+      ? `https://www.calltechcare.com${serviceHref(slug, "es")}`
       : `https://www.calltechcare.com/services/${slug}`;
   const speakableWebPageSchema = {
     "@context": "https://schema.org",
