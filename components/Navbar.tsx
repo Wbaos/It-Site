@@ -74,23 +74,26 @@ export default function Navbar() {
   const spanishHref = EN_TO_ES[pathname ?? ""] ?? ES_HUB_HREF;
   const englishHref = ES_TO_EN[pathname ?? ""] ?? "/";
 
-  // Shared language pill: solid brand-green background with dark bold text,
-  // so it is clearly visible. Hrefs and mappings above are untouched.
+  // Segmented language switcher: two separate, directly tappable buttons
+  // ("EN" and "ES") instead of one pill to toggle — tap the language you
+  // want to go to. The active language is highlighted in brand green with
+  // dark text; the inactive one stays visible but dimmed. Hrefs and
+  // mappings above are untouched.
   // Rendered in the desktop nav (NavLinks) and, separately, in the header
   // actions for mobile, where it is visible without opening the menu.
   const langSwitcher = (extraClass: string) => (
     <span
       className={`lang-switcher ${extraClass}`}
+      role="group"
       aria-label="Language switcher"
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: "6px",
-        padding: "8px 14px",
-        background: "#00E793",
-        color: "#0f172a",
+        padding: "2px",
+        background: "rgba(15, 23, 42, 0.55)",
+        border: "1px solid rgba(255, 255, 255, 0.18)",
         borderRadius: "999px",
-        fontSize: "14px",
+        fontSize: "12px",
         fontWeight: 700,
         lineHeight: "1",
         whiteSpace: "nowrap",
@@ -98,30 +101,56 @@ export default function Navbar() {
     >
       {isSpanishPage ? (
         <>
-          <span aria-current="true" style={{ fontWeight: 700 }}>
-            ES
-          </span>
-          <span aria-hidden="true">|</span>
           <Link
             href={englishHref}
             onClick={closeAllMenus}
             aria-label="View this page in English"
-            style={{ textDecoration: "none", color: "inherit", opacity: 0.75 }}
+            style={{
+              textDecoration: "none",
+              color: "#e2e8f0",
+              opacity: 0.7,
+              padding: "5px 9px",
+              borderRadius: "999px",
+            }}
           >
             EN
           </Link>
+          <span
+            aria-current="true"
+            style={{
+              background: "#00E793",
+              color: "#0f172a",
+              padding: "5px 9px",
+              borderRadius: "999px",
+            }}
+          >
+            ES
+          </span>
         </>
       ) : (
         <>
-          <span aria-current="true" style={{ fontWeight: 700 }}>
+          <span
+            aria-current="true"
+            style={{
+              background: "#00E793",
+              color: "#0f172a",
+              padding: "5px 9px",
+              borderRadius: "999px",
+            }}
+          >
             EN
           </span>
-          <span aria-hidden="true">|</span>
           <Link
             href={spanishHref}
             onClick={closeAllMenus}
             aria-label="Ver esta página en español"
-            style={{ textDecoration: "none", color: "inherit", opacity: 0.75 }}
+            style={{
+              textDecoration: "none",
+              color: "#e2e8f0",
+              opacity: 0.7,
+              padding: "5px 9px",
+              borderRadius: "999px",
+            }}
           >
             ES
           </Link>
