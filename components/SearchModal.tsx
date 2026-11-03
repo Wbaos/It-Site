@@ -122,7 +122,7 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
                     onClick={onClose}
                   >
                     <span className="icon">{item.emoji || "⭐"}</span>
-                    <span>{item.title}</span>
+                    <span>{isSpanish ? item.titleEs || item.title : item.title}</span>
                   </Link>
                 ))}
               </div>
@@ -143,7 +143,7 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
                         onClick={onClose}
                         >
                         <div>
-                            <p className="title">{r.title}</p>
+                            <p className="title">{isSpanish ? r.titleEs || r.title : r.title}</p>
                         </div>
                         </Link>
                     );
