@@ -6,10 +6,12 @@ export default function ServiceGroupList({
   title,
   items,
   onSelect,
+  locale = "en",
 }: {
   title: string;
   items: any[];
   onSelect?: (service?: any) => void;
+  locale?: "en" | "es";
 }) {
   return (
     <div className="svc-list submenu-left-column">
@@ -21,6 +23,12 @@ export default function ServiceGroupList({
 
         const isHourly = s?.pricingModel === "hourly";
         const hasNumericPrice = typeof s?.price === "number";
+        const displayTitle =
+          locale === "es" && s?.titleEs ? s.titleEs : s.title;
+        const displayNav =
+          locale === "es" && s?.navDescriptionEs
+            ? s.navDescriptionEs
+            : s.navDescription;
 
         return (
           <Link
@@ -70,14 +78,14 @@ export default function ServiceGroupList({
 
             <div className="svc-mid">
               <span className="svc-title">
-                {s.title}
+                {displayTitle}
                 {hasSubs && (
                   <span className="srv-count">({subs.length})</span>
                 )}
               </span>
 
-              {s.navDescription && (
-                <p className="svc-desc">{s.navDescription}</p>
+              {displayNav && (
+                <p className="svc-desc">{displayNav}</p>
               )}
             </div>
              <div className="svc-right">
