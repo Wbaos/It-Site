@@ -26,10 +26,10 @@ const NAV = [
 
 // Spanish chrome: labels in Spanish. Links point only to pages that exist
 // in this branch: the Spanish home anchors (#services, #how), the Spanish
-// contact page, and the English /blog page, which has no Spanish twin yet.
+// contact page, and the Spanish blog page.
 const NAV_ES = [
   { href: "/es/contacto", label: "Contacto" },
-  { href: "/blog", label: "Blog" },
+  { href: "/es/blog", label: "Blog" },
 ];
 
 export default function Navbar() {
@@ -50,7 +50,8 @@ export default function Navbar() {
   // back to their English twin, or to the English home when there is none.
   // Twin pairs: "/" <-> "/es/", the thirty city page pairs
   // ("/sprinkler-repair-{city}" <-> "/es/reparacion-de-sprinklers-{city}",
-  // hub Miami included), the nine service page pairs,
+  // hub Miami included), the nine service page pairs, the ten blog
+  // pairs ("/blog" <-> "/es/blog" and nine posts),
   // "/contact" <-> "/es/contacto" and "/request-quote" <->
   // "/es/solicita-una-cotizacion".
   const ES_HUB_HREF = "/es/reparacion-de-sprinklers-miami";
@@ -104,6 +105,25 @@ export default function Navbar() {
       "/es/instalacion-nueva-de-irrigacion",
     "/services/wireless-camera-installation":
       "/es/instalacion-de-camaras-inalambricas",
+    "/blog": "/es/blog",
+    "/blog/wireless-camera-installation-secure-your-home-or-business":
+      "/es/blog/instalacion-de-camaras-inalambricas-para-tu-hogar-o-negocio",
+    "/blog/how-to-choose-and-install-the-right-video-doorbell-for-your-home-or-small-business":
+      "/es/blog/como-elegir-e-instalar-el-videoportero-adecuado-para-tu-hogar-o-pequeno-negocio",
+    "/blog/sprinkler-repair-and-installation-in-miami-2026-guide":
+      "/es/blog/reparacion-e-instalacion-de-sprinklers-en-miami-guia-2026",
+    "/blog/how-often-should-you-run-your-sprinkler-system-in-miami-watering-guide-2026":
+      "/es/blog/cada-cuanto-hacer-funcionar-tus-sprinklers-en-miami-guia-de-riego-2026",
+    "/blog/security-camera-installation-near-me-miami":
+      "/es/blog/instalacion-de-camaras-de-seguridad-cerca-de-mi-en-miami",
+    "/blog/sprinkler-repair-near-me-in-miami-fix-your-irrigation-system-fast":
+      "/es/blog/reparacion-de-sprinklers-cerca-de-mi-en-miami-arregla-tu-riego-rapido",
+    "/blog/sprinkler-system-not-working-miami":
+      "/es/blog/sistema-de-sprinklers-no-funciona-en-miami",
+    "/blog/why-upgrade-from-an-intermatic-timer-to-a-smart-irrigation-controller-miami-guide-2026":
+      "/es/blog/por-que-cambiar-de-un-temporizador-intermatic-a-un-controlador-inteligente-guia-miami-2026",
+    "/blog/prepare-sprinkler-system-dry-season-miami":
+      "/es/blog/prepara-tu-sistema-de-sprinklers-para-la-temporada-seca-en-miami",
     "/contact": "/es/contacto",
     "/request-quote": "/es/solicita-una-cotizacion",
   };
@@ -158,6 +178,25 @@ export default function Navbar() {
       "/services/new-irrigation-installation",
     "/es/instalacion-de-camaras-inalambricas":
       "/services/wireless-camera-installation",
+    "/es/blog": "/blog",
+    "/es/blog/instalacion-de-camaras-inalambricas-para-tu-hogar-o-negocio":
+      "/blog/wireless-camera-installation-secure-your-home-or-business",
+    "/es/blog/como-elegir-e-instalar-el-videoportero-adecuado-para-tu-hogar-o-pequeno-negocio":
+      "/blog/how-to-choose-and-install-the-right-video-doorbell-for-your-home-or-small-business",
+    "/es/blog/reparacion-e-instalacion-de-sprinklers-en-miami-guia-2026":
+      "/blog/sprinkler-repair-and-installation-in-miami-2026-guide",
+    "/es/blog/cada-cuanto-hacer-funcionar-tus-sprinklers-en-miami-guia-de-riego-2026":
+      "/blog/how-often-should-you-run-your-sprinkler-system-in-miami-watering-guide-2026",
+    "/es/blog/instalacion-de-camaras-de-seguridad-cerca-de-mi-en-miami":
+      "/blog/security-camera-installation-near-me-miami",
+    "/es/blog/reparacion-de-sprinklers-cerca-de-mi-en-miami-arregla-tu-riego-rapido":
+      "/blog/sprinkler-repair-near-me-in-miami-fix-your-irrigation-system-fast",
+    "/es/blog/sistema-de-sprinklers-no-funciona-en-miami":
+      "/blog/sprinkler-system-not-working-miami",
+    "/es/blog/por-que-cambiar-de-un-temporizador-intermatic-a-un-controlador-inteligente-guia-miami-2026":
+      "/blog/why-upgrade-from-an-intermatic-timer-to-a-smart-irrigation-controller-miami-guide-2026",
+    "/es/blog/prepara-tu-sistema-de-sprinklers-para-la-temporada-seca-en-miami":
+      "/blog/prepare-sprinkler-system-dry-season-miami",
     "/es/contacto": "/contact",
     "/es/solicita-una-cotizacion": "/request-quote",
   };

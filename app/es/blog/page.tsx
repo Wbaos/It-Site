@@ -1,0 +1,25 @@
+import type { Metadata } from "next";
+import BlogPage from "@/app/blog/page";
+
+export const revalidate = 0;
+
+export const metadata: Metadata = {
+  title: "Guías de Reparación de Sprinklers y Cámaras de Seguridad | Blog de CallTechCare",
+  description: "Guías útiles sobre reparación de sprinklers, riego, cámaras de seguridad y consejos de mantenimiento para el hogar para propietarios en Miami y el sur de Florida.",
+  alternates: {
+    canonical: "https://www.calltechcare.com/es/blog",
+    languages: {
+      es: "https://www.calltechcare.com/es/blog",
+      en: "https://www.calltechcare.com/blog",
+      "x-default": "https://www.calltechcare.com/blog",
+    },
+  },
+};
+
+// Thin Spanish route: renders the SAME blog index template as the English
+// page, with locale="es". No duplicated page copy lives here: structure,
+// sections and icons come from the shared template, only the text changes
+// (Spanish fields from Sanity, English fallback when empty).
+export default function BlogEsPage() {
+  return <BlogPage locale="es" />;
+}

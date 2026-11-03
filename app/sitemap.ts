@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { getAllLocationSlugs } from '@/lib/sanityLocations';
 import { sanity } from '@/lib/sanity';
+import { BLOG_ES_PATHS } from '@/lib/blogTwins';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://www.calltechcare.com';
@@ -61,18 +62,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         })
     );
 
+    // Blog posts live in Sanity: EN + ES twin from the shared map.
     const blogPostUrls = (postItems ?? []).flatMap((p) => {
         const slug = p.slug?.current;
         if (!slug) return [];
         const last = p._updatedAt || p.publishedAt;
-        return [
+        const lastModified = last ? new Date(last) : now;
+        const urls = [
             {
                 url: `${baseUrl}/blog/${slug}`,
-                lastModified: last ? new Date(last) : now,
+                lastModified,
                 changeFrequency: 'weekly' as const,
                 priority: 0.7,
             },
         ];
+        const esPath = BLOG_ES_PATHS[slug];
+        if (esPath) {
+            urls.push({
+                url: `${baseUrl}${esPath}`,
+                lastModified,
+                changeFrequency: 'weekly' as const,
+                priority: 0.7,
+            });
+        }
+        return urls;
     });
 
     // City landing pages live in Sanity (Lote 2): 29 standard pages, EN + ES.
@@ -235,6 +248,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
         {
             url: `${baseUrl}/blog`,
+            lastModified: now,
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/es/blog`,
             lastModified: now,
             changeFrequency: 'weekly',
             priority: 0.9,

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import SvgIcon from "@/components/common/SvgIcons";
+import { blogHref } from "@/lib/blogTwins";
 
 type Category = {
   title?: string;
@@ -38,7 +39,31 @@ function getCategoryTitle(category: Category | undefined): string {
   return normalizeTitle(category?.title);
 }
 
-export default function BlogPageClient({ posts }: { posts: Post[] }) {
+export default function BlogPageClient({
+  posts,
+  locale = "en",
+}: {
+  posts: Post[];
+  locale?: "en" | "es";
+}) {
+  const isSpanish = locale === "es";
+  const ui = {
+    all: isSpanish ? "Todos" : "All",
+    categoryLabel: isSpanish ? "Categoría" : "Category",
+    searchAria: isSpanish
+      ? "Buscar y filtrar posts del blog"
+      : "Search and filter blog posts",
+    searchLabel: isSpanish ? "Buscar blogs" : "Search blogs",
+    searchPlaceholder: isSpanish ? "Buscar blogs..." : "Search blogs...",
+    clearLabel: isSpanish ? "Limpiar búsqueda" : "Clear search",
+    empty: isSpanish
+      ? "Ningún post coincide con tus filtros."
+      : "No posts match your filters.",
+    readMore: isSpanish ? "Leer Más" : "Read More",
+    fallbackExcerpt: isSpanish
+      ? "Lee ideas, consejos y guías del equipo de CallTechCare."
+      : "Read insights, tips, and guides from the CallTechCare team.",
+  };
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -93,9 +118,9 @@ export default function BlogPageClient({ posts }: { posts: Post[] }) {
 
   return (
     <>
-      <div className="blog-filter" role="search" aria-label="Search and filter blog posts">
+      <div className="blog-filter" role="search" aria-label={ui.searchAria}>
         <label className="sr-only" htmlFor="blog-category-filter">
-          Category
+          {ui.categoryLabel}
         </label>
         <select
           id="blog-category-filter"
@@ -103,7 +128,7 @@ export default function BlogPageClient({ posts }: { posts: Post[] }) {
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
-          <option value="">All</option>
+          <option value="">{ui.all}</option>
           {categories.map((category) => (
             <option key={category.slug} value={category.slug}>
               {category.title}
@@ -122,7 +147,7 @@ export default function BlogPageClient({ posts }: { posts: Post[] }) {
           />
 
           <label className="sr-only" htmlFor="blog-search-input">
-            Search blogs
+            {ui.searchLabel}
           </label>
           <input
             id="blog-search-input"
@@ -130,7 +155,7 @@ export default function BlogPageClient({ posts }: { posts: Post[] }) {
             type="search"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search blogs..."
+            placeholder={ui.searchPlaceholder}
             autoComplete="off"
             ref={searchInputRef}
           />
@@ -139,7 +164,7 @@ export default function BlogPageClient({ posts }: { posts: Post[] }) {
             <button
               type="button"
               className="blog-filter-clear"
-              aria-label="Clear search"
+              aria-label={ui.clearLabel}
               onClick={() => {
                 setSearchTerm("");
                 searchInputRef.current?.focus();
@@ -152,7 +177,7 @@ export default function BlogPageClient({ posts }: { posts: Post[] }) {
       </div>
 
       {filteredPosts.length === 0 ? (
-        <p className="blog-empty">No posts match your filters.</p>
+        <p className="blog-empty">{ui.empty}</p>
       ) : (
         <div className="blog-grid">
           {filteredPosts.map((post) => {
@@ -162,7 +187,7 @@ export default function BlogPageClient({ posts }: { posts: Post[] }) {
             const primaryCategoryTitle = getCategoryTitle(post?.categories?.[0]);
 
             return (
-              <Link key={post._id} href={`/blog/${postSlug}`} className="blog-card">
+              <Link key={post._id} href={blogHref(postSlug, locale)} className="blog-card">
                 <div className="blog-image-wrapper">
                   {post.mainImage?.asset?.url && (
                     <Image
@@ -183,9 +208,7 @@ export default function BlogPageClient({ posts }: { posts: Post[] }) {
                   <h2 className="blog-card-title">{post.title}</h2>
 
                   <p className="blog-excerpt">
-                    {post.excerpt
-                      ? post.excerpt
-                      : "Read insights, tips, and guides from the CallTechCare team."}
+                    {post.excerpt ? post.excerpt : ui.fallbackExcerpt}
                   </p>
 
                   <div className="blog-meta-row">
@@ -198,7 +221,9 @@ export default function BlogPageClient({ posts }: { posts: Post[] }) {
                       <SvgIcon name="calendar" size={18} color="#9fb3c8" />
                       <span className="blog-date">
                         {post.publishedAt
-                          ? new Date(post.publishedAt).toLocaleDateString()
+                          ? new Date(post.publishedAt).toLocaleDateString(
+                              isSpanish ? "es" : undefined
+                            )
                           : ""}
                       </span>
                     </div>
@@ -227,7 +252,7 @@ export default function BlogPageClient({ posts }: { posts: Post[] }) {
                 </div>
 
                 <div className="blog-readmore">
-                  <span>Read More</span>
+                  <span>{ui.readMore}</span>
                   <SvgIcon
                     name="chevron-right"
                     size={18}

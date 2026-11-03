@@ -89,12 +89,12 @@ export default function Footer({ areas }: { areas?: FooterArea[] }) {
 
         {/* Navigation: in Spanish mode, links point only to pages that exist
             in this branch: the Spanish home anchors (#services, #how,
-            #contact) and the existing English pages (blog, locations, about,
-            faq). No /es/* page that does not exist is linked. */}
+            #contact), the Spanish blog page, and the existing English pages
+            (locations, about, faq). No /es/* page that does not exist is linked. */}
         <nav className="footer-nav" aria-label={isSpanishPage ? "Navegación del pie de página" : "Footer Navigation"}>
           <Link href={isSpanishPage ? "/es/#services" : "/#services"}>{isSpanishPage ? "Servicios" : "Services"}</Link>
           <Link href={isSpanishPage ? "/es/#how" : "/#how"}>{isSpanishPage ? "Cómo Funciona" : "How It Works"}</Link>
-          <Link href="/blog">Blog</Link>
+          <Link href={isSpanishPage ? "/es/blog" : "/blog"}>Blog</Link>
           <Link href="/locations">{isSpanishPage ? "Áreas de Servicio" : "Service Areas"}</Link>
           <Link href={isSpanishPage ? "/es/contacto" : "/#contact"}>{isSpanishPage ? "Contacto" : "Contact"}</Link>
           <Link href="/about">{isSpanishPage ? "Sobre Nosotros" : "About Us"}</Link>
