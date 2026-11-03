@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 type AnnouncementBarProps = {
   messages?: string[];
@@ -13,17 +14,26 @@ export default function AnnouncementBar({
   intervalMs = 10_000,
   fadeMs = 300,
 }: AnnouncementBarProps) {
+  const pathname = usePathname();
+  const isSpanishPage =
+    pathname === "/es" || (pathname ?? "").startsWith("/es/");
   const items = useMemo(
     () =>
       (messages && messages.length > 0
         ? messages
-        : [
-            "Free estimates on all services",
-            "Hablamos Español",
-            "Get 10% discount when you sign up",
-          ])
+        : isSpanishPage
+          ? [
+              "Estimados gratis en todos los servicios",
+              "Hablamos Español",
+              "Obtén 10% de descuento al registrarte",
+            ]
+          : [
+              "Free estimates on all services",
+              "Hablamos Español",
+              "Get 10% discount when you sign up",
+            ])
           .filter(Boolean),
-    [messages],
+    [messages, isSpanishPage],
   );
 
   const [index, setIndex] = useState(0);

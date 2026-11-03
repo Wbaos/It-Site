@@ -1,10 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowUp } from "lucide-react";
 import SvgIcon from "./common/SvgIcons";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const pathname = usePathname();
+  // Same locale check as the Navbar: "/es" itself plus any "/es/*" route.
+  const isSpanishPage =
+    pathname === "/es" || (pathname ?? "").startsWith("/es/");
 
   const footerAreas = [
     { name: "Sunrise", href: "/sprinkler-repair-sunrise" },
@@ -67,82 +74,86 @@ export default function Footer() {
             />
           </a>
           <p className="footer-tagline">
-              Sprinkler Repair & Irrigation Services in Miami & Broward
+              {isSpanishPage
+                ? "Servicios de Reparación de Sprinklers e Irrigación en Miami y Broward"
+                : "Sprinkler Repair & Irrigation Services in Miami & Broward"}
           </p>
         </div>
 
-        {/* Navigation */}
-        <nav className="footer-nav" aria-label="Footer Navigation">
-          <Link href="/#services">Services</Link>
-          <Link href="/#how">How It Works</Link>
-          {/* <Link href="/#pricing">Pricing</Link> */}
+        {/* Navigation: in Spanish mode, links point only to pages that exist
+            in this branch: the Spanish home anchors (#services, #how,
+            #contact) and the existing English pages (blog, locations, about,
+            faq). No /es/* page that does not exist is linked. */}
+        <nav className="footer-nav" aria-label={isSpanishPage ? "Navegación del pie de página" : "Footer Navigation"}>
+          <Link href={isSpanishPage ? "/es/#services" : "/#services"}>{isSpanishPage ? "Servicios" : "Services"}</Link>
+          <Link href={isSpanishPage ? "/es/#how" : "/#how"}>{isSpanishPage ? "Cómo Funciona" : "How It Works"}</Link>
           <Link href="/blog">Blog</Link>
-          <Link href="/locations">Service Areas</Link>
-          <Link href="/#contact">Contact</Link>
-          <Link href="/about">About Us</Link>
-          <Link href="/faq">FAQ</Link>
+          <Link href="/locations">{isSpanishPage ? "Áreas de Servicio" : "Service Areas"}</Link>
+          <Link href={isSpanishPage ? "/es/contacto" : "/#contact"}>{isSpanishPage ? "Contacto" : "Contact"}</Link>
+          <Link href="/about">{isSpanishPage ? "Sobre Nosotros" : "About Us"}</Link>
+          <Link href="/faq">{isSpanishPage ? "Preguntas Frecuentes" : "FAQ"}</Link>
         </nav>
 
         {/* Services List (SEO) */}
         <div className="footer-services">
           <p className="footer-services-title">
-            Popular Services in Miami & Broward
+            {isSpanishPage ? "Servicios Populares en Miami y Broward" : "Popular Services in Miami & Broward"}
           </p>
 
           <ul className="footer-services-list">
             <li>
               <Link href="/sprinkler-repair-miami">
-                Sprinkler Repair Miami
+                {isSpanishPage ? "Reparación de Sprinklers en Miami" : "Sprinkler Repair Miami"}
               </Link>
             </li>
             <li>
               <Link href="/services/sprinkler-repair-and-installation">
-                Sprinkler Repair & Irrigation
+                {isSpanishPage ? "Reparación e Instalación de Sprinklers" : "Sprinkler Repair & Irrigation"}
               </Link>
             </li>
             <li>
               <Link href="/services/sprinkler-leak-repair">
-                Sprinkler Leak Repair
+                {isSpanishPage ? "Reparación de Fugas de Sprinklers" : "Sprinkler Leak Repair"}
               </Link>
             </li>
             <li>
               <Link href="/services/sprinkler-valve-repair">
-                Sprinkler Valve Repair
+                {isSpanishPage ? "Reparación de Válvulas de Sprinklers" : "Sprinkler Valve Repair"}
               </Link>
             </li>
             <li>
               <Link href="/services/sprinkler-pump-replacement">
-                Sprinkler Pump Replacement
+                {isSpanishPage ? "Reemplazo de Bombas de Sprinklers" : "Sprinkler Pump Replacement"}
               </Link>
             </li>
             <li>
               <Link href="/services/sprinkler-timer-installation">
-                Sprinkler Timer Installation
+                {isSpanishPage ? "Instalación de Temporizadores de Sprinklers" : "Sprinkler Timer Installation"}
               </Link>
             </li>
             <li>
               <Link href="/services/wifi-sprinkler-controller-upgrade">
-                WiFi Sprinkler Controller Upgrade
+                {isSpanishPage ? "Actualización a Controlador WiFi de Sprinklers" : "WiFi Sprinkler Controller Upgrade"}
               </Link>
             </li>
             <li>
               <Link href="/services/rain-sensor-installation">
-                Rain Sensor Installation
+                {isSpanishPage ? "Instalación de Sensores de Lluvia" : "Rain Sensor Installation"}
               </Link>
             </li>
             <li>
               <Link href="/services/new-irrigation-installation">
-                New Irrigation Installation
+                {isSpanishPage ? "Instalación Nueva de Irrigación" : "New Irrigation Installation"}
               </Link>
             </li>
             <li>
               <Link href="/services/home-security">
-                Security Camera Installation
+                {isSpanishPage ? "Instalación de Cámaras de Seguridad" : "Security Camera Installation"}
               </Link>
             </li>
             <li>
               <Link href="/services/landscaping">
-                Landscaping
+                {isSpanishPage ? "Jardinería" : "Landscaping"}
               </Link>
             </li>
           </ul>
@@ -154,7 +165,9 @@ export default function Footer() {
           <p>
             <strong>CallTechCare</strong>
             <br />
-            Serving South Florida — from Sunrise to Cutler Bay
+            {isSpanishPage
+              ? "Sirviendo al sur de Florida — desde Sunrise hasta Cutler Bay"
+              : "Serving South Florida — from Sunrise to Cutler Bay"}
           </p>
           <p>
             📞 <a href="tel:+17863662729" title="Call CallTechCare">(786) 366-2729</a>
@@ -165,12 +178,12 @@ export default function Footer() {
             </a>
           </p>
           <p>
-            Mon–Sat: 8 AM – 7 PM
+            {isSpanishPage ? "Lun–Sáb: 8 AM – 7 PM" : "Mon–Sat: 8 AM – 7 PM"}
             <br />
-            Sun: 9 AM – 6 PM
+            {isSpanishPage ? "Dom: 9 AM – 6 PM" : "Sun: 9 AM – 6 PM"}
           </p>
           <div className="footer-areas">
-            <p className="areas-title">📍 Service Areas</p>
+            <p className="areas-title">{isSpanishPage ? "📍 Áreas de Servicio" : "📍 Service Areas"}</p>
             <p className="areas-list">
               {footerAreas.map((area, i) => (
                 <span key={area.href}>
@@ -186,7 +199,7 @@ export default function Footer() {
       {/* ===== Social + Legal ===== */}
       <div className="site-container footer-middle">
         <div className="footer-social">
-          <p>Follow Us</p>
+          <p>{isSpanishPage ? "Síguenos" : "Follow Us"}</p>
           <div className="social-icons">
             <a
               href="https://www.facebook.com/CallTechCare"
@@ -209,7 +222,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-trust">
-          <p>Secure Checkout • Powered by Stripe</p>
+          <p>{isSpanishPage ? "Pago seguro • Desarrollado con Stripe" : "Secure Checkout • Powered by Stripe"}</p>
           <div className="trust-icons">
             <Image
               src="/icons/stripe-white.png"
@@ -228,7 +241,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <a className="to-top" href="#top" aria-label="Back to top">
+        <a className="to-top" href="#top" aria-label={isSpanishPage ? "Volver arriba" : "Back to top"}>
           <ArrowUp size={18} />
         </a>
       </div>
@@ -237,24 +250,24 @@ export default function Footer() {
       <div className="site-container footer-bottom">
         <div className="legal">
           <Link href="/privacy-policy" aria-label="Privacy Policy">
-            Privacy Policy
+            {isSpanishPage ? "Política de Privacidad" : "Privacy Policy"}
           </Link>
           <span>•</span>
           <a href="#cookie-settings" aria-label="Cookie Settings">
-            Cookie Settings
+            {isSpanishPage ? "Configuración de Cookies" : "Cookie Settings"}
           </a>
           <span>•</span>
           <Link href="/terms-and-conditions" aria-label="Terms and Conditions">
-            Terms & Conditions
+            {isSpanishPage ? "Términos y Condiciones" : "Terms & Conditions"}
           </Link>
           <span>•</span>
           <Link href="/accessibility" aria-label="Accessibility Statement">
-            Accessibility
+            {isSpanishPage ? "Accesibilidad" : "Accessibility"}
           </Link>
         </div>
 
         <p className="copy">
-          © {year} CallTechCare. All rights reserved. Built with ❤️ in South Florida.
+          © {year} CallTechCare. {isSpanishPage ? "Todos los derechos reservados. Hecho con ❤️ en el sur de Florida." : "All rights reserved. Built with ❤️ in South Florida."}
         </p>
       </div>
     </footer>

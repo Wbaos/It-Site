@@ -22,6 +22,14 @@ const NAV = [
   { href: "/blog", label: "Blog" },
 ];
 
+// Spanish chrome: labels in Spanish. Links point only to pages that exist
+// in this branch: the Spanish home anchors (#services, #how), the Spanish
+// contact page, and the English /blog page, which has no Spanish twin yet.
+const NAV_ES = [
+  { href: "/es/contacto", label: "Contacto" },
+  { href: "/blog", label: "Blog" },
+];
+
 export default function Navbar() {
   const { open, setOpen, dropdownOpen, setDropdownOpen, searchOpen, setSearchOpen, closeAll } = useNav();
   const router = useRouter();
@@ -38,8 +46,11 @@ export default function Navbar() {
   // Language switcher: pages with a Spanish twin link to it; every other page
   // falls back to the Spanish hub (never a broken page). Spanish pages link
   // back to their English twin, or to the English home when there is none.
+  // Twin pairs: "/" <-> "/es/", "/sprinkler-repair-miami" <->
+  // "/es/reparacion-de-sprinklers-miami", and the main service page pair.
   const ES_HUB_HREF = "/es/reparacion-de-sprinklers-miami";
   const EN_TO_ES: Record<string, string> = {
+    "/": "/es/",
     "/sprinkler-repair-miami": "/es/reparacion-de-sprinklers-miami",
     "/services/sprinkler-repair-and-installation":
       "/es/reparacion-e-instalacion-de-sprinklers",
@@ -47,13 +58,18 @@ export default function Navbar() {
     "/request-quote": "/es/solicita-una-cotizacion",
   };
   const ES_TO_EN: Record<string, string> = {
+    "/es": "/",
+    "/es/": "/",
     "/es/reparacion-de-sprinklers-miami": "/sprinkler-repair-miami",
     "/es/reparacion-e-instalacion-de-sprinklers":
       "/services/sprinkler-repair-and-installation",
     "/es/contacto": "/contact",
     "/es/solicita-una-cotizacion": "/request-quote",
   };
-  const isSpanishPage = (pathname ?? "").startsWith("/es/");
+  // "/es" itself (the Spanish home) does not start with "/es/", so check
+  // for it explicitly: otherwise the chrome on /es would render in English.
+  const isSpanishPage =
+    pathname === "/es" || (pathname ?? "").startsWith("/es/");
   const spanishHref = EN_TO_ES[pathname ?? ""] ?? ES_HUB_HREF;
   const englishHref = ES_TO_EN[pathname ?? ""] ?? "/";
 
@@ -140,14 +156,14 @@ export default function Navbar() {
             setDropdownOpen(true);
           }}
         >
-          Services ▾
+          {isSpanishPage ? "Servicios ▾" : "Services ▾"}
         </a>
         {dropdownOpen && (
           <div className="dropdown-panel">
             <div className="dropdown-inner">
-              <h3 className="dropdown-main-title">All Our Services</h3>
+              <h3 className="dropdown-main-title">{isSpanishPage ? "Todos Nuestros Servicios" : "All Our Services"}</h3>
               {loadingServices ? (
-                <p className="loading-text">Loading…</p>
+                <p className="loading-text">{isSpanishPage ? "Cargando…" : "Loading…"}</p>
               ) : activeGroup ? (
                 (() => {
                   const { catIdx, groupIdx } = activeGroup;
@@ -158,7 +174,7 @@ export default function Navbar() {
                       <div className="submenu-header">
                         <button className="back-btn" onClick={() => setActiveGroup(null)}>
                           <SvgIcon name="chevron-left" size={18} color="var(--brand-teal)" />
-                          Back to All Services
+                          {isSpanishPage ? "Volver a Todos los Servicios" : "Back to All Services"}
                         </button>
                         <h4 className="submenu-title">{group.title}</h4>
                       </div>
@@ -275,12 +291,14 @@ export default function Navbar() {
                     💬
                   </span>
                 </div>
-                <h2 className="custom-service-title">Need Something Custom?</h2>
+                <h2 className="custom-service-title">{isSpanishPage ? "¿Necesitas Algo Personalizado?" : "Need Something Custom?"}</h2>
                 <p className="custom-service-desc">
-                  Can&apos;t find what you&apos;re looking for? We offer customized services tailored to your specific needs.
+                  {isSpanishPage
+                    ? "¿No encuentras lo que buscas? Ofrecemos servicios personalizados según tus necesidades específicas."
+                    : "Can't find what you're looking for? We offer customized services tailored to your specific needs."}
                 </p>
-                <a href="/contact" className="custom-service-btn-grey">
-                  Contact Us for Custom Services
+                <a href={isSpanishPage ? "/es/contacto" : "/contact"} className="custom-service-btn-grey">
+                  {isSpanishPage ? "Contáctanos para Servicios Personalizados" : "Contact Us for Custom Services"}
                 </a>
               </div>
             </div>
@@ -289,7 +307,7 @@ export default function Navbar() {
       </div>
 
       {/* NAV LINKS */}
-      {NAV.map((i) => {
+      {(isSpanishPage ? NAV_ES : NAV).map((i) => {
         const isActive = !dropdownOpen && pathname === i.href;
         return (
           <Link
@@ -304,8 +322,8 @@ export default function Navbar() {
       })}
 
       {/* GET SUPPORT */}
-      <Link href="/contact" className="support-btn" onClick={closeAllMenus}>
-        Get Support
+      <Link href={isSpanishPage ? "/es/contacto" : "/contact"} className="support-btn" onClick={closeAllMenus}>
+        {isSpanishPage ? "Obtener Soporte" : "Get Support"}
       </Link>
 
       {/* LANGUAGE SWITCHER (desktop nav only: attachDropdownRef is true for
@@ -392,8 +410,8 @@ export default function Navbar() {
       <AnnouncementBar />
       <header className="site-header">
         <div className="site-container-var nav-grid">
-          {/* BRAND */}
-          <Link href="/" className="brand" onClick={closeAllMenus}>
+          {/* BRAND: stays in the current language (Spanish home when in Spanish mode) */}
+          <Link href={isSpanishPage ? "/es/" : "/"} className="brand" onClick={closeAllMenus}>
             <div className="logo-wrapper">
               <SvgIcon name="calltechcare-logoName" color="#fff" size={180} className="logo-desktop" />
               <SvgIcon name="calltechcare-logoMobile" color="#fff" size={100} className="logo-mobile" />
@@ -427,7 +445,7 @@ export default function Navbar() {
             {langSwitcher("mobile-only lang-switcher--header-actions")}
             <button
               className="icon-btn"
-              aria-label="Search"
+              aria-label={isSpanishPage ? "Buscar" : "Search"}
               onClick={(e) => {
                 e.stopPropagation();
                 if (searchOpen) {

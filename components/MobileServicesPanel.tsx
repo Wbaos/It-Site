@@ -3,6 +3,7 @@
 import { ChevronLeft } from "lucide-react";
 import SvgIcon from "@/components/common/SvgIcons";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import MobileServiceListPanel from "./MobileServiceListPanel";
 
 export default function MobileServicesPanel({
@@ -14,6 +15,9 @@ export default function MobileServicesPanel({
 }) {
   const [activeGroup, setActiveGroup] = useState<{ group: any, cat: any } | null>(null);
   const [isBack, setIsBack] = useState(false);
+  const pathname = usePathname();
+  const isSpanishPage =
+    pathname === "/es" || (pathname ?? "").startsWith("/es/");
 
   return (
     <>
@@ -34,10 +38,10 @@ export default function MobileServicesPanel({
                 }}
               >
                 <ChevronLeft size={18} />
-                Back
+                {isSpanishPage ? "Volver" : "Back"}
               </button>
 
-              <h3 className="mobile-services-title">All Services</h3>
+              <h3 className="mobile-services-title">{isSpanishPage ? "Todos los Servicios" : "All Services"}</h3>
             </div>
 
             <div className="mobile-services-body">
