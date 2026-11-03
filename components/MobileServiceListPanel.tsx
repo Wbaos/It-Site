@@ -3,6 +3,7 @@
 import { ChevronLeft } from "lucide-react";
 import ServiceGroupList from "./ServiceGroupList";
 import { groupTitleEs } from "@/lib/groupTitlesEs";
+import { serviceHref } from "@/lib/serviceTwins";
 import { useState } from "react";
 
 export default function MobileServiceListPanel({
@@ -59,7 +60,7 @@ export default function MobileServiceListPanel({
             onSelect={(srv) => {
               if (!srv) return;
               onClose();
-              window.location.href = `/services/${srv.slug}`;
+              window.location.href = serviceHref(srv.slug, locale);
             }}
           />
         </div>

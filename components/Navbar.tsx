@@ -16,6 +16,7 @@ import AnnouncementBar from "@/components/AnnouncementBar";
 import MobileServicesPanel from "./MobileServicesPanel";
 import ServiceGroupList from "./ServiceGroupList";
 import { groupTitleEs } from "@/lib/groupTitlesEs";
+import { serviceHref } from "@/lib/serviceTwins";
 
 const NAV = [
   // { href: "/assessment", label: "Free Assessment" },
@@ -48,13 +49,31 @@ export default function Navbar() {
   // falls back to the Spanish hub (never a broken page). Spanish pages link
   // back to their English twin, or to the English home when there is none.
   // Twin pairs: "/" <-> "/es/", "/sprinkler-repair-miami" <->
-  // "/es/reparacion-de-sprinklers-miami", and the main service page pair.
+  // "/es/reparacion-de-sprinklers-miami", the nine service page pairs,
+  // "/contact" <-> "/es/contacto" and "/request-quote" <->
+  // "/es/solicita-una-cotizacion".
   const ES_HUB_HREF = "/es/reparacion-de-sprinklers-miami";
   const EN_TO_ES: Record<string, string> = {
     "/": "/es/",
     "/sprinkler-repair-miami": "/es/reparacion-de-sprinklers-miami",
     "/services/sprinkler-repair-and-installation":
       "/es/reparacion-e-instalacion-de-sprinklers",
+    "/services/sprinkler-leak-repair":
+      "/es/reparacion-de-fugas-de-sprinklers",
+    "/services/sprinkler-valve-repair":
+      "/es/reparacion-de-valvulas-de-sprinklers",
+    "/services/sprinkler-pump-replacement":
+      "/es/reemplazo-de-bombas-de-sprinklers",
+    "/services/sprinkler-timer-installation":
+      "/es/instalacion-de-temporizadores-de-sprinklers",
+    "/services/wifi-sprinkler-controller-upgrade":
+      "/es/actualizacion-a-controlador-wifi-de-sprinklers",
+    "/services/rain-sensor-installation":
+      "/es/instalacion-de-sensores-de-lluvia",
+    "/services/new-irrigation-installation":
+      "/es/instalacion-nueva-de-irrigacion",
+    "/services/wireless-camera-installation":
+      "/es/instalacion-de-camaras-inalambricas",
     "/contact": "/es/contacto",
     "/request-quote": "/es/solicita-una-cotizacion",
   };
@@ -64,6 +83,22 @@ export default function Navbar() {
     "/es/reparacion-de-sprinklers-miami": "/sprinkler-repair-miami",
     "/es/reparacion-e-instalacion-de-sprinklers":
       "/services/sprinkler-repair-and-installation",
+    "/es/reparacion-de-fugas-de-sprinklers":
+      "/services/sprinkler-leak-repair",
+    "/es/reparacion-de-valvulas-de-sprinklers":
+      "/services/sprinkler-valve-repair",
+    "/es/reemplazo-de-bombas-de-sprinklers":
+      "/services/sprinkler-pump-replacement",
+    "/es/instalacion-de-temporizadores-de-sprinklers":
+      "/services/sprinkler-timer-installation",
+    "/es/actualizacion-a-controlador-wifi-de-sprinklers":
+      "/services/wifi-sprinkler-controller-upgrade",
+    "/es/instalacion-de-sensores-de-lluvia":
+      "/services/rain-sensor-installation",
+    "/es/instalacion-nueva-de-irrigacion":
+      "/services/new-irrigation-installation",
+    "/es/instalacion-de-camaras-inalambricas":
+      "/services/wireless-camera-installation",
     "/es/contacto": "/contact",
     "/es/solicita-una-cotizacion": "/request-quote",
   };
@@ -225,7 +260,7 @@ export default function Navbar() {
                               items={group.services}
                               onSelect={(srv) => {
                                 closeAllMenus();
-                                if (srv?.slug) router.push(`/services/${srv.slug}`);
+                                if (srv?.slug) router.push(serviceHref(srv.slug, isSpanishPage ? "es" : "en"));
                               }}
                             />
                           </div>

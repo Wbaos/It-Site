@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { serviceHref } from "@/lib/serviceTwins";
 
 export default function ServiceGroupList({
   title,
@@ -53,7 +54,7 @@ export default function ServiceGroupList({
               }
 
               // Desktop: navigate if no subservices
-              window.location.href = `/services/${s.slug}`;
+              window.location.href = serviceHref(s.slug, locale);
             }}
           >
             <div className="svc-left">
