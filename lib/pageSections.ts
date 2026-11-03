@@ -49,6 +49,8 @@ const heroPropsEn = {
 
   phoneNumber: "+17863662729",
   showCallButton: true,
+  imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/5839c3116edccd85882b50a97612a27ed68bd9f9-1024x768.jpg",
+  imageAlt: "Sprinklers watering a landscaped front yard in Miami",
 
   stats: [
     { value: "1500+", label: "Local Clients Helped" },
@@ -69,6 +71,8 @@ const heroPropsEs = {
   secondaryCtaHref: "/es/solicita-una-cotizacion",
   phoneNumber: "+17863662729",
   showCallButton: true,
+  imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/5839c3116edccd85882b50a97612a27ed68bd9f9-1024x768.jpg",
+  imageAlt: "Sprinklers regando un jardín delantero en Miami",
   stats: [
     { value: "1500+", label: "Clientes Locales Atendidos" },
     { value: "5/5", label: "Satisfacción del Cliente" },
