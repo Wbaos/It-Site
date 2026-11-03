@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { signIn } from "next-auth/react";
 import SvgIcon from "@/components/common/SvgIcons";
 
 export default function SignUpPage() {
+  const pathname = usePathname();
+  const isSpanish = pathname === "/es" || (pathname ?? "").startsWith("/es/");
+
   const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const router = useRouter();
@@ -40,17 +43,17 @@ export default function SignUpPage() {
         });
 
         if (loginRes?.error) {
-          setStatus("⚠️ Account created, but login failed. Please log in.");
+          setStatus(isSpanish ? "⚠️ Cuenta creada, pero el inicio de sesión falló. Por favor inicia sesión." : "⚠️ Account created, but login failed. Please log in.");
           router.push("/login");
         } else {
-          setStatus("Account created and logged in!");
+          setStatus(isSpanish ? "¡Cuenta creada e inicio de sesión exitoso!" : "Account created and logged in!");
           router.push("/");
         }
       } else {
-        setStatus(data.error || "Something went wrong");
+        setStatus(data.error || (isSpanish ? "Algo salió mal" : "Something went wrong"));
       }
     } catch {
-      setStatus("Network error");
+      setStatus(isSpanish ? "Error de red" : "Network error");
     } finally {
       setBusy(false);
     }
@@ -66,37 +69,37 @@ export default function SignUpPage() {
           className="single-blog-back btn-reset"
         >
         <SvgIcon name="chevron-left" size={18} color="var(--brand-teal)" />
-        Back
+        {isSpanish ? "Atrás" : "Back"}
         </button>
 
       </div>
 
       {/* ==== Signup Card ==== */}
       <div className="login-box">
-        <h2 className="login-title">Create an Account</h2>
-        <p className="login-subtitle">Join us in just a minute</p>
+        <h2 className="login-title">{isSpanish ? "Crear una Cuenta" : "Create an Account"}</h2>
+        <p className="login-subtitle">{isSpanish ? "Únete en solo un minuto" : "Join us in just a minute"}</p>
 
         <form onSubmit={handleSubmit} className="login-form">
-          <label className="input-label">Full Name</label>
+          <label className="input-label">{isSpanish ? "Nombre Completo" : "Full Name"}</label>
           <input
             id="name"
             name="name"
-            placeholder="Your Name"
+            placeholder={isSpanish ? "Tu Nombre" : "Your Name"}
             className="input-field"
             required
           />
 
-          <label className="input-label">Email</label>
+          <label className="input-label">{isSpanish ? "Correo Electrónico" : "Email"}</label>
           <input
             id="email"
             name="email"
             type="email"
-            placeholder="your@email.com"
+            placeholder={isSpanish ? "tu@correo.com" : "your@email.com"}
             className="input-field"
             required
           />
 
-          <label className="input-label">Password</label>
+          <label className="input-label">{isSpanish ? "Contraseña" : "Password"}</label>
           <input
             id="password"
             name="password"
@@ -111,14 +114,14 @@ export default function SignUpPage() {
             className="btn-submit"
             disabled={busy}
           >
-            {busy ? "Registering..." : "Sign Up"}
+            {busy ? (isSpanish ? "Registrando..." : "Registering...") : (isSpanish ? "Registrarse" : "Sign Up")}
           </button>
         </form>
 
         {status && (
           <p
             className={`login-status ${
-              /invalid|error|already|exists|taken|wrong|network/i.test(status)
+              /invalid|error|already|exists|taken|wrong|network|falló|salió mal/i.test(status)
                 ? "error"
                 : "success"
             }`}
@@ -129,9 +132,9 @@ export default function SignUpPage() {
 
 
         <p className="signup-wrapper">
-          Already have an account?{" "}
+          {isSpanish ? "¿Ya tienes una cuenta?" : "Already have an account?"}{" "}
           <Link href="/login" className="signup-link">
-            Login
+            {isSpanish ? "Iniciar Sesión" : "Login"}
           </Link>
         </p>
       </div>

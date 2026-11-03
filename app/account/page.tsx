@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import clsx from "clsx";
-import { redirect } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import Loader from "@/components/common/Loader";
 import { Dialog } from "@headlessui/react";
 import { Calendar, Eye, MapPin, Tv, User, Wrench, StickyNote, CreditCard, ShieldCheck, X, Mail, Phone, LogOut } from "lucide-react";
@@ -116,7 +116,7 @@ function getFallbackOrderNumber(order: Pick<Order, "_id" | "orderNumber"> | null
     return id.slice(-6).toUpperCase();
 }
 
-function getFallbackServiceDescription(order: Order | null | undefined): string {
+function getFallbackServiceDescription(order: Order | null | undefined, isSpanish = false): string {
     const explicit = String(order?.serviceDescription || "").trim();
     if (explicit) return explicit;
 
@@ -129,7 +129,7 @@ function getFallbackServiceDescription(order: Order | null | undefined): string 
             if (!title) return "";
             const options = Array.isArray(it?.options) ? it.options : [];
             const optNames = options.map((o) => String(o?.name || "").trim()).filter(Boolean);
-            return optNames.length ? `${title} (Add-ons: ${optNames.join(", ")})` : title;
+            return optNames.length ? `${title} (${isSpanish ? "Complementos" : "Add-ons"}: ${optNames.join(", ")})` : title;
         })
         .filter(Boolean);
 
@@ -165,15 +165,15 @@ function statusPillClasses(order: Order): string {
     return "accountStatusPillSlate";
 }
 
-function statusLabel(order: Order): string {
+function statusLabel(order: Order, isSpanish = false): string {
     const display = getDisplayStatus(order);
-    if (display === "completed") return "Completed";
-    if (display === "scheduled") return "Scheduled";
-    if (display === "in_progress") return "In Progress";
-    if (display === "refunded") return "Refunded";
-    if (display === "canceled") return "Canceled";
-    if (display === "failed") return "Failed";
-    return "Pending";
+    if (display === "completed") return isSpanish ? "Completado" : "Completed";
+    if (display === "scheduled") return isSpanish ? "Programado" : "Scheduled";
+    if (display === "in_progress") return isSpanish ? "En Progreso" : "In Progress";
+    if (display === "refunded") return isSpanish ? "Reembolsado" : "Refunded";
+    if (display === "canceled") return isSpanish ? "Cancelado" : "Canceled";
+    if (display === "failed") return isSpanish ? "Fallido" : "Failed";
+    return isSpanish ? "Pendiente" : "Pending";
 }
 
 function getDisplayStatus(
@@ -199,6 +199,9 @@ function getDisplayStatus(
 
 
 export default function AccountPage() {
+  const pathname = usePathname();
+  const isSpanish = pathname === "/es" || (pathname ?? "").startsWith("/es/");
+
     const { data: session, status } = useSession();
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
@@ -246,7 +249,7 @@ export default function AccountPage() {
         return (
             <section className="accountPage">
                 <div className="accountContainer">
-                    <Loader message="Loading your account..." variant="inline" />
+                    <Loader message={isSpanish ? "Cargando tu cuenta..." : "Loading your account..."} variant="inline" />
                 </div>
             </section>
         );
@@ -266,9 +269,9 @@ export default function AccountPage() {
             <div className="accountContainer">
                 <div className="accountHeader">
                     <div>
-                        <h1 className="accountTitle">My Account</h1>
+                        <h1 className="accountTitle">{isSpanish ? "Mi Cuenta" : "My Account"}</h1>
                         <p className="accountSubtitle">
-                            Welcome back{userName ? `, ${userName}` : ""}.
+                            {isSpanish ? "Bienvenido de nuevo" : "Welcome back"}{userName ? `, ${userName}` : ""}.
                         </p>
                     </div>
 
@@ -278,7 +281,7 @@ export default function AccountPage() {
                         className="accountLogoutButton"
                     >
                         <LogOut className="accountLogoutIcon" aria-hidden="true" />
-                        Logout
+                        {isSpanish ? "Cerrar Sesión" : "Logout"}
                     </button>
                 </div>
 
@@ -291,7 +294,7 @@ export default function AccountPage() {
                             tab === "orders" && "accountTabButtonActive"
                         )}
                     >
-                        My Orders
+                        {isSpanish ? "Mis Pedidos" : "My Orders"}
                     </button>
                     <button
                         type="button"
@@ -301,7 +304,7 @@ export default function AccountPage() {
                             tab === "profile" && "accountTabButtonActive"
                         )}
                     >
-                        Profile
+                        {isSpanish ? "Perfil" : "Profile"}
                     </button>
                 </div>
 
@@ -337,6 +340,8 @@ function OrdersTab({
     stats: { total: number; completed: number; scheduled: number; inProgress: number };
     onOrderUpdated: (updated: Order) => void;
 }) {
+    const pathname = usePathname();
+    const isSpanish = pathname === "/es" || (pathname ?? "").startsWith("/es/");
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [isRescheduling, setIsRescheduling] = useState(false);
     const [rescheduleSaving, setRescheduleSaving] = useState(false);
@@ -381,8 +386,8 @@ function OrdersTab({
     };
 
     const visibleOrders = orders.filter((o) => !o.deleted);
-    if (loading) return <Loader message="Loading your orders..." variant="inline" />;
-    if (visibleOrders.length === 0) return <p className="accountEmptyState">You have no orders yet.</p>;
+    if (loading) return <Loader message={isSpanish ? "Cargando tus pedidos..." : "Loading your orders..."} variant="inline" />;
+    if (visibleOrders.length === 0) return <p className="accountEmptyState">{isSpanish ? "Aún no tienes pedidos." : "You have no orders yet."}</p>;
 
     const StatCard = ({
         label,
@@ -411,10 +416,10 @@ function OrdersTab({
     return (
         <div className="accountOrders">
             <div className="accountStatsGrid">
-                <StatCard label="Total Orders" value={stats.total} />
-                <StatCard label="Completed" value={stats.completed} tone="emerald" />
-                <StatCard label="Scheduled" value={stats.scheduled} tone="sky" />
-                <StatCard label="In Progress" value={stats.inProgress} tone="amber" />
+                <StatCard label={isSpanish ? "Total de Pedidos" : "Total Orders"} value={stats.total} />
+                <StatCard label={isSpanish ? "Completado" : "Completed"} value={stats.completed} tone="emerald" />
+                <StatCard label={isSpanish ? "Programado" : "Scheduled"} value={stats.scheduled} tone="sky" />
+                <StatCard label={isSpanish ? "En Progreso" : "In Progress"} value={stats.inProgress} tone="amber" />
             </div>
 
             <ul className="accountOrderList">
@@ -427,7 +432,7 @@ function OrdersTab({
                         ? formatISODateOnly(order.schedule.date)
                         : formatShortDate(order.createdAt);
                     const timeLabel = order.schedule?.time ? formatTimeDisplay(order.schedule.time) : "";
-                    const dateTimeLabel = `${dateLabel}${timeLabel ? ` at ${timeLabel}` : ""}`;
+                    const dateTimeLabel = `${dateLabel}${timeLabel ? (isSpanish ? ` a ${timeLabel}` : ` at ${timeLabel}`) : ""}`;
 
                     const addressLabel =
                         [
@@ -456,11 +461,11 @@ function OrdersTab({
                                                     statusPillClasses(order)
                                                 )}
                                             >
-                                                {statusLabel(order)}
+                                                {statusLabel(order, isSpanish)}
                                             </span>
                                         </div>
 
-                                        <p className="accountOrderNumber">Order #{orderNumber}</p>
+                                        <p className="accountOrderNumber">{isSpanish ? "Pedido #" : "Order #"}{orderNumber}</p>
 
                                         <div className="accountOrderMeta">
                                             <div className="accountOrderMetaRow">
@@ -473,7 +478,7 @@ function OrdersTab({
                                             </div>
                                             <div className="accountOrderMetaRow">
                                                 <User className="accountMetaIcon" aria-hidden="true" />
-                                                <span className="truncate">Technician: {order.technicianName || "Wilber Banos"}</span>
+                                                <span className="truncate">{isSpanish ? "Técnico:" : "Technician:"} {order.technicianName || "Wilber Banos"}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -482,7 +487,7 @@ function OrdersTab({
                                 <div className="accountOrderRight">
                                     <div className="accountOrderTotal">
                                         <p className="accountOrderTotalAmount">${order.total.toFixed(2)}</p>
-                                        <p className="accountOrderTotalLabel">Total Paid</p>
+                                        <p className="accountOrderTotalLabel">{isSpanish ? "Total Pagado" : "Total Paid"}</p>
                                     </div>
 
                                     <button
@@ -491,7 +496,7 @@ function OrdersTab({
                                         className={clsx("accountBtn", "accountBtnSm", "accountBtnSecondary")}
                                     >
                                         <Eye className="accountBtnIcon" aria-hidden="true" />
-                                        View Details
+                                        {isSpanish ? "Ver Detalles" : "View Details"}
                                     </button>
                                 </div>
                             </div>
@@ -518,7 +523,7 @@ function OrdersTab({
                                                 {selectedOrder.items?.[0]?.title || selectedOrder.serviceDescription || "—"}
                                             </Dialog.Title>
                                             <p className="accountModalSubtitle">
-                                                Order #{getFallbackOrderNumber(selectedOrder)}
+                                                {isSpanish ? "Pedido #" : "Order #"}{getFallbackOrderNumber(selectedOrder)}
                                             </p>
                                         </div>
                                     </div>
@@ -527,7 +532,7 @@ function OrdersTab({
                                         type="button"
                                         onClick={closeModal}
                                         className="accountModalClose"
-                                        aria-label="Close"
+                                        aria-label={isSpanish ? "Cerrar" : "Close"}
                                     >
                                         <X className="accountIconXs" aria-hidden="true" />
                                     </button>
@@ -535,12 +540,12 @@ function OrdersTab({
 
                                 <div className="accountModalBody">
                                     <div className="accountRowBetween">
-                                        <p className="accountFieldLabel">Status</p>
+                                        <p className="accountFieldLabel">{isSpanish ? "Estado" : "Status"}</p>
                                         <span className={clsx("accountStatusPill", statusPillClasses(selectedOrder))}>
                                             {getDisplayStatus(selectedOrder) === "scheduled" ? (
                                                 <Calendar className="accountPillIcon" aria-hidden="true" />
                                             ) : null}
-                                            {statusLabel(selectedOrder)}
+                                            {statusLabel(selectedOrder, isSpanish)}
                                         </span>
                                     </div>
 
@@ -551,7 +556,7 @@ function OrdersTab({
 
                                         return (
                                             <div className="accountRowBetween">
-                                                <p className="accountFieldLabel">Actions</p>
+                                                <p className="accountFieldLabel">{isSpanish ? "Acciones" : "Actions"}</p>
                                                 <button
                                                     type="button"
                                                     disabled={cancelSaving}
@@ -563,7 +568,7 @@ function OrdersTab({
                                                     )}
                                                     onClick={async () => {
                                                         if (!selectedOrder) return;
-                                                        const ok = confirm("Cancel this order? This cannot be undone.");
+                                                        const ok = confirm(isSpanish ? "¿Cancelar este pedido? Esto no se puede deshacer." : "Cancel this order? This cannot be undone.");
                                                         if (!ok) return;
 
                                                         try {
@@ -578,7 +583,7 @@ function OrdersTab({
                                                             );
                                                             const data = await res.json();
                                                             if (!res.ok) {
-                                                                alert(data?.error || "Could not cancel this order.");
+                                                                alert(data?.error || (isSpanish ? "No se pudo cancelar este pedido." : "Could not cancel this order."));
                                                                 setCancelSaving(false);
                                                                 return;
                                                             }
@@ -593,12 +598,12 @@ function OrdersTab({
                                                             setCancelSaving(false);
                                                         } catch (err) {
                                                             console.error("Cancel failed", err);
-                                                            alert("Something went wrong while canceling.");
+                                                            alert(isSpanish ? "Algo salió mal al cancelar." : "Something went wrong while canceling.");
                                                             setCancelSaving(false);
                                                         }
                                                     }}
                                                 >
-                                                    {cancelSaving ? "Canceling..." : "Cancel Order"}
+                                                    {cancelSaving ? (isSpanish ? "Cancelando..." : "Canceling...") : (isSpanish ? "Cancelar Pedido" : "Cancel Order")}
                                                 </button>
                                             </div>
                                         );
@@ -607,12 +612,12 @@ function OrdersTab({
                                     <div className="accountCard">
                                         <div className="accountCardHeader">
                                             <Wrench className="accountMetaIcon" aria-hidden="true" />
-                                            <p className="accountCardTitle">Service Details</p>
+                                            <p className="accountCardTitle">{isSpanish ? "Detalles del Servicio" : "Service Details"}</p>
                                         </div>
                                         {selectedOrder.items?.[0]?.navDescription ? (
                                             <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{selectedOrder.items[0].navDescription}</p>
                                         ) : (
-                                            <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{getFallbackServiceDescription(selectedOrder)}</p>
+                                            <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{getFallbackServiceDescription(selectedOrder, isSpanish)}</p>
                                         )}
                                     </div>
 
@@ -620,12 +625,12 @@ function OrdersTab({
                                         <div ref={scheduleCardRef} className="accountCard">
                                             <div className="accountCardHeader">
                                                 <Calendar className="accountMetaIcon" aria-hidden="true" />
-                                                <p className="accountCardTitle">Schedule</p>
+                                                <p className="accountCardTitle">{isSpanish ? "Horario" : "Schedule"}</p>
                                             </div>
 
                                             <dl className="accountDl">
                                                 <div className="accountDlRow">
-                                                    <dt className="accountDlKey">Date</dt>
+                                                    <dt className="accountDlKey">{isSpanish ? "Fecha" : "Date"}</dt>
                                                     <dd className="accountDlValue">
                                                         {formatISODateOnly(selectedOrder.schedule?.date) !== "—"
                                                             ? formatISODateOnly(selectedOrder.schedule?.date)
@@ -633,16 +638,16 @@ function OrdersTab({
                                                     </dd>
                                                 </div>
                                                 <div className="accountDlRow">
-                                                    <dt className="accountDlKey">Time</dt>
+                                                    <dt className="accountDlKey">{isSpanish ? "Hora" : "Time"}</dt>
                                                     <dd className="accountDlValue">{formatTimeDisplay(selectedOrder.schedule?.time)}</dd>
                                                 </div>
                                                 <div className="accountDlRow">
-                                                    <dt className="accountDlKey">Order Created</dt>
+                                                    <dt className="accountDlKey">{isSpanish ? "Pedido Creado" : "Order Created"}</dt>
                                                     <dd className="accountDlValue">{formatISODateOnly(selectedOrder.createdAt)}</dd>
                                                 </div>
                                                 {formatISODateOnly(selectedOrder.completedAt) !== "—" ? (
                                                     <div className="accountDlRow">
-                                                        <dt className="accountDlKey">Completed</dt>
+                                                        <dt className="accountDlKey">{isSpanish ? "Completado" : "Completed"}</dt>
                                                         <dd className="accountDlValueAccent">
                                                             {formatISODateOnly(selectedOrder.completedAt)}
                                                         </dd>
@@ -653,7 +658,7 @@ function OrdersTab({
                                             {isRescheduling ? (
                                                 <div className="accountReschedule">
                                                     <div>
-                                                        <label className="accountInputLabel">New Date</label>
+                                                        <label className="accountInputLabel">{isSpanish ? "Nueva Fecha" : "New Date"}</label>
                                                         <input
                                                             type="date"
                                                             value={rescheduleDate}
@@ -680,7 +685,7 @@ function OrdersTab({
                                                     </div>
 
                                                     <div>
-                                                        <p className="accountInputLabel">New Time</p>
+                                                        <p className="accountInputLabel">{isSpanish ? "Nueva Hora" : "New Time"}</p>
                                                         <div className="accountTimeGrid">
                                                             {timeSlots.map((slot) => {
                                                                 const available = isTimeSlotAvailable(slot.startHour);
@@ -731,7 +736,7 @@ function OrdersTab({
                                                                 );
                                                                 const data = await res.json();
                                                                 if (!res.ok) {
-                                                                    alert(data?.error || "Could not reschedule this order.");
+                                                                    alert(data?.error || (isSpanish ? "No se pudo reprogramar este pedido." : "Could not reschedule this order."));
                                                                     setRescheduleSaving(false);
                                                                     return;
                                                                 }
@@ -746,12 +751,12 @@ function OrdersTab({
                                                                 setRescheduleSaving(false);
                                                             } catch (err) {
                                                                 console.error("Reschedule failed", err);
-                                                                alert("Something went wrong while rescheduling.");
+                                                                alert(isSpanish ? "Algo salió mal al reprogramar." : "Something went wrong while rescheduling.");
                                                                 setRescheduleSaving(false);
                                                             }
                                                         }}
                                                     >
-                                                        {rescheduleSaving ? "Saving..." : "Save New Schedule"}
+                                                        {rescheduleSaving ? (isSpanish ? "Guardando..." : "Saving...") : (isSpanish ? "Guardar Nuevo Horario" : "Save New Schedule")}
                                                     </button>
                                                 </div>
                                             ) : null}
@@ -760,7 +765,7 @@ function OrdersTab({
                                         <div className="accountCard">
                                             <div className="accountCardHeader">
                                                 <MapPin className="accountMetaIcon" aria-hidden="true" />
-                                                <p className="accountCardTitle">Location</p>
+                                                <p className="accountCardTitle">{isSpanish ? "Ubicación" : "Location"}</p>
                                             </div>
                                             <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>
                                                 {[selectedOrder.address?.street, selectedOrder.address?.city, selectedOrder.address?.state]
@@ -773,7 +778,7 @@ function OrdersTab({
                                     <div className="accountCard">
                                         <div className="accountCardHeader">
                                             <User className="accountMetaIcon" aria-hidden="true" />
-                                            <p className="accountCardTitle">Assigned Technician</p>
+                                            <p className="accountCardTitle">{isSpanish ? "Técnico Asignado" : "Assigned Technician"}</p>
                                         </div>
                                         <div className="accountTechRow">
                                             <div>
@@ -791,7 +796,7 @@ function OrdersTab({
                                                     className={clsx("accountBtn", "accountBtnSm", "accountBtnSecondary")}
                                                 >
                                                     <Phone className="accountBtnIcon" aria-hidden="true" />
-                                                    Call
+                                                    {isSpanish ? "Llamar" : "Call"}
                                                 </a>
                                             ) : null}
                                         </div>
@@ -800,7 +805,7 @@ function OrdersTab({
                                     <div className="accountCard">
                                         <div className="accountCardHeader">
                                             <StickyNote className="accountMetaIcon" aria-hidden="true" />
-                                            <p className="accountCardTitle">Notes</p>
+                                            <p className="accountCardTitle">{isSpanish ? "Notas" : "Notes"}</p>
                                         </div>
                                         <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{selectedOrder.notes || "—"}</p>
                                     </div>
@@ -809,11 +814,11 @@ function OrdersTab({
                                         <div className="accountCard">
                                             <div className="accountCardHeader">
                                                 <CreditCard className="accountMetaIcon" aria-hidden="true" />
-                                                <p className="accountCardTitle">Payment</p>
+                                                <p className="accountCardTitle">{isSpanish ? "Pago" : "Payment"}</p>
                                             </div>
                                             <div className="accountPaymentRow">
                                                 <p className="accountBodyText">
-                                                    Credit Card {selectedOrder.paymentLast4 ? `****${selectedOrder.paymentLast4}` : "—"}
+                                                    {isSpanish ? "Tarjeta de Crédito" : "Credit Card"} {selectedOrder.paymentLast4 ? `****${selectedOrder.paymentLast4}` : "—"}
                                                 </p>
                                                 <p className="accountPaymentAmount">${selectedOrder.total.toFixed(0)}</p>
                                             </div>
@@ -822,9 +827,9 @@ function OrdersTab({
                                         <div className="accountCard">
                                             <div className="accountCardHeader">
                                                 <ShieldCheck className="accountMetaIcon" aria-hidden="true" />
-                                                <p className="accountCardTitle">Warranty</p>
+                                                <p className="accountCardTitle">{isSpanish ? "Garantía" : "Warranty"}</p>
                                             </div>
-                                            <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{selectedOrder.warrantyText || "1-Year Warranty"}</p>
+                                            <p className={clsx("accountBodyText", "accountBodyTextSpaced")}>{selectedOrder.warrantyText || (isSpanish ? "Garantía de 1 Año" : "1-Year Warranty")}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -855,7 +860,7 @@ function OrdersTab({
                                                     isRescheduling ? "accountBtnSecondary" : "accountBtnWarning"
                                                 )}
                                             >
-                                                {isRescheduling ? "Cancel" : "Reschedule"}
+                                                {isRescheduling ? (isSpanish ? "Cancelar" : "Cancel") : (isSpanish ? "Reprogramar" : "Reschedule")}
                                             </button>
 
                                             <a
@@ -863,7 +868,7 @@ function OrdersTab({
                                                 className={clsx("accountBtn", "accountBtnMd", "accountBtnFull", "accountBtnSecondary")}
                                             >
                                                 <Mail className="accountBtnIcon" aria-hidden="true" />
-                                                Contact Support
+                                                {isSpanish ? "Contactar a Soporte" : "Contact Support"}
                                             </a>
                                         </div>
                                     ) : (
@@ -872,7 +877,7 @@ function OrdersTab({
                                             className={clsx("accountBtn", "accountBtnMd", "accountBtnFull", "accountBtnSecondary")}
                                         >
                                             <Mail className="accountBtnIcon" aria-hidden="true" />
-                                            Contact Support
+                                            {isSpanish ? "Contactar a Soporte" : "Contact Support"}
                                         </a>
                                     )}
                                 </div>
@@ -891,6 +896,8 @@ function OrdersTab({
    PROFILE TAB
 ------------------------------------------- */
 function ProfileTab({ user }: { user: SessionUser | undefined }) {
+    const pathname = usePathname();
+    const isSpanish = pathname === "/es" || (pathname ?? "").startsWith("/es/");
     const { update } = useSession();
     const [name, setName] = useState(user?.name || "");
     const [email] = useState(user?.email || "");
@@ -924,7 +931,7 @@ function ProfileTab({ user }: { user: SessionUser | undefined }) {
             setEditing(false);
             setTimeout(() => setSaved(false), 2000);
         } else {
-            alert("Failed to save profile");
+            alert(isSpanish ? "No se pudo guardar el perfil." : "Failed to save profile");
         }
     }
 
@@ -933,13 +940,13 @@ function ProfileTab({ user }: { user: SessionUser | undefined }) {
             className="accountProfileForm"
             onSubmit={handleSave}
         >
-            <h2 className="accountProfileTitle">Profile</h2>
-            <p className="accountProfileSubtitle">Update your contact information.</p>
+            <h2 className="accountProfileTitle">{isSpanish ? "Perfil" : "Profile"}</h2>
+            <p className="accountProfileSubtitle">{isSpanish ? "Actualiza tu información de contacto." : "Update your contact information."}</p>
 
             <div className="accountProfileGrid">
                 <div>
                     <label htmlFor="name" className="accountFieldLabel">
-                        Full Name
+                        {isSpanish ? "Nombre Completo" : "Full Name"}
                     </label>
                     <input
                         id="name"
@@ -956,7 +963,7 @@ function ProfileTab({ user }: { user: SessionUser | undefined }) {
 
                 <div>
                     <label htmlFor="email" className="accountFieldLabel">
-                        Email
+                        {isSpanish ? "Correo Electrónico" : "Email"}
                     </label>
                     <input
                         id="email"
@@ -969,7 +976,7 @@ function ProfileTab({ user }: { user: SessionUser | undefined }) {
 
                 <div>
                     <label htmlFor="phone" className="accountFieldLabel">
-                        Phone
+                        {isSpanish ? "Teléfono" : "Phone"}
                     </label>
                     <input
                         id="phone"
@@ -992,7 +999,7 @@ function ProfileTab({ user }: { user: SessionUser | undefined }) {
                         className={clsx("accountBtn", "accountBtnMd", "accountBtnSecondary")}
                         onClick={() => setEditing(true)}
                     >
-                        Edit Profile
+                        {isSpanish ? "Editar Perfil" : "Edit Profile"}
                     </button>
                 ) : (
                     <>
@@ -1002,20 +1009,20 @@ function ProfileTab({ user }: { user: SessionUser | undefined }) {
                             onClick={handleCancel}
                             disabled={saving}
                         >
-                            Cancel
+                            {isSpanish ? "Cancelar" : "Cancel"}
                         </button>
                         <button
                             type="submit"
                             className={clsx("accountBtn", "accountBtnMd", "accountBtnPrimary", "accountBtnDisabled")}
                             disabled={saving}
                         >
-                            {saving ? "Saving..." : "Save Changes"}
+                            {saving ? (isSpanish ? "Guardando..." : "Saving...") : (isSpanish ? "Guardar Cambios" : "Save Changes")}
                         </button>
                     </>
                 )}
             </div>
 
-            {saved && <p className="accountSavedMsg">Profile updated successfully.</p>}
+            {saved && <p className="accountSavedMsg">{isSpanish ? "Perfil actualizado correctamente." : "Profile updated successfully."}</p>}
         </form>
     );
 }

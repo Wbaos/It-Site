@@ -3,10 +3,14 @@
 import { useState, useRef, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { User } from "lucide-react";
 import { useNav } from "@/lib/NavContext";
 
 export default function UserMenu() {
+  const pathname = usePathname();
+  const isSpanish = pathname === "/es" || (pathname ?? "").startsWith("/es/");
+
   const { data: session } = useSession();
   const { setOpen } = useNav();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -29,7 +33,7 @@ export default function UserMenu() {
       {/* Trigger */}
       <button
         className="icon-btn"
-        aria-label="User Menu"
+        aria-label={isSpanish ? "Menú de Usuario" : "User Menu"}
         onClick={() => {
           setOpen(false);
           setUserMenuOpen((v) => !v);
@@ -55,7 +59,7 @@ export default function UserMenu() {
                     className="login-btn"
                     onClick={() => setUserMenuOpen(false)}
                   >
-                    Log In
+                    {isSpanish ? "Iniciar Sesión" : "Log In"}
                   </Link>
                 </li>
                 <li>
@@ -64,7 +68,7 @@ export default function UserMenu() {
                     className="signup-btn"
                     onClick={() => setUserMenuOpen(false)}
                   >
-                    Sign Up
+                    {isSpanish ? "Registrarse" : "Sign Up"}
                   </Link>
                 </li>
               </>
@@ -76,7 +80,7 @@ export default function UserMenu() {
                     className="user-item account-link"
                     onClick={() => setUserMenuOpen(false)}
                   >
-                    My Account
+                    {isSpanish ? "Mi Cuenta" : "My Account"}
                   </Link>
                 </li>
                 <li>
@@ -87,7 +91,7 @@ export default function UserMenu() {
                     }}
                     className="logout-btn"
                   >
-                    Log Out
+                    {isSpanish ? "Cerrar Sesión" : "Log Out"}
                   </button>
                 </li>
               </>

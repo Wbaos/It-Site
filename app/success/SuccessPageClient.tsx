@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/lib/CartContext";
 import SvgIcon from "@/components/common/SvgIcons";
@@ -13,6 +13,9 @@ declare global {
 }
 
 export default function SuccessPageClient() {
+  const pathname = usePathname();
+  const isSpanish = pathname === "/es" || (pathname ?? "").startsWith("/es/");
+
   const { clearCart } = useCart();
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
@@ -42,25 +45,26 @@ export default function SuccessPageClient() {
           </div>
 
           <h1 id="payment-success-title" className="success-title">
-            Payment Successful
+            {isSpanish ? "Pago Exitoso" : "Payment Successful"}
           </h1>
 
           <p className="success-message">
-            Thank you — your payment went through and your order has been received. We’ll email a
-            confirmation shortly. Your cart has been cleared so you can start fresh anytime.
+            {isSpanish
+              ? "Gracias — tu pago se realizó y tu pedido ha sido recibido. Te enviaremos un correo de confirmación en breve. Tu carrito se ha vaciado para que puedas empezar de nuevo cuando quieras."
+              : "Thank you — your payment went through and your order has been received. We’ll email a confirmation shortly. Your cart has been cleared so you can start fresh anytime."}
           </p>
 
           <div className="success-panels">
             <div className="success-panel success-panel--next">
-              <div className="success-panelTitle">What happens next?</div>
+              <div className="success-panelTitle">{isSpanish ? "¿Qué pasa ahora?" : "What happens next?"}</div>
 
               <div className="success-steps">
                 <div className="success-stepRow">
                   <div className="success-stepNum">1</div>
                   <div>
-                    <div className="success-stepTitle">Confirmation email</div>
+                    <div className="success-stepTitle">{isSpanish ? "Correo de confirmación" : "Confirmation email"}</div>
                     <div className="success-stepDesc">
-                      Watch for an email confirmation with your purchase details.
+                      {isSpanish ? "Espera un correo de confirmación con los detalles de tu compra." : "Watch for an email confirmation with your purchase details."}
                     </div>
                   </div>
                 </div>
@@ -68,9 +72,9 @@ export default function SuccessPageClient() {
                 <div className="success-stepRow">
                   <div className="success-stepNum">2</div>
                   <div>
-                    <div className="success-stepTitle">We start processing</div>
+                    <div className="success-stepTitle">{isSpanish ? "Empezamos a procesarlo" : "We start processing"}</div>
                     <div className="success-stepDesc">
-                      Our team begins processing your order and preparing any next steps.
+                      {isSpanish ? "Nuestro equipo empieza a procesar tu pedido y a preparar los próximos pasos." : "Our team begins processing your order and preparing any next steps."}
                     </div>
                   </div>
                 </div>
@@ -78,9 +82,9 @@ export default function SuccessPageClient() {
                 <div className="success-stepRow">
                   <div className="success-stepNum">3</div>
                   <div>
-                    <div className="success-stepTitle">Need changes or help?</div>
+                    <div className="success-stepTitle">{isSpanish ? "¿Necesitas cambios o ayuda?" : "Need changes or help?"}</div>
                     <div className="success-stepDesc">
-                      Reach out anytime — we’re happy to help with questions or adjustments.
+                      {isSpanish ? "Escríbenos cuando quieras — con gusto te ayudamos con preguntas o ajustes." : "Reach out anytime — we’re happy to help with questions or adjustments."}
                     </div>
                   </div>
                 </div>
@@ -88,7 +92,7 @@ export default function SuccessPageClient() {
             </div>
 
             <div className="success-panel success-panel--help">
-              <div className="success-helpTitle">Need immediate assistance?</div>
+              <div className="success-helpTitle">{isSpanish ? "¿Necesitas ayuda inmediata?" : "Need immediate assistance?"}</div>
               <div className="success-helpRow">
                 <div className="success-helpItem">
                   <SvgIcon name="phone" size={16} color="var(--brand-teal)" />
@@ -108,19 +112,20 @@ export default function SuccessPageClient() {
 
           <div className="success-actions">
             <Link href="/" className="success-btn success-btn--primary">
-              Back to Home
+              {isSpanish ? "Volver al inicio" : "Back to Home"}
             </Link>
             <Link href="/services" className="success-btn success-btn--secondary">
-              Browse Services
+              {isSpanish ? "Ver servicios" : "Browse Services"}
             </Link>
             <Link href="/account" className="success-btn success-btn--secondary">
-              Go to Account
+              {isSpanish ? "Ir a mi cuenta" : "Go to Account"}
             </Link>
           </div>
 
           <p className="success-footnote">
-            If you don’t see the confirmation email within a few minutes, check your spam/junk folder
-            — or contact support and we’ll resend it.
+            {isSpanish
+              ? "Si no ves el correo de confirmación en unos minutos, revisa tu carpeta de spam o correo no deseado, o contacta a soporte y te lo reenviamos."
+              : "If you don’t see the confirmation email within a few minutes, check your spam/junk folder — or contact support and we’ll resend it."}
           </p>
         </section>
       </div>

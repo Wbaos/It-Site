@@ -1,13 +1,16 @@
 "use client";
 
 import { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react"; // 👈 ADD THIS
 import SvgIcon from "@/components/common/SvgIcons";
 
 function LoginContent() {
+  const pathname = usePathname();
+  const isSpanish = pathname === "/es" || (pathname ?? "").startsWith("/es/");
+
   const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // 👈 state for eye toggle
@@ -29,9 +32,9 @@ function LoginContent() {
     });
 
     if (res?.error) {
-      setStatus("Invalid email or password");
+      setStatus(isSpanish ? "Correo o contraseña inválidos" : "Invalid email or password");
     } else {
-      setStatus("Login successful!");
+      setStatus(isSpanish ? "¡Inicio de sesión exitoso!" : "Login successful!");
       router.push(callbackUrl);
     }
 
@@ -47,28 +50,28 @@ function LoginContent() {
           className="single-blog-back btn-reset"
         >
           <SvgIcon name="chevron-left" size={18} color="var(--brand-teal)" />
-          Back
+          {isSpanish ? "Atrás" : "Back"}
         </button>
       </div>
 
       {/* ==== LOGIN CARD ==== */}
       <div className="login-box">
-        <h2 className="login-title">Welcome Back</h2>
-        <p className="login-subtitle">Sign in to your account</p>
+        <h2 className="login-title">{isSpanish ? "Bienvenido de Nuevo" : "Welcome Back"}</h2>
+        <p className="login-subtitle">{isSpanish ? "Inicia sesión en tu cuenta" : "Sign in to your account"}</p>
 
         <form action={onSubmit} className="login-form">
           {/* Email */}
-          <label className="input-label">Email</label>
+          <label className="input-label">{isSpanish ? "Correo Electrónico" : "Email"}</label>
           <input
             type="email"
             name="email"
-            placeholder="your@email.com"
+            placeholder={isSpanish ? "tu@correo.com" : "your@email.com"}
             className="input-field"
             required
           />
 
           {/* Password */}
-          <label className="input-label">Password</label>
+          <label className="input-label">{isSpanish ? "Contraseña" : "Password"}</label>
           <div className="password-wrapper">
             <input
               type={showPassword ? "text" : "password"}
@@ -82,7 +85,7 @@ function LoginContent() {
               type="button"
               className="password-toggle-btn btn-reset"
               onClick={() => setShowPassword(!showPassword)}
-              aria-label="Toggle password visibility"
+              aria-label={isSpanish ? "Mostrar u ocultar contraseña" : "Toggle password visibility"}
             >
               {showPassword ? (
                 <EyeOff size={18} strokeWidth={1.8} />
@@ -94,20 +97,20 @@ function LoginContent() {
 
           {/* Submit */}
           <button type="submit" className="btn-submit" disabled={busy}>
-            {busy ? "Logging in..." : "Login"}
+            {busy ? (isSpanish ? "Iniciando sesión..." : "Logging in...") : (isSpanish ? "Iniciar Sesión" : "Login")}
           </button>
         </form>
 
         <p className="forgot-wrapper">
           <Link href="/forgot-password" className="forgot-link">
-            Forgot your password?
+            {isSpanish ? "¿Olvidaste tu contraseña?" : "Forgot your password?"}
           </Link>
         </p>
 
         {status && (
           <p
             className={`login-status ${
-              /invalid|error|already|exists|taken|wrong/i.test(status)
+              /invalid|inválid|error|already|exists|taken|wrong/i.test(status)
                 ? "error"
                 : "success"
             }`}
@@ -119,9 +122,9 @@ function LoginContent() {
 
 
         <p className="signup-wrapper">
-          Don’t have an account?{" "}
+          {isSpanish ? "¿No tienes una cuenta?" : "Don’t have an account?"}{" "}
           <Link href="/signup" className="signup-link">
-            Sign up
+            {isSpanish ? "Regístrate" : "Sign up"}
           </Link>
         </p>
       </div>
@@ -130,8 +133,11 @@ function LoginContent() {
 }
 
 export default function LoginPage() {
+  const pathname = usePathname();
+  const isSpanish = pathname === "/es" || (pathname ?? "").startsWith("/es/");
+
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>{isSpanish ? "Cargando..." : "Loading..."}</div>}>
       <LoginContent />
     </Suspense>
   );
