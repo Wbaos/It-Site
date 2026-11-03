@@ -739,7 +739,7 @@ export default async function ServicePage({
                   {category.jobsCompletedValue && (
                     <div className="styled-stat">
                       {category.jobsCompletedIconUrl && (
-                        <img src={category.jobsCompletedIconUrl} alt="Jobs Completed" className="styled-stat-icon" width={32} height={32} />
+                        <img src={category.jobsCompletedIconUrl} alt="" className="styled-stat-icon" width={32} height={32} />
                       )}
                       <div className="styled-stat-value">{category.jobsCompletedValue}</div>
                       <div className="styled-stat-label">Jobs Completed</div>
@@ -748,7 +748,7 @@ export default async function ServicePage({
                   {category.customerRatingValue && (
                     <div className="styled-stat">
                       {category.customerRatingIconUrl && (
-                        <img src={category.customerRatingIconUrl} alt="Customer Rating" className="styled-stat-icon" width={32} height={32} />
+                        <img src={category.customerRatingIconUrl} alt="" className="styled-stat-icon" width={32} height={32} />
                       )}
                       <div className="styled-stat-value">{category.customerRatingValue}</div>
                       <div className="styled-stat-label">Customer Rating</div>
@@ -757,7 +757,7 @@ export default async function ServicePage({
                   {category.yearsExperienceValue && (
                     <div className="styled-stat">
                       {category.yearsExperienceIconUrl && (
-                        <img src={category.yearsExperienceIconUrl} alt="Years Experience" className="styled-stat-icon" width={32} height={32} />
+                        <img src={category.yearsExperienceIconUrl} alt="" className="styled-stat-icon" width={32} height={32} />
                       )}
                       <div className="styled-stat-value">{category.yearsExperienceValue}</div>
                       <div className="styled-stat-label">Experience</div>
