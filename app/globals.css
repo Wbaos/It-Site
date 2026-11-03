@@ -6643,6 +6643,22 @@ main {
   border-bottom: 1px solid #1e293b;
 }
 
+/* iOS Safari only: backdrop-filter on the two fixed top bars flickers when
+   back navigation jumps the scroll position, because iOS must recomposite
+   the blur layer for the new offset and repaints it a frame late — visible
+   as a flash at the top of the page. This is the remaining mobile-only
+   flash after the dark document background (#293) and instant scroll
+   restoration (#295): neither of those touched the blur. The bars keep
+   their dark backgrounds, so dropping the blur on iOS removes the flicker
+   with no content or layout change; desktop keeps its frosted look. */
+@supports (-webkit-touch-callout: none) {
+  .announcement-bar,
+  .site-header {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
 .nav-grid {
   display: flex;
   padding: .7rem ;
