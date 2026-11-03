@@ -10,6 +10,11 @@ export const metadata: Metadata = {
     "Request a free quote from CallTechCare for sprinkler repair, irrigation and security camera installation in Miami and Broward. We respond within 24 hours.",
   alternates: {
     canonical: "https://www.calltechcare.com/request-quote",
+    languages: {
+      es: "https://www.calltechcare.com/es/solicita-una-cotizacion",
+      en: "https://www.calltechcare.com/request-quote",
+      "x-default": "https://www.calltechcare.com/request-quote",
+    },
   },
 };
 

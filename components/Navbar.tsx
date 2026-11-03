@@ -43,11 +43,15 @@ export default function Navbar() {
     "/sprinkler-repair-miami": "/es/reparacion-de-sprinklers-miami",
     "/services/sprinkler-repair-and-installation":
       "/es/reparacion-e-instalacion-de-sprinklers",
+    "/contact": "/es/contacto",
+    "/request-quote": "/es/solicita-una-cotizacion",
   };
   const ES_TO_EN: Record<string, string> = {
     "/es/reparacion-de-sprinklers-miami": "/sprinkler-repair-miami",
     "/es/reparacion-e-instalacion-de-sprinklers":
       "/services/sprinkler-repair-and-installation",
+    "/es/contacto": "/contact",
+    "/es/solicita-una-cotizacion": "/request-quote",
   };
   const isSpanishPage = (pathname ?? "").startsWith("/es/");
   const spanishHref = EN_TO_ES[pathname ?? ""] ?? ES_HUB_HREF;
