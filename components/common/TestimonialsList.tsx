@@ -30,6 +30,10 @@ export default function TestimonialsList({
 }: Props) {
   const n = items.length;
   const [cols, setCols] = useState(3);
+  // With fewer reviews than visible columns, the infinite-loop padding
+  // cannot fill the window when advancing, leaving an empty slot.
+  // In that case show the reviews statically instead of sliding.
+  const canSlide = n > cols;
   const [index, setIndex] = useState(cols);
   const [animating, setAnimating] = useState(false);
 
@@ -53,16 +57,17 @@ export default function TestimonialsList({
   }, []);
 
   const extended = [...items.slice(-cols), ...items, ...items.slice(0, cols)];
+  const visible = canSlide ? extended : items;
   const cardWidth = 100 / cols;
 
   const goNext = () => {
-    if (animating) return;
+    if (animating || !canSlide) return;
     setAnimating(true);
     setIndex((i) => i + 1);
   };
 
   const goPrev = () => {
-    if (animating) return;
+    if (animating || !canSlide) return;
     setAnimating(true);
     setIndex((i) => i - 1);
   };
@@ -143,11 +148,15 @@ export default function TestimonialsList({
           <div className="carousel-viewport">
             <div
               ref={trackRef}
-              className={`carousel-track ${animating ? "animating" : "no-anim"}`}
-              style={{ transform: `translateX(${translatePercent}%)` }}
+              className={`carousel-track ${canSlide && animating ? "animating" : "no-anim"}`}
+              style={{
+                transform: canSlide
+                  ? `translateX(${translatePercent}%)`
+                  : undefined,
+              }}
               onTransitionEnd={handleTransitionEnd}
             >
-              {extended.map((t, i) => {
+              {visible.map((t, i) => {
                 const date =
                   t.date && !isNaN(new Date(t.date).getTime())
                     ? new Date(t.date).toLocaleDateString("en-US", {
@@ -165,7 +174,11 @@ export default function TestimonialsList({
                   : truncateWords(fullText, 15);
 
                 return (
-                  <div className="carousel-slide" key={i}>
+                  <div
+                    className="carousel-slide"
+                    style={canSlide ? undefined : { flex: "1 1 0" }}
+                    key={i}
+                  >
                     <div
                       className={`testimonial-card fade-up ${
                         variant === "plain" ? "no-border" : ""
@@ -207,14 +220,16 @@ export default function TestimonialsList({
             </div>
           </div>
 
-          <div className="owl-nav">
-            <button className="owl-prev" onClick={goPrev} aria-label="Previous testimonial">
-              <SvgIcon name="chevron-left" size={28} color="#d6d6ddff" />
-            </button>
-            <button className="owl-next" onClick={goNext} aria-label="Next testimonial">
-              <SvgIcon name="chevron-right" size={28} color="#d6d6ddff" />
-            </button>
-          </div>
+          {canSlide && (
+            <div className="owl-nav">
+              <button className="owl-prev" onClick={goPrev} aria-label="Previous testimonial">
+                <SvgIcon name="chevron-left" size={28} color="#d6d6ddff" />
+              </button>
+              <button className="owl-next" onClick={goNext} aria-label="Next testimonial">
+                <SvgIcon name="chevron-right" size={28} color="#d6d6ddff" />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>
