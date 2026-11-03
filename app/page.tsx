@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 
-import { homeSections } from "@/lib/pageSections";
+import HomeTemplate from "@/components/sections/HomeTemplate";
 
 export const metadata: Metadata = {
   title: "Sprinkler Repair Miami & Broward | Same-Day | CallTechCare",
@@ -19,13 +19,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return (
-    <>
-      <main>
-        {homeSections.map(({ key, Component, props }) => (
-          <Component key={key} {...(props ?? {})} />
-        ))}
-      </main>
-    </>
-  );
+  return <HomeTemplate locale="en" />;
 }

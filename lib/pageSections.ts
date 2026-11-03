@@ -8,6 +8,14 @@ import Pricing from "@/components/sections/PricingServer";
 import Contact from "@/components/sections/Contact";
 import HighlightsServer from "@/components/sections/HighLigthsServer";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
+
+// Single home template, both languages. The section list, order and
+// components are identical for English and Spanish; only the text changes,
+// via each section's `locale` prop (or, for Hero/Contact, via the props
+// below). The Spanish copy below is reused from the former Spanish home
+// page, not retranslated: same hero, same service/why/how wording.
+export type HomeLocale = "en" | "es";
+
 type Section = {
   key:
     | "hero"
@@ -23,60 +31,94 @@ type Section = {
   props?: Record<string, unknown>;
 };
 
-export const homeSections: Section[] = [
-  {
-    key: "hero",
-    Component: Hero,
-    props: {
-        // imageSrc: "/helping2.jpg",
+const heroPropsEn = {
+  // imageSrc: "/helping2.jpg",
 
-        titleLine1: "Sprinkler Repair Miami & Broward",
-        titleLine2: "Irrigation • Repairs • New Systems",
+  titleLine1: "Sprinkler Repair Miami & Broward",
+  titleLine2: "Irrigation • Repairs • New Systems",
 
-        subtitle:
-          "Professional sprinkler repair and irrigation services in Miami and Broward. We also install security cameras.",
-        badgeText: "Sprinkler Repair & Irrigation in Miami & Broward",
+  subtitle:
+    "Professional sprinkler repair and irrigation services in Miami and Broward. We also install security cameras.",
+  badgeText: "Sprinkler Repair & Irrigation in Miami & Broward",
 
-        primaryCtaText: "Call Now",
-        primaryCtaHref: "tel:+17863662729",
+  primaryCtaText: "Call Now",
+  primaryCtaHref: "tel:+17863662729",
 
-        secondaryCtaText: "Request a Quote",
-        secondaryCtaHref: "/request-quote",
+  secondaryCtaText: "Request a Quote",
+  secondaryCtaHref: "/request-quote",
 
-        phoneNumber: "+17863662729",
-        showCallButton: true,
-        
-        stats: [
-            { value: "1500+", label: "Local Clients Helped" },
-            { value: "5/5", label: "Customer Satisfaction" },
-            { value: "Same-Day", label: "Appointments Available" },
-        ],
-        },
-  },
- 
-  { key: "highlights", Component: HighlightsServer, props: {} },
+  phoneNumber: "+17863662729",
+  showCallButton: true,
 
-  { key: "services", Component: Services },
+  stats: [
+    { value: "1500+", label: "Local Clients Helped" },
+    { value: "5/5", label: "Customer Satisfaction" },
+    { value: "Same-Day", label: "Appointments Available" },
+  ],
+};
 
-  { key: "seo-intro", Component: SEOIntro, props: {}, },
-  { key: "why", Component: WhyChooseUs },
+const heroPropsEs = {
+  titleLine1: "Reparación de Sprinklers en Miami y Broward",
+  titleLine2: "Irrigación • Reparaciones • Sistemas Nuevos",
+  subtitle:
+    "Servicios profesionales de reparación de sprinklers e irrigación en Miami y Broward. También instalamos cámaras de seguridad. Todo el servicio es a domicilio.",
+  badgeText: "Reparación de Sprinklers e Irrigación en Miami y Broward",
+  primaryCtaText: "Llama Ahora",
+  primaryCtaHref: "tel:+17863662729",
+  secondaryCtaText: "Solicita una Cotización",
+  secondaryCtaHref: "/es/solicita-una-cotizacion",
+  phoneNumber: "+17863662729",
+  showCallButton: true,
+  stats: [
+    { value: "1500+", label: "Clientes Locales Atendidos" },
+    { value: "5/5", label: "Satisfacción del Cliente" },
+    { value: "Mismo Día", label: "Citas Disponibles" },
+  ],
+};
 
-
-  { key: "how", Component: HowItWorks, props: {} },
-
-  {
-    key: "testimonials",
-    Component: GoogleReviewsCTA,
-    props: {},
-  },
-
-  { key: "pricing", Component: Pricing, props: {} },
-  {
-    key: "contact",
-    Component: Contact,
-    props: {
-      headline: "Questions? Let’s talk.",
-      phone: "(786) 366-2729",
+export function getHomeSections(locale: HomeLocale = "en"): Section[] {
+  const isSpanish = locale === "es";
+  return [
+    {
+      key: "hero",
+      Component: Hero,
+      props: isSpanish ? heroPropsEs : heroPropsEn,
     },
-  },
-];
+
+    { key: "highlights", Component: HighlightsServer, props: { locale } },
+
+    { key: "services", Component: Services, props: { locale } },
+
+    { key: "seo-intro", Component: SEOIntro, props: { locale } },
+    { key: "why", Component: WhyChooseUs, props: { locale } },
+
+    { key: "how", Component: HowItWorks, props: { locale } },
+
+    {
+      key: "testimonials",
+      Component: GoogleReviewsCTA,
+      props: {},
+    },
+
+    { key: "pricing", Component: Pricing, props: {} },
+    {
+      key: "contact",
+      Component: Contact,
+      props: isSpanish
+        ? {
+            headline: "¿Preguntas? Hablemos.",
+            subtitle:
+              "¿Tienes una pregunta? Estamos aquí para ayudarte. Respondemos dentro de 24 horas.",
+            locale,
+          }
+        : {
+            headline: "Questions? Let’s talk.",
+            subtitle: "Have a question? We're here to help.",
+            locale,
+          },
+    },
+  ];
+}
+
+// English home sections, unchanged from before the single-template refactor.
+export const homeSections: Section[] = getHomeSections("en");
