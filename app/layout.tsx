@@ -215,7 +215,11 @@ export default function RootLayout({
   const serviceJsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
-    serviceType: "Home Technology & Property Services",
+    serviceType: [
+      "Sprinkler System Repair",
+      "Irrigation System Installation",
+      "Security Camera Installation",
+    ],
     provider: {
       "@id": "https://www.calltechcare.com/#business",
     },
