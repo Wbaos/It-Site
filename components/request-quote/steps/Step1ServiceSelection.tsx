@@ -93,9 +93,6 @@ export default function Step1ServiceSelection(props: {
             <div className="rq-step1__serviceTitle">
               {srv.title}
             </div>
-            {srv.showPrice && typeof srv.price === "number" && (
-              <div className="rq-step1__servicePrice">From ${srv.price}</div>
-            )}
           </div>
 
           {isSelected && (

@@ -5,7 +5,7 @@ import { getRequestQuoteContent, getServiceCategories } from "@/lib/request-quot
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Request a Free Quote in Miami & Broward | CallTechCare",
+  title: "Free Sprinkler Estimate in Miami & Broward | CallTechCare",
   description:
     "Request a free quote from CallTechCare for sprinkler repair, irrigation and security camera installation in Miami and Broward. We respond within 24 hours.",
   alternates: {

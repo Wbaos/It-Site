@@ -282,8 +282,6 @@ export default async function ServicePage({
   const service = await sanity.fetch(
     `*[_type == "service" && slug.current == $slug][0]{
       title,
-      price,
-      showPrice,
       pricingModel,
       hourlyConfig{minimumHours, maximumHours, billingIncrement},
       description,
@@ -324,9 +322,7 @@ export default async function ServicePage({
       "subservices": *[_type == "service" && parentService._ref == ^._id]{
         title,
         "slug": slug.current,
-        price,
         serviceType,
-        showPrice,
         pricingModel,
         hourlyConfig{minimumHours, maximumHours, billingIncrement},
         popular,
@@ -422,17 +418,6 @@ export default async function ServicePage({
                 name: "CallTechCare",
                 url: "https://www.calltechcare.com",
               },
-              ...(service.showPrice && service.price != null
-                ? {
-                    offers: {
-                      "@type": "Offer",
-                      priceCurrency: "USD",
-                      price: service.price,
-                      url: `https://www.calltechcare.com/services/${slug}`,
-                      availability: "https://schema.org/InStock",
-                    },
-                  }
-                : {}),
             }
           : null;
 
@@ -448,8 +433,6 @@ export default async function ServicePage({
             title,
             slug,
             description,
-            price,
-            showPrice,
             pricingModel,
             popular
           }
@@ -1031,25 +1014,10 @@ const isTvMounting = tvMountingSlugs.includes(slug);
 
             <hr />
 
-            {service.showPrice && service.price != null && (
-              <div className="service-price">
-                <span>${service.price}</span>
-                <small>
-                  / {service.pricingModel === "hourly" ? "hr (starting)" : "starting price"}
-                </small>
-              </div>
-            )}
-
-            {service.showPrice && service.price != null ? (
-              <Link href={`/book/${slug}`} className="btn-book">
-                Book Service Now
-              </Link>
-            ) : (
-              <a href="tel:+17863662729" className="btn-book">
-                <span className="mobile-only">Call for Free Quote</span>
-                <span className="desktop-only">Call us at (786) 366-2729</span>
-              </a>
-            )}
+            <a href="tel:+17863662729" className="btn-book">
+              <span className="mobile-only">Call for Free Quote</span>
+              <span className="desktop-only">Call us at (786) 366-2729</span>
+            </a>
           </div>
         </div>
 

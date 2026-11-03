@@ -39,8 +39,6 @@ export default async function ServicesPage() {
         category->{ title, slug },
         description,
         navDescription,
-        price,
-        showPrice,
         image
     }
   `);
@@ -194,12 +192,25 @@ export default async function ServicesPage() {
             <div className="services-list-categories">
 
               {sortedCategoryEntries.map(
-                ([category, categoryServices]) => (
+                ([category, categoryServices]) => {
+                const categorySlug =
+                  categoryServices[0]?.category?.slug?.current;
+
+                return (
 
                 <div key={category} className="services-list-category-section">
 
                   <h2 className="services-list-category-title">
-                    {category}
+                    {categorySlug ? (
+                      <Link
+                        href={`/services/${categorySlug}`}
+                        style={{ color: "inherit", textDecoration: "none" }}
+                      >
+                        {category}
+                      </Link>
+                    ) : (
+                      category
+                    )}
                   </h2>
 
                   <div className="services-list-grid">
@@ -243,15 +254,9 @@ export default async function ServicesPage() {
 
                           <div className="services-list-card-footer">
 
-                            {service.showPrice && service.price != null ? (
-                              <span className="services-list-card-price">
-                                ${service.price}
-                              </span>
-                            ) : (
-                              <span className="services-list-card-price-call">
-                                Call for Quote
-                              </span>
-                            )}
+                            <span className="services-list-card-price-call">
+                              Call for Quote
+                            </span>
 
                             <span className="services-list-card-link">
                               Learn More →
@@ -267,7 +272,9 @@ export default async function ServicesPage() {
                   </div>
 
                 </div>
-              ))}
+              );
+            }
+          )}
 
             </div>
           )}

@@ -8,6 +8,7 @@ import Pricing from "@/components/sections/PricingServer";
 import Contact from "@/components/sections/Contact";
 import HighlightsServer from "@/components/sections/HighLigthsServer";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
+import { getGoogleReviewsUrl } from "@/lib/google-reviews";
 type Section = {
   key:
     | "hero"
@@ -18,7 +19,6 @@ type Section = {
     | "why"
     | "testimonials"
     | "pricing"
-    | "speed-test-cta"
     | "contact";
   Component: ComponentType<any>;
   props?: Record<string, unknown>;
@@ -89,7 +89,8 @@ export const homeSections: Section[] = [
       items: HOMEPAGE_TESTIMONIALS,
       title: "What South Florida Clients Say",
       subtitle: "Real experiences from satisfied homeowners and families.",
-      variant: "plain", 
+      variant: "plain",
+      googleReviewsUrl: getGoogleReviewsUrl() ?? undefined,
     },
   },
 
