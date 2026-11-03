@@ -7,7 +7,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const now = new Date();
 
-    const [locationSlugs, serviceItems, categoryItems, postItems] = await Promise.all([
+    const [locationSlugs, serviceItems, categoryItems, postItems, cityItems] = await Promise.all([
         getAllLocationSlugs(),
         sanity.fetch<Array<{ slug?: { current?: string }; _updatedAt?: string }>>(
             `*[_type == "service" && enabled == true && defined(slug.current)]{ slug, _updatedAt }`
@@ -19,6 +19,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             `*[_type == "post" && publishedAt <= now() && defined(slug.current)]
             | order(publishedAt desc)
             { slug, _updatedAt, publishedAt }`
+        ),
+        sanity.fetch<Array<{ slug?: { current?: string }; esSlug?: string; _updatedAt?: string }>>(
+            `*[_type == "city" && defined(slug.current) && isHub != true] | order(order asc)
+            { slug, esSlug, _updatedAt }`
         ),
     ]);
 
@@ -71,8 +75,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ];
     });
 
-    // Code-based sprinkler landing pages (not in Sanity, so they are listed here)
-    const cityLandingUrls = [
+    // City landing pages live in Sanity (Lote 2): 29 standard pages, EN + ES.
+    // The Miami hub keeps its fixed entries below (0.95 EN / 0.9 ES).
+    // Falls back to the fixed slug list when Sanity comes back empty.
+    const FALLBACK_CITY_SLUGS = [
         "pembroke-pines",
         "hollywood",
         "miramar",
@@ -102,12 +108,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         "tamiami",
         "kendale-lakes",
         "country-walk",
-    ].map((slug) => ({
-        url: `${baseUrl}/sprinkler-repair-${slug}`,
-        lastModified: now,
-        changeFrequency: 'weekly' as const,
-        priority: 0.9,
-    }));
+    ];
+    const cityEntries = (cityItems?.length ? cityItems : FALLBACK_CITY_SLUGS.map((slug) => ({
+        slug: { current: slug },
+        esSlug: `reparacion-de-sprinklers-${slug}`,
+        _updatedAt: undefined as string | undefined,
+    })));
+    const cityLandingUrls = cityEntries.flatMap((item) => {
+        const slug = item.slug?.current;
+        if (!slug) return [];
+        const lastModified = item._updatedAt ? new Date(item._updatedAt) : now;
+        const urls = [{
+            url: `${baseUrl}/sprinkler-repair-${slug}`,
+            lastModified,
+            changeFrequency: 'weekly' as const,
+            priority: 0.9,
+        }];
+        if (item.esSlug) {
+            urls.push({
+                url: `${baseUrl}/es/${item.esSlug}`,
+                lastModified,
+                changeFrequency: 'weekly' as const,
+                priority: 0.9,
+            });
+        }
+        return urls;
+    });
 
 
     return [

@@ -10,6 +10,7 @@ import QuickCallButton from "@/components/QuickCallButton";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import CookieConsent from "@/components/CookieConsent";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { getAllCities, FALLBACK_CITIES } from "@/lib/sanityCities";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.calltechcare.com"),
@@ -93,11 +94,31 @@ export const metadata: Metadata = {
 /* =========================
    ROOT LAYOUT
    ========================= */
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // City list from Sanity (Lote 2): drives the organization areaServed
+  // schema and the footer areas. Falls back to the fixed canonical list
+  // when Sanity comes back empty, so the layout never breaks on a blip.
+  let footerCities = FALLBACK_CITIES;
+  try {
+    const items = await getAllCities();
+    if (items.length) {
+      footerCities = items
+        .filter((c) => c.slug?.current)
+        .map((c) => ({
+          name: c.name ?? "",
+          slug: c.slug?.current ?? "",
+          esSlug: c.esSlug ?? "",
+        }))
+        .filter((c) => c.name && c.slug);
+    }
+  } catch {
+    // Fallback list above stays in place.
+  }
+
   /* ITService schema (service-area business) */
   const orgJsonLd = {
     "@context": "https://schema.org",
@@ -115,38 +136,7 @@ export default function RootLayout({
     description:
         "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service, free estimates.",
     telephone: "+1-786-366-2729",
-    areaServed: [
-      { "@type": "City", name: "Sunrise" },
-      { "@type": "City", name: "Fort Lauderdale" },
-      { "@type": "City", name: "Dania Beach" },
-      { "@type": "City", name: "Weston" },
-      { "@type": "City", name: "Davie" },
-      { "@type": "City", name: "Southwest Ranches" },
-      { "@type": "City", name: "Hollywood" },
-      { "@type": "City", name: "West Park" },
-      { "@type": "City", name: "Pembroke Pines" },
-      { "@type": "City", name: "Miramar" },
-      { "@type": "City", name: "Miami Gardens" },
-      { "@type": "City", name: "Miami Lakes" },
-      { "@type": "City", name: "Country Club" },
-      { "@type": "City", name: "Aventura" },
-      { "@type": "City", name: "Sunny Isles Beach" },
-      { "@type": "City", name: "North Miami" },
-      { "@type": "City", name: "Surfside" },
-      { "@type": "City", name: "North Bay Village" },
-      { "@type": "City", name: "Miami Beach" },
-      { "@type": "City", name: "Hialeah" },
-      { "@type": "City", name: "Doral" },
-      { "@type": "City", name: "Fontainebleau" },
-      { "@type": "City", name: "Tamiami" },
-      { "@type": "City", name: "Miami" },
-      { "@type": "City", name: "Coral Gables" },
-      { "@type": "City", name: "Key Biscayne" },
-      { "@type": "City", name: "Kendall" },
-      { "@type": "City", name: "Kendale Lakes" },
-      { "@type": "City", name: "Country Walk" },
-      { "@type": "City", name: "Cutler Bay" },
-    ],
+    areaServed: footerCities.map((c) => ({ "@type": "City", name: c.name })),
     address: {
       "@type": "PostalAddress",
       streetAddress: "18730 SW 122nd Ave",
@@ -363,7 +353,7 @@ export default function RootLayout({
               <div id="top" />
               <Navbar />
               <main className="main-content">{children}</main>
-              <Footer />
+              <Footer areas={footerCities} />
               <QuickCallButton />
               <CookieConsent />
             </LoadingProvider>

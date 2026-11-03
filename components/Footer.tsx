@@ -6,45 +6,52 @@ import { usePathname } from "next/navigation";
 import { ArrowUp } from "lucide-react";
 import SvgIcon from "./common/SvgIcons";
 
-export default function Footer() {
+import { cityHref } from "@/lib/cityTwins";
+
+type FooterArea = { name: string; slug: string; esSlug: string };
+
+export default function Footer({ areas }: { areas?: FooterArea[] }) {
   const year = new Date().getFullYear();
   const pathname = usePathname();
   // Same locale check as the Navbar: "/es" itself plus any "/es/*" route.
   const isSpanishPage =
     pathname === "/es" || (pathname ?? "").startsWith("/es/");
+  const locale = isSpanishPage ? "es" : "en";
 
-  const footerAreas = [
-    { name: "Sunrise", href: "/sprinkler-repair-sunrise" },
-    { name: "Fort Lauderdale", href: "/sprinkler-repair-fort-lauderdale" },
-    { name: "Dania Beach", href: "/sprinkler-repair-dania-beach" },
-    { name: "Weston", href: "/sprinkler-repair-weston" },
-    { name: "Davie", href: "/sprinkler-repair-davie" },
-    { name: "Southwest Ranches", href: "/sprinkler-repair-southwest-ranches" },
-    { name: "Hollywood", href: "/sprinkler-repair-hollywood" },
-    { name: "West Park", href: "/sprinkler-repair-west-park" },
-    { name: "Pembroke Pines", href: "/sprinkler-repair-pembroke-pines" },
-    { name: "Miramar", href: "/sprinkler-repair-miramar" },
-    { name: "Miami Gardens", href: "/sprinkler-repair-miami-gardens" },
-    { name: "Miami Lakes", href: "/sprinkler-repair-miami-lakes" },
-    { name: "Country Club", href: "/sprinkler-repair-country-club" },
-    { name: "Aventura", href: "/sprinkler-repair-aventura" },
-    { name: "Sunny Isles Beach", href: "/sprinkler-repair-sunny-isles-beach" },
-    { name: "North Miami", href: "/sprinkler-repair-north-miami" },
-    { name: "Surfside", href: "/sprinkler-repair-surfside" },
-    { name: "North Bay Village", href: "/sprinkler-repair-north-bay-village" },
-    { name: "Miami Beach", href: "/sprinkler-repair-miami-beach" },
-    { name: "Hialeah", href: "/sprinkler-repair-hialeah" },
-    { name: "Doral", href: "/sprinkler-repair-doral" },
-    { name: "Fontainebleau", href: "/sprinkler-repair-fontainebleau" },
-    { name: "Tamiami", href: "/sprinkler-repair-tamiami" },
-    { name: "Miami", href: "/sprinkler-repair-miami" },
-    { name: "Coral Gables", href: "/sprinkler-repair-coral-gables" },
-    { name: "Key Biscayne", href: "/sprinkler-repair-key-biscayne" },
-    { name: "Kendall", href: "/sprinkler-repair-kendall" },
-    { name: "Kendale Lakes", href: "/sprinkler-repair-kendale-lakes" },
-    { name: "Country Walk", href: "/sprinkler-repair-country-walk" },
-    { name: "Cutler Bay", href: "/sprinkler-repair-cutler-bay" },
-  ];
+  // Areas from Sanity (via layout); falls back to the fixed canonical list
+  // when the layout renders without them.
+  const footerAreas = (areas?.length ? areas : [
+    { name: "Sunrise", slug: "sunrise", esSlug: "reparacion-de-sprinklers-sunrise" },
+    { name: "Fort Lauderdale", slug: "fort-lauderdale", esSlug: "reparacion-de-sprinklers-fort-lauderdale" },
+    { name: "Dania Beach", slug: "dania-beach", esSlug: "reparacion-de-sprinklers-dania-beach" },
+    { name: "Weston", slug: "weston", esSlug: "reparacion-de-sprinklers-weston" },
+    { name: "Davie", slug: "davie", esSlug: "reparacion-de-sprinklers-davie" },
+    { name: "Southwest Ranches", slug: "southwest-ranches", esSlug: "reparacion-de-sprinklers-southwest-ranches" },
+    { name: "Hollywood", slug: "hollywood", esSlug: "reparacion-de-sprinklers-hollywood" },
+    { name: "West Park", slug: "west-park", esSlug: "reparacion-de-sprinklers-west-park" },
+    { name: "Pembroke Pines", slug: "pembroke-pines", esSlug: "reparacion-de-sprinklers-pembroke-pines" },
+    { name: "Miramar", slug: "miramar", esSlug: "reparacion-de-sprinklers-miramar" },
+    { name: "Miami Gardens", slug: "miami-gardens", esSlug: "reparacion-de-sprinklers-miami-gardens" },
+    { name: "Miami Lakes", slug: "miami-lakes", esSlug: "reparacion-de-sprinklers-miami-lakes" },
+    { name: "Country Club", slug: "country-club", esSlug: "reparacion-de-sprinklers-country-club" },
+    { name: "Aventura", slug: "aventura", esSlug: "reparacion-de-sprinklers-aventura" },
+    { name: "Sunny Isles Beach", slug: "sunny-isles-beach", esSlug: "reparacion-de-sprinklers-sunny-isles-beach" },
+    { name: "North Miami", slug: "north-miami", esSlug: "reparacion-de-sprinklers-north-miami" },
+    { name: "Surfside", slug: "surfside", esSlug: "reparacion-de-sprinklers-surfside" },
+    { name: "North Bay Village", slug: "north-bay-village", esSlug: "reparacion-de-sprinklers-north-bay-village" },
+    { name: "Miami Beach", slug: "miami-beach", esSlug: "reparacion-de-sprinklers-miami-beach" },
+    { name: "Hialeah", slug: "hialeah", esSlug: "reparacion-de-sprinklers-hialeah" },
+    { name: "Doral", slug: "doral", esSlug: "reparacion-de-sprinklers-doral" },
+    { name: "Fontainebleau", slug: "fontainebleau", esSlug: "reparacion-de-sprinklers-fontainebleau" },
+    { name: "Tamiami", slug: "tamiami", esSlug: "reparacion-de-sprinklers-tamiami" },
+    { name: "Miami", slug: "miami", esSlug: "reparacion-de-sprinklers-miami" },
+    { name: "Coral Gables", slug: "coral-gables", esSlug: "reparacion-de-sprinklers-coral-gables" },
+    { name: "Key Biscayne", slug: "key-biscayne", esSlug: "reparacion-de-sprinklers-key-biscayne" },
+    { name: "Kendall", slug: "kendall", esSlug: "reparacion-de-sprinklers-kendall" },
+    { name: "Kendale Lakes", slug: "kendale-lakes", esSlug: "reparacion-de-sprinklers-kendale-lakes" },
+    { name: "Country Walk", slug: "country-walk", esSlug: "reparacion-de-sprinklers-country-walk" },
+    { name: "Cutler Bay", slug: "cutler-bay", esSlug: "reparacion-de-sprinklers-cutler-bay" },
+  ]).map((area) => ({ ...area, href: cityHref(area.slug, locale) }));
 
   return (
     <footer className="site-footer">
