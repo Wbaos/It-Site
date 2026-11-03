@@ -10990,7 +10990,7 @@ object-fit: cover;
   display: inline;
 }
 
-/* Language pill in the header actions (mobile only, shown by .mobile-only):
+/* Language switcher in the header actions (mobile only, shown by .mobile-only):
    breathing room next to the search icon. */
 .lang-switcher--header-actions {
   margin-right: 8px;
