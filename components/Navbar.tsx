@@ -133,6 +133,8 @@ export default function Navbar() {
     "/signup": "/es/registrarse",
     "/forgot-password": "/es/olvido-contrasena",
     "/account": "/es/cuenta",
+    "/about": "/es/sobre-nosotros",
+    "/faq": "/es/preguntas-frecuentes",
   };
   const ES_TO_EN: Record<string, string> = {
     "/es": "/",
@@ -212,6 +214,8 @@ export default function Navbar() {
     "/es/registrarse": "/signup",
     "/es/olvido-contrasena": "/forgot-password",
     "/es/cuenta": "/account",
+    "/es/sobre-nosotros": "/about",
+    "/es/preguntas-frecuentes": "/faq",
   };
   // "/es" itself (the Spanish home) does not start with "/es/", so check
   // for it explicitly: otherwise the chrome on /es would render in English.
