@@ -5506,6 +5506,11 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--nav-h);
   height: 100%;
+  /* Site base color (#020617, same as .service-detail): without a document
+     background, the browser default (white) shows during back-navigation
+     repaints, before the dark page sections paint again. */
+  background-color: #020617;
+  color-scheme: dark;
 }
 
 body {
@@ -5514,6 +5519,7 @@ body {
   min-height: 100vh;
   margin: 0;
   overflow-x: hidden;
+  background-color: #020617;
 }
 
 main {
