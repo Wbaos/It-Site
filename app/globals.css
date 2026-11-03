@@ -11070,6 +11070,13 @@ object-fit: cover;
   gap: 12px;
 }
 
+/* Detail card must grow to fit both CTAs: the old 520px cap clipped the
+   second button outside the card once the stacked row was added. Scoped to
+   .service-top so the services-grid cards keep their own sizing. */
+.service-top .service-card {
+  max-height: none;
+}
+
 .btn-book--secondary {
   background: rgba(255, 255, 255, 0.08);
   background-image: none;
