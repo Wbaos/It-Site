@@ -13,6 +13,7 @@ import ServiceRating from "@/components/ServiceRating";
 import FaqAccordion from "@/components/FaqAccordion";
 import ServiceGroupList from "@/components/ServiceGroupList";
 import { SERVICE_ES_PATHS, serviceHref } from "@/lib/serviceTwins";
+import { cityHref } from "@/lib/cityTwins";
 import BeforeAfterSection from "@/components/BeforeAfterSection";
 import { PortableText } from "@portabletext/react";
 import type { Metadata } from "next";
@@ -286,7 +287,7 @@ export default async function ServicePage({
             {SPRINKLER_CITY_LINKS.map((city) => (
               <Link
                 key={city.href}
-                href={city.href}
+                href={cityHref(city.href.replace("/sprinkler-repair-", ""), locale)}
                 className="service-area-pill"
                 aria-label={
                   isSpanish
@@ -1205,7 +1206,7 @@ const isTvMounting = tvMountingSlugs.includes(slug);
                 return (
                   <Link
                     key={s.slug}
-                    href={`/services/${s.slug}`}
+                    href={serviceHref(s.slug, locale)}
                     className="service-area-pill"
                     aria-label={pillTitle}
                   >
