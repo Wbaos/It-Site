@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Search, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { serviceHref } from "@/lib/serviceTwins";
 
 export default function SearchModal({ onClose }: { onClose: () => void }) {
   const pathname = usePathname();
@@ -116,7 +117,7 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
                 {popular.map((item: any) => (
                   <Link
                     key={item._id}
-                    href={`/services/${item.slug}`}
+                    href={serviceHref(item.slug, isSpanish ? "es" : "en")}
                     className="popular-item"
                     onClick={onClose}
                   >
@@ -137,7 +138,7 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
                     return (
                         <Link
                         key={r._id}
-                        href={`/services/${slug}`}
+                        href={serviceHref(slug, isSpanish ? "es" : "en")}
                         className="result-item"
                         onClick={onClose}
                         >
