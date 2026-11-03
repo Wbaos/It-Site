@@ -52,6 +52,7 @@ export default function Hero({
           loading="eager"
         />
       )}
+      <div className="hero-scrim" aria-hidden="true" />
 
       {/* Badge */}
       {badgeText && <div className="hero-badge">{badgeText}</div>}

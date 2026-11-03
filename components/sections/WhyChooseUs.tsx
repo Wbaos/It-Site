@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ShieldCheck, Users, Clock, Cpu, Network, Smile } from "lucide-react";
 
 export default function WhyChooseUs({ locale = "en" }: { locale?: "en" | "es" }) {
@@ -96,6 +97,16 @@ export default function WhyChooseUs({ locale = "en" }: { locale?: "en" | "es" })
               ? "Reparación de sprinklers e irrigación primero, con instalación de cámaras de seguridad disponible en Miami y Broward."
               : "Sprinkler repair & irrigation first—with security camera installation available across Miami and Broward."}
           </p>
+        </div>
+
+        <div className="why-photo">
+          <Image
+            src="https://cdn.sanity.io/images/celkrwoq/production/6120f13ca37bb09c75a7687af063c8a045b82ed1-1320x904.jpg"
+            alt={isSpanish ? "Sistema de sprinklers regando un jardín residencial" : "Residential sprinkler system watering a front lawn"}
+            width={1100}
+            height={420}
+            loading="lazy"
+          />
         </div>
 
         <div className="why-grid">
