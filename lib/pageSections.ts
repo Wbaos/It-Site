@@ -8,7 +8,6 @@ import Pricing from "@/components/sections/PricingServer";
 import Contact from "@/components/sections/Contact";
 import HighlightsServer from "@/components/sections/HighLigthsServer";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
-import ProblemPicker from "@/components/sections/ProblemPicker";
 
 // Single home template, both languages. The section list, order and
 // components are identical for English and Spanish; only the text changes,
@@ -20,7 +19,6 @@ export type HomeLocale = "en" | "es";
 type Section = {
   key:
     | "hero"
-    | "problem-picker"
     | "seo-intro"
     | "services"
     | "highlights"
@@ -86,8 +84,6 @@ export function getHomeSections(locale: HomeLocale = "en"): Section[] {
       Component: Hero,
       props: isSpanish ? heroPropsEs : heroPropsEn,
     },
-
-    { key: "problem-picker", Component: ProblemPicker, props: { locale } },
 
     { key: "highlights", Component: HighlightsServer, props: { locale } },
 
