@@ -49,6 +49,13 @@ const SERVICES_ES: Record<string, { title: string; description: string }> = {
     title: "Instalación de Cámaras de Seguridad",
     description: "Cámaras de seguridad para casas y pequeños negocios, instaladas a domicilio.",
   },
+  // Live popular-services slug for the camera card (verified on the live
+  // home page); the duplicate's home-security entry is kept as a fallback.
+  "wireless-camera-installation": {
+    title: "Instalación de Cámaras Inalámbricas",
+    description:
+      "Instalación y configuración profesional de cámaras de seguridad inalámbricas en Miami y Broward para tu casa o pequeño negocio. Incluye montaje, optimización de ubicación, configuración de la app y pruebas de conexión.",
+  },
 };
 
 export default async function Services({ locale = "en" }: { locale?: "en" | "es" }) {
