@@ -5503,7 +5503,12 @@ select {
 
 
 html {
-  scroll-behavior: smooth;
+  /* Instant (not smooth) viewport scrolling: with `smooth` here, back-button
+     scroll restoration animates on browsers that don't honor the router's
+     instant scroll (notably iOS Safari), producing a visible sweep/flash
+     when returning to a scrolled page. Explicit smooth scrolls (cart,
+     reviews) still pass their own behavior option and are unaffected. */
+  scroll-behavior: auto;
   scroll-padding-top: var(--nav-h);
   height: 100%;
   /* Site base color (#020617, same as .service-detail): without a document

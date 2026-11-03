@@ -7,6 +7,19 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
 
+  // Client router cache: back/forward navigation to dynamic pages (e.g.
+  // service pages) must restore instantly from cache instead of refetching
+  // the RSC payload on every back press, which on slower mobile connections
+  // leaves a visible gap/flash during the transition. 30s is enough for
+  // navigation bursts; a hard reload always fetches fresh content. Static
+  // pages keep Next's 300s default, stated explicitly.
+  experimental: {
+    staleTimes: {
+      dynamic: 30,
+      static: 300,
+    },
+  },
+
   // Images
   images: {
     remotePatterns: [
