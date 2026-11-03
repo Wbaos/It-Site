@@ -26,6 +26,11 @@ export const metadata: Metadata = {
 
   alternates: {
     canonical: "https://www.calltechcare.com/contact",
+    languages: {
+      es: "https://www.calltechcare.com/es/contacto",
+      en: "https://www.calltechcare.com/contact",
+      "x-default": "https://www.calltechcare.com/contact",
+    },
   },
 };
 
