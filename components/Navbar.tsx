@@ -252,7 +252,7 @@ export default function Navbar() {
                             ) : (
                               <SvgIcon name="tag" size={22} />
                             )}
-                            <h4 style={{ marginLeft: 8 }}>{cat.category}</h4>
+                            <h4 style={{ marginLeft: 8 }}>{isSpanishPage && cat.categoryEs ? cat.categoryEs : cat.category}</h4>
                           </Link>
                         ) : (
                           <div
@@ -264,7 +264,7 @@ export default function Navbar() {
                             ) : (
                               <SvgIcon name="tag" size={22} />
                             )}
-                            <h4 style={{ marginLeft: 8 }}>{cat.category}</h4>
+                            <h4 style={{ marginLeft: 8 }}>{isSpanishPage && cat.categoryEs ? cat.categoryEs : cat.category}</h4>
                           </div>
                         )}
                       </div>
@@ -281,7 +281,7 @@ export default function Navbar() {
                             >
                               <span className="srv-left">
                                 <span className="dot"></span>
-                                {group.title}
+                                {isSpanishPage ? groupTitleEs(group.slug, group.title) : group.title}
                               </span>
                               {group.services && <span className="srv-count">({group.services.length})</span>}
                             </a>

@@ -72,7 +72,7 @@ export default function MobileServicesPanel({
                         ) : (
                           <SvgIcon name="tag" size={22} />
                         )}
-                        <h4 style={{ marginLeft: 8 }}>{cat.category}</h4>
+                        <h4 style={{ marginLeft: 8 }}>{isSpanishPage && cat.categoryEs ? cat.categoryEs : cat.category}</h4>
                       </a>
                     ) : (
                       <div className="dropdown-title" style={{ display: 'flex', alignItems: 'center', opacity: 0.5 }}>
@@ -86,7 +86,7 @@ export default function MobileServicesPanel({
                         ) : (
                           <SvgIcon name="tag" size={22} />
                         )}
-                        <h4 style={{ marginLeft: 8 }}>{cat.category}</h4>
+                        <h4 style={{ marginLeft: 8 }}>{isSpanishPage && cat.categoryEs ? cat.categoryEs : cat.category}</h4>
                       </div>
                     )}
                   </div>

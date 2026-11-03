@@ -37,6 +37,7 @@ export type ApiGroup = {
 
 export type ApiCategory = {
   category: string;
+  categoryEs?: string;
   categorySlug: string;
   icon?: any;
   displayOrder?: number;
@@ -91,6 +92,7 @@ export async function getServiceCategories(): Promise<ApiCategory[]> {
     },
     category->{
       title,
+      titleEs,
       "slug": slug.current,
       displayOrder,
       icon {
@@ -161,6 +163,7 @@ export async function getServiceCategories(): Promise<ApiCategory[]> {
     if (!categoryBucket) {
       categoryBucket = {
         category: catTitle,
+        categoryEs: group.category?.titleEs,
         categorySlug: catSlug,
         icon: group.category?.icon ?? "tag",
         displayOrder: group.category?.displayOrder ?? 999,
