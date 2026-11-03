@@ -30,7 +30,7 @@ export const homeSections: Section[] = [
     props: {
         // imageSrc: "/helping2.jpg",
 
-        titleLine1: "Sprinkler Repair Miami",
+        titleLine1: "Sprinkler Repair Miami & Broward",
         titleLine2: "Irrigation • Repairs • New Systems",
 
         subtitle:
