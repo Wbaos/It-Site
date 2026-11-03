@@ -103,7 +103,10 @@ export async function getAllActiveLocations(): Promise<Location[]> {
   return client.fetch(query);
 }
 
-export async function getLocationBySlug(slug: string): Promise<Location | null> {
+export async function getLocationBySlug(slug: string, locale: "en" | "es" = "en"): Promise<Location | null> {
+  const serviceName = locale === "es"
+    ? 'coalesce(service->titleEs, service->title, service->name, service->serviceName)'
+    : 'coalesce(service->name, service->title, service->serviceName)';
   const query = `*[_type == "location" && slug.current == $slug && isActive == true][0] {
     _id,
     title,
@@ -128,7 +131,7 @@ export async function getLocationBySlug(slug: string): Promise<Location | null> 
     serviceRadius,
     whyChooseUs,
     popularServices[]{
-      "name": coalesce(service->name, service->title, service->serviceName),
+      "name": ${serviceName},
       "price": coalesce(priceOverride, service->price),
       "icon": select(
         defined(service->icon.asset) => service->icon { asset->{url}, alt },
