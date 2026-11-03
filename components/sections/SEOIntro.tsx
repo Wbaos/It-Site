@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cityHref } from "@/lib/cityTwins";
 
 export default function SEOIntro({ locale = "en" }: { locale?: "en" | "es" }) {
   if (locale === "es") {
@@ -11,7 +12,7 @@ export default function SEOIntro({ locale = "en" }: { locale?: "en" | "es" }) {
 
           <p>
             CallTechCare es un equipo local de servicio enfocado en la{" "}
-            <Link href="/sprinkler-repair-miami">reparación de sprinklers en Miami</Link> y la solución de
+            <Link href={cityHref("miami", "es")}>reparación de sprinklers en Miami</Link> y la solución de
             problemas de irrigación en Miami-Dade y Broward. Ayudamos con fugas, cabezales rotos, mala cobertura,
             problemas de temporizador o controlador y mantenimiento del sistema, con comunicación clara y servicio
             confiable a domicilio.
