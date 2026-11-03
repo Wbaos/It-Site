@@ -108,7 +108,7 @@ export function getHomeSections(locale: HomeLocale = "en"): Section[] {
         ? {
             headline: "¿Preguntas? Hablemos.",
             subtitle:
-              "¿Tienes una pregunta? Estamos aquí para ayudarte. Respondemos dentro de 24 horas.",
+              "¿Tienes una pregunta? Estamos aquí para ayudarte.",
             locale,
           }
         : {
