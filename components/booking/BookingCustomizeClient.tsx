@@ -339,14 +339,7 @@ export default function BookingCustomizeClient({ slug }: { slug: string }) {
                   )}
                 </div>
                  <div className={styles.servicePrice}>
-                {service.price != null ? (
-                  <>${service.price.toFixed(2)}</>
-                ) : (
                   <>Custom Quote Required</>
-                )}
-                {pricingModel === "hourly" ? (
-                  <span className={styles.servicePriceSmall}>/hr</span>
-                ) : null}
               </div>
               </div>
 
@@ -401,11 +394,6 @@ export default function BookingCustomizeClient({ slug }: { slug: string }) {
                             ) : null}
                           </div>
 
-                          {typeof q.extraCost === "number" && q.extraCost > 0 ? (
-                            <span className={styles.priceDelta}>
-                              +${q.extraCost.toFixed(2)}
-                            </span>
-                          ) : null}
                         </label>
                         {isErrored ? (
                           <div className={styles.errorText}>
@@ -508,11 +496,6 @@ export default function BookingCustomizeClient({ slug }: { slug: string }) {
                                       {({ selected }) => (
                                         <>
                                           <span>{opt.label}</span>
-                                          {opt.extraCost ? (
-                                            <span className={styles.optionPrice}>
-                                              (+${opt.extraCost.toFixed(2)})
-                                            </span>
-                                          ) : null}
                                           {selected ? (
                                             <span className={styles.checkmark}>
                                               <Check />
@@ -632,11 +615,6 @@ export default function BookingCustomizeClient({ slug }: { slug: string }) {
                                       {({ selected }) => (
                                         <>
                                           <span>{opt.label}</span>
-                                          {opt.extraCost ? (
-                                            <span className={styles.optionPrice}>
-                                              (+${opt.extraCost.toFixed(2)})
-                                            </span>
-                                          ) : null}
                                           {selected ? (
                                             <span className={styles.checkmark}>
                                               <Check />
@@ -670,26 +648,6 @@ export default function BookingCustomizeClient({ slug }: { slug: string }) {
             <div className={styles.card}>
               <h2 className={styles.summaryTitle}>Order Summary</h2>
               <div className={styles.summaryDivider} />
-
-              <div className={styles.summaryRow}>
-                <span>Base Price</span>
-                <span>
-                  ${baseAmount.toFixed(2)}
-                  {pricingModel === "hourly" ? "/hr" : ""}
-                </span>
-              </div>
-
-              {addOnsTotal > 0 ? (
-                <div className={styles.summaryRow}>
-                  <span>Add-ons</span>
-                  <span>${addOnsTotal.toFixed(2)}</span>
-                </div>
-              ) : null}
-
-              <div className={styles.summaryTotal}>
-                <span>Total</span>
-                <span className={styles.summaryTotalValue}>${total.toFixed(2)}</span>
-              </div>
 
               <button className={styles.addToCartBtn} onClick={handleAddToCart}>
                 <ShoppingCart size={18} />

@@ -140,6 +140,11 @@ export default function Footer() {
                 Security Camera Installation
               </Link>
             </li>
+            <li>
+              <Link href="/services/landscaping">
+                Landscaping
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -184,7 +189,7 @@ export default function Footer() {
           <p>Follow Us</p>
           <div className="social-icons">
             <a
-              href="https://www.facebook.com/profile.php?id=61583200677803"
+              href="https://www.facebook.com/CallTechCare"
               aria-label="Facebook"
               target="_blank"
               rel="noopener noreferrer"

@@ -6,6 +6,9 @@ export const metadata: Metadata = {
     title: "Accessibility Statement – CallTechCare",
     description:
     "Accessibility Statement for CallTechCare: Learn about our ongoing efforts to ensure digital accessibility for all users visiting our site for sprinkler repair & irrigation services and security cameras in Miami and Broward.",
+    alternates: {
+        canonical: "https://www.calltechcare.com/accessibility",
+    },
 };
 
 export default function AccessibilityPage() {

@@ -146,6 +146,7 @@ export const metadata: Metadata = {
     languages: {
       es: "https://www.calltechcare.com/es/reparacion-de-sprinklers-miami",
       en: "https://www.calltechcare.com/sprinkler-repair-miami",
+      "x-default": "https://www.calltechcare.com/sprinkler-repair-miami",
     },
   },
   openGraph: {

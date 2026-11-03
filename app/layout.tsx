@@ -115,7 +115,6 @@ export default function RootLayout({
     description:
         "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service, free estimates.",
     telephone: "+1-786-366-2729",
-    priceRange: "$$",
     areaServed: [
       { "@type": "City", name: "Sunrise" },
       { "@type": "City", name: "Fort Lauderdale" },
@@ -158,8 +157,8 @@ export default function RootLayout({
     },
     geo: {
       "@type": "GeoCoordinates",
-      latitude: 25.5516,
-      longitude: -80.3467
+      latitude: 25.59392,
+      longitude: -80.38922
     },
     contactPoint: {
       "@type": "ContactPoint",

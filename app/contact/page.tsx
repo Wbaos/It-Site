@@ -74,7 +74,7 @@ export default function ContactPage() {
             </div>
 
             <h1 className="contact-support-title">
-              Contact Us
+              Contact CallTechCare for Sprinkler Repair
             </h1>
 
             <p className="contact-support-subtitle">
