@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useCart } from "@/lib/CartContext";
 
 interface AddToCartButtonProps {
@@ -11,6 +11,8 @@ interface AddToCartButtonProps {
 
 export default function AddToCartButton({ slug, title, price }: AddToCartButtonProps) {
     const router = useRouter();
+    const pathname = usePathname();
+    const isSpanish = pathname === "/es" || (pathname ?? "").startsWith("/es/");
     const { addItem } = useCart();
 
     const handleAddToCart = async () => {
@@ -25,13 +27,13 @@ export default function AddToCartButton({ slug, title, price }: AddToCartButtonP
 
             router.push("/cart");
         } catch (err) {
-            alert("Something went wrong while adding to cart.");
+            alert(isSpanish ? "Algo salió mal al agregar al carrito." : "Something went wrong while adding to cart.");
         }
     };
 
     return (
         <button onClick={handleAddToCart} className="btn btn-primary">
-            Book This Service
+            {isSpanish ? "Reservar este servicio" : "Book This Service"}
         </button>
     );
 }

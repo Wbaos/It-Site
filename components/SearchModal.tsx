@@ -3,8 +3,12 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, X } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function SearchModal({ onClose }: { onClose: () => void }) {
+  const pathname = usePathname();
+  const isSpanish = pathname === "/es" || (pathname ?? "").startsWith("/es/");
+
   // Save and restore scroll position for mobile
   const scrollPositionRef = useRef<number>(0);
   useEffect(() => {
@@ -89,13 +93,13 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
       <div className="search-modal">
         <div ref={modalRef} className="search-box" onClick={(e) => e.stopPropagation()}>
           
-          <h3 className="search-title">Search Services</h3>
+          <h3 className="search-title">{isSpanish ? "Buscar Servicios" : "Search Services"}</h3>
 
           <div className="input-group">
             <Search size={18} />
             <input
               type="text"
-              placeholder="Search for a service..."
+              placeholder={isSpanish ? "Busca un servicio..." : "Search for a service..."}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
@@ -107,7 +111,7 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
           <div className="results">
             {!query && popular.length > 0 && (
               <div className="popular-section">
-                <p className="popular-title">Popular Searches</p>
+                <p className="popular-title">{isSpanish ? "Búsquedas Populares" : "Popular Searches"}</p>
 
                 {popular.map((item: any) => (
                   <Link
@@ -123,7 +127,7 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
               </div>
             )}
 
-            {loading && <p>Searching...</p>}
+            {loading && <p>{isSpanish ? "Buscando..." : "Searching..."}</p>}
 
             {!loading && query && results.length > 0 && (
               <>
@@ -146,7 +150,7 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
               </>
             )}
 
-            {!loading && query && results.length === 0 && <p>No results found.</p>}
+            {!loading && query && results.length === 0 && <p>{isSpanish ? "No se encontraron resultados." : "No results found."}</p>}
           </div>
         </div>
       </div>

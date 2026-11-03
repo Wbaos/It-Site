@@ -7,14 +7,15 @@ const styles = new Proxy({} as Record<string, string>, {
 
 interface CheckoutStepsProps {
   currentStep: 1 | 2 | 3 | 4;
+  locale?: "en" | "es";
 }
 
-export default function CheckoutSteps({ currentStep }: CheckoutStepsProps) {
+export default function CheckoutSteps({ currentStep, locale = "en" }: CheckoutStepsProps) {
   const steps = [
-    { number: 1, label: "Contact", icon: <User size={16} /> },
-    { number: 2, label: "Address", icon: <MapPin size={16} /> },
-    { number: 3, label: "Schedule", icon: <Calendar size={16} /> },
-    { number: 4, label: "Confirm", icon: <CreditCard size={16} /> },
+    { number: 1, label: locale === "es" ? "Contacto" : "Contact", icon: <User size={16} /> },
+    { number: 2, label: locale === "es" ? "Dirección" : "Address", icon: <MapPin size={16} /> },
+    { number: 3, label: locale === "es" ? "Programar" : "Schedule", icon: <Calendar size={16} /> },
+    { number: 4, label: locale === "es" ? "Confirmar" : "Confirm", icon: <CreditCard size={16} /> },
   ];
 
   return (

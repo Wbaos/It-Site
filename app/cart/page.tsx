@@ -2,10 +2,13 @@
 
 import { useCart } from "@/lib/CartContext";
 import { useNav } from "@/lib/NavContext";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function CartPage() {
+  const pathname = usePathname();
+  const isSpanish = pathname === "/es" || (pathname ?? "").startsWith("/es/");
+
   const { items, removeItem, updateItemQuantity } = useCart();
   const { setDropdownOpen, setOpen } = useNav();
   const router = useRouter();
@@ -45,7 +48,7 @@ export default function CartPage() {
 
     const normalized = promoCode.trim().toUpperCase();
     if (!normalized) {
-      setPromoError("Please enter a promo code.");
+      setPromoError(isSpanish ? "Por favor ingresa un código promocional." : "Please enter a promo code.");
       return;
     }
 
@@ -114,14 +117,14 @@ export default function CartPage() {
     return (
       <section className="cart-page">
         <div className="cart-header">
-          <h1 className="cart-title">Shopping Cart</h1>
-          <p className="cart-subtitle">Review your items before checkout</p>
+          <h1 className="cart-title">{isSpanish ? "Carrito de Compras" : "Shopping Cart"}</h1>
+          <p className="cart-subtitle">{isSpanish ? "Revisa tus artículos antes de pagar" : "Review your items before checkout"}</p>
         </div>
 
         <div className="cart-container">
           <div className="cart-left">
             <div className="empty-cart-message">
-              <p>Your cart is empty.</p>
+              <p>{isSpanish ? "Tu carrito está vacío." : "Your cart is empty."}</p>
 
               <button
                 className="checkout-btn"
@@ -130,7 +133,7 @@ export default function CartPage() {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               >
-                Browse Services
+                {isSpanish ? "Ver servicios" : "Browse Services"}
               </button>
             </div>
           </div>
@@ -144,8 +147,8 @@ export default function CartPage() {
   return (
     <section className="cart-page">
       <div className="cart-header">
-        <h1 className="cart-title">Shopping Cart</h1>
-        <p className="cart-subtitle">Review your items before checkout</p>
+        <h1 className="cart-title">{isSpanish ? "Carrito de Compras" : "Shopping Cart"}</h1>
+        <p className="cart-subtitle">{isSpanish ? "Revisa tus artículos antes de pagar" : "Review your items before checkout"}</p>
       </div>
 
       <div className="cart-container">
@@ -172,10 +175,10 @@ export default function CartPage() {
                       )}
                       {item.basePrice && (
                         <div className="item-base-price">
-                          Base Price:{" "}
+                          {isSpanish ? "Precio Base:" : "Base Price:"}{" "}
                           <span className="base-price-value">
                             ${item.basePrice?.toFixed(2)}
-                            {item.pricingModel === "hourly" ? "/hr" : ""}
+                            {item.pricingModel === "hourly" ? (isSpanish ? "/hora" : "/hr") : ""}
                           </span>
                         </div>
                       )}
@@ -211,8 +214,8 @@ export default function CartPage() {
                             }
                           >
                             {showDetails[item.id]
-                              ? "Hide Details ▲"
-                              : "View All Details ▼"}
+                              ? (isSpanish ? "Ocultar Detalles ▲" : "Hide Details ▲")
+                              : (isSpanish ? "Ver Todos los Detalles ▼" : "View All Details ▼")}
                           </button>
 
                           {showDetails[item.id] && (
@@ -242,21 +245,21 @@ export default function CartPage() {
                             )
                           }
                         >
-                          Modify
+                          {isSpanish ? "Modificar" : "Modify"}
                         </button>
 
                         <button
                           className="remove-btn"
                           onClick={() => removeItem(item.id)}
                         >
-                          Remove
+                          {isSpanish ? "Eliminar" : "Remove"}
                         </button>
                       </div>
                     </div>
 
                     <div className="cart-item-right">
                       <div className="quantity-control-wrapper">
-                        <span className="quantity-label">Quantity:</span>
+                        <span className="quantity-label">{isSpanish ? "Cantidad:" : "Quantity:"}</span>
 
                         <div className="quantity-control">
                           <button
@@ -305,7 +308,7 @@ export default function CartPage() {
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           >
-            + Continue Shopping
+            {isSpanish ? "+ Seguir comprando" : "+ Continue Shopping"}
           </button>
         </div>
 
@@ -313,16 +316,16 @@ export default function CartPage() {
         {/* RIGHT SIDE — ORDER SUMMARY */}
         {/* =============================== */}
         <aside className="cart-summary">
-          <h2>Order Summary</h2>
+          <h2>{isSpanish ? "Resumen del Pedido" : "Order Summary"}</h2>
 
           <div className="summary-row">
-            <span>Subtotal</span>
+            <span>{isSpanish ? "Subtotal" : "Subtotal"}</span>
             <span>${subtotal.toFixed(2)}</span>
           </div>
 
           {/* PROMO CODE */}
           <div className="promo-section">
-            <label className="promo-label">Promo Code</label>
+            <label className="promo-label">{isSpanish ? "Código Promocional" : "Promo Code"}</label>
 
             <div className="promo-input-wrapper">
               <input
@@ -330,11 +333,11 @@ export default function CartPage() {
                 value={promoCode}
                 onChange={(e) => setPromoCode(e.target.value)}
                 className="promo-input"
-                placeholder="Enter code"
+                placeholder={isSpanish ? "Ingresa el código" : "Enter code"}
               />
 
               <button className="promo-apply-btn" onClick={applyPromo}>
-                Apply
+                {isSpanish ? "Aplicar" : "Apply"}
               </button>
             </div>
 
@@ -343,13 +346,13 @@ export default function CartPage() {
 
           {appliedPromo && (
             <div className="summary-row">
-              <span>Discount ({String(appliedPromo.code || promoCode).toUpperCase()})</span>
+              <span>{isSpanish ? "Descuento" : "Discount"} ({String(appliedPromo.code || promoCode).toUpperCase()})</span>
               <span>- ${discountAmount.toFixed(2)}</span>
             </div>
           )}
 
           <div className="summary-total">
-            <span className="summary-total-text">Total</span>
+            <span className="summary-total-text">{isSpanish ? "Total" : "Total"}</span>
             <span>${total.toFixed(2)}</span>
           </div>
 
@@ -359,18 +362,18 @@ export default function CartPage() {
               router.push("/checkout");
             }}
           >
-            Proceed to Checkout
+            {isSpanish ? "Proceder al pago" : "Proceed to Checkout"}
           </button>
 
           <div className="summary-icons">
             <div>
-              <span>🔒</span> Secure Payment
+              <span>🔒</span> {isSpanish ? "Pago Seguro" : "Secure Payment"}
             </div>
             <div>
-              <span>✔</span> Licensed
+              <span>✔</span> {isSpanish ? "Con Licencia" : "Licensed"}
             </div>
             <div>
-              <span>⭐</span> Top Rated
+              <span>⭐</span> {isSpanish ? "Mejor Valorado" : "Top Rated"}
             </div>
           </div>
         </aside>

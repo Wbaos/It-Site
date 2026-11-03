@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useCart } from "@/lib/CartContext";
 import { useFormValidation } from "@/lib/useFormValidation";
 import CheckoutSteps from "@/components/checkout/CheckoutSteps";
@@ -52,6 +52,9 @@ type CartState = {
 
 export default function CheckoutClient() {
   const router = useRouter();
+  const pathname = usePathname();
+  const isSpanish = pathname === "/es" || (pathname ?? "").startsWith("/es/");
+
   const { items } = useCart();
 
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
@@ -250,11 +253,11 @@ export default function CheckoutClient() {
   const handleContinue = async () => {
     if (step === 1) {
       if (!validateContactRequired()) {
-        alert("Please fill in all required fields before continuing.");
+        alert(isSpanish ? "Por favor completa todos los campos requeridos antes de continuar." : "Please fill in all required fields before continuing.");
         return;
       }
       if (!user && !/\S+@\S+\.\S+/.test(contact.email)) {
-        alert("Please enter a valid email address.");
+        alert(isSpanish ? "Por favor ingresa un correo electrónico válido." : "Please enter a valid email address.");
         return;
       }
       try {
@@ -268,7 +271,7 @@ export default function CheckoutClient() {
 
     if (step === 2) {
       if (!validateAddressRequired()) {
-        alert("Please fill in all address fields before continuing.");
+        alert(isSpanish ? "Por favor completa todos los campos de dirección antes de continuar." : "Please fill in all address fields before continuing.");
         return;
       }
       try {
@@ -282,7 +285,7 @@ export default function CheckoutClient() {
 
     if (step === 3) {
       if (!validateScheduleRequired()) {
-        alert("Please select both date and time before continuing.");
+        alert(isSpanish ? "Por favor selecciona fecha y hora antes de continuar." : "Please select both date and time before continuing.");
         return;
       }
       try {
@@ -312,7 +315,7 @@ export default function CheckoutClient() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        const message = String((data as any)?.error || "Checkout failed");
+        const message = String((data as any)?.error || (isSpanish ? "El pago falló" : "Checkout failed"));
         throw new Error(message);
       }
 
@@ -320,7 +323,7 @@ export default function CheckoutClient() {
       if (url) router.push(url);
     } catch (err) {
       console.error("Checkout error:", err);
-      const message = err instanceof Error ? err.message : "Something went wrong with checkout.";
+      const message = err instanceof Error ? err.message : (isSpanish ? "Algo salió mal con el pago." : "Something went wrong with checkout.");
       alert(message);
     } finally {
       setLoading(false);
@@ -334,21 +337,21 @@ export default function CheckoutClient() {
           <div className={styles.container}>
             <div className={styles.topbar}>
               <p className={styles.backLink}>
-                <Link href="/cart">← Back to Cart</Link>
+                <Link href="/cart">{isSpanish ? "← Volver al Carrito" : "← Back to Cart"}</Link>
               </p>
-              <div className={styles.title}>Checkout</div>
+              <div className={styles.title}>{isSpanish ? "Pago" : "Checkout"}</div>
               <div />
             </div>
             <div className={styles.card}>
-              <h2>Your cart is empty</h2>
+              <h2>{isSpanish ? "Tu carrito está vacío" : "Your cart is empty"}</h2>
               <p className={styles.subtitle}>
-                Add a service before proceeding to checkout.
+                {isSpanish ? "Agrega un servicio antes de proceder al pago." : "Add a service before proceeding to checkout."}
               </p>
               <button
                 className={styles.btnPrimary}
                 onClick={() => router.push("/services")}
               >
-                Browse Services
+                {isSpanish ? "Ver servicios" : "Browse Services"}
               </button>
             </div>
           </div>
@@ -363,32 +366,32 @@ export default function CheckoutClient() {
         <div className={styles.container}>
           <div className={styles.topbar}>
             <p className={styles.backLink}>
-              <Link href="/cart">← Back to Cart</Link>
+              <Link href="/cart">{isSpanish ? "← Volver al Carrito" : "← Back to Cart"}</Link>
             </p>
-            <div className={styles.title}>Checkout</div>
+            <div className={styles.title}>{isSpanish ? "Pago" : "Checkout"}</div>
             <div />
           </div>
 
-          <CheckoutSteps currentStep={step} />
+          <CheckoutSteps currentStep={step} locale={isSpanish ? "es" : "en"} />
 
           <div className={styles.grid}>
             <div className={styles.leftColumn}>
               <div className={styles.card}>
             {step === 1 && (
               <>
-                <h2>Contact Information</h2>
+                <h2>{isSpanish ? "Información de Contacto" : "Contact Information"}</h2>
                 <p className={styles.subtitle}>
-                  We’ll use this to confirm your booking
+                  {isSpanish ? "La usaremos para confirmar tu reserva" : "We’ll use this to confirm your booking"}
                 </p>
 
                 <div className={styles.contactGrid}>
                   <div className={styles.field}>
                     <label className={styles.label}>
-                      First Name <span className={styles.req}>*</span>
+                      {isSpanish ? "Nombre" : "First Name"} <span className={styles.req}>*</span>
                     </label>
                     <input
                       name="firstName"
-                      placeholder="John"
+                      placeholder={isSpanish ? "Juan" : "John"}
                       value={contact.firstName}
                       onChange={(e) =>
                         handleContactChange("firstName", e.target.value)
@@ -401,11 +404,11 @@ export default function CheckoutClient() {
 
                   <div className={styles.field}>
                     <label className={styles.label}>
-                      Last Name <span className={styles.req}>*</span>
+                      {isSpanish ? "Apellido" : "Last Name"} <span className={styles.req}>*</span>
                     </label>
                     <input
                       name="lastName"
-                      placeholder="Doe"
+                      placeholder={isSpanish ? "Pérez" : "Doe"}
                       value={contact.lastName}
                       onChange={(e) =>
                         handleContactChange("lastName", e.target.value)
@@ -418,12 +421,12 @@ export default function CheckoutClient() {
 
                   <div className={`${styles.field} ${styles.fullRow}`}>
                     <label className={styles.label}>
-                      Email Address <span className={styles.req}>*</span>
+                      {isSpanish ? "Correo Electrónico" : "Email Address"} <span className={styles.req}>*</span>
                     </label>
                     <input
                       name="email"
                       type="email"
-                      placeholder="john@example.com"
+                      placeholder={isSpanish ? "juan@ejemplo.com" : "john@example.com"}
                       value={contact.email}
                       onChange={(e) => handleContactChange("email", e.target.value)}
                       className={`${styles.input} ${getContactInputClass(
@@ -435,7 +438,7 @@ export default function CheckoutClient() {
 
                   <div className={`${styles.field} ${styles.fullRow}`}>
                     <label className={styles.label}>
-                      Phone Number <span className={styles.req}>*</span>
+                      {isSpanish ? "Número de Teléfono" : "Phone Number"} <span className={styles.req}>*</span>
                     </label>
                     <input
                       name="phone"
@@ -454,20 +457,20 @@ export default function CheckoutClient() {
 
             {step === 2 && (
               <>
-                <h2>Service Location</h2>
+                <h2>{isSpanish ? "Ubicación del Servicio" : "Service Location"}</h2>
                 <p className={styles.subtitle}>
-                  Where should we provide the service?
+                  {isSpanish ? "¿Dónde debemos prestar el servicio?" : "Where should we provide the service?"}
                 </p>
 
                 <div className={styles.addressGrid}>
                   <div className={`${styles.field} ${styles.fullRow}`}>
                     <label className={styles.label}>
-                      Street Address <span className={styles.req}>*</span>
+                      {isSpanish ? "Dirección" : "Street Address"} <span className={styles.req}>*</span>
                     </label>
                     <input
                       name="street"
                       type="text"
-                      placeholder="123 Main Street, Apt 4B"
+                      placeholder={isSpanish ? "Calle Principal 123, Apto 4B" : "123 Main Street, Apt 4B"}
                       value={address.street}
                       onChange={(e) => handleAddressChange("street", e.target.value)}
                       className={`${styles.input} ${getAddressInputClass("street")}`}
@@ -476,12 +479,12 @@ export default function CheckoutClient() {
 
                   <div className={styles.field}>
                     <label className={styles.label}>
-                      City <span className={styles.req}>*</span>
+                      {isSpanish ? "Ciudad" : "City"} <span className={styles.req}>*</span>
                     </label>
                     <input
                       name="city"
                       type="text"
-                      placeholder="San Francisco"
+                      placeholder={isSpanish ? "Miami" : "San Francisco"}
                       value={address.city}
                       onChange={(e) => handleAddressChange("city", e.target.value)}
                       className={`${styles.input} ${getAddressInputClass("city")}`}
@@ -490,12 +493,12 @@ export default function CheckoutClient() {
 
                   <div className={styles.field}>
                     <label className={styles.label}>
-                      State <span className={styles.req}>*</span>
+                      {isSpanish ? "Estado" : "State"} <span className={styles.req}>*</span>
                     </label>
                     <input
                       name="state"
                       type="text"
-                      placeholder="CA"
+                      placeholder={isSpanish ? "FL" : "CA"}
                       value={address.state}
                       onChange={(e) => handleAddressChange("state", e.target.value)}
                       className={`${styles.input} ${getAddressInputClass("state")}`}
@@ -504,12 +507,12 @@ export default function CheckoutClient() {
 
                   <div className={`${styles.field} ${styles.fullRow}`}>
                     <label className={styles.label}>
-                      ZIP Code <span className={styles.req}>*</span>
+                      {isSpanish ? "Código Postal" : "ZIP Code"} <span className={styles.req}>*</span>
                     </label>
                     <input
                       name="zip"
                       type="text"
-                      placeholder="94102"
+                      placeholder={isSpanish ? "33177" : "94102"}
                       value={address.zip}
                       onChange={(e) => handleAddressChange("zip", e.target.value)}
                       className={`${styles.input} ${getAddressInputClass("zip")}`}
@@ -518,11 +521,11 @@ export default function CheckoutClient() {
 
                   <div className={`${styles.field} ${styles.fullRow}`}>
                     <label className={styles.label}>
-                      Additional Notes <span style={{ color: "#94a3b8", fontWeight: 600 }}>(Optional)</span>
+                      {isSpanish ? "Notas Adicionales" : "Additional Notes"} <span style={{ color: "#94a3b8", fontWeight: 600 }}>({isSpanish ? "Opcional" : "Optional"})</span>
                     </label>
                     <textarea
                       name="notes"
-                      placeholder="Gate code, parking instructions, etc."
+                      placeholder={isSpanish ? "Código de la puerta, instrucciones de estacionamiento, etc." : "Gate code, parking instructions, etc."}
                       value={address.notes}
                       onChange={(e) => handleAddressChange("notes", e.target.value)}
                       className={`${styles.textarea} ${styles.input}`}
@@ -536,15 +539,15 @@ export default function CheckoutClient() {
 
             {step === 3 && (
               <>
-                <h2>Schedule Your Service</h2>
+                <h2>{isSpanish ? "Programa Tu Servicio" : "Schedule Your Service"}</h2>
                 <p className={styles.subtitle}>
-                  Pick a date and time for all your services
+                  {isSpanish ? "Elige una fecha y hora para todos tus servicios" : "Pick a date and time for all your services"}
                 </p>
 
                 <div className={styles.scheduleBlock}>
                   <div className={styles.field}>
                     <label className={styles.label}>
-                      Select Date <span className={styles.req}>*</span>
+                      {isSpanish ? "Seleccionar Fecha" : "Select Date"} <span className={styles.req}>*</span>
                     </label>
                     <input
                       type="date"
@@ -564,7 +567,7 @@ export default function CheckoutClient() {
 
                   <div className={styles.field} style={{ marginTop: 14 }}>
                     <label className={styles.label}>
-                      Select Time <span className={styles.req}>*</span>
+                      {isSpanish ? "Seleccionar Hora" : "Select Time"} <span className={styles.req}>*</span>
                     </label>
 
                     <div className={styles.timeSlotsGrid}>
@@ -584,7 +587,7 @@ export default function CheckoutClient() {
                             disabled={!isAvailable}
                             title={
                               !isAvailable
-                                ? "Not available - must be at least 3 hours from now"
+                                ? (isSpanish ? "No disponible - debe ser al menos 3 horas a partir de ahora" : "Not available - must be at least 3 hours from now")
                                 : ""
                             }
                           >
@@ -600,10 +603,10 @@ export default function CheckoutClient() {
                       <div className={styles.scheduledRow}>
                         <CheckCircle2 size={18} className={styles.scheduledIcon} />
                         <span>
-                          <strong>Scheduled:</strong>{" "}
+                          <strong>{isSpanish ? "Programado:" : "Scheduled:"}</strong>{" "}
                           {new Date(
                             schedule.date + "T12:00:00"
-                          ).toLocaleDateString("en-US", {
+                          ).toLocaleDateString(isSpanish ? "es-ES" : "en-US", {
                             weekday: "long",
                             year: "numeric",
                             month: "long",
@@ -621,11 +624,11 @@ export default function CheckoutClient() {
                         !isTimeSlotAvailable(slot.startHour)
                       ) ? (
                       <span className={styles.schedulePlaceholderError}>
-                        No time slots available for this date. Please select a different date.
+                        {isSpanish ? "No hay horarios disponibles para esta fecha. Por favor selecciona otra fecha." : "No time slots available for this date. Please select a different date."}
                       </span>
                     ) : (
                       <span className={styles.schedulePlaceholder}>
-                        Select a date and time above
+                        {isSpanish ? "Selecciona una fecha y hora arriba" : "Select a date and time above"}
                       </span>
                     )}
                   </div>
@@ -636,11 +639,11 @@ export default function CheckoutClient() {
 
             {step === 4 && (
               <>
-                <h2>Review Your Order</h2>
+                <h2>{isSpanish ? "Revisa Tu Pedido" : "Review Your Order"}</h2>
 
                 <div className={styles.reviewWrap}>
                   <div className={styles.reviewLabel}>
-                    Services ({items.length})
+                    {isSpanish ? "Servicios" : "Services"} ({items.length})
                   </div>
 
                   <div className={styles.reviewServiceList}>
@@ -656,7 +659,7 @@ export default function CheckoutClient() {
 
                   <div className={styles.reviewDivider} />
 
-                  <div className={styles.reviewSectionLabel}>Contact Information</div>
+                  <div className={styles.reviewSectionLabel}>{isSpanish ? "Información de Contacto" : "Contact Information"}</div>
                   <div className={styles.reviewBlock}>
                     <div className={styles.reviewStrong}>
                       {[contact.firstName, contact.lastName]
@@ -669,25 +672,25 @@ export default function CheckoutClient() {
 
                   <div className={styles.reviewDivider} />
 
-                  <div className={styles.reviewSectionLabel}>Service Location</div>
+                  <div className={styles.reviewSectionLabel}>{isSpanish ? "Ubicación del Servicio" : "Service Location"}</div>
                   <div className={styles.reviewBlock}>
                     <div className={styles.reviewStrong}>{address.street}</div>
                     <div className={styles.reviewMuted}>
                       {address.city}, {address.state} {address.zip}
                     </div>
                     {address.notes ? (
-                      <div className={styles.reviewNotes}>Notes: {address.notes}</div>
+                      <div className={styles.reviewNotes}>{isSpanish ? "Notas:" : "Notes:"} {address.notes}</div>
                     ) : null}
                   </div>
 
                   <div className={styles.reviewDivider} />
 
-                  <div className={styles.reviewSectionLabel}>Scheduled For</div>
+                  <div className={styles.reviewSectionLabel}>{isSpanish ? "Programado Para" : "Scheduled For"}</div>
                   <div className={styles.reviewBlock}>
                     <div className={styles.reviewStrong}>
                       {schedule.date
                         ? new Date(schedule.date + "T12:00:00").toLocaleDateString(
-                            "en-US",
+                            isSpanish ? "es-ES" : "en-US",
                             { weekday: "long", month: "long", day: "numeric" }
                           )
                         : ""}
@@ -710,7 +713,7 @@ export default function CheckoutClient() {
                   className={styles.btnPrimary}
                   onClick={handleContinue}
                 >
-                  Continue →
+                  {isSpanish ? "Continuar →" : "Continue →"}
                 </button>
               )}
 
@@ -721,14 +724,14 @@ export default function CheckoutClient() {
                     className={styles.btnSecondary}
                     onClick={handleBack}
                   >
-                    ← Back
+                    {isSpanish ? "← Atrás" : "← Back"}
                   </button>
                   <button
                     type="button"
                     className={styles.btnPrimary}
                     onClick={handleContinue}
                   >
-                    Continue →
+                    {isSpanish ? "Continuar →" : "Continue →"}
                   </button>
                 </div>
               )}
@@ -740,14 +743,14 @@ export default function CheckoutClient() {
                     className={styles.btnSecondary}
                     onClick={handleBack}
                   >
-                    ← Back
+                    {isSpanish ? "← Atrás" : "← Back"}
                   </button>
                   <button
                     type="button"
                     className={styles.btnPrimary}
                     onClick={handleContinue}
                   >
-                    Continue →
+                    {isSpanish ? "Continuar →" : "Continue →"}
                   </button>
                 </div>
               )}
@@ -760,7 +763,7 @@ export default function CheckoutClient() {
                     onClick={handleBack}
                     disabled={loading}
                   >
-                    ← Back
+                    {isSpanish ? "← Atrás" : "← Back"}
                   </button>
                   <button
                     type="button"
@@ -769,11 +772,11 @@ export default function CheckoutClient() {
                     disabled={loading}
                   >
                     {loading ? (
-                      "Redirecting..."
+                      (isSpanish ? "Redirigiendo..." : "Redirecting...")
                     ) : (
                       <>
                         <Check size={18} />
-                        Confirm Booking
+                        {isSpanish ? "Confirmar reserva" : "Confirm Booking"}
                       </>
                     )}
                   </button>
@@ -785,7 +788,7 @@ export default function CheckoutClient() {
           <aside className={styles.sidebar}>
             <div className={styles.summaryCard}>
               <div className={styles.summaryHeaderContainer}>
-                <h3 className={styles.summaryHeader}>Order Summary</h3>
+                <h3 className={styles.summaryHeader}>{isSpanish ? "Resumen del Pedido" : "Order Summary"}</h3>
               </div>
 
               <div className={styles.summaryBody}>
@@ -803,19 +806,19 @@ export default function CheckoutClient() {
                 <div className={styles.summaryDivider} />
 
                 <div className={styles.summaryRow}>
-                  <span>Subtotal</span>
+                  <span>{isSpanish ? "Subtotal" : "Subtotal"}</span>
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
 
                 {promo?.code ? (
                   <div className={styles.summaryRow}>
-                    <span>Discount ({promo.code})</span>
+                    <span>{isSpanish ? "Descuento" : "Discount"} ({promo.code})</span>
                     <span>- ${discountAmount.toFixed(2)}</span>
                   </div>
                 ) : null}
 
                 <div className={styles.summaryTotalRow}>
-                  <span>Total</span>
+                  <span>{isSpanish ? "Total" : "Total"}</span>
                   <span className={styles.summaryTotalValue}>
                     ${total.toFixed(2)}
                   </span>
@@ -826,23 +829,23 @@ export default function CheckoutClient() {
             <div className={styles.perksCard}>
               <div className={styles.perkRow}>
                 <ShieldCheck size={18} className={styles.perkIcon} />
-                1-Year Warranty
+                {isSpanish ? "Garantía de 1 Año" : "1-Year Warranty"}
               </div>
               <div className={styles.perkRow}>
                 <BadgeCheck size={18} className={styles.perkIcon} />
-                Satisfaction Guaranteed
+                {isSpanish ? "Satisfacción Garantizada" : "Satisfaction Guaranteed"}
               </div>
               <div className={styles.perkRow}>
                 <Check size={18} className={styles.perkIcon} />
-                Transparent Pricing
+                {isSpanish ? "Precios Transparentes" : "Transparent Pricing"}
               </div>
             </div>
 
             <div className={styles.helpBlock}>
-              <div className={styles.helpLabel}>Need help?</div>
+              <div className={styles.helpLabel}>{isSpanish ? "¿Necesitas ayuda?" : "Need help?"}</div>
               <a className={styles.helpPhone} href="tel:+17863662729">
                 <Phone size={16} />
-                Call (786) 366-2729
+                {isSpanish ? "Llama al (786) 366-2729" : "Call (786) 366-2729"}
               </a>
             </div>
           </aside>

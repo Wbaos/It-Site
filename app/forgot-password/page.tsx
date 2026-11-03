@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import SvgIcon from "@/components/common/SvgIcons";
 
 export default function ForgotPasswordPage() {
+  const pathname = usePathname();
+  const isSpanish = pathname === "/es" || (pathname ?? "").startsWith("/es/");
+
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -24,12 +27,12 @@ export default function ForgotPasswordPage() {
 
       const data = await res.json();
       if (res.ok) {
-        setStatus("Reset link sent to your email.");
+        setStatus(isSpanish ? "Enlace de restablecimiento enviado a tu correo." : "Reset link sent to your email.");
       } else {
-        setStatus(data.error || "Something went wrong.");
+        setStatus(data.error || (isSpanish ? "Algo salió mal." : "Something went wrong."));
       }
     } catch {
-      setStatus("Server error. Try again later.");
+      setStatus(isSpanish ? "Error del servidor. Inténtalo más tarde." : "Server error. Try again later.");
     }
 
     setBusy(false);
@@ -46,37 +49,37 @@ export default function ForgotPasswordPage() {
           className="single-blog-back btn-reset"
         >
           <SvgIcon name="chevron-left" size={18} color="var(--brand-teal)" />
-          Back
+          {isSpanish ? "Atrás" : "Back"}
         </button>
       </div>
 
       {/* ==== FORGOT PASSWORD CARD ==== */}
       <div className="login-box">
-        <h2 className="login-title">Forgot Password</h2>
+        <h2 className="login-title">{isSpanish ? "Olvidé mi Contraseña" : "Forgot Password"}</h2>
         <p className="login-subtitle">
-          Enter your email to receive a password reset link.
+          {isSpanish ? "Ingresa tu correo para recibir un enlace de restablecimiento de contraseña." : "Enter your email to receive a password reset link."}
         </p>
 
         <form onSubmit={onSubmit} className="login-form">
-          <label className="input-label">Email</label>
+          <label className="input-label">{isSpanish ? "Correo Electrónico" : "Email"}</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@email.com"
+            placeholder={isSpanish ? "tu@correo.com" : "you@email.com"}
             className="input-field"
             required
           />
 
           <button type="submit" className="btn-submit" disabled={busy}>
-            {busy ? "Sending..." : "Send Reset Link"}
+            {busy ? (isSpanish ? "Enviando..." : "Sending...") : (isSpanish ? "Enviar Enlace de Restablecimiento" : "Send Reset Link")}
           </button>
         </form>
 
         {status && (
           <p
             className={`login-status mt-3 ${
-              status.toLowerCase().includes("sent") ? "success" : "error"
+              status.toLowerCase().includes("sent") || status.toLowerCase().includes("enviado") ? "success" : "error"
             }`}
           >
             {status}
