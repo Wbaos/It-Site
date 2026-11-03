@@ -3,8 +3,8 @@ import { ShieldCheck, Users, Clock, Cpu, Network, Smile } from "lucide-react";
 export default function WhyChooseUs({ locale = "en" }: { locale?: "en" | "es" }) {
   const isSpanish = locale === "es";
   // Same six cards, same icons, same order in both languages; only the
-  // text changes. The Spanish wording is reused from the former Spanish
-  // home page (which had dropped the icons; the shared template keeps them).
+  // text changes. The Spanish wording is a faithful translation of the
+  // English wording.
   const features = isSpanish
     ? [
         {
@@ -15,7 +15,7 @@ export default function WhyChooseUs({ locale = "en" }: { locale?: "en" | "es" })
         {
           icon: <Clock size={32} strokeWidth={1.5} />,
           title: "Disponibilidad el Mismo Día",
-          text: "La mayoría de las citas están disponibles el mismo día en las 30 áreas de servicio, desde Sunrise hasta Cutler Bay, dentro del horario de servicio.",
+          text: "La mayoría de las citas están disponibles el mismo día en las 30 áreas de servicio, desde Sunrise hasta Cutler Bay.",
         },
         {
           icon: <Network size={32} strokeWidth={1.5} />,
@@ -25,7 +25,7 @@ export default function WhyChooseUs({ locale = "en" }: { locale?: "en" | "es" })
         {
           icon: <Cpu size={32} strokeWidth={1.5} />,
           title: "Instalaciones Hechas en Persona",
-          text: "Desde la reparación de sprinklers y la solución de problemas de irrigación hasta la instalación de cámaras de seguridad: nos encargamos de los detalles, en tu propiedad.",
+          text: "Desde la reparación de sprinklers y la solución de problemas de irrigación hasta la instalación de cámaras de seguridad: nos encargamos de los detalles.",
         },
         {
           icon: <Users size={32} strokeWidth={1.5} />,
@@ -34,8 +34,8 @@ export default function WhyChooseUs({ locale = "en" }: { locale?: "en" | "es" })
         },
         {
           icon: <ShieldCheck size={32} strokeWidth={1.5} />,
-          title: "Estimado Claro, Sin Sorpresas",
-          text: "Te damos un estimado claro en sitio antes de empezar el trabajo. Sin cargos ocultos, sin ventas a presión.",
+          title: "Precios Transparentes — Sin Sorpresas",
+          text: "Precios claros por adelantado. Sin cargos ocultos. Sin ventas adicionales. Sin presión.",
         },
       ]
     : [

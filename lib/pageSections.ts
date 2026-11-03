@@ -12,8 +12,8 @@ import WhyChooseUs from "@/components/sections/WhyChooseUs";
 // Single home template, both languages. The section list, order and
 // components are identical for English and Spanish; only the text changes,
 // via each section's `locale` prop (or, for Hero/Contact, via the props
-// below). The Spanish copy below is reused from the former Spanish home
-// page, not retranslated: same hero, same service/why/how wording.
+// below). The Spanish copy is a faithful translation of the English copy:
+// same sections, same paragraphs and cards, no additions or cuts.
 export type HomeLocale = "en" | "es";
 
 type Section = {
@@ -61,7 +61,7 @@ const heroPropsEs = {
   titleLine1: "Reparación de Sprinklers en Miami y Broward",
   titleLine2: "Irrigación • Reparaciones • Sistemas Nuevos",
   subtitle:
-    "Servicios profesionales de reparación de sprinklers e irrigación en Miami y Broward. También instalamos cámaras de seguridad. Todo el servicio es a domicilio.",
+    "Servicios profesionales de reparación de sprinklers e irrigación en Miami y Broward. También instalamos cámaras de seguridad.",
   badgeText: "Reparación de Sprinklers e Irrigación en Miami y Broward",
   primaryCtaText: "Llama Ahora",
   primaryCtaHref: "tel:+17863662729",
@@ -97,7 +97,7 @@ export function getHomeSections(locale: HomeLocale = "en"): Section[] {
     {
       key: "testimonials",
       Component: GoogleReviewsCTA,
-      props: {},
+      props: { locale },
     },
 
     { key: "pricing", Component: Pricing, props: {} },
