@@ -81,7 +81,7 @@ export async function generateMetadata({
   const description =
     post.metaDescription ||
     post.excerpt ||
-    "Sprinkler repair and irrigation guides for Miami and Broward — leaks, valves, timers, pumps and new systems — plus home tech tips from CallTechCare.";
+    "Sprinkler repair and irrigation guides for Miami and Broward — leaks, valves, timers, pumps and new systems — plus security camera guides from CallTechCare.";
 
   const image =
     post.ogImage?.asset?.url || post.mainImage?.asset?.url;
@@ -155,7 +155,7 @@ export default async function BlogPost({
   const description =
     post.metaDescription ||
     post.excerpt ||
-    "Sprinkler repair and irrigation guides for Miami and Broward — leaks, valves, timers, pumps and new systems — plus home tech tips from CallTechCare.";
+    "Sprinkler repair and irrigation guides for Miami and Broward — leaks, valves, timers, pumps and new systems — plus security camera guides from CallTechCare.";
 
   const tags: string[] = Array.isArray(post.tags) ? post.tags : [];
 

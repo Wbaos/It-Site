@@ -44,7 +44,7 @@ export default async function AssessmentsPage() {
         <div className="assessment-landing-hero">
           <div className="assessment-landing-badge">FREE ASSESSMENTS</div>
           <h1 className="assessment-landing-title">
-            Discover What Your Tech Setup Needs
+            Discover What Your Camera Setup Needs
           </h1>
           <p className="assessment-landing-subtitle">
             Take a quick assessment to get personalized recommendations and pricing for your specific needs. 

@@ -25,7 +25,7 @@ export default function WhyChooseUs() {
     {
       icon: <Users size={32} strokeWidth={1.5} />,
       title: "Trusted by Homes & Small Businesses",
-      text: "From a single sprinkler repair to a full new system or a camera setup, we support homes, seniors, home offices, and small businesses.",
+      text: "From a single sprinkler repair to a full new system or a camera setup, we support homes, home offices, and small businesses.",
     },
     {
       icon: <ShieldCheck size={32} strokeWidth={1.5} />,

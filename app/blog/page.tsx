@@ -9,7 +9,7 @@ import BlogPageClient from "@/app/blog/BlogPageClient";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Sprinkler Repair & Home Tech Tips | CallTechCare Blog",
+  title: "Sprinkler Repair & Security Camera Tips | CallTechCare Blog",
   description: "Helpful guides on sprinkler repair, irrigation, security cameras, and home maintenance tips for homeowners in Miami and South Florida.",  
   alternates: {
     canonical: "https://www.calltechcare.com/blog",
@@ -116,7 +116,7 @@ export default async function BlogPage() {
         </div>
 
         <h1 className="blog-title">
-          Sprinkler Repair & Home Tech Guides
+          Sprinkler Repair & Security Camera Guides
         </h1>
 
         <p className="blog-subtitle">

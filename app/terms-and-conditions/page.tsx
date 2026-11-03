@@ -139,12 +139,10 @@ export default function TermsAndConditionsPage() {
                                 </div>
 
                                 <p>
-                                    Prices displayed on our website are estimates. Final pricing may be
-                                    confirmed before work begins.
+                                    Final pricing is confirmed before work begins.
                                 </p>
                                 <p>
-                                    Payments are securely processed via Stripe. Subscriptions renew
-                                    automatically unless canceled before the next billing cycle.
+                                    Payments are securely processed via Stripe.
                                 </p>
 
                                 <p className="legal-highlight">Additional charges may apply for:</p>

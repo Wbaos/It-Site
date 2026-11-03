@@ -190,7 +190,7 @@ export default function ContactPage() {
                 </div>
 
                 <h3 className="contact-support-cardTitle">
-                  Phone Support
+                  Call Us
                 </h3>
 
                 <p className="contact-support-cardText">

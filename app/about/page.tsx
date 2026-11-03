@@ -34,14 +34,13 @@ export default function AboutPage() {
         <section className="about-section">
           <h2 className="about-heading">Our Story</h2>
           <p className="about-text">
-            We started CallTechCare after realizing how many people — particularly older adults —
-            felt frustrated or left behind by constant technology changes. Whether it’s a sprinkler system that won’t run, a leak in the yard, or cameras that need placing, we’re here to help with honesty and patience.
+            We started CallTechCare after seeing how many homeowners struggled to find reliable help for their sprinkler systems and cameras.
+            Whether it’s a sprinkler system that won’t run, a leak in the yard, or cameras that need placing, we’re here to help with honesty and patience.
           </p>
 
           <p className="about-text">
-            As our clients continued to trust us, many also asked for help with other practical
-            services around their homes. Over time we expanded to offer reliable home and outdoor
-            services alongside our technology support. Based in Miami, we proudly serve homeowners
+            As our clients continued to trust us, we focused on what we do best: sprinkler repair and irrigation, plus security camera installation.
+            Based in Miami, we proudly serve homeowners
             across Miami-Dade and Broward, including Miami, Miramar, Pembroke Pines, Hollywood, and Fort Lauderdale.
           </p>
         </section>
