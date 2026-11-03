@@ -6680,6 +6680,36 @@ main {
   }
   .site-header {
     background-color: #0f172a;
+    /* Round 4: the flash survived #301 on FRESH Safari tabs (owner
+       confirmed a fully closed tab, and Chrome never shows it), so
+       old CSS / bfcache are ruled out and two Safari-only mechanisms
+       remain. (1) This header still had no compositing layer: the
+       #301 veto on transform / will-change was kept because the
+       mobile .notification-dropdown is position: fixed inside the
+       header (no portal) and a transformed ancestor would shift it
+       down by the 44px bar height. Fix without breaking it:
+       backface-visibility and will-change: opacity promote the
+       header to its own layer, and NEITHER creates a containing
+       block for fixed descendants (unlike transform / filter /
+       perspective), so the dropdown keeps its viewport positioning
+       (top: 64px on mobile) and the desktop absolute dropdown is
+       unaffected. With its own layer, WebKit no longer repositions
+       the header a frame late when back navigation jumps the scroll
+       position. */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: opacity;
+  }
+  /* Round 4 (2): body { overflow-x: hidden } makes WebKit treat the
+     body as a scroll container, and fixed descendants then repaint
+     late when back navigation restores the scroll position — a
+     Safari-only quirk (Chrome does not do this). overflow-x: clip
+     clips the same horizontal overflow WITHOUT creating a scroll
+     container, so the fixed bars track the viewport immediately.
+     The hidden declaration in the base body rule stays as the
+     fallback for older iOS Safari that does not understand clip. */
+  body {
+    overflow-x: clip;
   }
 }
 
