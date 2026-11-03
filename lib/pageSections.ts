@@ -3,12 +3,11 @@ import Hero from "@/components/sections/Hero";
 import SEOIntro from "@/components/sections/SEOIntro";
 import Services from "@/components/sections/Services";
 import HowItWorks from "@/components/sections/HowItWorks";
-import TestimonialsList, { Testimonial } from "@/components/common/TestimonialsList";
+import GoogleReviewsCTA from "@/components/sections/GoogleReviewsCTA";
 import Pricing from "@/components/sections/PricingServer";
 import Contact from "@/components/sections/Contact";
 import HighlightsServer from "@/components/sections/HighLigthsServer";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
-import { getGoogleReviewsUrl } from "@/lib/google-reviews";
 type Section = {
   key:
     | "hero"
@@ -23,23 +22,6 @@ type Section = {
   Component: ComponentType<any>;
   props?: Record<string, unknown>;
 };
-
-const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
-  {
-    name: "Jorge Manuel.",
-    text: "They were patient and explained everything clearly.",
-    date: "2025-05-12",
-    rating: 5,
-    verified: true,
-  },
-  {
-    name: "María L.",
-    text: "Very respectful and helpful. Highly recommended.",
-    date: "2025-03-03",
-    rating: 5,
-    verified: true,
-  },
-];
 
 export const homeSections: Section[] = [
   {
@@ -84,14 +66,8 @@ export const homeSections: Section[] = [
 
   {
     key: "testimonials",
-    Component: TestimonialsList,
-    props: {
-      items: HOMEPAGE_TESTIMONIALS,
-      title: "What South Florida Clients Say",
-      subtitle: "Real experiences from satisfied homeowners and families.",
-      variant: "plain",
-      googleReviewsUrl: getGoogleReviewsUrl() ?? undefined,
-    },
+    Component: GoogleReviewsCTA,
+    props: {},
   },
 
   { key: "pricing", Component: Pricing, props: {} },

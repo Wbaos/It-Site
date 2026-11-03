@@ -17,7 +17,6 @@ type Props = {
   title?: string;
   subtitle?: string;
   afterSubtitle?: ReactNode;
-  googleReviewsUrl?: string;
   carousel?: boolean;
   variant?: "card" | "plain";
 };
@@ -27,7 +26,6 @@ export default function TestimonialsList({
   title = "What Clients Say",
   subtitle = "Real experiences from satisfied homeowners and businesses.",
   afterSubtitle,
-  googleReviewsUrl,
   variant = "card", // NEW default
 }: Props) {
   const n = items.length;
@@ -233,19 +231,6 @@ export default function TestimonialsList({
             </div>
           )}
         </div>
-
-        {googleReviewsUrl && (
-          <div style={{ textAlign: "center", marginTop: "1rem" }}>
-            <a
-              href={googleReviewsUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-write-review"
-            >
-              Ver las 26 reseñas en Google
-            </a>
-          </div>
-        )}
       </div>
     </section>
   );
