@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { sanity } from "@/lib/sanity";
 import { urlFor } from "@/lib/sanityImage";
+import { serviceHref } from "@/lib/serviceTwins";
 
 export const revalidate = 0;
 
@@ -112,7 +113,7 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
           const title = es?.title ?? s.title;
           const description = es?.description ?? s.description;
           return (
-          <Link key={s._id} href={`/services/${s.slug}`} className="service-card">
+          <Link key={s._id} href={serviceHref(s.slug, locale)} className="service-card">
 
             <div className="service-card-icon">
               {s.icon?.asset && (

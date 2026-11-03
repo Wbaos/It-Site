@@ -7,6 +7,7 @@ import { ArrowUp } from "lucide-react";
 import SvgIcon from "./common/SvgIcons";
 
 import { cityHref } from "@/lib/cityTwins";
+import { serviceHref } from "@/lib/serviceTwins";
 
 type FooterArea = { name: string; slug: string; esSlug: string };
 
@@ -109,47 +110,47 @@ export default function Footer({ areas }: { areas?: FooterArea[] }) {
 
           <ul className="footer-services-list">
             <li>
-              <Link href="/sprinkler-repair-miami">
+              <Link href={cityHref("miami", locale)}>
                 {isSpanishPage ? "Reparación de Sprinklers en Miami" : "Sprinkler Repair Miami"}
               </Link>
             </li>
             <li>
-              <Link href="/services/sprinkler-repair-and-installation">
+              <Link href={serviceHref("sprinkler-repair-and-installation", locale)}>
                 {isSpanishPage ? "Reparación e Instalación de Sprinklers" : "Sprinkler Repair & Irrigation"}
               </Link>
             </li>
             <li>
-              <Link href="/services/sprinkler-leak-repair">
+              <Link href={serviceHref("sprinkler-leak-repair", locale)}>
                 {isSpanishPage ? "Reparación de Fugas de Sprinklers" : "Sprinkler Leak Repair"}
               </Link>
             </li>
             <li>
-              <Link href="/services/sprinkler-valve-repair">
+              <Link href={serviceHref("sprinkler-valve-repair", locale)}>
                 {isSpanishPage ? "Reparación de Válvulas de Sprinklers" : "Sprinkler Valve Repair"}
               </Link>
             </li>
             <li>
-              <Link href="/services/sprinkler-pump-replacement">
+              <Link href={serviceHref("sprinkler-pump-replacement", locale)}>
                 {isSpanishPage ? "Reemplazo de Bombas de Sprinklers" : "Sprinkler Pump Replacement"}
               </Link>
             </li>
             <li>
-              <Link href="/services/sprinkler-timer-installation">
+              <Link href={serviceHref("sprinkler-timer-installation", locale)}>
                 {isSpanishPage ? "Instalación de Temporizadores de Sprinklers" : "Sprinkler Timer Installation"}
               </Link>
             </li>
             <li>
-              <Link href="/services/wifi-sprinkler-controller-upgrade">
+              <Link href={serviceHref("wifi-sprinkler-controller-upgrade", locale)}>
                 {isSpanishPage ? "Actualización a Controlador WiFi de Sprinklers" : "WiFi Sprinkler Controller Upgrade"}
               </Link>
             </li>
             <li>
-              <Link href="/services/rain-sensor-installation">
+              <Link href={serviceHref("rain-sensor-installation", locale)}>
                 {isSpanishPage ? "Instalación de Sensores de Lluvia" : "Rain Sensor Installation"}
               </Link>
             </li>
             <li>
-              <Link href="/services/new-irrigation-installation">
+              <Link href={serviceHref("new-irrigation-installation", locale)}>
                 {isSpanishPage ? "Instalación Nueva de Irrigación" : "New Irrigation Installation"}
               </Link>
             </li>
