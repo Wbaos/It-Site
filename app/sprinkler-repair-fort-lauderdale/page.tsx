@@ -466,44 +466,59 @@ export default function SprinklerRepairFortLauderdalePage() {
               gap: "16px",
             }}
           >
-            <figure style={{ margin: 0 }}>
+                        <figure style={{ margin: 0 }}>
               <img
-                src="https://cdn.sanity.io/images/celkrwoq/production/6120f13ca37bb09c75a7687af063c8a045b82ed1-1320x904.jpg?w=900&auto=format"
-                alt="Sprinkler system watering a lawn"
+                src="https://cdn.sanity.io/images/celkrwoq/production/26e0434b4e85d20e1c637fd138d31f1f96df1cd6-768x1024.jpg?w=900&auto=format"
+                alt="Sprinkler system running at a Fort Lauderdale home"
                 loading="lazy"
                 style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
               />
-              <figcaption>New sprinkler system watering a lawn</figcaption>
+              <figcaption>Sprinkler system running at a Fort Lauderdale home</figcaption>
             </figure>
-
             <figure style={{ margin: 0 }}>
               <img
-                src="https://cdn.sanity.io/images/celkrwoq/production/bc5aa7c65e5c02afad22df4a6ab125528280eb2d-1232x1320.jpg?w=900&auto=format"
-                alt="Smart WiFi irrigation controller installed"
+                src="https://cdn.sanity.io/images/celkrwoq/production/5839c3116edccd85882b50a97612a27ed68bd9f9-1024x768.jpg?w=900&auto=format"
+                alt="CallTechCare on site in Fort Lauderdale"
                 loading="lazy"
                 style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
               />
-              <figcaption>Smart WiFi controller installed</figcaption>
+              <figcaption>CallTechCare on site in Fort Lauderdale</figcaption>
             </figure>
-
             <figure style={{ margin: 0 }}>
               <img
-                src="https://cdn.sanity.io/images/celkrwoq/production/232c961b8b1512926ae7f989c6c6a16d0b3b414b-1200x1600.jpg?w=900&auto=format"
-                alt="Sprinkler leak repair"
+                src="https://cdn.sanity.io/images/celkrwoq/production/dffcfefde3e0a439e6ed59e5ea72ae3681b390be-768x1024.jpg?w=900&auto=format"
+                alt="Sprinkler riser spraying over hedges in Fort Lauderdale"
                 loading="lazy"
                 style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
               />
-              <figcaption>Sprinkler leak repaired</figcaption>
+              <figcaption>Sprinkler riser spraying over hedges in Fort Lauderdale</figcaption>
             </figure>
-
             <figure style={{ margin: 0 }}>
               <img
-                src="https://cdn.sanity.io/images/celkrwoq/production/21a2632358c4e5dde2158083c2d144f946340daa-1200x1600.jpg?w=900&auto=format"
-                alt="Valve manifold replacement"
+                src="https://cdn.sanity.io/images/celkrwoq/production/9e2d15da54f921e5f896c190a0e48cd347464a85-1024x768.jpg?w=900&auto=format"
+                alt="Sprinkler system watering a Fort Lauderdale lawn"
                 loading="lazy"
                 style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
               />
-              <figcaption>Valve manifold replacement</figcaption>
+              <figcaption>Sprinkler system watering a Fort Lauderdale lawn</figcaption>
+            </figure>
+            <figure style={{ margin: 0 }}>
+              <img
+                src="https://cdn.sanity.io/images/celkrwoq/production/12a1e12e9055de3d647e5d49a76109d1eef07ec7-1024x768.jpg?w=900&auto=format"
+                alt="Sprinkler coverage across a Fort Lauderdale garden"
+                loading="lazy"
+                style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
+              />
+              <figcaption>Sprinkler coverage across a Fort Lauderdale garden</figcaption>
+            </figure>
+            <figure style={{ margin: 0 }}>
+              <img
+                src="https://cdn.sanity.io/images/celkrwoq/production/5dee11d00f03ffbfeaf83a2d0ffd1cfb3bd6c0e8-1024x768.jpg?w=900&auto=format"
+                alt="Sprinkler head watering hedges in Fort Lauderdale"
+                loading="lazy"
+                style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
+              />
+              <figcaption>Sprinkler head watering hedges in Fort Lauderdale</figcaption>
             </figure>
           </div>
         </div>
