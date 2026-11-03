@@ -73,6 +73,10 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
       icon {
         asset->{url},
         alt
+      },
+      image {
+        asset->{url},
+        alt
       }
     }
   `);
@@ -115,16 +119,16 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
           return (
           <Link key={s._id} href={serviceHref(s.slug, locale)} className="service-card">
 
-            <div className="service-card-icon">
-              {s.icon?.asset && (
+            {s.image?.asset && (
+              <div className="service-card-photo">
                 <Image
-                  src={urlFor(s.icon).url()}
-                  alt={s.icon?.alt || `${title} service icon`}
-                  width={40}
-                  height={40}
+                  src={urlFor(s.image).width(640).height(360).url()}
+                  alt={s.image?.alt || title}
+                  width={640}
+                  height={360}
                 />
-              )}
-            </div>
+              </div>
+            )}
 
 
             <h3 className="service-card-title">{title}</h3>
