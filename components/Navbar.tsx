@@ -53,6 +53,62 @@ export default function Navbar() {
   const spanishHref = EN_TO_ES[pathname ?? ""] ?? ES_HUB_HREF;
   const englishHref = ES_TO_EN[pathname ?? ""] ?? "/";
 
+  // Shared language pill: solid brand-green background with dark bold text,
+  // so it is clearly visible. Hrefs and mappings above are untouched.
+  // Rendered in the desktop nav (NavLinks) and, separately, in the header
+  // actions for mobile, where it is visible without opening the menu.
+  const langSwitcher = (extraClass: string) => (
+    <span
+      className={`lang-switcher ${extraClass}`}
+      aria-label="Language switcher"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "6px",
+        padding: "8px 14px",
+        background: "#00E793",
+        color: "#0f172a",
+        borderRadius: "999px",
+        fontSize: "14px",
+        fontWeight: 700,
+        lineHeight: "1",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {isSpanishPage ? (
+        <>
+          <span aria-current="true" style={{ fontWeight: 700 }}>
+            ES
+          </span>
+          <span aria-hidden="true">|</span>
+          <Link
+            href={englishHref}
+            onClick={closeAllMenus}
+            aria-label="View this page in English"
+            style={{ textDecoration: "none", color: "inherit", opacity: 0.75 }}
+          >
+            EN
+          </Link>
+        </>
+      ) : (
+        <>
+          <span aria-current="true" style={{ fontWeight: 700 }}>
+            EN
+          </span>
+          <span aria-hidden="true">|</span>
+          <Link
+            href={spanishHref}
+            onClick={closeAllMenus}
+            aria-label="Ver esta página en español"
+            style={{ textDecoration: "none", color: "inherit", opacity: 0.75 }}
+          >
+            ES
+          </Link>
+        </>
+      )}
+    </span>
+  );
+
   const NavLinks = ({ attachDropdownRef }: { attachDropdownRef: boolean }) => (
     <>
       <div className="nav-item dropdown" ref={attachDropdownRef ? dropdownRef : undefined}>
@@ -248,53 +304,10 @@ export default function Navbar() {
         Get Support
       </Link>
 
-      {/* LANGUAGE SWITCHER */}
-      <span
-        className="lang-switcher"
-        aria-label="Language switcher"
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "6px",
-          padding: "6px 10px",
-          border: "1px solid rgba(255, 255, 255, 0.35)",
-          borderRadius: "999px",
-          fontSize: "13px",
-          lineHeight: "1",
-        }}
-      >
-        {isSpanishPage ? (
-          <>
-            <span aria-current="true" style={{ fontWeight: 700 }}>
-              ES
-            </span>
-            <span aria-hidden="true">|</span>
-            <Link
-              href={englishHref}
-              onClick={closeAllMenus}
-              aria-label="View this page in English"
-              style={{ textDecoration: "none", color: "inherit", opacity: 0.8 }}
-            >
-              EN
-            </Link>
-          </>
-        ) : (
-          <>
-            <span aria-current="true" style={{ fontWeight: 700 }}>
-              EN
-            </span>
-            <span aria-hidden="true">|</span>
-            <Link
-              href={spanishHref}
-              onClick={closeAllMenus}
-              aria-label="Ver esta página en español"
-              style={{ textDecoration: "none", color: "inherit", opacity: 0.8 }}
-            >
-              ES
-            </Link>
-          </>
-        )}
-      </span>
+      {/* LANGUAGE SWITCHER (desktop nav only: attachDropdownRef is true for
+          the desktop render; mobile uses the header-actions pill so it is
+          visible without opening the menu). */}
+      {attachDropdownRef && langSwitcher("lang-switcher--in-nav")}
     </>
   );
 
@@ -405,6 +418,9 @@ export default function Navbar() {
           </div>
           {/* RIGHT ACTIONS */}
           <div className="actions">
+            {/* LANGUAGE SWITCHER, mobile only (see .mobile-only): visible
+                without opening the menu. */}
+            {langSwitcher("mobile-only lang-switcher--header-actions")}
             <button
               className="icon-btn"
               aria-label="Search"
