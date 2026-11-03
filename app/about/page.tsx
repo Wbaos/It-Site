@@ -75,7 +75,7 @@ export default function AboutPage() {
             If you're looking for <Link href="/sprinkler-repair-miami">Sprinkler Repair Miami</Link>, start here.
           </p>
 
-          <Link href="/#booking" className="about-button">
+          <Link href="/request-quote" className="about-button">
             Book a Service
           </Link>
         </section>

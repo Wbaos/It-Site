@@ -162,7 +162,7 @@ export default function TermsAndConditionsPage() {
                                 <div className="terms-callout">
                                     <p className="terms-callout-title">1-Year Workmanship Warranty</p>
                                     <p className="terms-callout-text">
-                                        All services come with a 1-year warranty covering workmanship issues.
+                                        All services come with a 1-year warranty covering workmanship issues when CallTechCare performs the work and provides the materials.
                                         If a problem is related to our work within this period, we will return
                                         to fix it at no additional charge.
                                     </p>
@@ -195,7 +195,7 @@ export default function TermsAndConditionsPage() {
                                 <ul>
                                     <li>Provide accurate information when booking services</li>
                                     <li>Ensure safe access to the service location</li>
-                                    <li>Be present for any authorized adult present during appointments</li>
+                                    <li>Be present, or have an authorized adult present, during appointments</li>
                                     <li>Inform technicians of safety concerns or hazards</li>
                                 </ul>
                             </div>

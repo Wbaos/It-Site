@@ -36,7 +36,7 @@ export default function FAQPage() {
     
     {
       q: "How can I book a service?",
-      a: "You can book directly on our website using the booking form or call us at (786) 366-2729 to schedule an appointment.",
+      a: "You can request service directly on our website using the request form or call us at (786) 366-2729 to schedule an appointment.",
     },
     {
       q: "What payment methods do you accept?",
