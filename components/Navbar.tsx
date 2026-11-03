@@ -134,6 +134,9 @@ export default function Navbar() {
     "/forgot-password": "/es/olvido-contrasena",
     "/account": "/es/cuenta",
     "/about": "/es/sobre-nosotros",
+    "/privacy-policy": "/es/politica-de-privacidad",
+    "/terms-and-conditions": "/es/terminos-y-condiciones",
+    "/accessibility": "/es/accesibilidad",
     "/faq": "/es/preguntas-frecuentes",
   };
   const ES_TO_EN: Record<string, string> = {
@@ -215,6 +218,9 @@ export default function Navbar() {
     "/es/olvido-contrasena": "/forgot-password",
     "/es/cuenta": "/account",
     "/es/sobre-nosotros": "/about",
+    "/es/politica-de-privacidad": "/privacy-policy",
+    "/es/terminos-y-condiciones": "/terms-and-conditions",
+    "/es/accesibilidad": "/accessibility",
     "/es/preguntas-frecuentes": "/faq",
   };
   // "/es" itself (the Spanish home) does not start with "/es/", so check

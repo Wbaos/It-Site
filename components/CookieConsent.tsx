@@ -99,7 +99,7 @@ export default function CookieConsent() {
                   : "We use cookies to operate the site and, with your permission, measure performance using Google Analytics. You can accept all cookies, accept only necessary cookies, or manage your preferences."}
               </p>
               <p className="cookie-banner__links">
-                <Link href="/privacy-policy">{isSpanish ? "Política de Privacidad" : "Privacy Policy"}</Link>
+                <Link href={isSpanish ? "/es/politica-de-privacidad" : "/privacy-policy"}>{isSpanish ? "Política de Privacidad" : "Privacy Policy"}</Link>
               </p>
             </div>
 

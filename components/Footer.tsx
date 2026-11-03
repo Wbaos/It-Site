@@ -257,7 +257,7 @@ export default function Footer({ areas }: { areas?: FooterArea[] }) {
       {/* ===== Bottom Row ===== */}
       <div className="site-container footer-bottom">
         <div className="legal">
-          <Link href="/privacy-policy" aria-label={isSpanishPage ? "Política de Privacidad" : "Privacy Policy"}>
+          <Link href={isSpanishPage ? "/es/politica-de-privacidad" : "/privacy-policy"} aria-label={isSpanishPage ? "Política de Privacidad" : "Privacy Policy"}>
             {isSpanishPage ? "Política de Privacidad" : "Privacy Policy"}
           </Link>
           <span>•</span>
@@ -265,11 +265,11 @@ export default function Footer({ areas }: { areas?: FooterArea[] }) {
             {isSpanishPage ? "Configuración de Cookies" : "Cookie Settings"}
           </a>
           <span>•</span>
-          <Link href="/terms-and-conditions" aria-label={isSpanishPage ? "Términos y Condiciones" : "Terms and Conditions"}>
+          <Link href={isSpanishPage ? "/es/terminos-y-condiciones" : "/terms-and-conditions"} aria-label={isSpanishPage ? "Términos y Condiciones" : "Terms and Conditions"}>
             {isSpanishPage ? "Términos y Condiciones" : "Terms & Conditions"}
           </Link>
           <span>•</span>
-          <Link href="/accessibility" aria-label={isSpanishPage ? "Declaración de Accesibilidad" : "Accessibility Statement"}>
+          <Link href={isSpanishPage ? "/es/accesibilidad" : "/accessibility"} aria-label={isSpanishPage ? "Declaración de Accesibilidad" : "Accessibility Statement"}>
             {isSpanishPage ? "Accesibilidad" : "Accessibility"}
           </Link>
         </div>

@@ -27,7 +27,7 @@ const DEFAULT_FAQS: FaqItem[] = [
   },
   {
     q: "Do you offer warranties on your services?",
-    a: "Yes. CallTechCare offers a 1-year warranty on sprinkler services and security camera installation.",
+    a: "Yes. CallTechCare offers a 1-year warranty on sprinkler services and security camera installation when CallTechCare performs the work and provides the materials.",
   },
   {
     q: "Do you handle sprinkler emergencies?",
@@ -66,7 +66,7 @@ const DEFAULT_FAQS_ES: FaqItem[] = [
   },
   {
     q: "¿Ofrecen garantía en sus servicios?",
-    a: "Sí. CallTechCare ofrece 1 año de garantía en servicios de sprinklers e instalación de cámaras de seguridad.",
+    a: "Sí. CallTechCare ofrece 1 año de garantía en servicios de sprinklers e instalación de cámaras de seguridad cuando CallTechCare hace el trabajo y provee los materiales.",
   },
   {
     q: "¿Atienden emergencias de sprinklers?",
