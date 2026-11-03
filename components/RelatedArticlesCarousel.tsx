@@ -4,6 +4,7 @@ import { useMemo, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import SvgIcon from "@/components/common/SvgIcons";
+import { blogHref } from "@/lib/blogTwins";
 
 type SanityImage = {
   asset?: { url?: string };
@@ -35,9 +36,28 @@ function truncateByChars(input: string, maxChars: number) {
 
 export default function RelatedArticlesCarousel({
   posts,
+  locale = "en",
 }: {
   posts: RelatedArticle[];
+  locale?: "en" | "es";
 }) {
+  const isSpanish = locale === "es";
+  const ui = {
+    title: isSpanish ? "Artículos Relacionados" : "Related Articles",
+    navAria: isSpanish
+      ? "Navegación de artículos relacionados"
+      : "Related articles navigation",
+    prevAria: isSpanish
+      ? "Artículos relacionados anteriores"
+      : "Previous related articles",
+    nextAria: isSpanish
+      ? "Artículos relacionados siguientes"
+      : "Next related articles",
+    readMore: isSpanish ? "Leer Más" : "Read More",
+    fallbackExcerpt: isSpanish
+      ? "Lee ideas, consejos y guías del equipo de CallTechCare."
+      : "Read insights, tips, and guides from the CallTechCare team.",
+  };
   const trackRef = useRef<HTMLDivElement | null>(null);
 
   const showNav = useMemo(() => posts.length > 3, [posts.length]);
@@ -54,16 +74,16 @@ export default function RelatedArticlesCarousel({
     <div className="single-blog-related-wrap">
       <div className="single-blog-related-header">
         <h2 id="related-articles" className="single-blog-related-title">
-          Related Articles
+          {ui.title}
         </h2>
 
         {showNav ? (
-          <div className="single-blog-related-nav" aria-label="Related articles navigation">
+          <div className="single-blog-related-nav" aria-label={ui.navAria}>
             <button
               type="button"
               className="single-blog-related-navBtn"
               onClick={() => scrollByPage("prev")}
-              aria-label="Previous related articles"
+              aria-label={ui.prevAria}
             >
               <SvgIcon name="chevron-left" size={18} color="var(--brand-teal)" />
             </button>
@@ -72,7 +92,7 @@ export default function RelatedArticlesCarousel({
               type="button"
               className="single-blog-related-navBtn"
               onClick={() => scrollByPage("next")}
-              aria-label="Next related articles"
+              aria-label={ui.nextAria}
             >
               <SvgIcon name="chevron-right" size={18} color="var(--brand-teal)" />
             </button>
@@ -88,15 +108,14 @@ export default function RelatedArticlesCarousel({
       >
         {posts.map((post) => (
           (() => {
-            const fallback =
-              "Read insights, tips, and guides from the CallTechCare team.";
+            const fallback = ui.fallbackExcerpt;
             const excerptText = typeof post.excerpt === "string" ? post.excerpt : fallback;
             const truncatedExcerpt = truncateByChars(excerptText, 80);
 
             return (
           <Link
             key={post._id}
-            href={`/blog/${post.slug.current}`}
+            href={blogHref(post.slug.current, locale)}
             className="blog-card single-blog-related-card"
           >
             <div className="blog-image-wrapper">
@@ -125,7 +144,7 @@ export default function RelatedArticlesCarousel({
             </div>
 
             <div className="blog-readmore">
-              <span>Read More</span>
+              <span>{ui.readMore}</span>
               <SvgIcon
                 name="chevron-right"
                 size={18}
