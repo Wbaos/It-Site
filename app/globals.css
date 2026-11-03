@@ -5740,57 +5740,6 @@ main {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
   }
 
-  .problem-picker-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-top: 1.5rem;
-  }
-
-  .problem-picker-card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 1.2rem;
-    padding: 1.4rem;
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.2s ease, border-color 0.2s ease;
-  }
-
-  .problem-picker-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(20, 184, 166, 0.5);
-  }
-
-  .problem-picker-emoji {
-    font-size: 1.8rem;
-  }
-
-  .problem-picker-title {
-    font-weight: 700;
-    font-size: 1.05rem;
-  }
-
-  .problem-picker-desc {
-    color: var(--hero-subtext);
-    font-size: 0.95rem;
-  }
-
-  .problem-picker-cta {
-    margin-top: 0.4rem;
-    color: var(--brand-teal);
-    font-weight: 600;
-  }
-
-  @media (max-width: 720px) {
-    .problem-picker-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
   #hero .hero-stats {
     margin-top: clamp(2rem, 5vh, 3rem);
     display: grid;
