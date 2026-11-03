@@ -92,7 +92,6 @@ export function getHomeSections(locale: HomeLocale = "en"): Section[] {
     { key: "highlights", Component: HighlightsServer, props: { locale } },
 
     { key: "services", Component: Services, props: { locale } },
-
     { key: "seo-intro", Component: SEOIntro, props: { locale } },
     { key: "why", Component: WhyChooseUs, props: { locale } },
 
