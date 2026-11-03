@@ -10,6 +10,11 @@ export const metadata: Metadata = {
     "Sprinkler repair and irrigation in Miami and Broward. Same-day service, free estimates, leaks, valves, timers and new systems. Call (786) 366-2729.",
   alternates: {
     canonical: "https://www.calltechcare.com/",
+    languages: {
+      en: "https://www.calltechcare.com/",
+      es: "https://www.calltechcare.com/es/",
+      "x-default": "https://www.calltechcare.com/",
+    },
   },
 };
 
