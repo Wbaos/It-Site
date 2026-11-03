@@ -11,7 +11,48 @@ declare global {
 export default function Contact({
   headline = "Get In Touch",
   subtitle = "Have a question? We're here to help.",
+  locale = "en",
+}: {
+  headline?: string;
+  subtitle?: string;
+  locale?: "en" | "es";
 }) {
+  const isSpanish = locale === "es";
+  // Same form, same structure in both languages; only the labels,
+  // placeholders and status messages change.
+  const t = isSpanish
+    ? {
+        name: "Nombre",
+        namePlaceholder: "Juan Pérez",
+        email: "Correo Electrónico",
+        emailPlaceholder: "juan@empresa.com",
+        company: "Empresa",
+        companyPlaceholder: "Tu empresa",
+        message: "Mensaje",
+        messagePlaceholder:
+          "Cuéntanos qué necesitas (reparación de sprinklers/irrigación o cámaras de seguridad)...",
+        send: "Enviar Mensaje",
+        sending: "Enviando...",
+        success: "¡Gracias! Te responderemos pronto.",
+        error: "Algo salió mal.",
+        networkError: "Error de red. Inténtalo de nuevo.",
+      }
+    : {
+        name: "Name",
+        namePlaceholder: "John Doe",
+        email: "Email",
+        emailPlaceholder: "john@company.com",
+        company: "Company",
+        companyPlaceholder: "Your Company",
+        message: "Message",
+        messagePlaceholder:
+          "Tell us what you need help with (sprinkler repair/irrigation or security cameras)...",
+        send: "Send Message",
+        sending: "Sending...",
+        success: "Thanks! We'll reply shortly.",
+        error: "Something went wrong.",
+        networkError: "Network error. Try again.",
+      };
   const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -38,7 +79,7 @@ export default function Contact({
       });
 
       if (res.ok) {
-        setStatus("Thanks! We'll reply shortly.");
+        setStatus(t.success);
         form.reset();
 
         // Google Ads conversion tracking
@@ -49,10 +90,10 @@ export default function Contact({
         }
       } else {
         const data = await res.json().catch(() => ({}));
-        setStatus(data.error || "Something went wrong.");
+        setStatus(data.error || t.error);
       }
     } catch {
-      setStatus("Network error. Try again.");
+      setStatus(t.networkError);
     } finally {
       setBusy(false);
     }
@@ -72,48 +113,48 @@ export default function Contact({
           
           <div className="form-row">
             <div className="field">
-              <label className="label">Name</label>
+              <label className="label">{t.name}</label>
               <input
                 name="name"
                 className="input"
-                placeholder="John Doe"
+                placeholder={t.namePlaceholder}
                 required
               />
             </div>
 
             <div className="field">
-              <label className="label">Email</label>
+              <label className="label">{t.email}</label>
               <input
                 name="email"
                 className="input"
                 type="email"
-                placeholder="john@company.com"
+                placeholder={t.emailPlaceholder}
                 required
               />
             </div>
           </div>
 
           <div className="field">
-            <label className="label">Company</label>
+            <label className="label">{t.company}</label>
             <input
               name="company"
               className="input"
-              placeholder="Your Company"
+              placeholder={t.companyPlaceholder}
             />
           </div>
 
           <div className="field">
-            <label className="label">Message</label>
+            <label className="label">{t.message}</label>
             <textarea
               name="message"
               className="textarea"
-              placeholder="Tell us what you need help with (sprinkler repair/irrigation or security cameras)..."
+              placeholder={t.messagePlaceholder}
               required
             />
           </div>
 
           <button type="submit" className="btn-submit" disabled={busy}>
-            {busy ? "Sending..." : "Send Message"}
+            {busy ? t.sending : t.send}
           </button>
 
           {status && <p className="form-status">{status}</p>}
