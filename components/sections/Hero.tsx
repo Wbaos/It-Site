@@ -43,6 +43,15 @@ export default function Hero({
 
   return (
     <section id="hero" role="region" aria-labelledby="hero-title">
+      {imageSrc && (
+        <img
+          src={imageSrc}
+          alt=""
+          aria-hidden="true"
+          className="hero-bg"
+          loading="eager"
+        />
+      )}
 
       {/* Badge */}
       {badgeText && <div className="hero-badge">{badgeText}</div>}
@@ -99,15 +108,6 @@ export default function Hero({
         </a>
       )}
       </div>
-
-      {imageSrc && (
-        <img
-          src={imageSrc}
-          alt={imageAlt}
-          className="hero-photo"
-          loading="eager"
-        />
-      )}
 
       <div className="hero-stats">
         {stats.map((s, i) => (

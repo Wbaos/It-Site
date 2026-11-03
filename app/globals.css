@@ -5616,6 +5616,8 @@ main {
   }
 
 #hero {
+  position: relative;
+  overflow: hidden;
   padding: clamp(4rem, 10vh, 4rem) 1rem;
   padding-top: 9rem;
   background: linear-gradient(180deg, #061020 0%, #03050a 100%);
@@ -5728,6 +5730,20 @@ main {
   #hero .btn-secondary:hover {
     background: rgba(255, 255, 255, 0.05);
     transform: translateY(-2px);
+  }
+
+  #hero .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.5) saturate(1.05);
+  }
+
+  #hero > *:not(.hero-bg) {
+    position: relative;
+    z-index: 1;
   }
 
   #hero .hero-photo {
@@ -10306,6 +10322,24 @@ object-fit: cover;
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.7),
     0 0 0 1px rgba(16, 185, 129, 0.3);
+}
+
+.service-card-photo {
+  margin-bottom: 0.5rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.service-card-photo img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.25s ease;
+}
+
+.service-card:hover .service-card-photo img {
+  transform: scale(1.04);
 }
 
 .service-card-icon {
