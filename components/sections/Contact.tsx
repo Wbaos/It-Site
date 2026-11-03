@@ -85,7 +85,7 @@ export default function Contact({
         // Google Ads conversion tracking
         if (typeof window !== "undefined" && window.gtag) {
           window.gtag("event", "conversion", {
-            send_to: "AW-17496959572/O9vCKjXw4QcENtUmZdB",
+            send_to: "AW-17496959572/UHy5CJ-MkbEdENTUmZdB",
           });
         }
       } else {

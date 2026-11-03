@@ -53,7 +53,7 @@ export default function GoogleAnalytics() {
 
             if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
               window.gtag('event', 'conversion', {
-                send_to: 'AW-17496959572/O9vCKjXw4QcENtUmZdB'
+                send_to: 'AW-17496959572/UHy5CJ-MkbEdENTUmZdB'
               });
             }
           });
