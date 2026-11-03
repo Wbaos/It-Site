@@ -18,7 +18,11 @@ type SubmitStatus =
   | { type: "success"; message: string }
   | { type: "error"; message: string };
 
-export default function ContactMessageSection() {
+export default function ContactMessageSection({
+  locale = "en",
+}: {
+  locale?: "en" | "es";
+}) {
   const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
@@ -40,7 +44,7 @@ export default function ContactMessageSection() {
     const message = form.message.trim();
 
     if (!name || !email || !message) {
-      setStatus({ type: "error", message: "Please fill out name, email, and message." });
+      setStatus({ type: "error", message: T.validationError });
       return;
     }
 
@@ -58,23 +62,100 @@ export default function ContactMessageSection() {
       const data = (await res.json()) as { ok?: boolean; error?: string; emailSent?: boolean };
 
       if (!res.ok || !data.ok) {
-        setStatus({ type: "error", message: data.error || "Something went wrong. Please try again." });
+        setStatus({ type: "error", message: data.error || T.genericError });
         return;
       }
 
       if (data.emailSent === false) {
         setStatus({
           type: "success",
-          message: "Message received. Email notifications are not configured in this environment, but your message was saved successfully.",
+          message: T.emailNotConfigured,
         });
       } else {
-        setStatus({ type: "success", message: "Thanks! We received your message and will get back to you within 24 hours." });
+        setStatus({ type: "success", message: T.success });
       }
       setForm({ name: "", email: "", subject: "", message: "" });
     } catch {
-      setStatus({ type: "error", message: "Network error. Please try again." });
+      setStatus({ type: "error", message: T.networkError });
     }
   };
+
+
+  const T =
+    locale === "es"
+      ? {
+          validationError: "Por favor completa nombre, correo y mensaje.",
+          genericError: "Algo sali\u00f3 mal. Por favor, int\u00e9ntalo de nuevo.",
+          emailNotConfigured:
+            "Mensaje recibido. Las notificaciones por email no est\u00e1n configuradas en este entorno, pero tu mensaje se guard\u00f3 correctamente.",
+          success:
+            "\u00a1Gracias! Recibimos tu mensaje y te responderemos dentro de 24 horas.",
+          networkError: "Error de red. Por favor, int\u00e9ntalo de nuevo.",
+          formAriaLabel: "Env\u00edanos un mensaje",
+          formTitle: "Env\u00edanos un mensaje",
+          formSubtitle: "Completa el formulario y te responderemos dentro de 24 horas.",
+          nameLabel: "Nombre",
+          namePlaceholder: "Tu nombre",
+          emailLabel: "Correo electr\u00f3nico",
+          emailPlaceholder: "tu@correo.com",
+          subjectLabel: "Asunto",
+          subjectPlaceholder: "\u00bfEn qu\u00e9 podemos ayudarte?",
+          messageLabel: "Mensaje",
+          messagePlaceholder: "Cu\u00e9ntanos m\u00e1s sobre tu problema o pregunta...",
+          sending: "Enviando...",
+          send: "Enviar mensaje",
+          sideAriaLabel: "Otras formas de contactarnos",
+          sideTitle: "Otras formas de contactarnos",
+          sideSubtitle: "Elige el m\u00e9todo que mejor te funcione.",
+          hoursTitle: "Horario de oficina",
+          dayMonFri: "Lunes \u2013 Viernes",
+          daySat: "S\u00e1bado",
+          daySun: "Domingo",
+          emergencyNote: "Servicio de emergencia durante el horario de servicio",
+          locationTitle: "Nuestra ubicaci\u00f3n",
+          locationCity: "Sur de Florida",
+          locationMuted: "Atendemos Miami, Broward y \u00e1reas cercanas",
+          locationsLink: "Ver todas las ubicaciones",
+          emergencyTitle: "Soporte de emergencia",
+          emergencyText:
+            "Para problemas urgentes de sprinklers, ll\u00e1manos para prioridad el mismo d\u00eda.",
+        }
+      : {
+          validationError: "Please fill out name, email, and message.",
+          genericError: "Something went wrong. Please try again.",
+          emailNotConfigured:
+            "Message received. Email notifications are not configured in this environment, but your message was saved successfully.",
+          success:
+            "Thanks! We received your message and will get back to you within 24 hours.",
+          networkError: "Network error. Please try again.",
+          formAriaLabel: "Send us a message",
+          formTitle: "Send Us a Message",
+          formSubtitle: "Fill out the form and we\u2019ll get back to you within 24 hours.",
+          nameLabel: "Name",
+          namePlaceholder: "Your name",
+          emailLabel: "Email",
+          emailPlaceholder: "your@email.com",
+          subjectLabel: "Subject",
+          subjectPlaceholder: "How can we help?",
+          messageLabel: "Message",
+          messagePlaceholder: "Tell us more about your issue or question...",
+          sending: "Sending...",
+          send: "Send Message",
+          sideAriaLabel: "Other ways to reach us",
+          sideTitle: "Other Ways to Reach Us",
+          sideSubtitle: "Choose the method that works best for you.",
+          hoursTitle: "Office Hours",
+          dayMonFri: "Monday \u2013 Friday",
+          daySat: "Saturday",
+          daySun: "Sunday",
+          emergencyNote: "Emergency service during business hours",
+          locationTitle: "Our Location",
+          locationCity: "South Florida",
+          locationMuted: "Serving Miami, Broward County, and surrounding areas",
+          locationsLink: "View all locations",
+          emergencyTitle: "Emergency Support",
+          emergencyText: "For urgent sprinkler issues, call us for same-day priority.",
+        };
 
   const isSubmitting = status.type === "submitting";
 
@@ -82,32 +163,32 @@ export default function ContactMessageSection() {
     <div className="contact-message">
       <div className="contact-message-grid">
         {/* Left: Form */}
-        <section className="contact-message-card" aria-label="Send us a message">
+        <section className="contact-message-card" aria-label={T.formAriaLabel}>
           <header className="contact-message-cardHeader">
-            <h2 className="contact-message-title">Send Us a Message</h2>
-            <p className="contact-message-subtitle">Fill out the form and we’ll get back to you within 24 hours.</p>
+            <h2 className="contact-message-title">{T.formTitle}</h2>
+            <p className="contact-message-subtitle">{T.formSubtitle}</p>
           </header>
 
           <form className="contact-message-form" onSubmit={onSubmit}>
             <div className="contact-message-row">
               <label className="contact-message-field">
-                <span className="contact-message-label">Name</span>
+                <span className="contact-message-label">{T.nameLabel}</span>
                 <input
                   className="contact-message-input"
                   value={form.name}
                   onChange={onChange("name")}
-                  placeholder="Your name"
+                  placeholder={T.namePlaceholder}
                   autoComplete="name"
                 />
               </label>
 
               <label className="contact-message-field">
-                <span className="contact-message-label">Email</span>
+                <span className="contact-message-label">{T.emailLabel}</span>
                 <input
                   className="contact-message-input"
                   value={form.email}
                   onChange={onChange("email")}
-                  placeholder="your@email.com"
+                  placeholder={T.emailPlaceholder}
                   autoComplete="email"
                   inputMode="email"
                 />
@@ -115,29 +196,29 @@ export default function ContactMessageSection() {
             </div>
 
             <label className="contact-message-field">
-              <span className="contact-message-label">Subject</span>
+              <span className="contact-message-label">{T.subjectLabel}</span>
               <input
                 className="contact-message-input"
                 value={form.subject}
                 onChange={onChange("subject")}
-                placeholder="How can we help?"
+                placeholder={T.subjectPlaceholder}
               />
             </label>
 
             <label className="contact-message-field">
-              <span className="contact-message-label">Message</span>
+              <span className="contact-message-label">{T.messageLabel}</span>
               <textarea
                 className="contact-message-textarea"
                 value={form.message}
                 onChange={onChange("message")}
-                placeholder="Tell us more about your issue or question..."
+                placeholder={T.messagePlaceholder}
                 rows={6}
               />
             </label>
 
             <button className="contact-message-submit" type="submit" disabled={isSubmitting}>
               <SvgIcon name="paper-plane" size={18} className="contact-message-submitIcon" />
-              {isSubmitting ? "Sending..." : "Send Message"}
+              {isSubmitting ? T.sending : T.send}
             </button>
 
             {status.type === "error" && (
@@ -154,30 +235,30 @@ export default function ContactMessageSection() {
         </section>
 
         {/* Right: Other ways */}
-        <section className="contact-message-side" aria-label="Other ways to reach us">
+        <section className="contact-message-side" aria-label={T.sideAriaLabel}>
           <header className="contact-message-sideHeader">
-            <h2 className="contact-message-title">Other Ways to Reach Us</h2>
-            <p className="contact-message-subtitle">Choose the method that works best for you.</p>
+            <h2 className="contact-message-title">{T.sideTitle}</h2>
+            <p className="contact-message-subtitle">{T.sideSubtitle}</p>
           </header>
 
           <div className="contact-message-sideStack">
             <div className="contact-message-sideCard">
               <div className="contact-message-sideCardTitle">
                 <Clock size={18} className="contact-message-sideIcon" aria-hidden="true" />
-                Office Hours
+                {T.hoursTitle}
               </div>
 
               <div className="contact-message-hours">
                 <div className="contact-message-hoursRow">
-                  <div className="contact-message-hoursDay">Monday – Friday</div>
+                  <div className="contact-message-hoursDay">{T.dayMonFri}</div>
                   <div className="contact-message-hoursTime">8:00 AM – 7:00 PM</div>
                 </div>
                 <div className="contact-message-hoursRow">
-                  <div className="contact-message-hoursDay">Saturday</div>
+                  <div className="contact-message-hoursDay">{T.daySat}</div>
                   <div className="contact-message-hoursTime">8:00 AM – 7:00 PM</div>
                 </div>
                 <div className="contact-message-hoursRow">
-                  <div className="contact-message-hoursDay">Sunday</div>
+                  <div className="contact-message-hoursDay">{T.daySun}</div>
                   <div className="contact-message-hoursTime">9:00 AM – 6:00 PM</div>
                 </div>
               </div>
@@ -185,7 +266,7 @@ export default function ContactMessageSection() {
               <div className="contact-message-sideDivider" />
               <div className="contact-message-sideNote">
                 <span className="contact-message-sideNoteIcon" aria-hidden="true">📞</span>
-                  Emergency service during business hours
+                  {T.emergencyNote}
               </div>
             </div>
 
@@ -196,23 +277,23 @@ export default function ContactMessageSection() {
               </div>
 
               <div className="contact-message-location">
-                <div>South Florida</div>
-                <div className="contact-message-locationMuted">Serving Miami, Broward County, and surrounding areas</div>
+                <div>{T.locationCity}</div>
+                <div className="contact-message-locationMuted">{T.locationMuted}</div>
               </div>
 
               <Link className="contact-message-sideLink" href="/locations">
-                View all locations
+                {T.locationsLink}
               </Link>
             </div>
 
             <a className="contact-message-sideCard contact-message-sideCard--emergency" href="tel:+17863662729">
               <div className="contact-message-sideCardTitle">
                 <PhoneCall size={18} className="contact-message-sideIcon" aria-hidden="true" />
-                Emergency Support
+                {T.emergencyTitle}
               </div>
 
               <div className="contact-message-emergencyText">
-                For urgent sprinkler issues, call us for same-day priority.
+                {T.emergencyText}
               </div>
               <div className="contact-message-emergencyNumber">+1 (786) 366-2729</div>
             </a>

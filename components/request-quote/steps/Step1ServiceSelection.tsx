@@ -32,7 +32,9 @@ export default function Step1ServiceSelection(props: {
   setUrgencyId: (v: UrgencyOptionId) => void;
   canContinue: boolean;
   onContinue: () => void;
+  locale?: "en" | "es";
 }) {
+  const locale = props.locale ?? "en";
   const isGroupedView = props.activeTab === "all" || props.activeTab === "popular";
 
   const categoryTitleBySlug = new Map(
@@ -107,8 +109,8 @@ export default function Step1ServiceSelection(props: {
 
   return (
     <div className="rq-step1">
-      <h2 className="rq-step1__title">What service do you need?</h2>
-      <p className="rq-step1__subtitle">Browse and select from our services</p>
+      <h2 className="rq-step1__title">{locale === "es" ? "¿Qué servicio necesitas?" : "What service do you need?"}</h2>
+      <p className="rq-step1__subtitle">{locale === "es" ? "Explora y selecciona entre nuestros servicios" : "Browse and select from our services"}</p>
 
       {/* Search */}
       <div className="rq-step1__searchSection">
@@ -119,7 +121,7 @@ export default function Step1ServiceSelection(props: {
           <input
             value={props.searchQuery}
             onChange={(e) => props.setSearchQuery(e.target.value)}
-            placeholder="Search services..."
+            placeholder={locale === "es" ? "Buscar servicios..." : "Search services..."}
             className="rq-step1__searchInput"
           />
         </div>
@@ -140,7 +142,7 @@ export default function Step1ServiceSelection(props: {
               : "rq-step1__tab rq-step1__tab--inactive"
           }
         >
-          All Services
+          {locale === "es" ? "Todos los servicios" : "All Services"}
         </button>
         <button
           type="button"
@@ -151,7 +153,7 @@ export default function Step1ServiceSelection(props: {
               : "rq-step1__tab rq-step1__tab--inactive"
           }
         >
-          Popular Services
+          {locale === "es" ? "Servicios populares" : "Popular Services"}
         </button>
         {props.categories.map((c) => (
           <button
@@ -185,8 +187,10 @@ export default function Step1ServiceSelection(props: {
             </div>
             <div className="rq-step1__emptyText">
               {props.searchQuery.trim()
-                ? `No services found matching "${props.searchQuery.trim()}"`
-                : "No services found"}
+                ? (locale === "es"
+                    ? `No se encontraron servicios que coincidan con "${props.searchQuery.trim()}"`
+                    : `No services found matching "${props.searchQuery.trim()}"`)
+                : (locale === "es" ? "No se encontraron servicios" : "No services found")}
             </div>
           </div>
         ) : isGroupedView ? (
@@ -194,7 +198,7 @@ export default function Step1ServiceSelection(props: {
             {orderedCategorySlugs.map((catSlug) => {
               const list = servicesByCategorySlug.get(catSlug) ?? [];
               if (!list.length) return null;
-              const title = categoryTitleBySlug.get(catSlug) || "Services";
+              const title = categoryTitleBySlug.get(catSlug) || (locale === "es" ? "Servicios" : "Services");
 
               return (
                 <div key={catSlug} className="rq-step1__group">
@@ -221,15 +225,15 @@ export default function Step1ServiceSelection(props: {
           <div className="rq-step1__selectedLeft">
             <SvgIcon name="verified-check" size={18} color="#34d399" />
             <span>
-              Selected: <strong>{props.selectedService.title}</strong>
+              {locale === "es" ? "Seleccionado:" : "Selected:"} <strong>{props.selectedService.title}</strong>
             </span>
           </div>
           <button
             type="button"
             onClick={() => props.setSelectedService(null)}
             className="rq-step1__clearBtn"
-            aria-label="Clear selected service"
-            title="Clear"
+            aria-label={locale === "es" ? "Quitar servicio seleccionado" : "Clear selected service"}
+            title={locale === "es" ? "Quitar" : "Clear"}
           >
             <SvgIcon name="x" size={18} color="currentColor" />
           </button>
@@ -248,12 +252,12 @@ export default function Step1ServiceSelection(props: {
             checked={props.needSomethingElse}
             onChange={(e) => props.setNeedSomethingElse(e.target.checked)}
             className="rq-step1__otherCheckbox"
-            aria-label="Need something else"
+            aria-label={locale === "es" ? "Necesitas algo más" : "Need something else"}
           />
           <div>
-            <div className="rq-step1__otherTitle">Need something else?</div>
+            <div className="rq-step1__otherTitle">{locale === "es" ? "¿Necesitas algo más?" : "Need something else?"}</div>
             <div className="rq-step1__otherDesc">
-              Don’t see what you’re looking for? Describe your needs below.
+              {locale === "es" ? "¿No ves lo que buscas? Describe lo que necesitas abajo." : "Don’t see what you’re looking for? Describe your needs below."}
             </div>
           </div>
         </div>
@@ -264,14 +268,14 @@ export default function Step1ServiceSelection(props: {
           <input
             value={props.otherServiceText}
             onChange={(e) => props.setOtherServiceText(e.target.value)}
-            placeholder="Describe the service you need..."
+            placeholder={locale === "es" ? "Describe el servicio que necesitas..." : "Describe the service you need..."}
             className="rq-step1__otherInput"
           />
         </div>
       )}
 
       <div className="rq-step1__urgency">
-        <div className="rq-step1__urgencyTitle">How urgent is your request?</div>
+        <div className="rq-step1__urgencyTitle">{locale === "es" ? "¿Qué tan urgente es tu solicitud?" : "How urgent is your request?"}</div>
         <div className="rq-step1__urgencyGrid">
           {props.urgencyOptions.map((opt) => {
             const selected = opt.id === props.urgencyId;
@@ -303,7 +307,7 @@ export default function Step1ServiceSelection(props: {
             : "rq-step1__continue rq-step1__continue--disabled"
         }
       >
-        Continue
+        {locale === "es" ? "Continuar" : "Continue"}
       </button>
     </div>
   );

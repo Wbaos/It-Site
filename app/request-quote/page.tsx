@@ -40,6 +40,7 @@ export default async function RequestQuotePage({
 
   return (
     <RequestQuoteClient
+      locale="en"
       initialCategories={safeCategories}
       initialRqContent={initialRqContent}
       initialTab={initialTab}

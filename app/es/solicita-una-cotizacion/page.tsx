@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import RequestQuoteClientEs from "./RequestQuoteClientEs";
+import RequestQuoteClient from "@/app/request-quote/RequestQuoteClient";
 import { getRequestQuoteContent, getServiceCategories } from "@/lib/request-quote-data";
 
 export const revalidate = 60;
@@ -39,7 +39,8 @@ export default async function SolicitaUnaCotizacionPage({
     : safeCategories?.[0]?.categorySlug || "all";
 
   return (
-    <RequestQuoteClientEs
+    <RequestQuoteClient
+      locale="es"
       initialCategories={safeCategories}
       initialRqContent={initialRqContent}
       initialTab={initialTab}

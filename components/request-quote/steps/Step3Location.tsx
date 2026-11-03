@@ -2,7 +2,8 @@
 
 export default function Step3Location(props: {
   serviceSummary: string;
-  urgencyId: string;
+  urgencyLabel: string;
+  locale?: "en" | "es";
   contactName: string;
   streetAddress: string;
   setStreetAddress: (v: string) => void;
@@ -14,32 +15,33 @@ export default function Step3Location(props: {
   onBack: () => void;
   onContinue: () => void;
 }) {
+  const locale = props.locale ?? "en";
   return (
     <div className="rq-step3">
-      <h2 className="rq-step3__title">Service Location</h2>
-      <p className="rq-step3__subtitle">Where should we provide the service?</p>
+      <h2 className="rq-step3__title">{locale === "es" ? "Ubicación del servicio" : "Service Location"}</h2>
+      <p className="rq-step3__subtitle">{locale === "es" ? "¿Dónde debemos prestar el servicio?" : "Where should we provide the service?"}</p>
 
       <div className="rq-step3__summaryCard">
-        <div className="rq-step3__summaryLabel">Summary</div>
+        <div className="rq-step3__summaryLabel">{locale === "es" ? "Resumen" : "Summary"}</div>
         <div className="rq-step3__summaryValue">{props.serviceSummary}</div>
-        <div className="rq-step3__summaryMeta">Urgency: {props.urgencyId || "—"}</div>
-        <div className="rq-step3__summaryMeta">Contact: {props.contactName || "—"}</div>
+        <div className="rq-step3__summaryMeta">{locale === "es" ? "Urgencia:" : "Urgency:"} {props.urgencyLabel || "—"}</div>
+        <div className="rq-step3__summaryMeta">{locale === "es" ? "Contacto:" : "Contact:"} {props.contactName || "—"}</div>
       </div>
 
       <div className="rq-step3__grid">
         <div className="rq-step3__gridFull">
-          <label className="rq-step3__label">Street Address *</label>
+          <label className="rq-step3__label">{locale === "es" ? "Dirección *" : "Street Address *"}</label>
           <input
             value={props.streetAddress}
             onChange={(e) => props.setStreetAddress(e.target.value)}
             className="rq-step3__input"
-            placeholder="123 Main Street"
+            placeholder={locale === "es" ? "123 Calle Principal" : "123 Main Street"}
             autoComplete="street-address"
           />
         </div>
 
         <div>
-          <label className="rq-step3__label">City *</label>
+          <label className="rq-step3__label">{locale === "es" ? "Ciudad *" : "City *"}</label>
           <input
             value={props.city}
             onChange={(e) => props.setCity(e.target.value)}
@@ -50,7 +52,7 @@ export default function Step3Location(props: {
         </div>
 
         <div>
-          <label className="rq-step3__label">ZIP Code *</label>
+          <label className="rq-step3__label">{locale === "es" ? "Código postal *" : "ZIP Code *"}</label>
           <input
             value={props.zipCode}
             onChange={(e) => props.setZipCode(e.target.value)}
@@ -68,7 +70,7 @@ export default function Step3Location(props: {
           onClick={props.onBack}
           className="rq-step3__btn rq-step3__btn--secondary"
         >
-          Back
+          {locale === "es" ? "Atrás" : "Back"}
         </button>
         <button
           type="button"
@@ -80,12 +82,12 @@ export default function Step3Location(props: {
               : "rq-step3__btn rq-step3__btn--disabled"
           }
         >
-          Continue
+          {locale === "es" ? "Continuar" : "Continue"}
         </button>
       </div>
 
       {!props.canContinue ? (
-        <div className="rq-step3__hint">Fill in all required fields to continue.</div>
+        <div className="rq-step3__hint">{locale === "es" ? "Completa todos los campos requeridos para continuar." : "Fill in all required fields to continue."}</div>
       ) : null}
     </div>
   );
