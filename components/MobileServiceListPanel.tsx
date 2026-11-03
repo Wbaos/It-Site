@@ -2,6 +2,7 @@
 
 import { ChevronLeft } from "lucide-react";
 import ServiceGroupList from "./ServiceGroupList";
+import { groupTitleEs } from "@/lib/groupTitlesEs";
 import { useState } from "react";
 
 export default function MobileServiceListPanel({
@@ -9,11 +10,13 @@ export default function MobileServiceListPanel({
   cat,
   onBack,
   onClose,
+  locale = "en",
 }: {
   group: any;
   cat: any;
   onBack: () => void;
   onClose: () => void;
+  locale?: "en" | "es";
 }) {
   const [isBack, setIsBack] = useState(false);
 
@@ -33,16 +36,25 @@ export default function MobileServiceListPanel({
             }}
           >
             <ChevronLeft size={18} />
-            Back
+            {locale === "es" ? "Volver" : "Back"}
           </button>
 
-          <h3 className="mobile-services-title">{group.title}</h3>
+          <h3 className="mobile-services-title">
+            {locale === "es"
+              ? groupTitleEs(group.slug, group.title)
+              : group.title}
+          </h3>
         </div>
 
         {/* BODY */}
         <div className="mobile-services-body">
           <ServiceGroupList
-            title={group.title}
+            title={
+              locale === "es"
+                ? groupTitleEs(group.slug, group.title)
+                : group.title
+            }
+            locale={locale}
             items={group.services}
             onSelect={(srv) => {
               if (!srv) return;

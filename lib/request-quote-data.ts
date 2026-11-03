@@ -2,9 +2,11 @@ import { sanity } from "@/lib/sanity";
 
 export type ApiService = {
   title: string;
+  titleEs?: string;
   slug: string;
   description?: string;
   navDescription?: string;
+  navDescriptionEs?: string;
   icon?: { alt?: string; asset?: { url?: string } };
   price?: number;
   showPrice?: boolean;
@@ -102,10 +104,12 @@ export async function getServiceCategories(): Promise<ApiCategory[]> {
   const servicesQuery = `*[_type == "service" && enabled == true]{
     _id,
     title,
+    titleEs,
     "slug": slug.current,
     serviceType,
     description,
     navDescription,
+    navDescriptionEs,
     icon {
       asset->{url},
       alt
@@ -131,9 +135,11 @@ export async function getServiceCategories(): Promise<ApiCategory[]> {
     if (!servicesByGroup[groupId]) servicesByGroup[groupId] = [];
     servicesByGroup[groupId].push({
       title: srv.title,
+      titleEs: srv.titleEs,
       slug: srv.slug,
       description: srv.description,
       navDescription: srv.navDescription,
+      navDescriptionEs: srv.navDescriptionEs,
       icon: srv.icon,
       price: srv.price,
       showPrice: srv.showPrice,

@@ -6,7 +6,13 @@ interface FaqItem {
   a: string;
 }
 
-export default function FaqAccordion({ faqs }: { faqs: FaqItem[] }) {
+export default function FaqAccordion({
+  faqs,
+  locale = "en",
+}: {
+  faqs: FaqItem[];
+  locale?: "en" | "es";
+}) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const handleToggle = (index: number) => {
@@ -15,7 +21,9 @@ export default function FaqAccordion({ faqs }: { faqs: FaqItem[] }) {
 
   return (
     <div className="service-faq">
-      <h2 className="faq-heading">Frequently Asked Questions</h2>
+      <h2 className="faq-heading">
+        {locale === "es" ? "Preguntas Frecuentes" : "Frequently Asked Questions"}
+      </h2>
       <ul className="faq-list">
         {faqs.map((faq, i) => (
           <li key={i} className="faq-item">

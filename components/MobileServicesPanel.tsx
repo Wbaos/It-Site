@@ -5,6 +5,7 @@ import SvgIcon from "@/components/common/SvgIcons";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import MobileServiceListPanel from "./MobileServiceListPanel";
+import { groupTitleEs } from "@/lib/groupTitlesEs";
 
 export default function MobileServicesPanel({
   categories,
@@ -103,7 +104,9 @@ export default function MobileServicesPanel({
                         >
                           <span className="srv-left">
                             <span className="dot"></span>
-                            {group.title}
+                            {isSpanishPage
+                              ? groupTitleEs(group.slug, group.title)
+                              : group.title}
                           </span>
                           {group.services && (
                             <span className="srv-count">
@@ -123,6 +126,7 @@ export default function MobileServicesPanel({
 
       {activeGroup && (
         <MobileServiceListPanel
+          locale={isSpanishPage ? "es" : "en"}
           group={activeGroup.group}
           cat={activeGroup.cat}
           onBack={() => {

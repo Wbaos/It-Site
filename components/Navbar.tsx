@@ -15,6 +15,7 @@ import SvgIcon from "@/components/common/SvgIcons";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import MobileServicesPanel from "./MobileServicesPanel";
 import ServiceGroupList from "./ServiceGroupList";
+import { groupTitleEs } from "@/lib/groupTitlesEs";
 
 const NAV = [
   // { href: "/assessment", label: "Free Assessment" },
@@ -176,13 +177,22 @@ export default function Navbar() {
                           <SvgIcon name="chevron-left" size={18} color="var(--brand-teal)" />
                           {isSpanishPage ? "Volver a Todos los Servicios" : "Back to All Services"}
                         </button>
-                        <h4 className="submenu-title">{group.title}</h4>
+                        <h4 className="submenu-title">
+                          {isSpanishPage
+                            ? groupTitleEs(group.slug, group.title)
+                            : group.title}
+                        </h4>
                       </div>
                       <div className="submenu-body">
                         <div className="submenu-columns">
                           <div className="submenu-left-column">
                             <ServiceGroupList
-                              title={group.title}
+                              title={
+                                isSpanishPage
+                                  ? groupTitleEs(group.slug, group.title)
+                                  : group.title
+                              }
+                              locale={isSpanishPage ? "es" : "en"}
                               items={group.services}
                               onSelect={(srv) => {
                                 closeAllMenus();

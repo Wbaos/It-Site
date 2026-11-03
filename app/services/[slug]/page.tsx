@@ -190,13 +190,19 @@ export async function generateMetadata({
 
 export default async function ServicePage({
   params,
+  locale = "en",
 }: {
   params: Promise<{ slug: string }>;
+  locale?: "en" | "es";
 }) {
   const { slug } = await params;
     console.log("SERVICE SLUG:", slug);
+  const isSpanish = locale === "es";
 
-  const pageUrl = `https://www.calltechcare.com/services/${slug}`;
+  const pageUrl =
+    locale === "es"
+      ? "https://www.calltechcare.com/es/reparacion-e-instalacion-de-sprinklers"
+      : `https://www.calltechcare.com/services/${slug}`;
   const speakableWebPageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -242,9 +248,13 @@ export default async function ServicePage({
     <section className="service-areas-section">
       <div className="site-container">
         <div className="service-areas-inner">
-          <h2 className="service-areas-title">Service Areas</h2>
+          <h2 className="service-areas-title">
+            {isSpanish ? "Áreas de servicio" : "Service Areas"}
+          </h2>
           <p className="service-areas-subtitle">
-            Serving communities across Miami-Dade and Broward County.
+            {isSpanish
+              ? "Atendemos comunidades en Miami-Dade y Broward."
+              : "Serving communities across Miami-Dade and Broward County."}
           </p>
           <div className="service-areas-pills">
             {serviceAreas.map((area) => (
@@ -252,7 +262,11 @@ export default async function ServicePage({
                 key={area.slug}
                 href={`/locations/${area.slug}`}
                 className="service-area-pill"
-                aria-label={`View services in ${area.city}`}
+                aria-label={
+                  isSpanish
+                    ? `Ver servicios en ${area.city}`
+                    : `View services in ${area.city}`
+                }
               >
                 <SvgIcon
                   name="map-pin"
@@ -265,7 +279,7 @@ export default async function ServicePage({
             ))}
           </div>
           <p className="service-areas-subtitle">
-            We serve these cities:
+            {isSpanish ? "Atendemos estas ciudades:" : "We serve these cities:"}
           </p>
           <div className="service-areas-pills">
             {SPRINKLER_CITY_LINKS.map((city) => (
@@ -273,7 +287,11 @@ export default async function ServicePage({
                 key={city.href}
                 href={city.href}
                 className="service-area-pill"
-                aria-label={`Sprinkler repair in ${city.name}`}
+                aria-label={
+                  isSpanish
+                    ? `Reparación de sprinklers en ${city.name}`
+                    : `Sprinkler repair in ${city.name}`
+                }
               >
                 <SvgIcon
                   name="map-pin"
@@ -294,14 +312,17 @@ export default async function ServicePage({
   const service = await sanity.fetch(
     `*[_type == "service" && slug.current == $slug][0]{
       title,
+      titleEs,
       pricingModel,
       hourlyConfig{minimumHours, maximumHours, billingIncrement},
       description,
+      descriptionEs,
       mode,
       category-> { title },
       rating,
       reviewsCount,
       warranty,
+      warrantyEs,
       image { asset->{ url }, alt },
       gallery[]{
         asset-> { url },
@@ -314,7 +335,9 @@ export default async function ServicePage({
         poster{ asset-> { url }, alt }
       },
       details,
+      detailsEs,
       faqs,
+      faqsEs,
       beforeAfter{
         heading,
         subheading,
@@ -323,6 +346,10 @@ export default async function ServicePage({
           beforeImage{asset->{url}, alt},
           afterImage{asset->{url}, alt}
         }
+      },
+      beforeAfterEs{
+        heading,
+        subheading,
       },
       testimonials[] | order(date desc) {
         name,
@@ -333,6 +360,8 @@ export default async function ServicePage({
 
       "subservices": *[_type == "service" && parentService._ref == ^._id]{
         title,
+        titleEs,
+        navDescriptionEs,
         "slug": slug.current,
         serviceType,
         pricingModel,
@@ -344,6 +373,48 @@ export default async function ServicePage({
     { slug }
   );
 
+  // Single-template locale: display values resolve to the Spanish field
+  // when locale is "es" and the field is present, otherwise English.
+  // Testimonials, gallery, videos and before/after comparisons have no
+  // Spanish counterpart by design (customer words and media stay verbatim).
+  const displayTitle =
+    isSpanish && service?.titleEs ? service.titleEs : service?.title;
+  const displayDescription =
+    isSpanish && service?.descriptionEs
+      ? service.descriptionEs
+      : service?.description;
+  const displayWarranty =
+    isSpanish && service?.warrantyEs ? service.warrantyEs : service?.warranty;
+  const displayDetails =
+    isSpanish && service?.detailsEs?.length
+      ? service.detailsEs
+      : service?.details;
+  const displayFaqs =
+    isSpanish && service?.faqsEs?.length ? service.faqsEs : service?.faqs;
+  const displayBeforeAfter =
+    isSpanish && service?.beforeAfterEs
+      ? {
+          ...service.beforeAfter,
+          heading:
+            service.beforeAfterEs.heading || service.beforeAfter?.heading,
+          subheading:
+            service.beforeAfterEs.subheading ||
+            service.beforeAfter?.subheading,
+        }
+      : service?.beforeAfter;
+  // Spanish titles for the related-services pills (EN pages; only the
+  // title text changes). Fetched only in Spanish mode so the EN path
+  // performs no extra query.
+  const sprinklerTitlesEs: Record<string, string> = {};
+  if (isSpanish && service) {
+    const esTitles = await sanity.fetch(
+      `*[_type == "service" && slug.current in ["sprinkler-repair-and-installation", "sprinkler-leak-repair", "sprinkler-valve-repair", "sprinkler-timer-installation", "sprinkler-pump-replacement", "rain-sensor-installation", "wifi-sprinkler-controller-upgrade", "new-irrigation-installation", "wireless-camera-installation"]{ "slug": slug.current, titleEs }`
+    );
+    for (const t of (esTitles as any[]) ?? []) {
+      if (t?.slug && t?.titleEs) sprinklerTitlesEs[t.slug] = t.titleEs;
+    }
+  }
+
  const serviceBreadcrumbSchema = service
   ? {
       "@context": "https://schema.org",
@@ -352,20 +423,20 @@ export default async function ServicePage({
         {
           "@type": "ListItem",
           position: 1,
-          name: "Home",
+          name: isSpanish ? "Inicio" : "Home",
           item: "https://www.calltechcare.com",
         },
         {
           "@type": "ListItem",
           position: 2,
-          name: "Services",
+          name: isSpanish ? "Servicios" : "Services",
           item: "https://www.calltechcare.com/services",
         },
         {
           "@type": "ListItem",
           position: 3,
-          name: service.title,
-          item: `https://www.calltechcare.com/services/${slug}`,
+          name: displayTitle,
+          item: pageUrl,
         },
       ],
     }
@@ -373,9 +444,9 @@ export default async function ServicePage({
 
 
   const faqSchema = (() => {
-    if (!service?.faqs?.length) return null;
+    if (!displayFaqs?.length) return null;
 
-    const mainEntity = service.faqs
+    const mainEntity = displayFaqs
       .map((faq: any) => {
         const question =
           (typeof faq?.question === "string" && faq.question.trim()) ||
@@ -412,14 +483,14 @@ export default async function ServicePage({
           ? {
               "@context": "https://schema.org",
               "@type": "Service",
-              name: service.title,
-              url: `https://www.calltechcare.com/services/${slug}`,
+              name: displayTitle,
+              url: pageUrl,
               ...(service.image?.asset?.url && {
                 image: service.image.asset.url,
               }),
               description:
-                service.description ||
-                `Professional ${service.title} service in Miami, Fort Lauderdale, and Broward County.`,
+                displayDescription ||
+                `Professional ${displayTitle} service in Miami, Fort Lauderdale, and Broward County.`,
               areaServed: {
                 "@type": "Place",
                 name: "Miami, Fort Lauderdale, Broward County",
@@ -877,11 +948,11 @@ export default async function ServicePage({
 
   const modeLabel =
     service.mode === "in-home"
-      ? "In-Home"
+      ? (isSpanish ? "A Domicilio" : "In-Home")
       : service.mode === "online"
-      ? "Online"
+      ? (isSpanish ? "En línea" : "Online")
       : service.mode === "both"
-      ? "Online + In-Home"
+      ? (isSpanish ? "En línea + A domicilio" : "Online + In-Home")
       : null;
 
   if (hasSubServices) {
@@ -919,18 +990,26 @@ export default async function ServicePage({
       <section className="service-detail">
         <div className="site-container">
           <Link href="/services" className="back-btn">
-            ← Back to Services
+            {isSpanish ? "← Volver a Servicios" : "← Back to Services"}
           </Link>
 
-          <h1>{service.title} in Miami, Broward & South Florida</h1>
+          <h1>{isSpanish ? `${displayTitle} en Miami, Broward y el Sur de Florida` : `${displayTitle} in Miami, Broward & South Florida`}</h1>
 
 
           {install.length > 0 && (
-            <ServiceGroupList title="Installation & Setup" items={install} />
+            <ServiceGroupList
+              title={isSpanish ? "Instalación y configuración" : "Installation & Setup"}
+              items={install}
+              locale={locale}
+            />
           )}
 
           {support.length > 0 && (
-            <ServiceGroupList title="Support" items={support} />
+            <ServiceGroupList
+              title={isSpanish ? "Soporte" : "Support"}
+              items={support}
+              locale={locale}
+            />
           )}
         </div>
       </section>
@@ -941,7 +1020,7 @@ export default async function ServicePage({
 }
 
 
-  const includedList = service.details || [];
+  const includedList = displayDetails || [];
   const tvMountingSlugs = [
   "small-tv-up-to-32",
   "standard-tv-33-60",
@@ -998,7 +1077,7 @@ const isTvMounting = tvMountingSlugs.includes(slug);
           )}
 
           <div className="service-card">
-            <h1>{service.title} in Miami, Broward & South Florida</h1>
+            <h1>{isSpanish ? `${displayTitle} en Miami, Broward y el Sur de Florida` : `${displayTitle} in Miami, Broward & South Florida`}</h1>
 
 
             {service.rating && (
@@ -1014,34 +1093,40 @@ const isTvMounting = tvMountingSlugs.includes(slug);
               </span>
             )}
 
-            {service.description && (
-              <p className="service-description">{service.description}</p>
+            {displayDescription && (
+              <p className="service-description">{displayDescription}</p>
             )}
 
-            {service.warranty && (
+            {displayWarranty && (
               <p className="service-warranty">
-                Warranty: {service.warranty} when CallTechCare performs the work and provides the materials.
+                {isSpanish
+                  ? `Garantía: ${displayWarranty} cuando CallTechCare hace el trabajo y provee los materiales.`
+                  : `Warranty: ${displayWarranty} when CallTechCare performs the work and provides the materials.`}
               </p>
             )}
 
             <hr />
 
             <a href="tel:+17863662729" className="btn-book">
-              <span className="mobile-only">Call for Free Quote</span>
-              <span className="desktop-only">Call us at (786) 366-2729</span>
+              <span className="mobile-only">
+                {isSpanish ? "Llama para una cotización gratis" : "Call for Free Quote"}
+              </span>
+              <span className="desktop-only">
+                {isSpanish ? "Llámanos al (786) 366-2729" : "Call us at (786) 366-2729"}
+              </span>
             </a>
           </div>
         </div>
 
         <ServiceGalleryClient
-          serviceTitle={service.title}
+          serviceTitle={displayTitle}
           gallery={service.gallery}
           videos={service.videos}
         />
 
         {includedList.length > 0 && (
           <div className="included-box">
-            <h2>What&apos;s Included</h2>
+            <h2>{isSpanish ? "Qué incluye" : "What\u0027s Included"}</h2>
 
             <ul className="included-list">
               {includedList.map((item: string, i: number) => (
@@ -1051,10 +1136,10 @@ const isTvMounting = tvMountingSlugs.includes(slug);
           </div>
         )}
 
-        <BeforeAfterSection data={service.beforeAfter} />
+        <BeforeAfterSection data={displayBeforeAfter} />
 
 
-        {service.faqs && <FaqAccordion faqs={service.faqs} />}
+        {displayFaqs && <FaqAccordion faqs={displayFaqs} locale={locale} />}
 
 
         {!isTvMounting && service.testimonials?.length > 0 && (
@@ -1066,14 +1151,16 @@ const isTvMounting = tvMountingSlugs.includes(slug);
             verified: true,
             date: t.date,
           }))}
-          title="Customer Reviews"
+          title={isSpanish ? "Reseñas de clientes" : "Customer Reviews"}
         />
       )}
 
       {isTvMounting && <ServiceReviewsWrapper slug={slug} />}
 
       <div className="reviews-section">
-        <h3 className="reviews-title">Customer Reviews</h3>
+        <h3 className="reviews-title">
+          {isSpanish ? "Reseñas de clientes" : "Customer Reviews"}
+        </h3>
 
         <div className="review-action-footer">
           {googleWriteReviewUrl ? (
@@ -1083,16 +1170,16 @@ const isTvMounting = tvMountingSlugs.includes(slug);
               rel="noreferrer"
               className="btn-write-review"
             >
-              Write a Review
+              {isSpanish ? "Escribe una reseña" : "Write a Review"}
             </a>
           ) : (
             <Link
               href={`/reviews/write?slug=${slug}&title=${encodeURIComponent(
-                service.title || ""
+                displayTitle || ""
               )}&img=${encodeURIComponent(service.image?.asset?.url || "")}`}
               className="btn-write-review"
             >
-              Write a Review
+              {isSpanish ? "Escribe una reseña" : "Write a Review"}
             </Link>
           )}
         </div>
@@ -1105,18 +1192,26 @@ const isTvMounting = tvMountingSlugs.includes(slug);
       <section className="service-areas-section">
         <div className="site-container">
           <div className="service-areas-inner">
-            <h2 className="service-areas-title">Related sprinkler services</h2>
+            <h2 className="service-areas-title">
+              {isSpanish ? "Servicios relacionados de sprinklers" : "Related sprinkler services"}
+            </h2>
             <div className="service-areas-pills">
-              {SPRINKLER_SERVICE_LINKS.filter((s) => s.slug !== slug).map((s) => (
-                <Link
-                  key={s.slug}
-                  href={`/services/${s.slug}`}
-                  className="service-area-pill"
-                  aria-label={s.title}
-                >
-                  {s.title}
-                </Link>
-              ))}
+              {SPRINKLER_SERVICE_LINKS.filter((s) => s.slug !== slug).map((s) => {
+                const pillTitle =
+                  isSpanish && sprinklerTitlesEs[s.slug]
+                    ? sprinklerTitlesEs[s.slug]
+                    : s.title;
+                return (
+                  <Link
+                    key={s.slug}
+                    href={`/services/${s.slug}`}
+                    className="service-area-pill"
+                    aria-label={pillTitle}
+                  >
+                    {pillTitle}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </div>
