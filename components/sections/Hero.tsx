@@ -15,6 +15,8 @@ type Props = {
   secondaryCtaHref?: string;
   phoneNumber?: string;
   showCallButton?: boolean;
+  imageSrc?: string;
+  imageAlt?: string;
   stats?: Stat[];
 };
 
@@ -29,6 +31,8 @@ export default function Hero({
   secondaryCtaHref = "/request-quote",
   phoneNumber = "+17863662729",
   showCallButton = true,
+  imageSrc = "https://cdn.sanity.io/images/celkrwoq/production/5deeea70b525963987af93601f412cebdbede547-5712x4284.webp",
+  imageAlt = "Sprinkler system working",
   stats = [
     { value: "1500+", label: "Local Clients Helped" },
     { value: "5/5", label: "Customer Satisfaction" },
@@ -95,6 +99,15 @@ export default function Hero({
         </a>
       )}
       </div>
+
+      {imageSrc && (
+        <img
+          src={imageSrc}
+          alt={imageAlt}
+          className="hero-photo"
+          loading="eager"
+        />
+      )}
 
       <div className="hero-stats">
         {stats.map((s, i) => (
