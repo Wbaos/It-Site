@@ -48,14 +48,44 @@ export default function Navbar() {
   // Language switcher: pages with a Spanish twin link to it; every other page
   // falls back to the Spanish hub (never a broken page). Spanish pages link
   // back to their English twin, or to the English home when there is none.
-  // Twin pairs: "/" <-> "/es/", "/sprinkler-repair-miami" <->
-  // "/es/reparacion-de-sprinklers-miami", the nine service page pairs,
+  // Twin pairs: "/" <-> "/es/", the thirty city page pairs
+  // ("/sprinkler-repair-{city}" <-> "/es/reparacion-de-sprinklers-{city}",
+  // hub Miami included), the nine service page pairs,
   // "/contact" <-> "/es/contacto" and "/request-quote" <->
   // "/es/solicita-una-cotizacion".
   const ES_HUB_HREF = "/es/reparacion-de-sprinklers-miami";
   const EN_TO_ES: Record<string, string> = {
     "/": "/es/",
+    "/sprinkler-repair-sunrise": "/es/reparacion-de-sprinklers-sunrise",
+    "/sprinkler-repair-fort-lauderdale": "/es/reparacion-de-sprinklers-fort-lauderdale",
+    "/sprinkler-repair-dania-beach": "/es/reparacion-de-sprinklers-dania-beach",
+    "/sprinkler-repair-weston": "/es/reparacion-de-sprinklers-weston",
+    "/sprinkler-repair-davie": "/es/reparacion-de-sprinklers-davie",
+    "/sprinkler-repair-southwest-ranches": "/es/reparacion-de-sprinklers-southwest-ranches",
+    "/sprinkler-repair-hollywood": "/es/reparacion-de-sprinklers-hollywood",
+    "/sprinkler-repair-west-park": "/es/reparacion-de-sprinklers-west-park",
+    "/sprinkler-repair-pembroke-pines": "/es/reparacion-de-sprinklers-pembroke-pines",
+    "/sprinkler-repair-miramar": "/es/reparacion-de-sprinklers-miramar",
+    "/sprinkler-repair-miami-gardens": "/es/reparacion-de-sprinklers-miami-gardens",
+    "/sprinkler-repair-miami-lakes": "/es/reparacion-de-sprinklers-miami-lakes",
+    "/sprinkler-repair-country-club": "/es/reparacion-de-sprinklers-country-club",
+    "/sprinkler-repair-aventura": "/es/reparacion-de-sprinklers-aventura",
+    "/sprinkler-repair-sunny-isles-beach": "/es/reparacion-de-sprinklers-sunny-isles-beach",
+    "/sprinkler-repair-north-miami": "/es/reparacion-de-sprinklers-north-miami",
+    "/sprinkler-repair-surfside": "/es/reparacion-de-sprinklers-surfside",
+    "/sprinkler-repair-north-bay-village": "/es/reparacion-de-sprinklers-north-bay-village",
+    "/sprinkler-repair-miami-beach": "/es/reparacion-de-sprinklers-miami-beach",
+    "/sprinkler-repair-hialeah": "/es/reparacion-de-sprinklers-hialeah",
+    "/sprinkler-repair-doral": "/es/reparacion-de-sprinklers-doral",
+    "/sprinkler-repair-fontainebleau": "/es/reparacion-de-sprinklers-fontainebleau",
+    "/sprinkler-repair-tamiami": "/es/reparacion-de-sprinklers-tamiami",
     "/sprinkler-repair-miami": "/es/reparacion-de-sprinklers-miami",
+    "/sprinkler-repair-coral-gables": "/es/reparacion-de-sprinklers-coral-gables",
+    "/sprinkler-repair-key-biscayne": "/es/reparacion-de-sprinklers-key-biscayne",
+    "/sprinkler-repair-kendall": "/es/reparacion-de-sprinklers-kendall",
+    "/sprinkler-repair-kendale-lakes": "/es/reparacion-de-sprinklers-kendale-lakes",
+    "/sprinkler-repair-country-walk": "/es/reparacion-de-sprinklers-country-walk",
+    "/sprinkler-repair-cutler-bay": "/es/reparacion-de-sprinklers-cutler-bay",
     "/services/sprinkler-repair-and-installation":
       "/es/reparacion-e-instalacion-de-sprinklers",
     "/services/sprinkler-leak-repair":
@@ -80,7 +110,36 @@ export default function Navbar() {
   const ES_TO_EN: Record<string, string> = {
     "/es": "/",
     "/es/": "/",
+    "/es/reparacion-de-sprinklers-sunrise": "/sprinkler-repair-sunrise",
+    "/es/reparacion-de-sprinklers-fort-lauderdale": "/sprinkler-repair-fort-lauderdale",
+    "/es/reparacion-de-sprinklers-dania-beach": "/sprinkler-repair-dania-beach",
+    "/es/reparacion-de-sprinklers-weston": "/sprinkler-repair-weston",
+    "/es/reparacion-de-sprinklers-davie": "/sprinkler-repair-davie",
+    "/es/reparacion-de-sprinklers-southwest-ranches": "/sprinkler-repair-southwest-ranches",
+    "/es/reparacion-de-sprinklers-hollywood": "/sprinkler-repair-hollywood",
+    "/es/reparacion-de-sprinklers-west-park": "/sprinkler-repair-west-park",
+    "/es/reparacion-de-sprinklers-pembroke-pines": "/sprinkler-repair-pembroke-pines",
+    "/es/reparacion-de-sprinklers-miramar": "/sprinkler-repair-miramar",
+    "/es/reparacion-de-sprinklers-miami-gardens": "/sprinkler-repair-miami-gardens",
+    "/es/reparacion-de-sprinklers-miami-lakes": "/sprinkler-repair-miami-lakes",
+    "/es/reparacion-de-sprinklers-country-club": "/sprinkler-repair-country-club",
+    "/es/reparacion-de-sprinklers-aventura": "/sprinkler-repair-aventura",
+    "/es/reparacion-de-sprinklers-sunny-isles-beach": "/sprinkler-repair-sunny-isles-beach",
+    "/es/reparacion-de-sprinklers-north-miami": "/sprinkler-repair-north-miami",
+    "/es/reparacion-de-sprinklers-surfside": "/sprinkler-repair-surfside",
+    "/es/reparacion-de-sprinklers-north-bay-village": "/sprinkler-repair-north-bay-village",
+    "/es/reparacion-de-sprinklers-miami-beach": "/sprinkler-repair-miami-beach",
+    "/es/reparacion-de-sprinklers-hialeah": "/sprinkler-repair-hialeah",
+    "/es/reparacion-de-sprinklers-doral": "/sprinkler-repair-doral",
+    "/es/reparacion-de-sprinklers-fontainebleau": "/sprinkler-repair-fontainebleau",
+    "/es/reparacion-de-sprinklers-tamiami": "/sprinkler-repair-tamiami",
     "/es/reparacion-de-sprinklers-miami": "/sprinkler-repair-miami",
+    "/es/reparacion-de-sprinklers-coral-gables": "/sprinkler-repair-coral-gables",
+    "/es/reparacion-de-sprinklers-key-biscayne": "/sprinkler-repair-key-biscayne",
+    "/es/reparacion-de-sprinklers-kendall": "/sprinkler-repair-kendall",
+    "/es/reparacion-de-sprinklers-kendale-lakes": "/sprinkler-repair-kendale-lakes",
+    "/es/reparacion-de-sprinklers-country-walk": "/sprinkler-repair-country-walk",
+    "/es/reparacion-de-sprinklers-cutler-bay": "/sprinkler-repair-cutler-bay",
     "/es/reparacion-e-instalacion-de-sprinklers":
       "/services/sprinkler-repair-and-installation",
     "/es/reparacion-de-fugas-de-sprinklers":
