@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { sanity } from "@/lib/sanity";
 
 export const revalidate = 60;
@@ -71,6 +72,16 @@ export default async function HowItWorks({ locale = "en" }: { locale?: "en" | "e
               )}
             </div>
           ))}
+        </div>
+
+        <div className="how-photo">
+          <Image
+            src="https://cdn.sanity.io/images/celkrwoq/production/08a328d2e0471d4c7aa03cdd6e992510de3b707b-1500x1125.jpg"
+            alt={isSpanish ? "Cámara de seguridad inalámbrica instalada en la pared de una casa" : "Outdoor wireless security camera mounted on a house wall"}
+            width={1100}
+            height={420}
+            loading="lazy"
+          />
         </div>
       </div>
     </section>

@@ -1,4 +1,5 @@
 import { getGoogleReviewsUrl } from "@/lib/google-reviews";
+import Image from "next/image";
 import SvgIcon from "@/components/common/SvgIcons";
 
 /**
@@ -15,7 +16,18 @@ export default function GoogleReviewsCTA({ locale = "en" }: { locale?: "en" | "e
 
   return (
     <section className="section testimonials">
-      <div className="site-container-testimonials">
+      <div className="site-container-testimonials google-cta-card">
+        <div className="google-cta-photo">
+          <Image
+            src="https://cdn.sanity.io/images/celkrwoq/production/5deeea70b525963987af93601f412cebdbede547-5712x4284.webp"
+            alt={isSpanish ? "Sistema de sprinklers funcionando" : "Sprinkler system working"}
+            width={600}
+            height={400}
+            loading="lazy"
+          />
+        </div>
+        <div className="google-cta-content">
+        <div className="google-cta-rating">5.0</div>
         <h2 className="testimonials-heading">{isSpanish ? "5.0 en Google" : "5.0 on Google"}</h2>
         <div
           style={{
@@ -29,7 +41,7 @@ export default function GoogleReviewsCTA({ locale = "en" }: { locale?: "en" | "e
             <SvgIcon
               key={i}
               name="star"
-              size={22}
+              size={28}
               color="#facc15"
               className="star-filled"
             />
@@ -45,6 +57,7 @@ export default function GoogleReviewsCTA({ locale = "en" }: { locale?: "en" | "e
           >
             {isSpanish ? "Ver las 26 reseñas en Google" : "See all 26 reviews on Google"}
           </a>
+        </div>
         </div>
       </div>
     </section>
