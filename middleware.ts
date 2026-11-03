@@ -57,6 +57,7 @@ export async function middleware(request: NextRequest) {
   // Protected Routes - Require Authentication
   const protectedPaths = [
     '/account',
+    '/es/cuenta',
     '/reviews/write'
   ];
 
@@ -71,13 +72,14 @@ export async function middleware(request: NextRequest) {
     });
 
     if (!token) {
-      const url = new URL('/login', request.url);
+      const isSpanishPath = request.nextUrl.pathname.startsWith('/es/');
+      const url = new URL(isSpanishPath ? '/es/iniciar-sesion' : '/login', request.url);
       url.searchParams.set('callbackUrl', request.nextUrl.pathname);
       return NextResponse.redirect(url);
     }
 
     // Even when authenticated, keep account pages out of search results.
-    if (request.nextUrl.pathname.startsWith('/account')) {
+    if (request.nextUrl.pathname.startsWith('/account') || request.nextUrl.pathname.startsWith('/es/cuenta')) {
       setNoIndex(response);
     }
   }

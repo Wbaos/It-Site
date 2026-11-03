@@ -19,6 +19,7 @@ type Props = {
   afterSubtitle?: ReactNode;
   carousel?: boolean;
   variant?: "card" | "plain";
+  locale?: "en" | "es";
 };
 
 export default function TestimonialsList({
@@ -27,7 +28,9 @@ export default function TestimonialsList({
   subtitle = "Real experiences from satisfied homeowners and businesses.",
   afterSubtitle,
   variant = "card", // NEW default
+  locale = "en",
 }: Props) {
+  const isSpanish = locale === "es";
   const n = items.length;
   const [cols, setCols] = useState(3);
   // With fewer reviews than visible columns, the infinite-loop padding
@@ -197,7 +200,7 @@ export default function TestimonialsList({
                             className="read-more-btn"
                             onClick={() => setExpanded((x) => !x)}
                           >
-                            {expanded ? "Read less" : "Read more"}
+                            {expanded ? (isSpanish ? "Leer menos" : "Read less") : (isSpanish ? "Leer más" : "Read more")}
                           </button>
                         )}
                       </div>
@@ -208,7 +211,7 @@ export default function TestimonialsList({
                           {t.verified && (
                             <span className="verified-pill below">
                               <SvgIcon name="verified-check" size={14} color="#fff" />
-                              <span>Verified</span>
+                              <span>{isSpanish ? "Verificado" : "Verified"}</span>
                             </span>
                           )}
                         </div>
@@ -222,10 +225,10 @@ export default function TestimonialsList({
 
           {canSlide && (
             <div className="owl-nav">
-              <button className="owl-prev" onClick={goPrev} aria-label="Previous testimonial">
+              <button className="owl-prev" onClick={goPrev} aria-label={isSpanish ? "Reseña anterior" : "Previous testimonial"}>
                 <SvgIcon name="chevron-left" size={28} color="#d6d6ddff" />
               </button>
-              <button className="owl-next" onClick={goNext} aria-label="Next testimonial">
+              <button className="owl-next" onClick={goNext} aria-label={isSpanish ? "Reseña siguiente" : "Next testimonial"}>
                 <SvgIcon name="chevron-right" size={28} color="#d6d6ddff" />
               </button>
             </div>

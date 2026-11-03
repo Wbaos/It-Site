@@ -46,7 +46,8 @@ export default function Navbar() {
   const [mobileServicesPanel, setMobileServicesPanel] = useState(false);
 
   // Language switcher: pages with a Spanish twin link to it; every other page
-  // falls back to the Spanish hub (never a broken page). Spanish pages link
+  // falls back to the Spanish home (never a broken page, and never a
+  // specific service page that would mislead). Spanish pages link
   // back to their English twin, or to the English home when there is none.
   // Twin pairs: "/" <-> "/es/", the thirty city page pairs
   // ("/sprinkler-repair-{city}" <-> "/es/reparacion-de-sprinklers-{city}",
@@ -54,7 +55,7 @@ export default function Navbar() {
   // pairs ("/blog" <-> "/es/blog" and nine posts),
   // "/contact" <-> "/es/contacto" and "/request-quote" <->
   // "/es/solicita-una-cotizacion".
-  const ES_HUB_HREF = "/es/reparacion-de-sprinklers-miami";
+  const ES_HUB_HREF = "/es/";
   const EN_TO_ES: Record<string, string> = {
     "/": "/es/",
     "/sprinkler-repair-sunrise": "/es/reparacion-de-sprinklers-sunrise",
@@ -126,6 +127,12 @@ export default function Navbar() {
       "/es/blog/prepara-tu-sistema-de-sprinklers-para-la-temporada-seca-en-miami",
     "/contact": "/es/contacto",
     "/request-quote": "/es/solicita-una-cotizacion",
+    "/cart": "/es/carrito",
+    "/checkout": "/es/pago",
+    "/login": "/es/iniciar-sesion",
+    "/signup": "/es/registrarse",
+    "/forgot-password": "/es/olvido-contrasena",
+    "/account": "/es/cuenta",
   };
   const ES_TO_EN: Record<string, string> = {
     "/es": "/",
@@ -199,6 +206,12 @@ export default function Navbar() {
       "/blog/prepare-sprinkler-system-dry-season-miami",
     "/es/contacto": "/contact",
     "/es/solicita-una-cotizacion": "/request-quote",
+    "/es/carrito": "/cart",
+    "/es/pago": "/checkout",
+    "/es/iniciar-sesion": "/login",
+    "/es/registrarse": "/signup",
+    "/es/olvido-contrasena": "/forgot-password",
+    "/es/cuenta": "/account",
   };
   // "/es" itself (the Spanish home) does not start with "/es/", so check
   // for it explicitly: otherwise the chrome on /es would render in English.
@@ -636,7 +649,7 @@ export default function Navbar() {
               onOpen={closeAllMenus}
             />
             <Link
-              href="/cart"
+              href={isSpanishPage ? "/es/carrito" : "/cart"}
               className="icon-btn cart-btn"
               onClick={closeAllMenus}
             >

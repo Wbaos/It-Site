@@ -18,9 +18,11 @@ export type BeforeAfterData = {
 
 type Props = {
   data?: BeforeAfterData | null;
+  locale?: "en" | "es";
 };
 
-export default function BeforeAfterSection({ data }: Props) {
+export default function BeforeAfterSection({ data, locale = "en" }: Props) {
+  const isSpanish = locale === "es";
   const comparisons = useMemo(
     () => (data?.comparisons ?? []).filter(Boolean),
     [data?.comparisons]
@@ -46,14 +48,14 @@ export default function BeforeAfterSection({ data }: Props) {
   const afterUrl = active?.afterImage?.asset?.url;
   if (!beforeUrl || !afterUrl) return null;
 
-  const heading = data?.heading?.trim() || "Before & After Results";
-  const subheading = data?.subheading?.trim() || "See the transformation from our recent projects";
+  const heading = data?.heading?.trim() || (isSpanish ? "Resultados Antes y Después" : "Before & After Results");
+  const subheading = data?.subheading?.trim() || (isSpanish ? "Mira la transformación de nuestros proyectos recientes" : "See the transformation from our recent projects");
 
   const beforeClip = `inset(0 ${100 - percent}% 0 0)`;
   const afterClip = `inset(0 0 0 ${percent}%)`;
 
   return (
-    <section className="beforeafter-section" aria-label="Before and after results">
+    <section className="beforeafter-section" aria-label={isSpanish ? "Resultados antes y después" : "Before and after results"}>
       <div className="beforeafter-section-container">
         <div className="beforeafter-card">
           <div className="beforeafter-header">
@@ -74,7 +76,7 @@ export default function BeforeAfterSection({ data }: Props) {
               >
                 <Image
                   src={afterUrl}
-                  alt={active?.afterImage?.alt || "After"}
+                  alt={active?.afterImage?.alt || (isSpanish ? "Después" : "After")}
                   fill
                   sizes="(max-width: 768px) 100vw, 1000px"
                   className="beforeafter-img"
@@ -88,7 +90,7 @@ export default function BeforeAfterSection({ data }: Props) {
               >
                 <Image
                   src={beforeUrl}
-                  alt={active?.beforeImage?.alt || "Before"}
+                  alt={active?.beforeImage?.alt || (isSpanish ? "Antes" : "Before")}
                   fill
                   sizes="(max-width: 768px) 100vw, 1000px"
                   className="beforeafter-img"
@@ -97,10 +99,10 @@ export default function BeforeAfterSection({ data }: Props) {
               </div>
 
               <span className="beforeafter-badge before" aria-hidden>
-                BEFORE
+                {isSpanish ? "ANTES" : "BEFORE"}
               </span>
               <span className="beforeafter-badge after" aria-hidden>
-                AFTER
+                {isSpanish ? "DESPUÉS" : "AFTER"}
               </span>
 
               <input
@@ -110,7 +112,7 @@ export default function BeforeAfterSection({ data }: Props) {
                 max={100}
                 value={percent}
                 onChange={(e) => setPercent(Number(e.target.value))}
-                aria-label="Drag to compare before and after"
+                aria-label={isSpanish ? "Arrastra para comparar antes y después" : "Drag to compare before and after"}
               />
 
               <div className="beforeafter-handle" style={{ left: `${percent}%` }} aria-hidden>
@@ -135,7 +137,7 @@ export default function BeforeAfterSection({ data }: Props) {
             <div className="beforeafter-caption">{active.title}</div>
 
             {comparisons.length > 1 && (
-              <div className="beforeafter-thumbs" role="tablist" aria-label="Select comparison">
+              <div className="beforeafter-thumbs" role="tablist" aria-label={isSpanish ? "Seleccionar comparación" : "Select comparison"}>
                 {comparisons.map((c, idx) => {
                   const thumbUrl = c?.beforeImage?.asset?.url || c?.afterImage?.asset?.url;
                   if (!thumbUrl) return null;
@@ -148,12 +150,12 @@ export default function BeforeAfterSection({ data }: Props) {
                       onClick={() => setActiveIndex(idx)}
                       role="tab"
                       aria-selected={isActive}
-                      aria-label={`View comparison ${idx + 1}`}
+                      aria-label={isSpanish ? `Ver comparación ${idx + 1}` : `View comparison ${idx + 1}`}
                     >
                       <span className="beforeafter-thumbImg">
                         <Image
                           src={thumbUrl}
-                          alt={c?.beforeImage?.alt || c?.afterImage?.alt || `Comparison ${idx + 1}`}
+                          alt={c?.beforeImage?.alt || c?.afterImage?.alt || (isSpanish ? `Comparación ${idx + 1}` : `Comparison ${idx + 1}`)}
                           fill
                           sizes="96px"
                           className="beforeafter-thumbImage"
@@ -170,7 +172,7 @@ export default function BeforeAfterSection({ data }: Props) {
               <span className="beforeafter-hintIcon" aria-hidden>
                 👆
               </span>
-              Drag the slider left or right to compare before and after
+              {isSpanish ? "Arrastra el control a la izquierda o a la derecha para comparar antes y después" : "Drag the slider left or right to compare before and after"}
             </div>
           </div>
         </div>

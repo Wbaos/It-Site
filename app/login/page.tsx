@@ -102,7 +102,7 @@ function LoginContent() {
         </form>
 
         <p className="forgot-wrapper">
-          <Link href="/forgot-password" className="forgot-link">
+          <Link href={isSpanish ? "/es/olvido-contrasena" : "/forgot-password"} className="forgot-link">
             {isSpanish ? "¿Olvidaste tu contraseña?" : "Forgot your password?"}
           </Link>
         </p>
@@ -123,7 +123,7 @@ function LoginContent() {
 
         <p className="signup-wrapper">
           {isSpanish ? "¿No tienes una cuenta?" : "Don’t have an account?"}{" "}
-          <Link href="/signup" className="signup-link">
+          <Link href={isSpanish ? "/es/registrarse" : "/signup"} className="signup-link">
             {isSpanish ? "Regístrate" : "Sign up"}
           </Link>
         </p>

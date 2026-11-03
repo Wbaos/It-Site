@@ -44,10 +44,10 @@ export default function SignUpPage() {
 
         if (loginRes?.error) {
           setStatus(isSpanish ? "⚠️ Cuenta creada, pero el inicio de sesión falló. Por favor inicia sesión." : "⚠️ Account created, but login failed. Please log in.");
-          router.push("/login");
+          router.push(isSpanish ? "/es/iniciar-sesion" : "/login");
         } else {
           setStatus(isSpanish ? "¡Cuenta creada e inicio de sesión exitoso!" : "Account created and logged in!");
-          router.push("/");
+          router.push(isSpanish ? "/es/" : "/");
         }
       } else {
         setStatus(data.error || (isSpanish ? "Algo salió mal" : "Something went wrong"));
@@ -133,7 +133,7 @@ export default function SignUpPage() {
 
         <p className="signup-wrapper">
           {isSpanish ? "¿Ya tienes una cuenta?" : "Already have an account?"}{" "}
-          <Link href="/login" className="signup-link">
+          <Link href={isSpanish ? "/es/iniciar-sesion" : "/login"} className="signup-link">
             {isSpanish ? "Iniciar Sesión" : "Login"}
           </Link>
         </p>

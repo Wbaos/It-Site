@@ -359,7 +359,7 @@ export default function CartPage() {
           <button
             className="checkout-btn"
             onClick={() => {
-              router.push("/checkout");
+              router.push(isSpanish ? "/es/pago" : "/checkout");
             }}
           >
             {isSpanish ? "Proceder al pago" : "Proceed to Checkout"}
