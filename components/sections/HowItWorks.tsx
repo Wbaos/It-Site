@@ -2,28 +2,24 @@ import { sanity } from "@/lib/sanity";
 
 export const revalidate = 60;
 
-// Spanish steps reused from the former Spanish home page. The English
-// steps still come from Sanity; Sanity is not touched by this refactor.
+// Spanish steps are a faithful translation of the English steps (which
+// come from Sanity); Sanity is not touched by this change. Same count,
+// same order, only the text changes.
 const STEPS_ES = [
   {
     _id: "es-1",
-    title: "Llámanos o Pide una Cotización",
-    desc: "Cuéntanos qué pasa con tu sistema: fugas, cabezales rotos, una zona que no enciende o un sistema nuevo.",
+    title: "Llámanos o Reserva en Línea",
+    desc: "Cuéntanos con qué necesitas ayuda.",
   },
   {
     _id: "es-2",
-    title: "Visitamos a Domicilio",
-    desc: "Agendamos tu visita y llegamos a tu propiedad para revisar el sistema completo.",
+    title: "Visita Amable a Domicilio",
+    desc: "Venimos a tu casa — siempre a domicilio.",
   },
   {
     _id: "es-3",
-    title: "Diagnosticamos y Reparamos en Sitio",
-    desc: "Encontramos la causa del problema y lo reparamos en el lugar, con un estimado claro antes de empezar.",
-  },
-  {
-    _id: "es-4",
-    title: "Dejamos Todo Funcionando",
-    desc: "Probamos el sistema zona por zona para que quede regando como debe.",
+    title: "Lo Dejamos Bien Instalado",
+    desc: "Simple, seguro y bien hecho.",
   },
 ];
 
