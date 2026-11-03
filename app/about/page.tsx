@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "About CallTechCare | Sprinkler Repair in Miami & Broward",
-  description: "Learn about CallTechCare, Miami and Broward's sprinkler repair and irrigation company. Same-day service, free estimates, and a 1-year warranty on our work.",
+  description: "Learn about CallTechCare, Miami and Broward's sprinkler repair and irrigation company. Same-day service within business hours, free inspection, and a 1-year warranty when CallTechCare performs the work and provides the materials.",
   alternates: {
     canonical: "https://www.calltechcare.com/about",
   },

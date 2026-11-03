@@ -311,7 +311,7 @@ const SHARED_FAQS: Record<Locale, { q: string; a: string }[]> = {
     },
     {
       q: "Do you offer sprinkler repair near me in {CITY}?",
-      a: "Yes. CallTechCare offers sprinkler repair near you in {CITY} — same-day appointments and free estimates. Call (786) 366-2729 and we'll confirm the next available visit.",
+      a: "Yes. CallTechCare offers sprinkler repair near you in {CITY} — same-day appointments within business hours and free inspection. Call (786) 366-2729 and we'll confirm the next available visit.",
     },
   ],
   es: [

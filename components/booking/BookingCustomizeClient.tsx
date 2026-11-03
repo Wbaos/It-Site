@@ -667,7 +667,7 @@ export default function BookingCustomizeClient({ slug }: { slug: string }) {
                 </div>
                 <div className={styles.perkItem}>
                   <ShieldCheck size={18} color="var(--brand-teal)" />
-                  Certified Technicians
+                  Experienced Technicians
                 </div>
                 <div className={styles.perkItem}>
                   <ShieldCheck size={18} color="var(--brand-teal)" />

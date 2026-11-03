@@ -16,7 +16,7 @@ export default function WhyChooseUs({ locale = "en" }: { locale?: "en" | "es" })
         {
           icon: <Clock size={32} strokeWidth={1.5} />,
           title: "Disponibilidad el Mismo Día",
-          text: "La mayoría de las citas están disponibles el mismo día en las 30 áreas de servicio, desde Sunrise hasta Cutler Bay.",
+          text: "La mayoría de las citas están disponibles el mismo día dentro del horario en las 30 áreas de servicio, desde Sunrise hasta Cutler Bay.",
         },
         {
           icon: <Network size={32} strokeWidth={1.5} />,
@@ -36,7 +36,7 @@ export default function WhyChooseUs({ locale = "en" }: { locale?: "en" | "es" })
         {
           icon: <ShieldCheck size={32} strokeWidth={1.5} />,
           title: "Precios Transparentes — Sin Sorpresas",
-          text: "Precios claros por adelantado. Sin cargos ocultos. Sin ventas adicionales. Sin presión.",
+          text: "Estimados claros tras la inspección. Sin cargos ocultos. Sin ventas adicionales. Sin presión.",
         },
       ]
     : [
@@ -48,7 +48,7 @@ export default function WhyChooseUs({ locale = "en" }: { locale?: "en" | "es" })
         {
           icon: <Clock size={32} strokeWidth={1.5} />,
           title: "Same-Day Availability",
-          text: "Most appointments available the same day across all 30 service areas, from Sunrise to Cutler Bay.",
+          text: "Most appointments available the same day within business hours across all 30 service areas, from Sunrise to Cutler Bay.",
         },
         {
           icon: <Network size={32} strokeWidth={1.5} />,
@@ -68,7 +68,7 @@ export default function WhyChooseUs({ locale = "en" }: { locale?: "en" | "es" })
         {
           icon: <ShieldCheck size={32} strokeWidth={1.5} />,
           title: "Transparent Pricing — No Surprises",
-          text: "Clear, upfront pricing. No hidden fees. No upselling. No pressure.",
+          text: "Clear estimates after inspection. No hidden fees. No upselling. No pressure.",
         },
       ];
 

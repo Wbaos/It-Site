@@ -829,15 +829,11 @@ export default function CheckoutClient() {
             <div className={styles.perksCard}>
               <div className={styles.perkRow}>
                 <ShieldCheck size={18} className={styles.perkIcon} />
-                {isSpanish ? "Garantía de 1 Año" : "1-Year Warranty"}
-              </div>
-              <div className={styles.perkRow}>
-                <BadgeCheck size={18} className={styles.perkIcon} />
-                {isSpanish ? "Satisfacción Garantizada" : "Satisfaction Guaranteed"}
+                {isSpanish ? "Garantía de 1 Año (trabajo y materiales de CallTechCare)" : "1-Year Warranty (CallTechCare work and materials)"}
               </div>
               <div className={styles.perkRow}>
                 <Check size={18} className={styles.perkIcon} />
-                {isSpanish ? "Precios Transparentes" : "Transparent Pricing"}
+                {isSpanish ? "Estimados claros tras la inspección" : "Clear estimates after inspection"}
               </div>
             </div>
 

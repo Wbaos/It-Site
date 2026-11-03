@@ -93,11 +93,11 @@ export default function Footer({ areas }: { areas?: FooterArea[] }) {
             #contact), the Spanish blog page, and the existing English pages
             (locations, about, faq). No /es/* page that does not exist is linked. */}
         <nav className="footer-nav" aria-label={isSpanishPage ? "Navegación del pie de página" : "Footer Navigation"}>
-          <Link href={isSpanishPage ? "/es/#services" : "/#services"}>{isSpanishPage ? "Servicios" : "Services"}</Link>
-          <Link href={isSpanishPage ? "/es/#how" : "/#how"}>{isSpanishPage ? "Cómo Funciona" : "How It Works"}</Link>
+          <a href={isSpanishPage ? "/es/#services" : "/#services"}>{isSpanishPage ? "Servicios" : "Services"}</a>
+          <a href={isSpanishPage ? "/es/#how" : "/#how"}>{isSpanishPage ? "Cómo Funciona" : "How It Works"}</a>
           <Link href={isSpanishPage ? "/es/blog" : "/blog"}>Blog</Link>
           <Link href={isSpanishPage ? "/es/areas-de-servicio" : "/locations"}>{isSpanishPage ? "Áreas de Servicio" : "Service Areas"}</Link>
-          <Link href={isSpanishPage ? "/es/contacto" : "/#contact"}>{isSpanishPage ? "Contacto" : "Contact"}</Link>
+          <a href={isSpanishPage ? "/es/contacto" : "/#contact"}>{isSpanishPage ? "Contacto" : "Contact"}</a>
           <Link href={isSpanishPage ? "/es/sobre-nosotros" : "/about"}>{isSpanishPage ? "Sobre Nosotros" : "About Us"}</Link>
           <Link href={isSpanishPage ? "/es/preguntas-frecuentes" : "/faq"}>{isSpanishPage ? "Preguntas Frecuentes" : "FAQ"}</Link>
         </nav>

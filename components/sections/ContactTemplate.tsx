@@ -90,11 +90,11 @@ export default function ContactTemplate({
                   className="contact-support-statIcon"
                   aria-hidden="true"
                 />
-                <div className="contact-support-statValue">&lt; 15min</div>
+                <div className="contact-support-statValue">24h</div>
               </div>
 
               <div className="contact-support-statLabel">
-                {isEs ? "Tiempo promedio de respuesta" : "Avg Response Time"}
+                {isEs ? "Tiempo de respuesta" : "Response Time"}
               </div>
             </div>
 
@@ -106,11 +106,11 @@ export default function ContactTemplate({
                   className="contact-support-statIcon"
                   aria-hidden="true"
                 />
-                <div className="contact-support-statValue">98%</div>
+                <div className="contact-support-statValue">5.0</div>
               </div>
 
               <div className="contact-support-statLabel">
-                {isEs ? "Tasa de resolución" : "Resolution Rate"}
+                {isEs ? "Calificación en Google" : "Google Rating"}
               </div>
             </div>
 

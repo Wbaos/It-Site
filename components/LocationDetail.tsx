@@ -10,7 +10,6 @@ const WHY_ES: Record<string, string[]> = {
 };
 
 const BADGE_ES: Record<string, string> = {
-  Insured: "Asegurado",
   "5-Star Rated": "Calificación 5 estrellas",
   "Locally Owned": "Negocio local",
 };
@@ -107,6 +106,13 @@ const SPRINKLER_CITY_LINKS: Record<string, { label: string; href: string }[]> = 
   ],
 };
 
+
+function formatPhone(phone: string): string {
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length === 11 && digits.startsWith("1")) return `(${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
+  if (digits.length === 10) return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  return phone;
+}
 
 export default async function LocationDetail({ slug, locale = "en" }: { slug: string; locale?: "en" | "es" }) {
   const isSpanish = locale === "es";
@@ -324,10 +330,10 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                 <div className="location-coverage-text">
                   <MapPin />
                   <p className="location-section-text">
-                    {isSpanish ? `Servimos con orgullo a ${location.city} y áreas cercanas dentro de un radio de ${location.serviceRadius?.miles || 45} millas.` : `We proudly serve ${location.city} and surrounding areas within a ${location.serviceRadius?.miles || 45} miles radius.`}
+                    {isSpanish ? `Servimos con orgullo a ${location.city} y áreas cercanas dentro de un radio de ${location.serviceRadius?.miles || 45} millas.` : `We proudly serve ${location.city} and surrounding areas within a ${location.serviceRadius?.miles || 45}-mile radius.`}
                     {location.serviceRadius?.population && (
-                      <> Atendemos a una población de aproximadamente{" "}
-                        {location.serviceRadius.population} residentes con servicios profesionales de sprinklers, irrigación y cámaras de seguridad.
+                      <>
+                        {isSpanish ? ` Atendemos a una población de aproximadamente ${location.serviceRadius.population} residentes con servicios profesionales de sprinklers, irrigación y cámaras de seguridad.` : ` We serve a population of approximately ${location.serviceRadius.population} residents with professional sprinkler, irrigation and security camera services.`}
                       </>
                     )}
                   </p>
@@ -450,7 +456,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                         href={`tel:${location.phone}`}
                         className="location-sidebar-info-value"
                       >
-                        {location.phone}
+                        {formatPhone(location.phone)}
                       </a>
                     </div>
                   </div>
@@ -540,16 +546,33 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
             {isSpanish ? `Reparación Profesional de Sprinklers, Irrigación y Cámaras de Seguridad en ${location.city}, ${location.state}` : `Professional Sprinkler Repair, Irrigation & Security Cameras in ${location.city}, ${location.state}`}
           </h2>
           <div className="location-seo-content">
-            <p>
-              ¿Buscas un servicio confiable en {location.city}? CallTechCare es un proveedor local de confianza para el servicio de sprinklers e irrigación y la instalación de cámaras de seguridad. Nuestro equipo en {location.city} está aquí para ayudarte.
-            </p>
-            <p>
-              Entendemos las necesidades únicas de los residentes y negocios de {location.city}. Por eso ofrecemos programación flexible, precios transparentes y satisfacción garantizada en cada llamada de servicio. Desde reparaciones de sprinklers hasta instalaciones de sistemas nuevos y configuraciones de cámaras de seguridad, tenemos la experiencia para manejar una amplia gama de proyectos.
-            </p>
-            <p>
-              <strong>
-                Los servicios que ofrecemos en {location.city} incluyen:</strong>{" "}servicio de sprinklers e irrigación e instalación de cámaras de seguridad. Contáctanos hoy para programar un servicio en {location.city}, {location.state}.
-            </p>
+            {isSpanish ? (
+              <>
+                <p>
+                  ¿Buscas un servicio confiable en {location.city}? CallTechCare es un proveedor local de confianza para el servicio de sprinklers e irrigación y la instalación de cámaras de seguridad. Nuestro equipo en {location.city} está aquí para ayudarte.
+                </p>
+                <p>
+                  Entendemos las necesidades únicas de los residentes y negocios de {location.city}. Por eso ofrecemos programación flexible y 1 año de garantía cuando CallTechCare hace el trabajo y provee los materiales. Desde reparaciones de sprinklers hasta instalaciones de sistemas nuevos y configuraciones de cámaras de seguridad, tenemos la experiencia para manejar una amplia gama de proyectos.
+                </p>
+                <p>
+                  <strong>
+                    Los servicios que ofrecemos en {location.city} incluyen:</strong>{" "}servicio de sprinklers e irrigación e instalación de cámaras de seguridad. Contáctanos hoy para programar un servicio en {location.city}, {location.state}.
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  Looking for reliable service in {location.city}? CallTechCare is a trusted local provider for sprinkler and irrigation service and security camera installation. Our team in {location.city} is here to help.
+                </p>
+                <p>
+                  We understand the unique needs of {location.city} residents and businesses. That is why we offer flexible scheduling and a 1-year warranty when CallTechCare performs the work and provides the materials. From sprinkler repairs to new system installations and security camera setups, we have the experience to handle a wide range of projects.
+                </p>
+                <p>
+                  <strong>
+                    The services we offer in {location.city} include:</strong>{" "}sprinkler and irrigation service and security camera installation. Contact us today to schedule service in {location.city}, {location.state}.
+                </p>
+              </>
+            )}
           </div>
         </div>
       </section>

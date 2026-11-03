@@ -15,7 +15,7 @@ const DEFAULT_FAQS: FaqItem[] = [
   },
   {
     q: "What are your service hours?",
-    a: "CallTechCare typically provides services Monday through Saturday. If you need assistance outside normal hours, contact us and we’ll do our best to accommodate your request.",
+    a: "CallTechCare provides services Monday–Saturday 8am–7pm and Sunday 9am–6pm. Emergencies are handled same-day within those business hours.",
   },
   {
     q: "How can I track my service request?",
@@ -38,7 +38,7 @@ const DEFAULT_FAQS: FaqItem[] = [
     a: "Yes. Please contact us as soon as possible to cancel or reschedule your appointment. There are no cancellation fees if you cancel at least 24 hours in advance.",
   },
   {
-    q: "Are your technicians experienced and insured?",
+    q: "Are your technicians experienced?",
     a: "Our technicians are experienced and follow industry best practices to ensure safe and reliable service. If you have specific requirements, please let us know before scheduling.",
   },
   {
@@ -54,7 +54,7 @@ const DEFAULT_FAQS_ES: FaqItem[] = [
   },
   {
     q: "¿Cuál es su horario de servicio?",
-    a: "CallTechCare normalmente presta servicios de lunes a sábado. Si necesitas ayuda fuera del horario normal, contáctanos y haremos lo posible por atenderte.",
+    a: "CallTechCare presta servicios de lunes a sábado de 8am a 7pm y domingo de 9am a 6pm. Las emergencias se atienden el mismo día dentro de ese horario.",
   },
   {
     q: "¿Cómo sigo mi solicitud de servicio?",
@@ -77,7 +77,7 @@ const DEFAULT_FAQS_ES: FaqItem[] = [
     a: "Sí. Contáctanos lo antes posible para cancelar o reprogramar tu cita. No hay cargos por cancelación si cancelas con al menos 24 horas de anticipación.",
   },
   {
-    q: "¿Sus técnicos tienen experiencia y seguro?",
+    q: "¿Sus técnicos tienen experiencia?",
     a: "Nuestros técnicos tienen experiencia y siguen las mejores prácticas de la industria para asegurar un servicio seguro y confiable. Si tienes requisitos específicos, avísanos antes de agendar.",
   },
   {
