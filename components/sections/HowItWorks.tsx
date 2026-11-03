@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { sanity } from "@/lib/sanity";
 
 export const revalidate = 60;
@@ -74,16 +75,12 @@ export default async function HowItWorks({ locale = "en" }: { locale?: "en" | "e
         </div>
 
         <div className="how-photo">
-          <video
-            src="https://cdn.sanity.io/files/celkrwoq/production/6796625dc809d99fad0e95f1a9a18114b4d0b4e7.mp4"
-            poster="https://cdn.sanity.io/images/celkrwoq/production/5839c3116edccd85882b50a97612a27ed68bd9f9-1024x768.jpg"
-            autoPlay
-            muted
-            loop
-            playsInline
-            controls
-            preload="metadata"
-            aria-label={isSpanish ? "Video de sprinklers regando un jardín delantero" : "Video of sprinklers watering a front yard"}
+          <Image
+            src="https://cdn.sanity.io/images/celkrwoq/production/5839c3116edccd85882b50a97612a27ed68bd9f9-1024x768.jpg"
+            alt={isSpanish ? "Sprinklers regando un jardín delantero en Miami" : "Sprinklers watering a front yard in Miami"}
+            width={1100}
+            height={420}
+            loading="lazy"
           />
         </div>
       </div>

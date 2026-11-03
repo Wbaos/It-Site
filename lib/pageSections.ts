@@ -8,6 +8,7 @@ import Pricing from "@/components/sections/PricingServer";
 import Contact from "@/components/sections/Contact";
 import HighlightsServer from "@/components/sections/HighLigthsServer";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
+import HomeVideo from "@/components/sections/HomeVideo";
 
 // Single home template, both languages. The section list, order and
 // components are identical for English and Spanish; only the text changes,
@@ -21,6 +22,7 @@ type Section = {
     | "hero"
     | "seo-intro"
     | "services"
+    | "home-video"
     | "highlights"
     | "how"
     | "why"
@@ -55,7 +57,7 @@ const heroPropsEn = {
   stats: [
     { value: "1500+", label: "Local Clients Helped" },
     { value: "5/5", label: "Customer Satisfaction" },
-    { value: "Same-Day", label: "Appointments Available" },
+    { value: "Same-Day", label: "Appointments Available Within Business Hours" },
   ],
 };
 
@@ -76,7 +78,7 @@ const heroPropsEs = {
   stats: [
     { value: "1500+", label: "Clientes Locales Atendidos" },
     { value: "5/5", label: "Satisfacción del Cliente" },
-    { value: "Mismo Día", label: "Citas Disponibles" },
+    { value: "Mismo Día", label: "Citas Disponibles Dentro del Horario" },
   ],
 };
 
@@ -90,6 +92,8 @@ export function getHomeSections(locale: HomeLocale = "en"): Section[] {
     },
 
     { key: "highlights", Component: HighlightsServer, props: { locale } },
+
+    { key: "home-video", Component: HomeVideo, props: { locale } },
 
     { key: "services", Component: Services, props: { locale } },
     { key: "seo-intro", Component: SEOIntro, props: { locale } },

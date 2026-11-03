@@ -23,12 +23,12 @@ export default function AnnouncementBar({
         ? messages
         : isSpanishPage
           ? [
-              "Estimados gratis en todos los servicios",
+              "Inspección gratis en todos los servicios",
               "Hablamos Español",
               "Obtén 10% de descuento al registrarte",
             ]
           : [
-              "Free estimates on all services",
+              "Free inspection on all services",
               "Hablamos Español",
               "Get 10% discount when you sign up",
             ])

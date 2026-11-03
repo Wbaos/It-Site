@@ -16,6 +16,7 @@ export default async function PlanPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  notFound();
 
   const plan = await sanity.fetch(
     `*[_type == "pricingPlan" && slug.current == $slug][0]{

@@ -370,9 +370,6 @@ export default function CartPage() {
               <span>🔒</span> {isSpanish ? "Pago Seguro" : "Secure Payment"}
             </div>
             <div>
-              <span>✔</span> {isSpanish ? "Con Licencia" : "Licensed"}
-            </div>
-            <div>
               <span>⭐</span> {isSpanish ? "Mejor Valorado" : "Top Rated"}
             </div>
           </div>

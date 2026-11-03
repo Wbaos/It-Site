@@ -6,12 +6,12 @@ import type { RequestQuoteContent } from "@/lib/request-quote-data";
 // Spanish benefits (static translations of the current Sanity values;
 // icons, phone number and rating still come from Sanity at render time).
 const BENEFITS: Array<{ title: string; desc: string }> = [
-  { title: "Sin obligación", desc: "Cotizaciones gratis sin compromiso" },
+  { title: "Sin obligación", desc: "Inspección gratis sin compromiso" },
   { title: "Respuesta rápida", desc: "Recibe tu cotización dentro de 24 horas" },
-  { title: "Técnicos expertos", desc: "Profesionales certificados y verificados" },
-  { title: "Garantía de 1 año", desc: "Todo trabajo garantizado por 1 año" },
-  { title: "Satisfacción garantizada", desc: "Garantía de devolución del 100%" },
-  { title: "Horario flexible", desc: "Disponibilidad el mismo día y fines de semana" },
+  { title: "Técnicos expertos", desc: "Técnicos con experiencia, a domicilio en tu casa" },
+  { title: "Garantía de 1 año", desc: "1 año de garantía cuando CallTechCare hace el trabajo y provee los materiales" },
+    { title: "Horario flexible", desc: "Servicio el mismo día dentro del horario de servicio" },
+  { title: "Servicio local", desc: "Atendemos Miami-Dade y Broward" },
 ];
 
 export default function RequestQuoteSidebar(props: {

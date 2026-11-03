@@ -148,16 +148,8 @@ export default function RequestQuoteThankYou(props: {
 
         <div className="rq-thankyou__trustRow">
           <div className="rq-thankyou__trustItem">
-            <SvgIcon name="shield" size={16} color="#64748b" />
-            {locale === "es" ? "Asegurado" : "Insured"}
-          </div>
-          <div className="rq-thankyou__trustItem">
-            <SvgIcon name="blog-author" size={16} color="#64748b" />
-            {locale === "es" ? "Certificado" : "Certified"}
-          </div>
-          <div className="rq-thankyou__trustItem">
             <SvgIcon name="star-outline" size={16} color="#64748b" />
-            {locale === "es" ? "Calificación 4.9" : "4.9 Rating"}
+            {locale === "es" ? "Calificación 5.0" : "5.0 Rating"}
           </div>
         </div>
       </section>

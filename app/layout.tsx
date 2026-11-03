@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 
   /* Fallback description */
   description:
-  "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service, free estimates.",
+  "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service within business hours, free inspection.",
   keywords: [
       "Sprinkler repair Miami",
       "Irrigation repair Miami",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "CallTechCare | Sprinkler Repair Miami, Irrigation & Security Cameras",  
     description:
-      "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service, free estimates.", 
+      "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service within business hours, free inspection.", 
     siteName: "CallTechCare",
     locale: "en_US",
     type: "website",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "CallTechCare | Sprinkler Repair Miami, Irrigation & Security Cameras",  
     description:
-        "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service, free estimates.",
+        "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service within business hours, free inspection.",
     images: ["/logo-og.png"],
   },
 
@@ -134,7 +134,7 @@ export default async function RootLayout({
       height: 512,
     },
     description:
-        "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service, free estimates.",
+        "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service within business hours, free inspection.",
     telephone: "+1-786-366-2729",
     areaServed: footerCities.map((c) => ({ "@type": "City", name: c.name })),
     address: {

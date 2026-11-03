@@ -5,7 +5,6 @@ import { sanity } from "@/lib/sanity";
 import Link from "next/link";
 import Image from "next/image";
 import SvgIcon from "@/components/common/SvgIcons";
-import TestimonialsList from "@/components/common/TestimonialsList";
 import ServiceReviewsWrapper from "@/components/ServiceReviewsWrapper";
 import { getGoogleWriteReviewUrl } from "@/lib/google-reviews";
   const googleWriteReviewUrl = getGoogleWriteReviewUrl();
@@ -742,7 +741,7 @@ export default async function ServicePage({
                         <img src={category.jobsCompletedIconUrl} alt="" className="styled-stat-icon" width={32} height={32} />
                       )}
                       <div className="styled-stat-value">{category.jobsCompletedValue}</div>
-                      <div className="styled-stat-label">Jobs Completed</div>
+                      <div className="styled-stat-label">{isSpanish ? "Trabajos Completados" : "Jobs Completed"}</div>
                     </div>
                   )}
                   {category.customerRatingValue && (
@@ -751,7 +750,7 @@ export default async function ServicePage({
                         <img src={category.customerRatingIconUrl} alt="" className="styled-stat-icon" width={32} height={32} />
                       )}
                       <div className="styled-stat-value">{category.customerRatingValue}</div>
-                      <div className="styled-stat-label">Customer Rating</div>
+                      <div className="styled-stat-label">{isSpanish ? "Calificación de Clientes" : "Customer Rating"}</div>
                     </div>
                   )}
                   {category.yearsExperienceValue && (
@@ -760,14 +759,14 @@ export default async function ServicePage({
                         <img src={category.yearsExperienceIconUrl} alt="" className="styled-stat-icon" width={32} height={32} />
                       )}
                       <div className="styled-stat-value">{category.yearsExperienceValue}</div>
-                      <div className="styled-stat-label">Experience</div>
+                      <div className="styled-stat-label">{isSpanish ? "Experiencia" : "Experience"}</div>
                     </div>
                   )}
                 </div>
                 {category.about && (
                   <div className="styled-about-features-row">
                     <div className="styled-about-box">
-                      <div className="styled-about-title">About This Service</div>
+                      <div className="styled-about-title">{isSpanish ? "Sobre Este Servicio" : "About This Service"}</div>
                       <div className="styled-about-desc">
   <PortableText
     value={category.about}
@@ -924,7 +923,7 @@ export default async function ServicePage({
                     </div>
                     <div className="category-cta-trust-item">
                       <SvgIcon name="check" size={16} color="var(--brand-teal)" />
-                      {isSpanish ? "Estimados gratis" : "Free estimates"}
+                      {isSpanish ? "Inspección gratis" : "Free inspection"}
                     </div>
                     <div className="category-cta-trust-item">
                       <SvgIcon name="check" size={16} color="var(--brand-teal)" />
@@ -1154,20 +1153,6 @@ const isTvMounting = tvMountingSlugs.includes(slug);
         {displayFaqs && <FaqAccordion faqs={displayFaqs} locale={locale} />}
 
 
-        {!isTvMounting && service.testimonials?.length > 0 && (
-        <TestimonialsList
-          items={service.testimonials.map((t: any) => ({
-            name: t.name,
-            text: t.text,
-            rating: t.rating ?? 5,
-            verified: true,
-            date: t.date,
-          }))}
-          title={isSpanish ? "Reseñas de clientes" : "Customer Reviews"}
-          subtitle={isSpanish ? "Experiencias reales de propietarios y negocios satisfechos." : "Real experiences from satisfied homeowners and businesses."}
-          locale={locale}
-        />
-      )}
 
       {isTvMounting && <ServiceReviewsWrapper slug={slug} />}
 
