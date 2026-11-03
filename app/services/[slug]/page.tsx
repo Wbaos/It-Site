@@ -895,7 +895,7 @@ export default async function ServicePage({
                   </div>
                   <div className="category-cta-btn-row">
                     <Link href={isSpanish ? "/es/solicita-una-cotizacion" : "/request-quote"} className="category-cta-btn">
-                      {isSpanish ? "Obtén tu cotización gratis" : "Get Your Free Quote"}
+                      {isSpanish ? "Obtén tu inspección gratis" : "Get Your Free Inspection"}
                       <SvgIcon
                         name="arrow-right-simple"
                         size={16}
@@ -1123,7 +1123,7 @@ const isTvMounting = tvMountingSlugs.includes(slug);
               href={isSpanish ? "/es/solicita-una-cotizacion" : "/request-quote"}
               className="btn-book"
             >
-              {isSpanish ? "Solicita una cotización gratis" : "Request a Free Quote"}
+              {isSpanish ? "Solicita una inspección gratis" : "Request a Free Inspection"}
             </Link>
           </div>
         </div>
