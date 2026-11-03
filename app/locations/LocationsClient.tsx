@@ -7,7 +7,46 @@ import { getAllActiveLocations, Location } from "@/lib/sanityLocations";
 import { urlFor } from "@/lib/sanityImage";
 import { MapPin, Phone, Search, ArrowRight } from "lucide-react";
 
-export default function LocationsClient() {
+const DESCRIPTION_ES: Record<string, string> = {
+  miami: "CallTechCare ofrece reparación profesional de sprinklers e instalación de irrigación en Miami para propiedades residenciales y comerciales. También ofrecemos instalación de cámaras de seguridad. Atendemos todos los barrios de Miami con servicio rápido y confiable y estimados claros.",
+  "fort-lauderdale": "CallTechCare ofrece reparación profesional de sprinklers e instalación de irrigación en Fort Lauderdale para propiedades residenciales y comerciales. También ofrecemos instalación de cámaras de seguridad en todo el condado de Broward con servicio rápido y confiable.",
+};
+
+const CITY_LINKS_ES: Array<[string, string]> = [
+  ["Sunrise", "/es/reparacion-de-sprinklers-sunrise"],
+  ["Fort Lauderdale", "/es/areas-de-servicio/fort-lauderdale"],
+  ["Dania Beach", "/es/reparacion-de-sprinklers-dania-beach"],
+  ["Weston", "/es/reparacion-de-sprinklers-weston"],
+  ["Davie", "/es/reparacion-de-sprinklers-davie"],
+  ["Southwest Ranches", "/es/reparacion-de-sprinklers-southwest-ranches"],
+  ["Hollywood", "/es/reparacion-de-sprinklers-hollywood"],
+  ["West Park", "/es/reparacion-de-sprinklers-west-park"],
+  ["Pembroke Pines", "/es/reparacion-de-sprinklers-pembroke-pines"],
+  ["Miramar", "/es/reparacion-de-sprinklers-miramar"],
+  ["Miami Gardens", "/es/reparacion-de-sprinklers-miami-gardens"],
+  ["Miami Lakes", "/es/reparacion-de-sprinklers-miami-lakes"],
+  ["Country Club", "/es/reparacion-de-sprinklers-country-club"],
+  ["Aventura", "/es/reparacion-de-sprinklers-aventura"],
+  ["Sunny Isles Beach", "/es/reparacion-de-sprinklers-sunny-isles-beach"],
+  ["North Miami", "/es/reparacion-de-sprinklers-north-miami"],
+  ["Surfside", "/es/reparacion-de-sprinklers-surfside"],
+  ["North Bay Village", "/es/reparacion-de-sprinklers-north-bay-village"],
+  ["Miami Beach", "/es/reparacion-de-sprinklers-miami-beach"],
+  ["Hialeah", "/es/reparacion-de-sprinklers-hialeah"],
+  ["Doral", "/es/reparacion-de-sprinklers-doral"],
+  ["Fontainebleau", "/es/reparacion-de-sprinklers-fontainebleau"],
+  ["Tamiami", "/es/reparacion-de-sprinklers-tamiami"],
+  ["Miami", "/es/areas-de-servicio/miami"],
+  ["Coral Gables", "/es/reparacion-de-sprinklers-coral-gables"],
+  ["Key Biscayne", "/es/reparacion-de-sprinklers-key-biscayne"],
+  ["Kendall", "/es/reparacion-de-sprinklers-kendall"],
+  ["Kendale Lakes", "/es/reparacion-de-sprinklers-kendale-lakes"],
+  ["Country Walk", "/es/reparacion-de-sprinklers-country-walk"],
+  ["Cutler Bay", "/es/reparacion-de-sprinklers-cutler-bay"],
+];
+
+export default function LocationsClient({ locale = "en" }: { locale?: "en" | "es" }) {
+  const isSpanish = locale === "es";
   const [locations, setLocations] = useState<Location[]>([]);
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -50,13 +89,12 @@ export default function LocationsClient() {
           <div className="locations-icon-wrapper">
             <MapPin />
           </div>
-          <h1>Sprinkler Repair Service Areas in Miami & Broward</h1>
+          <h1>{isSpanish ? "Áreas de Servicio de Reparación de Sprinklers en Miami y Broward" : "Sprinkler Repair Service Areas in Miami & Broward"}</h1>
           <p className="locations-hero-subtitle">
-            Browse the cities and communities CallTechCare serves across
-            Miami-Dade, Broward County, and surrounding South Florida areas.
+            {isSpanish ? "Explora las ciudades y comunidades que CallTechCare atiende en Miami-Dade, Broward y áreas cercanas del sur de Florida." : "Browse the cities and communities CallTechCare serves across Miami-Dade, Broward County, and surrounding South Florida areas."}
           </p>
           <p className="locations-hero-badge">
-            ✦ Serving 30 cities across Miami-Dade & Broward
+            {isSpanish ? "✦ Atendemos 30 ciudades en Miami-Dade y Broward" : "✦ Serving 30 cities across Miami-Dade & Broward"}
           </p>
         </div>
       </section>
@@ -70,7 +108,7 @@ export default function LocationsClient() {
                 <Search className="locations-search-icon" />
                 <input
                   type="text"
-                  placeholder="Search by city or state..."
+                  placeholder={isSpanish ? "Buscar por ciudad o estado..." : "Search by city or state..."}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="locations-search-input"
@@ -82,7 +120,7 @@ export default function LocationsClient() {
                 onChange={(e) => setSelectedState(e.target.value)}
                 className="locations-select"
               >
-                <option value="All States">All States</option>
+                <option value="All States">{isSpanish ? "Todos los Estados" : "All States"}</option>
                 {states.map((state) => (
                   <option key={state} value={state}>
                     {state}
@@ -92,8 +130,7 @@ export default function LocationsClient() {
             </div>
 
             <p className="locations-count">
-              Showing {filteredLocations.length} location
-              {filteredLocations.length !== 1 ? "s" : ""}
+              {isSpanish ? `Mostrando ${filteredLocations.length} ubicación${filteredLocations.length !== 1 ? "es" : ""}` : <>Showing {filteredLocations.length} location{filteredLocations.length !== 1 ? "s" : ""}</>}
             </p>
           </div>
         </section>
@@ -103,16 +140,16 @@ export default function LocationsClient() {
       <section className="locations-grid-section">
         <div className="locations-grid">
           {loading ? (
-            <div className="locations-loading">Loading...</div>
+            <div className="locations-loading">{isSpanish ? "Cargando..." : "Loading..."}</div>
           ) : filteredLocations.length === 0 ? (
             <div className="locations-empty">
-              No locations found matching your criteria.
+              {isSpanish ? "No se encontraron ubicaciones que coincidan con tu criterio." : "No locations found matching your criteria."}
             </div>
           ) : (
             filteredLocations.map((location) => (
               <Link
                 key={location._id}
-                href={`/locations/${location.slug.current}`}
+                href={isSpanish ? `/es/areas-de-servicio/${location.slug.current}` : `/locations/${location.slug.current}`}
                 className="location-card"
               >
                 {location.heroImage && (
@@ -137,7 +174,7 @@ export default function LocationsClient() {
                   </div>
 
                   <p className="location-card-description">
-                    {location.description}
+                    {isSpanish ? (DESCRIPTION_ES[location.slug.current] || location.description) : location.description}
                   </p>
 
                   <div className="location-card-info">
@@ -149,12 +186,12 @@ export default function LocationsClient() {
                     )}
                     <div className="location-card-info-item">
                       <MapPin />
-                      <span>Service Radius: 45 miles</span>
+                      <span>{isSpanish ? "Radio de servicio: 45 millas" : "Service Radius: 45 miles"}</span>
                     </div>
                   </div>
 
                   <div className="location-card-footer">
-                    <span className="location-card-link">View Details</span>
+                    <span className="location-card-link">{isSpanish ? "Ver Detalles" : "View Details"}</span>
                     <ArrowRight className="location-card-arrow" />
                   </div>
                 </div>
@@ -168,43 +205,43 @@ export default function LocationsClient() {
       <section className="locations-coverage-section">
         <div className="locations-coverage-container">
           <div className="locations-coverage-card">
-            <h2 className="locations-coverage-title">South Florida Coverage</h2>
+            <h2 className="locations-coverage-title">{isSpanish ? "Cobertura del Sur de Florida" : "South Florida Coverage"}</h2>
             <p className="locations-coverage-description">
-              Serving communities across Miami-Dade and Broward County in South
-              Florida. Select your city above to view local service details and
-              availability.
+{isSpanish ? "Atendemos comunidades en Miami-Dade y Broward en el sur de Florida. Selecciona tu ciudad arriba para ver detalles y disponibilidad del servicio local." : "Serving communities across Miami-Dade and Broward County in South Florida. Select your city above to view local service details and availability."}
             </p>
 
             <div className="locations-coverage-stats">
               <div>
                 <div className="location-stat-value">Miami-Dade</div>
-                <div className="location-stat-label">County</div>
+                <div className="location-stat-label">{isSpanish ? "Condado" : "County"}</div>
               </div>
               <div>
                 <div className="location-stat-value">Broward</div>
-                <div className="location-stat-label">County</div>
+                <div className="location-stat-label">{isSpanish ? "Condado" : "County"}</div>
               </div>
               <div>
                 <div className="location-stat-value">30</div>
-                <div className="location-stat-label">Cities Served</div>
+                <div className="location-stat-label">{isSpanish ? "Ciudades Atendidas" : "Cities Served"}</div>
               </div>
               <div>
-                <div className="location-stat-value">45 Miles</div>
-                <div className="location-stat-label">Service Radius</div>
+                <div className="location-stat-value">{isSpanish ? "45 Millas" : "45 Miles"}</div>
+                <div className="location-stat-label">{isSpanish ? "Radio de Servicio" : "Service Radius"}</div>
               </div>
             </div>
 
             <p className="locations-services-link">
-                Looking for service details?
+                {isSpanish ? "¿Buscas detalles del servicio?" : "Looking for service details?"}
             </p>
-            <div className="locations-services-view" >
-                <Link href="/services" className="locations-cta-button">
-                    View our services
-                </Link>
-            </div>
+            {!isSpanish && (
+              <div className="locations-services-view" >
+                  <Link href="/services" className="locations-cta-button">
+                      View our services
+                  </Link>
+              </div>
+            )}
 
-            <Link href="/#contact" className="locations-cta-button">
-              Request Specific Service
+            <Link href={isSpanish ? "/es/#contact" : "/#contact"} className="locations-cta-button">
+              {isSpanish ? "Solicitar un Servicio Específico" : "Request Specific Service"}
             </Link>
           </div>
         </div>
@@ -214,10 +251,21 @@ export default function LocationsClient() {
       <section className="locations-coverage-section">
         <div className="locations-coverage-container">
           <div className="locations-coverage-card">
-            <h2 className="locations-coverage-title">All 30 Cities We Serve</h2>
+            <h2 className="locations-coverage-title">{isSpanish ? "Las 30 Ciudades que Atendemos" : "All 30 Cities We Serve"}</h2>
+{isSpanish ? (
+            <p className="locations-coverage-description">
+              Reparación de sprinklers e irrigación en Miami-Dade y Broward: {CITY_LINKS_ES.map(([label, href], i) => (
+                <span key={href}>
+                  {i > 0 && (i === CITY_LINKS_ES.length - 1 ? " y " : ", ")}
+                  <Link href={href}>{label}</Link>
+                </span>
+              ))}.
+            </p>
+            ) : (
             <p className="locations-coverage-description">
               Sprinkler repair and irrigation across Miami-Dade and Broward: <Link href="/sprinkler-repair-sunrise">Sunrise</Link>, <Link href="/locations/fort-lauderdale">Fort Lauderdale</Link>, <Link href="/sprinkler-repair-dania-beach">Dania Beach</Link>, <Link href="/sprinkler-repair-weston">Weston</Link>, <Link href="/sprinkler-repair-davie">Davie</Link>, <Link href="/sprinkler-repair-southwest-ranches">Southwest Ranches</Link>, <Link href="/sprinkler-repair-hollywood">Hollywood</Link>, <Link href="/sprinkler-repair-west-park">West Park</Link>, <Link href="/sprinkler-repair-pembroke-pines">Pembroke Pines</Link>, <Link href="/sprinkler-repair-miramar">Miramar</Link>, <Link href="/sprinkler-repair-miami-gardens">Miami Gardens</Link>, <Link href="/sprinkler-repair-miami-lakes">Miami Lakes</Link>, <Link href="/sprinkler-repair-country-club">Country Club</Link>, <Link href="/sprinkler-repair-aventura">Aventura</Link>, <Link href="/sprinkler-repair-sunny-isles-beach">Sunny Isles Beach</Link>, <Link href="/sprinkler-repair-north-miami">North Miami</Link>, <Link href="/sprinkler-repair-surfside">Surfside</Link>, <Link href="/sprinkler-repair-north-bay-village">North Bay Village</Link>, <Link href="/sprinkler-repair-miami-beach">Miami Beach</Link>, <Link href="/sprinkler-repair-hialeah">Hialeah</Link>, <Link href="/sprinkler-repair-doral">Doral</Link>, <Link href="/sprinkler-repair-fontainebleau">Fontainebleau</Link>, <Link href="/sprinkler-repair-tamiami">Tamiami</Link>, <Link href="/locations/miami">Miami</Link>, <Link href="/sprinkler-repair-coral-gables">Coral Gables</Link>, <Link href="/sprinkler-repair-key-biscayne">Key Biscayne</Link>, <Link href="/sprinkler-repair-kendall">Kendall</Link>, <Link href="/sprinkler-repair-kendale-lakes">Kendale Lakes</Link>, <Link href="/sprinkler-repair-country-walk">Country Walk</Link> y <Link href="/sprinkler-repair-cutler-bay">Cutler Bay</Link>.
             </p>
+            )}
           </div>
         </div>
       </section>

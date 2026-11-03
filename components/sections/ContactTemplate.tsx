@@ -122,7 +122,7 @@ export default function ContactTemplate({
                   className="contact-support-statIcon"
                   aria-hidden="true"
                 />
-                <div className="contact-support-statValue">50K+</div>
+                <div className="contact-support-statValue">1500+</div>
               </div>
 
               <div className="contact-support-statLabel">
