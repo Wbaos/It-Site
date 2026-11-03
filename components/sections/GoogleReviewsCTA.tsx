@@ -19,7 +19,7 @@ export default function GoogleReviewsCTA({ locale = "en" }: { locale?: "en" | "e
       <div className="site-container-testimonials google-cta-card">
         <div className="google-cta-photo">
           <Image
-            src="https://cdn.sanity.io/images/celkrwoq/production/5deeea70b525963987af93601f412cebdbede547-5712x4284.webp"
+            src="https://cdn.sanity.io/images/celkrwoq/production/6120f13ca37bb09c75a7687af063c8a045b82ed1-1320x904.jpg"
             alt={isSpanish ? "Sistema de sprinklers funcionando" : "Sprinkler system working"}
             width={600}
             height={400}
