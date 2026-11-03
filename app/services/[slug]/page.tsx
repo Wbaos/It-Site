@@ -1111,20 +1111,22 @@ const isTvMounting = tvMountingSlugs.includes(slug);
 
             <hr />
 
-            <a href="tel:+17863662729" className="btn-book">
-              <span className="mobile-only">
-                {isSpanish ? "Llama para una cotización gratis" : "Call for Free Quote"}
-              </span>
-              <span className="desktop-only">
-                {isSpanish ? "Llámanos al (786) 366-2729" : "Call us at (786) 366-2729"}
-              </span>
-            </a>
-            <Link
-              href={isSpanish ? "/es/solicita-una-cotizacion" : "/request-quote"}
-              className="btn-book"
-            >
-              {isSpanish ? "Solicita una inspección gratis" : "Request a Free Inspection"}
-            </Link>
+            <div className="service-cta-row">
+              <a href="tel:+17863662729" className="btn-book">
+                <span className="mobile-only">
+                  {isSpanish ? "Llama ahora" : "Call Now"}
+                </span>
+                <span className="desktop-only">
+                  {isSpanish ? "Llámanos al (786) 366-2729" : "Call us at (786) 366-2729"}
+                </span>
+              </a>
+              <Link
+                href={isSpanish ? "/es/solicita-una-cotizacion" : "/request-quote"}
+                className="btn-book btn-book--secondary"
+              >
+                {isSpanish ? "Solicita una inspección gratis" : "Request a Free Inspection"}
+              </Link>
+            </div>
           </div>
         </div>
 

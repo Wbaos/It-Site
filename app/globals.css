@@ -11061,6 +11061,28 @@ object-fit: cover;
   box-shadow: 0 6px 16px rgba(13, 164, 143, 0.40), inset 0 1px 3px rgba(255, 255, 255, 0.15);
 }
 
+/* Service detail CTA row: two buttons stacked with breathing room, not
+   touching. Call stays the solid primary action; inspection is a lighter
+   secondary outline so the hierarchy is obvious at a glance. */
+.service-cta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-book--secondary {
+  background: rgba(255, 255, 255, 0.08);
+  background-image: none;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: none;
+}
+
+.btn-book--secondary:hover {
+  background: rgba(255, 255, 255, 0.16);
+  background-image: none;
+  box-shadow: none;
+}
+
 .mobile-only {
   display: inline;
 }
