@@ -351,7 +351,8 @@ export default async function BlogPost({
               <SvgIcon name="calendar" size={16} color="#9fb3c8" />
               <time dateTime={post.publishedAt}>
                 {new Date(post.publishedAt).toLocaleDateString(
-                  isSpanish ? "es" : undefined
+                  isSpanish ? "es" : "en",
+                  { timeZone: "America/New_York" }
                 )}
               </time>
             </span>

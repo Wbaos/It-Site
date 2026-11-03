@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Bell } from "lucide-react";
 import { useNav } from "@/lib/NavContext";
+import { usePathname } from "next/navigation";
 
 type Notification = {
   _id: string;
@@ -21,6 +22,8 @@ export default function NotificationDropdown({
   onOpen?: () => void;
 }) {
   const { notifOpen, setNotifOpen, closeAll } = useNav();
+  const pathname = usePathname();
+  const isSpanish = pathname === "/es" || (pathname ?? "").startsWith("/es/");
 
   const [notifs, setNotifs] = useState<Notification[]>([]);
   const [visibleCount, setVisibleCount] = useState(5);
@@ -35,17 +38,17 @@ export default function NotificationDropdown({
 
     const diff = Math.floor((nowUTC - pastUTC) / 1000);
 
-    if (diff < 60) return "Just now";
-    if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
-    return `${Math.floor(diff / 86400)} days ago`;
+    if (diff < 60) return isSpanish ? "Ahora mismo" : "Just now";
+    if (diff < 3600) return isSpanish ? `hace ${Math.floor(diff / 60)} minutos` : `${Math.floor(diff / 60)} minutes ago`;
+    if (diff < 86400) return isSpanish ? `hace ${Math.floor(diff / 3600)} horas` : `${Math.floor(diff / 3600)} hours ago`;
+    return isSpanish ? `hace ${Math.floor(diff / 86400)} días` : `${Math.floor(diff / 86400)} days ago`;
   }
 
   const getTitle = (n: Notification) => {
     if (n.title && n.title.trim()) return n.title;
-    if (n.type === "success") return "Success";
-    if (n.type === "error") return "Error";
-    return "Update";
+    if (n.type === "success") return isSpanish ? "Éxito" : "Success";
+    if (n.type === "error") return isSpanish ? "Error" : "Error";
+    return isSpanish ? "Actualización" : "Update";
   };
 
   const fetchNotifications = useCallback(async () => {
@@ -146,7 +149,7 @@ export default function NotificationDropdown({
     >
       <button
         className="icon-btn relative"
-        aria-label="Notifications"
+        aria-label={isSpanish ? "Notificaciones" : "Notifications"}
         onClick={toggleDropdown}
       >
         <Bell size={18} />
@@ -155,10 +158,10 @@ export default function NotificationDropdown({
 
       {notifOpen && (
         <div className="notification-dropdown">
-          <h3 className="notif-header">Notifications</h3>
+          <h3 className="notif-header">{isSpanish ? "Notificaciones" : "Notifications"}</h3>
 
           <div className="notification-list">
-            {notifs.length === 0 && <p className="empty">No notifications</p>}
+            {notifs.length === 0 && <p className="empty">{isSpanish ? "Sin notificaciones" : "No notifications"}</p>}
 
             {notifs.slice(0, visibleCount).map((n) => (
               <div key={n._id} className="notification-row">
@@ -181,7 +184,7 @@ export default function NotificationDropdown({
                 setVisibleCount((prev) => prev + 5);
               }}
             >
-              Show more
+              {isSpanish ? "Ver más" : "Show more"}
             </button>
           )}
         </div>

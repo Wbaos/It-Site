@@ -222,7 +222,8 @@ export default function BlogPageClient({
                       <span className="blog-date">
                         {post.publishedAt
                           ? new Date(post.publishedAt).toLocaleDateString(
-                              isSpanish ? "es" : undefined
+                              isSpanish ? "es" : "en",
+                              { timeZone: "America/New_York" }
                             )
                           : ""}
                       </span>

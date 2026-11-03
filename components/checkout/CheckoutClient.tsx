@@ -337,7 +337,7 @@ export default function CheckoutClient() {
           <div className={styles.container}>
             <div className={styles.topbar}>
               <p className={styles.backLink}>
-                <Link href="/cart">{isSpanish ? "← Volver al Carrito" : "← Back to Cart"}</Link>
+                <Link href={isSpanish ? "/es/carrito" : "/cart"}>{isSpanish ? "← Volver al Carrito" : "← Back to Cart"}</Link>
               </p>
               <div className={styles.title}>{isSpanish ? "Pago" : "Checkout"}</div>
               <div />
@@ -349,7 +349,7 @@ export default function CheckoutClient() {
               </p>
               <button
                 className={styles.btnPrimary}
-                onClick={() => router.push("/services")}
+                onClick={() => router.push(isSpanish ? "/es/#services" : "/services")}
               >
                 {isSpanish ? "Ver servicios" : "Browse Services"}
               </button>
@@ -366,7 +366,7 @@ export default function CheckoutClient() {
         <div className={styles.container}>
           <div className={styles.topbar}>
             <p className={styles.backLink}>
-              <Link href="/cart">{isSpanish ? "← Volver al Carrito" : "← Back to Cart"}</Link>
+              <Link href={isSpanish ? "/es/carrito" : "/cart"}>{isSpanish ? "← Volver al Carrito" : "← Back to Cart"}</Link>
             </p>
             <div className={styles.title}>{isSpanish ? "Pago" : "Checkout"}</div>
             <div />

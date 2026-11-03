@@ -886,14 +886,16 @@ export default async function ServicePage({
                 {/* CTA Section */}
                 <div className="category-cta-section">
                   <div className="category-cta-title">
-                    Ready to Get Started?
+                    {isSpanish ? "¿Listo para empezar?" : "Ready to Get Started?"}
                   </div>
                   <div className="category-cta-desc">
-                    Our expert technicians are ready to help. Book your service today and experience the difference professional installation makes.
+                    {isSpanish
+                      ? "Nuestros técnicos expertos están listos para ayudarte. Agenda tu servicio hoy y experimenta la diferencia de una instalación profesional."
+                      : "Our expert technicians are ready to help. Book your service today and experience the difference professional installation makes."}
                   </div>
                   <div className="category-cta-btn-row">
-                    <Link href="/request-quote" className="category-cta-btn">
-                      Get Your Free Quote
+                    <Link href={isSpanish ? "/es/solicita-una-cotizacion" : "/request-quote"} className="category-cta-btn">
+                      {isSpanish ? "Obtén tu cotización gratis" : "Get Your Free Quote"}
                       <SvgIcon
                         name="arrow-right-simple"
                         size={16}
@@ -912,21 +914,21 @@ export default async function ServicePage({
                         color="#fff"
                         className="category-cta-btn-icon"
                       />
-                      Call Now: (786) 366-2729
+                      {isSpanish ? "Llama ahora: (786) 366-2729" : "Call Now: (786) 366-2729"}
                     </a>
                   </div>
                   <div className="category-cta-trust-row">
                     <div className="category-cta-trust-item">
                       <SvgIcon name="check" size={16} color="var(--brand-teal)" />
-                      No obligation
+                      {isSpanish ? "Sin obligación" : "No obligation"}
                     </div>
                     <div className="category-cta-trust-item">
                       <SvgIcon name="check" size={16} color="var(--brand-teal)" />
-                      Free estimates
+                      {isSpanish ? "Estimados gratis" : "Free estimates"}
                     </div>
                     <div className="category-cta-trust-item">
                       <SvgIcon name="check" size={16} color="var(--brand-teal)" />
-                      Same-day service available
+                      {isSpanish ? "Servicio el mismo día disponible" : "Same-day service available"}
                     </div>
                   </div>
                 </div>
@@ -1117,6 +1119,12 @@ const isTvMounting = tvMountingSlugs.includes(slug);
                 {isSpanish ? "Llámanos al (786) 366-2729" : "Call us at (786) 366-2729"}
               </span>
             </a>
+            <Link
+              href={isSpanish ? "/es/solicita-una-cotizacion" : "/request-quote"}
+              className="btn-book"
+            >
+              {isSpanish ? "Solicita una cotización gratis" : "Request a Free Quote"}
+            </Link>
           </div>
         </div>
 
@@ -1138,7 +1146,7 @@ const isTvMounting = tvMountingSlugs.includes(slug);
           </div>
         )}
 
-        <BeforeAfterSection data={displayBeforeAfter} />
+        <BeforeAfterSection data={displayBeforeAfter} locale={locale} />
 
 
         {displayFaqs && <FaqAccordion faqs={displayFaqs} locale={locale} />}
@@ -1154,6 +1162,8 @@ const isTvMounting = tvMountingSlugs.includes(slug);
             date: t.date,
           }))}
           title={isSpanish ? "Reseñas de clientes" : "Customer Reviews"}
+          subtitle={isSpanish ? "Experiencias reales de propietarios y negocios satisfechos." : "Real experiences from satisfied homeowners and businesses."}
+          locale={locale}
         />
       )}
 

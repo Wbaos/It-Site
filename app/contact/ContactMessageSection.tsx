@@ -273,7 +273,7 @@ export default function ContactMessageSection({
             <div className="contact-message-sideCard">
               <div className="contact-message-sideCardTitle">
                 <MapPin size={18} className="contact-message-sideIcon" aria-hidden="true" />
-                Our Location
+                {T.locationTitle}
               </div>
 
               <div className="contact-message-location">

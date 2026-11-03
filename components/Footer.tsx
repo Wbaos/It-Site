@@ -257,19 +257,19 @@ export default function Footer({ areas }: { areas?: FooterArea[] }) {
       {/* ===== Bottom Row ===== */}
       <div className="site-container footer-bottom">
         <div className="legal">
-          <Link href="/privacy-policy" aria-label="Privacy Policy">
+          <Link href="/privacy-policy" aria-label={isSpanishPage ? "Política de Privacidad" : "Privacy Policy"}>
             {isSpanishPage ? "Política de Privacidad" : "Privacy Policy"}
           </Link>
           <span>•</span>
-          <a href="#cookie-settings" aria-label="Cookie Settings">
+          <a href="#cookie-settings" aria-label={isSpanishPage ? "Configuración de Cookies" : "Cookie Settings"}>
             {isSpanishPage ? "Configuración de Cookies" : "Cookie Settings"}
           </a>
           <span>•</span>
-          <Link href="/terms-and-conditions" aria-label="Terms and Conditions">
+          <Link href="/terms-and-conditions" aria-label={isSpanishPage ? "Términos y Condiciones" : "Terms and Conditions"}>
             {isSpanishPage ? "Términos y Condiciones" : "Terms & Conditions"}
           </Link>
           <span>•</span>
-          <Link href="/accessibility" aria-label="Accessibility Statement">
+          <Link href="/accessibility" aria-label={isSpanishPage ? "Declaración de Accesibilidad" : "Accessibility Statement"}>
             {isSpanishPage ? "Accesibilidad" : "Accessibility"}
           </Link>
         </div>
