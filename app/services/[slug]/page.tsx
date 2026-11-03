@@ -408,7 +408,7 @@ export default async function ServicePage({
   const sprinklerTitlesEs: Record<string, string> = {};
   if (isSpanish && service) {
     const esTitles = await sanity.fetch(
-      `*[_type == "service" && slug.current in ["sprinkler-repair-and-installation", "sprinkler-leak-repair", "sprinkler-valve-repair", "sprinkler-timer-installation", "sprinkler-pump-replacement", "rain-sensor-installation", "wifi-sprinkler-controller-upgrade", "new-irrigation-installation", "wireless-camera-installation"]{ "slug": slug.current, titleEs }`
+      `*[_type == "service" && slug.current in ["sprinkler-repair-and-installation", "sprinkler-leak-repair", "sprinkler-valve-repair", "sprinkler-timer-installation", "sprinkler-pump-replacement", "rain-sensor-installation", "wifi-sprinkler-controller-upgrade", "new-irrigation-installation", "wireless-camera-installation"]]{ "slug": slug.current, titleEs }`
     );
     for (const t of (esTitles as any[]) ?? []) {
       if (t?.slug && t?.titleEs) sprinklerTitlesEs[t.slug] = t.titleEs;
