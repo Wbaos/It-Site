@@ -13,7 +13,9 @@ export default function RequestQuoteThankYou(props: {
   contactPhone: string;
   onBackHome: () => void;
   onBrowseServices: () => void;
+  locale?: "en" | "es";
 }) {
+  const locale = props.locale ?? "en";
   return (
     <main className="rq-thankyou__page">
       <div ref={props.topRef} />
@@ -26,13 +28,13 @@ export default function RequestQuoteThankYou(props: {
         </div>
 
         <h1 className="rq-thankyou__title">
-          Thank You! <span aria-hidden="true">🎉</span>
+          {locale === "es" ? "¡Gracias!" : "Thank You!"} <span aria-hidden="true">🎉</span>
         </h1>
         <p className="rq-thankyou__subtitle">
-          Your quote request has been submitted successfully.
+          {locale === "es" ? "Tu solicitud de cotización se envió correctamente." : "Your quote request has been submitted successfully."}
         </p>
         <div className="rq-thankyou__refRow">
-          Reference Number:{" "}
+          {locale === "es" ? "Número de referencia:" : "Reference Number:"}{" "}
           <span className="rq-thankyou__refValue">
             {props.referenceNumber || "QR-________"}
           </span>
@@ -40,7 +42,7 @@ export default function RequestQuoteThankYou(props: {
 
         {props.wantsTechnicianVisitFirst ? (
           <div className="rq-thankyou__visitRow">
-            Technician visit requested:{" "}
+            {locale === "es" ? "Visita del técnico solicitada:" : "Technician visit requested:"}{" "}
             <span className="rq-thankyou__refValue">
               {props.preferredDate || "____-__-__"}
             </span>
@@ -58,7 +60,7 @@ export default function RequestQuoteThankYou(props: {
         <div className="rq-thankyou__card rq-thankyou__card--next">
           <div className="rq-thankyou__cardInner">
             <div className="rq-thankyou__cardTitle">
-              What Happens Next?
+              {locale === "es" ? "¿Qué pasa ahora?" : "What Happens Next?"}
             </div>
 
             <div className="rq-thankyou__steps">
@@ -67,9 +69,9 @@ export default function RequestQuoteThankYou(props: {
                   1
                 </div>
                 <div>
-                  <div className="rq-thankyou__stepTitle">Review Process</div>
+                  <div className="rq-thankyou__stepTitle">{locale === "es" ? "Revisión" : "Review Process"}</div>
                   <div className="rq-thankyou__stepDesc">
-                    Our team is reviewing your request right now.
+                    {locale === "es" ? "Nuestro equipo está revisando tu solicitud ahora mismo." : "Our team is reviewing your request right now."}
                   </div>
                 </div>
               </div>
@@ -79,13 +81,13 @@ export default function RequestQuoteThankYou(props: {
                   2
                 </div>
                 <div>
-                  <div className="rq-thankyou__stepTitle">Quote Delivery</div>
+                  <div className="rq-thankyou__stepTitle">{locale === "es" ? "Entrega de la cotización" : "Quote Delivery"}</div>
                   <div className="rq-thankyou__stepDesc">
-                    You’ll receive a detailed quote at{" "}
+                    {locale === "es" ? "Recibirás una cotización detallada en" : "You’ll receive a detailed quote at"}{" "}
                     <span className="rq-thankyou__accent">
-                      {props.contactEmail.trim() || "your email"}
+                      {props.contactEmail.trim() || (locale === "es" ? "tu correo" : "your email")}
                     </span>{" "}
-                    within 24 hours.
+                    {locale === "es" ? "dentro de 24 horas." : "within 24 hours."}
                   </div>
                 </div>
               </div>
@@ -95,13 +97,13 @@ export default function RequestQuoteThankYou(props: {
                   3
                 </div>
                 <div>
-                  <div className="rq-thankyou__stepTitle">Confirmation Call</div>
+                  <div className="rq-thankyou__stepTitle">{locale === "es" ? "Llamada de confirmación" : "Confirmation Call"}</div>
                   <div className="rq-thankyou__stepDesc">
-                    A specialist may call you at{" "}
+                    {locale === "es" ? "Un especialista podría llamarte al" : "A specialist may call you at"}{" "}
                     <span className="rq-thankyou__accent">
-                      {props.contactPhone.trim() || "your phone"}
+                      {props.contactPhone.trim() || (locale === "es" ? "tu teléfono" : "your phone")}
                     </span>{" "}
-                    to discuss your needs.
+                    {locale === "es" ? "para hablar de lo que necesitas." : "to discuss your needs."}
                   </div>
                 </div>
               </div>
@@ -112,7 +114,7 @@ export default function RequestQuoteThankYou(props: {
         <div className="rq-thankyou__card rq-thankyou__card--help">
           <div className="rq-thankyou__cardInner">
             <div className="rq-thankyou__helpTitle">
-              Need immediate assistance?
+              {locale === "es" ? "¿Necesitas ayuda inmediata?" : "Need immediate assistance?"}
             </div>
             <div className="rq-thankyou__helpRow">
               <div className="rq-thankyou__helpItem">
@@ -133,29 +135,29 @@ export default function RequestQuoteThankYou(props: {
             onClick={props.onBackHome}
             className="rq-thankyou__btn rq-thankyou__btn--primary"
           >
-            Back to Home
+            {locale === "es" ? "Volver al inicio" : "Back to Home"}
           </button>
           <button
             type="button"
             onClick={props.onBrowseServices}
             className="rq-thankyou__btn rq-thankyou__btn--secondary"
           >
-            Browse Services
+            {locale === "es" ? "Ver servicios" : "Browse Services"}
           </button>
         </div>
 
         <div className="rq-thankyou__trustRow">
           <div className="rq-thankyou__trustItem">
             <SvgIcon name="shield" size={16} color="#64748b" />
-            Insured
+            {locale === "es" ? "Asegurado" : "Insured"}
           </div>
           <div className="rq-thankyou__trustItem">
             <SvgIcon name="blog-author" size={16} color="#64748b" />
-            Certified
+            {locale === "es" ? "Certificado" : "Certified"}
           </div>
           <div className="rq-thankyou__trustItem">
             <SvgIcon name="star-outline" size={16} color="#64748b" />
-            4.9 Rating
+            {locale === "es" ? "Calificación 4.9" : "4.9 Rating"}
           </div>
         </div>
       </section>

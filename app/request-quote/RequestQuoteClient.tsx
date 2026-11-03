@@ -20,7 +20,7 @@ import type {
   UrgencyOptionId,
 } from "@/components/request-quote/types";
 
-const steps = [
+const STEPS_EN = [
   {
     title: "Submit Your Request",
     desc: "Fill out the form with your service needs and preferred schedule.",
@@ -39,19 +39,124 @@ const steps = [
   },
 ];
 
-const urgencyOptions: readonly UrgencyOption[] = [
+const STEPS_ES = [
+  {
+    title: "Envía tu solicitud",
+    desc: "Completa el formulario con lo que necesitas y tu horario preferido.",
+  },
+  {
+    title: "Recibe tu cotización",
+    desc: "Revisaremos tu solicitud y te enviaremos una cotización detallada dentro de 24 horas.",
+  },
+  {
+    title: "Agenda el servicio",
+    desc: "Cuando apruebes, confirmaremos tu cita con un técnico certificado.",
+  },
+  {
+    title: "Trabajo hecho",
+    desc: "Nuestro experto llega a tiempo y completa el trabajo a tu satisfacción.",
+  },
+];
+
+const URGENCY_OPTIONS_EN: readonly UrgencyOption[] = [
   { id: "within-week", label: "Within a week" },
   { id: "2-3-days", label: "In 2-3 days" },
   { id: "asap", label: "ASAP" },
 ];
 
+const URGENCY_OPTIONS_ES: readonly UrgencyOption[] = [
+  { id: "within-week", label: "En una semana" },
+  { id: "2-3-days", label: "En 2-3 días" },
+  { id: "asap", label: "Lo antes posible" },
+];
+
+// Spanish display names for the Sanity catalog (slugs are unchanged, so the
+// payload sent to /api/quote-request is identical to the English flow).
+// Snapshot of the current Sanity values; if a catalog entry is missing here,
+// the English Sanity value is shown as a fallback, never a blank.
+const ES_CATEGORY: Record<string, string> = {
+  landscaping: "Reparación de Sprinklers e Irrigación",
+  "home-security": "Seguridad del Hogar",
+};
+
+const ES_URGENCY: Record<string, string> = {
+  "within-week": "En una semana",
+  "2-3-days": "En 2-3 días",
+  asap: "Lo antes posible",
+};
+
+const ES_SERVICE: Record<
+  string,
+  { title: string; description: string; navDescription: string }
+> = {
+  "sprinkler-repair-and-installation": {
+    title: "Reparación e Instalación de Sprinklers",
+    description:
+      "Reparación de sprinklers e instalación de irrigación en Miami y Broward para casas y negocios: cabezales rotos, válvulas, fugas, zonas y controladores. Servicio el mismo día, estimados gratis.",
+    navDescription: "Reparación de sprinklers e instalación de irrigación",
+  },
+  "new-irrigation-installation": {
+    title: "Instalación de Irrigación Nueva",
+    description:
+      "Instalación de irrigación nueva en Miami y Broward: zonas de sprinklers, tuberías de PVC, válvulas, rotores, cabezales, controladores, relés de bomba y sensores de lluvia.",
+    navDescription: "Instalación de zonas nuevas de sprinklers",
+  },
+  "rain-sensor-installation": {
+    title: "Instalación de Sensores de Lluvia",
+    description:
+      "Instalación de sensores de lluvia en Miami y Broward para sistemas de sprinklers, para evitar riego innecesario y mejorar la eficiencia de irrigación durante el clima lluvioso del sur de Florida.",
+    navDescription: "Instalación de sensores de lluvia",
+  },
+  "sprinkler-leak-repair": {
+    title: "Reparación de Fugas de Sprinklers",
+    description:
+      "Reparación de fugas de sprinklers en Miami y Broward para fugas subterráneas de PVC, tuberías rotas, conexiones con fuga, acumulación de agua y pérdida de presión. Servicio el mismo día, estimados gratis.",
+    navDescription: "Detección de fugas y reparación de tuberías",
+  },
+  "sprinkler-pump-replacement": {
+    title: "Reemplazo de Bombas de Sprinklers",
+    description:
+      "Reemplazo de bombas de sprinklers en Miami y Broward para sistemas de irrigación con poca presión, falla de bomba, problemas de cebado o problemas con el relé de arranque de la bomba.",
+    navDescription: "Reemplazo de bombas y problemas de presión",
+  },
+  "sprinkler-timer-installation": {
+    title: "Instalación de Temporizadores de Sprinklers",
+    description:
+      "Instalación y programación de temporizadores de sprinklers en Miami y Broward: controladores digitales, temporizadores WiFi, sistemas compatibles con sensores de lluvia y sistemas de irrigación multizona.",
+    navDescription: "Configuración y programación de temporizadores",
+  },
+  "sprinkler-valve-repair": {
+    title: "Reparación de Válvulas de Sprinklers",
+    description:
+      "Reparación de válvulas de sprinklers en Miami y Broward para válvulas con fuga, válvulas atoradas, zonas que se quedan encendidas, zonas que no encienden y problemas con la caja de válvulas.",
+    navDescription: "Reparación de válvulas y control de zonas",
+  },
+  "wifi-sprinkler-controller-upgrade": {
+    title: "Actualización a Controlador WiFi para Sprinklers",
+    description:
+      "Actualiza tu sistema de sprinklers a un controlador WiFi inteligente en Miami y Broward, para controlar horarios de riego, pausas por lluvia y zonas desde tu teléfono.",
+    navDescription: "Temporizador de sprinklers controlado por app",
+  },
+  "wireless-camera-installation": {
+    title: "Instalación de Cámaras Inalámbricas",
+    description:
+      "Instalación y configuración profesional de cámaras inalámbricas de seguridad en Miami y Broward para tu casa o pequeño negocio. Incluye montaje, optimización de ubicación, configuración de la app y pruebas de conexión.",
+    navDescription: "Instala cámaras inalámbricas de seguridad",
+  },
+};
+
 export default function RequestQuoteClient(props: {
   initialCategories: ApiCategory[];
   initialRqContent: RequestQuoteContent | null;
   initialTab: string;
+  locale?: "en" | "es";
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const locale = props.locale ?? "en";
+  const steps = locale === "es" ? STEPS_ES : STEPS_EN;
+  const urgencyOptions =
+    locale === "es" ? URGENCY_OPTIONS_ES : URGENCY_OPTIONS_EN;
 
   const stepSectionRef = useRef<HTMLDivElement | null>(null);
   const didMountRef = useRef(false);
@@ -61,7 +166,16 @@ export default function RequestQuoteClient(props: {
   const tabContainerRef = useRef<HTMLDivElement | null>(null);
   const tabScrollSaveRaf = useRef<number | null>(null);
 
-  const categories = props.initialCategories;
+  const categories = useMemo(
+    () =>
+      locale === "es"
+        ? props.initialCategories.map((c) => ({
+            ...c,
+            category: ES_CATEGORY[c.categorySlug] ?? c.category,
+          }))
+        : props.initialCategories,
+    [props.initialCategories, locale]
+  );
   const rqContent = props.initialRqContent;
 
   const [activeTab, setActiveTab] = useState<string>(props.initialTab || categories?.[0]?.categorySlug || "all");
@@ -172,6 +286,9 @@ export default function RequestQuoteClient(props: {
   const [otherServiceText, setOtherServiceText] = useState("");
 
   const [urgencyId, setUrgencyId] = useState<UrgencyOptionId | "">("");
+  // Display-only label for the summary cards (the payload keeps the raw id).
+  const urgencyLabel =
+    locale === "es" ? (urgencyId ? ES_URGENCY[urgencyId] ?? urgencyId : "") : urgencyId;
 
   const allServices = useMemo(() => {
     const flattened: SelectableService[] = [];
@@ -179,14 +296,15 @@ export default function RequestQuoteClient(props: {
     for (const cat of categories || []) {
       for (const grp of cat.groups || []) {
         for (const srv of grp.services || []) {
+          const es = locale === "es" ? ES_SERVICE[srv.slug] : undefined;
           flattened.push({
             categorySlug: cat.categorySlug,
             groupSlug: grp.slug,
             serviceSlug: srv.slug,
-            title: srv.title,
+            title: es?.title ?? srv.title,
             popular: srv.popular,
-            description: srv.description,
-            navDescription: srv.navDescription,
+            description: es?.description ?? srv.description,
+            navDescription: es?.navDescription ?? srv.navDescription,
             icon: srv.icon,
             price: srv.price,
             showPrice: srv.showPrice,
@@ -196,7 +314,7 @@ export default function RequestQuoteClient(props: {
     }
 
     return flattened;
-  }, [categories]);
+  }, [categories, locale]);
 
   const activeServices = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
@@ -219,10 +337,15 @@ export default function RequestQuoteClient(props: {
   }, [allServices, activeTab, searchQuery]);
 
   const activeCategoryTitle = useMemo(() => {
-    if (activeTab === "all") return "All Services";
-    if (activeTab === "popular") return "Popular Services";
-    return categories.find((c) => c.categorySlug === activeTab)?.category || "Services";
-  }, [activeTab, categories]);
+    if (activeTab === "all")
+      return locale === "es" ? "Todos los servicios" : "All Services";
+    if (activeTab === "popular")
+      return locale === "es" ? "Servicios populares" : "Popular Services";
+    return (
+      categories.find((c) => c.categorySlug === activeTab)?.category ||
+      (locale === "es" ? "Servicios" : "Services")
+    );
+  }, [activeTab, categories, locale]);
 
   const canContinue = Boolean(
     urgencyId && (selectedService || (needSomethingElse && otherServiceText.trim().length > 0))
@@ -253,8 +376,8 @@ export default function RequestQuoteClient(props: {
   const serviceSummary = useMemo(() => {
     if (selectedService?.title) return selectedService.title;
     if (needSomethingElse && otherServiceText.trim()) return otherServiceText.trim();
-    return "Service not selected";
-  }, [needSomethingElse, otherServiceText, selectedService]);
+    return locale === "es" ? "Servicio no seleccionado" : "Service not selected";
+  }, [needSomethingElse, otherServiceText, selectedService, locale]);
 
   const contactName = useMemo(() => {
     const name = `${contactFirstName} ${contactLastName}`.trim();
@@ -366,7 +489,7 @@ export default function RequestQuoteClient(props: {
 
     } catch (error) {
       console.error("Quote request error:", error);
-      setSubmitError("Something went wrong. Please try again.");
+      setSubmitError(locale === "es" ? "Algo sali\u00f3 mal. Por favor, int\u00e9ntalo de nuevo." : "Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -375,6 +498,7 @@ export default function RequestQuoteClient(props: {
   if (showThankYou) {
     return (
       <RequestQuoteThankYou
+        locale={locale}
         topRef={thankYouTopRef}
         referenceNumber={referenceNumber}
         wantsTechnicianVisitFirst={wantsTechnicianVisitFirst}
@@ -406,10 +530,14 @@ export default function RequestQuoteClient(props: {
             <SvgIcon name="document" size={34} color="#00E793" />
           </div>
           <h1 className="rq-client__heroTitle">
-            Request a Free Sprinkler Estimate
+            {locale === "es"
+              ? "Solicita un estimado gratis de sprinklers"
+              : "Request a Free Sprinkler Estimate"}
           </h1>
           <p className="rq-client__heroSubtitle">
-            Get a personalized quote for your service needs. No obligation, fast response, and expert recommendations.
+{locale === "es"
+              ? "Recibe una cotización personalizada para lo que necesitas. Sin obligación, respuesta rápida y recomendaciones de expertos."
+              : "Get a personalized quote for your service needs. No obligation, fast response, and expert recommendations."}
           </p>
 
           <div className="rq-client__stepsGrid">
@@ -439,10 +567,14 @@ export default function RequestQuoteClient(props: {
           <div className="rq-client__main">
             <div className="rq-client__progressRow">
               <span>
-                {step === 1 ? "Step 1 of 4" : step === 2 ? "Step 2 of 4" : step === 3 ? "Step 3 of 4" : "Step 4 of 4"}
+                {locale === "es"
+                  ? step === 1 ? "Paso 1 de 4" : step === 2 ? "Paso 2 de 4" : step === 3 ? "Paso 3 de 4" : "Paso 4 de 4"
+                  : step === 1 ? "Step 1 of 4" : step === 2 ? "Step 2 of 4" : step === 3 ? "Step 3 of 4" : "Step 4 of 4"}
               </span>
               <span className="rq-client__progressPct">
-                {step === 1 ? "25% Complete" : step === 2 ? "50% Complete" : step === 3 ? "75% Complete" : "100% Complete"}
+                {locale === "es"
+                  ? step === 1 ? "25% completado" : step === 2 ? "50% completado" : step === 3 ? "75% completado" : "100% completado"
+                  : step === 1 ? "25% Complete" : step === 2 ? "50% Complete" : step === 3 ? "75% Complete" : "100% Complete"}
               </span>
             </div>
             <div className="rq-client__progressBar">
@@ -452,6 +584,7 @@ export default function RequestQuoteClient(props: {
             <div className="rq-client__stepCardWrap">
               {step === 1 ? (
                 <Step1ServiceSelection
+                  locale={locale}
                   categories={categories}
                   activeTab={activeTab}
                   setTab={setTab}
@@ -475,8 +608,9 @@ export default function RequestQuoteClient(props: {
                 />
               ) : step === 2 ? (
                 <Step2ContactInfo
+                  locale={locale}
                   serviceSummary={serviceSummary}
-                  urgencyId={urgencyId}
+                  urgencyLabel={urgencyLabel}
                   contactFirstName={contactFirstName}
                   setContactFirstName={setContactFirstName}
                   contactLastName={contactLastName}
@@ -492,8 +626,9 @@ export default function RequestQuoteClient(props: {
                 />
               ) : step === 3 ? (
                 <Step3Location
+                  locale={locale}
                   serviceSummary={serviceSummary}
-                  urgencyId={urgencyId}
+                  urgencyLabel={urgencyLabel}
                   contactName={contactName}
                   streetAddress={streetAddress}
                   setStreetAddress={setStreetAddress}
@@ -507,6 +642,7 @@ export default function RequestQuoteClient(props: {
                 />
               ) : (
                 <Step4AdditionalDetails
+                  locale={locale}
                   projectDetails={projectDetails}
                   setProjectDetails={setProjectDetails}
                   wantsTechnicianVisitFirst={wantsTechnicianVisitFirst}
@@ -529,7 +665,7 @@ export default function RequestQuoteClient(props: {
 
           {/* Right: Sidebar */}
           <div className="rq-client__aside">
-            <RequestQuoteSidebar rqContent={rqContent} />
+            <RequestQuoteSidebar locale={locale} rqContent={rqContent} />
           </div>
         </div>
       </div>

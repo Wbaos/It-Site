@@ -47,11 +47,54 @@ const DEFAULT_FAQS: FaqItem[] = [
   },
 ];
 
+const DEFAULT_FAQS_ES: FaqItem[] = [
+  {
+    q: "¿Cómo agendo una cita de servicio?",
+    a: "Puedes reservar en línea con nuestro flujo de reserva o contactarnos directamente para agendar una visita de servicio que te convenga.",
+  },
+  {
+    q: "¿Cuál es su horario de servicio?",
+    a: "CallTechCare normalmente presta servicios de lunes a sábado. Si necesitas ayuda fuera del horario normal, contáctanos y haremos lo posible por atenderte.",
+  },
+  {
+    q: "¿Cómo sigo mi solicitud de servicio?",
+    a: "Después de enviar tu solicitud, recibirás un correo de confirmación con los detalles de tu servicio. Si no lo ves, revisa tu carpeta de spam o contáctanos para una actualización.",
+  },
+  {
+    q: "¿Qué métodos de pago aceptan?",
+    a: "Aceptamos las principales tarjetas de crédito y débito por pago seguro, y también aceptamos pagos en efectivo para servicios a domicilio. Pueden haber opciones adicionales según el servicio.",
+  },
+  {
+    q: "¿Ofrecen garantía en sus servicios?",
+    a: "Sí. CallTechCare ofrece 1 año de garantía en servicios de sprinklers e instalación de cámaras de seguridad.",
+  },
+  {
+    q: "¿Atienden emergencias de sprinklers?",
+    a: "Sí. Si tienes una emergencia de sprinklers, como una fuga grande o una zona que no se apaga, llámanos y priorizaremos el servicio el mismo día dentro de nuestro horario de servicio (lunes a sábado 8am–7pm, domingo 9am–6pm).",
+  },
+  {
+    q: "¿Puedo cancelar o reprogramar mi cita?",
+    a: "Sí. Contáctanos lo antes posible para cancelar o reprogramar tu cita. No hay cargos por cancelación si cancelas con al menos 24 horas de anticipación.",
+  },
+  {
+    q: "¿Sus técnicos tienen experiencia y seguro?",
+    a: "Nuestros técnicos tienen experiencia y siguen las mejores prácticas de la industria para asegurar un servicio seguro y confiable. Si tienes requisitos específicos, avísanos antes de agendar.",
+  },
+  {
+    q: "¿Qué áreas atienden?",
+    a: "CallTechCare presta servicio a domicilio en Miami-Dade y Broward, incluyendo Miami, Miramar, Pembroke Pines, Hollywood, Fort Lauderdale y otras comunidades del sur de Florida.",
+  },
+];
+
 export default function ContactFaqSection({
-  faqs = DEFAULT_FAQS,
+  faqs,
+  locale = "en",
 }: {
   faqs?: FaqItem[];
+  locale?: "en" | "es";
 }) {
+  const effectiveFaqs =
+    faqs ?? (locale === "es" ? DEFAULT_FAQS_ES : DEFAULT_FAQS);
   const [query, setQuery] = useState("");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -59,7 +102,7 @@ export default function ContactFaqSection({
      FAQ STRUCTURED DATA
   ========================= */
   const faqSchema = useMemo(() => {
-    const mainEntity = (faqs || [])
+    const mainEntity = (effectiveFaqs || [])
       .map((item) => {
         const q = String(item?.q || "").trim();
         const a = String(item?.a || "").trim();
@@ -84,7 +127,7 @@ export default function ContactFaqSection({
       "@type": "FAQPage",
       mainEntity,
     };
-  }, [faqs]);
+  }, [effectiveFaqs]);
 
   /* =========================
      SEARCH FILTER
@@ -92,15 +135,15 @@ export default function ContactFaqSection({
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
 
-    if (!q) return faqs;
+    if (!q) return effectiveFaqs;
 
-    return faqs.filter((item) => {
+    return effectiveFaqs.filter((item) => {
       return (
         item.q.toLowerCase().includes(q) ||
         item.a.toLowerCase().includes(q)
       );
     });
-  }, [faqs, query]);
+  }, [effectiveFaqs, query]);
 
   return (
     <div className="contact-faq">
@@ -118,11 +161,11 @@ export default function ContactFaqSection({
 
       <header className="contact-faq-header">
         <h2 className="contact-faq-title">
-          Frequently Asked Questions
+          {locale === "es" ? "Preguntas frecuentes" : "Frequently Asked Questions"}
         </h2>
 
         <p className="contact-faq-subtitle">
-          Find quick answers to common questions
+          {locale === "es" ? "Encuentra respuestas rápidas a preguntas comunes" : "Find quick answers to common questions"}
         </p>
       </header>
 
@@ -139,8 +182,8 @@ export default function ContactFaqSection({
             setQuery(e.target.value);
             setOpenIndex(null);
           }}
-          placeholder="Search FAQs..."
-          aria-label="Search FAQs"
+          placeholder={locale === "es" ? "Buscar preguntas..." : "Search FAQs..."}
+          aria-label={locale === "es" ? "Buscar preguntas" : "Search FAQs"}
         />
       </div>
 
@@ -148,7 +191,7 @@ export default function ContactFaqSection({
       <div className="contact-faq-list" role="list">
         {filtered.length === 0 ? (
           <div className="contact-faq-empty">
-            No results found. Try a different search.
+            {locale === "es" ? "No se encontraron resultados. Intenta otra búsqueda." : "No results found. Try a different search."}
           </div>
         ) : (
           filtered.map((item, idx) => {
@@ -179,7 +222,7 @@ export default function ContactFaqSection({
                     className={`contact-faq-chevron ${
                       isOpen ? "is-open" : ""
                     }`}
-                    aria-hidden="true"
+                    aria-hidden={locale === "en" ? true : undefined}
                   />
                 </button>
 

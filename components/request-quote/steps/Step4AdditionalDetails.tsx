@@ -26,7 +26,9 @@ export default function Step4AdditionalDetails(props: {
   submitError: string;
   onBack: () => void;
   onSubmit: () => void;
+  locale?: "en" | "es";
 }) {
+  const locale = props.locale ?? "en";
   const preferredDateInputRef = useRef<HTMLInputElement | null>(null);
 
   const todayIso = new Date(Date.now() - new Date().getTimezoneOffset() * 60_000)
@@ -51,18 +53,18 @@ export default function Step4AdditionalDetails(props: {
 
   return (
     <div className="rq-step4">
-      <h2 className="rq-step4__title">Additional Details</h2>
-      <p className="rq-step4__subtitle">Help us understand your needs better</p>
+      <h2 className="rq-step4__title">{locale === "es" ? "Detalles adicionales" : "Additional Details"}</h2>
+      <p className="rq-step4__subtitle">{locale === "es" ? "Ayúdanos a entender mejor lo que necesitas" : "Help us understand your needs better"}</p>
 
       <div className="rq-step4__section">
         <label className="rq-step4__label">
-          Describe Your Project
+          {locale === "es" ? "Describe tu proyecto" : "Describe Your Project"}
         </label>
         <textarea
           value={props.projectDetails}
           onChange={(e) => props.setProjectDetails(e.target.value)}
           className="rq-step4__textarea"
-          placeholder="Please provide any details about your project, specific requirements, or questions you have..."
+          placeholder={locale === "es" ? "Por favor, incluye detalles de tu proyecto, requisitos específicos o preguntas que tengas..." : "Please provide any details about your project, specific requirements, or questions you have..."}
         />
       </div>
 
@@ -83,7 +85,7 @@ export default function Step4AdditionalDetails(props: {
                 props.setWantsTechnicianVisitFirst(e.target.checked)
               }
               className="rq-step4__checkbox"
-              aria-label="I'd like a technician to visit first"
+              aria-label={locale === "es" ? "Me gustaría que un técnico visite primero" : "I'd like a technician to visit first"}
             />
             <div className="rq-step4__cardContent">
               <div className="rq-step4__cardTitleRow">
@@ -91,35 +93,34 @@ export default function Step4AdditionalDetails(props: {
                   <SvgIcon name="calendar" size={22} color="#10b981" />
                 </div>
                 <div className="rq-step4__cardTitle">
-                  I’d like a technician to visit first
+                  {locale === "es" ? "Me gustaría que un técnico visite primero" : "I’d like a technician to visit first"}
                 </div>
-                <span className="rq-step4__badge">FREE</span>
+                <span className="rq-step4__badge">{locale === "es" ? "GRATIS" : "FREE"}</span>
               </div>
 
               <div className="rq-step4__cardDescription">
-                Not sure about the exact work needed? We’ll send a technician to your
-                location to:
+                {locale === "es" ? "¿No estás seguro del trabajo exacto que se necesita? Enviaremos un técnico a tu ubicación para:" : "Not sure about the exact work needed? We’ll send a technician to your location to:"}
               </div>
 
               <ul className="rq-step4__benefits">
                 <li className="rq-step4__benefit">
                   <span className="rq-step4__benefitCheck">✓</span>
-                  Inspect and assess the job in person
+                  {locale === "es" ? "Inspeccionar y evaluar el trabajo en persona" : "Inspect and assess the job in person"}
                 </li>
 
                 <li className="rq-step4__benefit">
                   <span className="rq-step4__benefitCheck">✓</span>
-                  Give you an exact price (no surprises)
+                  {locale === "es" ? "Darte un precio exacto (sin sorpresas)" : "Give you an exact price (no surprises)"}
                 </li>
 
                 <li className="rq-step4__benefit">
                   <span className="rq-step4__benefitCheck">✓</span>
-                  Answer any questions face-to-face
+                  {locale === "es" ? "Responder tus preguntas en persona" : "Answer any questions face-to-face"}
                 </li>
               </ul>
 
               <div className="rq-step4__cardNote">
-                No commitment required — you decide after the visit.
+                {locale === "es" ? "Sin compromiso: tú decides después de la visita." : "No commitment required — you decide after the visit."}
               </div>
             </div>
           </div>
@@ -130,13 +131,13 @@ export default function Step4AdditionalDetails(props: {
             <div className="rq-step4__divider" />
 
             <div className="rq-step4__subheading">
-              When works best for you?
+              {locale === "es" ? "¿Cuándo te conviene más?" : "When works best for you?"}
             </div>
 
             <div className="rq-step4__twoCol">
               <div>
                 <label className="rq-step4__label">
-                  Preferred Date
+                  {locale === "es" ? "Fecha preferida" : "Preferred Date"}
                 </label>
 
                 <div className="rq-step4__dateWrap">
@@ -183,7 +184,7 @@ export default function Step4AdditionalDetails(props: {
 
               <div>
                 <label className="rq-step4__label">
-                  Preferred Time
+                  {locale === "es" ? "Hora preferida" : "Preferred Time"}
                 </label>
 
                 <div className="rq-step4__selectWrap">
@@ -195,7 +196,7 @@ export default function Step4AdditionalDetails(props: {
                     className="rq-step4__select"
                   >
                     <option value="">
-                      Select a time
+                      {locale === "es" ? "Selecciona una hora" : "Select a time"}
                     </option>
 
                     {STANDARD_TIME_SLOTS.map((slot) => (
@@ -233,7 +234,7 @@ export default function Step4AdditionalDetails(props: {
 
       <div className="rq-step4__section">
         <label className="rq-step4__label">
-          How did you hear about us?
+          {locale === "es" ? "¿Cómo supiste de nosotros?" : "How did you hear about us?"}
         </label>
         <div className="rq-step4__selectWrap">
           <select
@@ -241,12 +242,12 @@ export default function Step4AdditionalDetails(props: {
             onChange={(e) => props.setHeardAbout(e.target.value)}
             className="rq-step4__select"
           >
-            <option value="">Select an option</option>
+            <option value="">{locale === "es" ? "Selecciona una opción" : "Select an option"}</option>
             <option value="google">Google</option>
             <option value="facebook">Facebook</option>
             <option value="instagram">Instagram</option>
-            <option value="friend">Friend / Referral</option>
-            <option value="other">Other</option>
+            <option value="friend">{locale === "es" ? "Amigo / Referido" : "Friend / Referral"}</option>
+            <option value="other">{locale === "es" ? "Otro" : "Other"}</option>
           </select>
           <span className="rq-step4__selectIcon" aria-hidden="true">
             <SvgIcon name="chevron-down" size={18} color="currentColor" />
@@ -260,7 +261,7 @@ export default function Step4AdditionalDetails(props: {
         onClick={props.onBack}
         className="rq-step4__btn rq-step4__btn--secondary"
       >
-        Back
+        {locale === "es" ? "Atrás" : "Back"}
       </button>
 
       <button
@@ -288,7 +289,7 @@ export default function Step4AdditionalDetails(props: {
           color={props.canSubmit && !props.submitting ? "#fff" : "#64748b"}
         />
         <span>
-          {props.submitting ? "Submitting..." : "Submit Quote Request"}
+          {props.submitting ? (locale === "es" ? "Enviando..." : "Submitting...") : (locale === "es" ? "Enviar solicitud de cotización" : "Submit Quote Request")}
         </span>
       </button>
     </div>
@@ -299,8 +300,12 @@ export default function Step4AdditionalDetails(props: {
       {!props.canSubmit ? (
         <div className="rq-step4__hint">
           {props.wantsTechnicianVisitFirst
-            ? "Select a preferred date and time to continue."
-            : "You can submit now, or select the technician visit option."}
+            ? (locale === "es"
+                ? "Selecciona una fecha y hora preferidas para continuar."
+                : "Select a preferred date and time to continue.")
+            : (locale === "es"
+                ? "Puedes enviar ahora o seleccionar la opción de visita del técnico."
+                : "You can submit now, or select the technician visit option.")}
         </div>
       ) : null}
     </div>
