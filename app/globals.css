@@ -10984,6 +10984,12 @@ object-fit: cover;
   display: inline;
 }
 
+/* Language pill in the header actions (mobile only, shown by .mobile-only):
+   breathing room next to the search icon. */
+.lang-switcher--header-actions {
+  margin-right: 8px;
+}
+
 .included-box {
   background: #0f172a80;
   border: 1px solid #1e293b;
