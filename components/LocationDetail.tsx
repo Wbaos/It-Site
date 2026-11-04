@@ -249,7 +249,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
               </h2>
               <p className="location-section-text">{isSpanish ? (DESCRIPTION_ES[slug] || location.description) : location.description}</p>
               <p className="location-section-text">
-                {isSpanish ? `Nuestro equipo en ${location.city} está formado por técnicos certificados que ayudan con la instalación de cámaras de seguridad y el trabajo de sprinklers e irrigación. Nos enorgullece ofrecer servicio el mismo día, precios transparentes y un servicio al cliente excepcional en el área de ${location.city}, ${location.state}.` : `Our ${location.city} team consists of certified technicians who help with security camera installation and sprinkler & irrigation work. We pride ourselves on providing same-day service, transparent pricing, and exceptional customer service to the ${location.city}, ${location.state} area.`}
+                {isSpanish ? `Nuestro equipo en ${location.city} ayuda con la instalación de cámaras de seguridad y el trabajo de sprinklers e irrigación. Nos enorgullece ofrecer servicio el mismo día dentro del horario, estimados claros tras la inspección y un servicio al cliente excepcional en el área de ${location.city}, ${location.state}.` : `Our ${location.city} team helps with security camera installation and sprinkler & irrigation work. We pride ourselves on providing same-day service within business hours, clear estimates after inspection, and exceptional customer service to the ${location.city}, ${location.state} area.`}
               </p>
             </div>
 
