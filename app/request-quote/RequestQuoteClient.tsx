@@ -31,7 +31,7 @@ const STEPS_EN = [
   },
   {
     title: "Schedule Service",
-    desc: "Once you approve, we’ll confirm your appointment with a certified technician.",
+    desc: "Once you approve, we’ll confirm your appointment with our technician.",
   },
   {
     title: "Get It Done",
@@ -50,7 +50,7 @@ const STEPS_ES = [
   },
   {
     title: "Agenda el servicio",
-    desc: "Cuando apruebes, confirmaremos tu cita con un técnico certificado.",
+    desc: "Cuando apruebes, confirmaremos tu cita con nuestro técnico.",
   },
   {
     title: "Trabajo hecho",
