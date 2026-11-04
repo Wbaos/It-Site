@@ -1,4 +1,5 @@
 import { sanity } from "@/lib/sanity";
+import type { SvgIconName } from "@/components/common/SvgIcons";
 
 // Sanity fetchers for `legalPage` documents (privacy + terms, EN + ES).
 
@@ -16,14 +17,14 @@ export type LegalBlock = {
 };
 
 export type LegalSection = {
-  icon?: string;
+  icon?: SvgIconName;
   heading?: string;
   headingEs?: string;
   blocks?: LegalBlock[];
 };
 
 export type LegalContactCard = {
-  icon?: string;
+  icon?: SvgIconName;
   title?: string;
   titleEs?: string;
   text?: string;
@@ -53,7 +54,7 @@ export type LegalPage = {
   updatedEs?: string;
   backText?: string;
   backTextEs?: string;
-  headerIcon?: string;
+  headerIcon?: SvgIconName;
   intro?: string;
   introEs?: string;
   sections?: LegalSection[];
