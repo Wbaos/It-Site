@@ -4592,6 +4592,18 @@ body.no-scroll {
   margin-bottom: 0.25rem;
 }
 
+.footer-services-list a {
+  color: #ddd;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-services-list a:hover {
+  color: #34d399;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .results-recommendation-header {
   display: flex;
   align-items: center;
@@ -5737,8 +5749,14 @@ main {
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
     filter: brightness(0.5) saturate(1.05);
+  }
+
+  #hero .hero-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   #hero .hero-scrim {
@@ -5747,29 +5765,12 @@ main {
     background: linear-gradient(180deg, rgba(3, 10, 20, 0.65) 0%, rgba(3, 10, 20, 0.45) 55%, rgba(3, 10, 20, 0.7) 100%);
   }
 
-  #hero > *:not(.hero-bg):not(.hero-bg-mobile):not(.hero-scrim) {
+  #hero > *:not(.hero-bg):not(.hero-scrim) {
     position: relative;
     z-index: 1;
   }
 
-  #hero .hero-bg-mobile {
-    display: none;
-  }
 
-  @media (max-width: 760px) {
-    #hero .hero-bg {
-      display: none;
-    }
-    #hero .hero-bg-mobile {
-      display: block;
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.5) saturate(1.05);
-    }
-  }
 
   #hero .btn-primary {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);

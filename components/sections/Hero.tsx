@@ -46,22 +46,19 @@ export default function Hero({
   return (
     <section id="hero" role="region" aria-labelledby="hero-title">
       {imageSrc && (
-        <img
-          src={imageSrc}
-          alt=""
-          aria-hidden="true"
-          className="hero-bg"
-          loading="eager"
-        />
-      )}
-      {mobileImageSrc && (
-        <img
-          src={mobileImageSrc}
-          alt=""
-          aria-hidden="true"
-          className="hero-bg-mobile"
-          loading="eager"
-        />
+        <picture className="hero-bg">
+          {mobileImageSrc && (
+            <source media="(max-width: 760px)" srcSet={mobileImageSrc} />
+          )}
+          <img
+            src={imageSrc}
+            alt=""
+            aria-hidden="true"
+            className="hero-bg-img"
+            loading="eager"
+            fetchPriority="high"
+          />
+        </picture>
       )}
       <div className="hero-scrim" aria-hidden="true" />
 
