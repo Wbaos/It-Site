@@ -100,7 +100,7 @@ export default function Footer({ areas }: { areas?: FooterArea[] }) {
           <a href={isSpanishPage ? "/es/contacto" : "/#contact"}>{isSpanishPage ? "Contacto" : "Contact"}</a>
           <Link href={isSpanishPage ? "/es/sobre-nosotros" : "/about"}>{isSpanishPage ? "Sobre Nosotros" : "About Us"}</Link>
           <Link href={isSpanishPage ? "/es/preguntas-frecuentes" : "/faq"}>{isSpanishPage ? "Preguntas Frecuentes" : "FAQ"}</Link>
-          <Link href={isSpanishPage ? "/es/#services" : "/services"}>{isSpanishPage ? "Todos los Servicios" : "All Services"}</Link>
+          <Link href={isSpanishPage ? "/es/servicios" : "/services"}>{isSpanishPage ? "Todos los Servicios" : "All Services"}</Link>
         </nav>
 
         {/* Services List (SEO) */}
