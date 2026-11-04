@@ -19,7 +19,7 @@ export default function GoogleReviewsCTA({ locale = "en" }: { locale?: "en" | "e
       <div className="site-container-testimonials google-cta-card">
         <div className="google-cta-photo">
           <Image
-            src="https://cdn.sanity.io/images/celkrwoq/production/7b390027ba801d9cd8d1b588194d1787b25004f8-1024x768.jpg"
+            src="https://cdn.sanity.io/images/celkrwoq/production/7b390027ba801d9cd8d1b588194d1787b25004f8-1024x768.jpg?w=800&fm=webp&q=80"
             alt={isSpanish ? "Sprinklers regando un jardín con piedras negras y palmera" : "Sprinklers watering a garden with black stones and a palm tree"}
             width={600}
             height={400}

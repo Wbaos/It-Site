@@ -101,7 +101,7 @@ export default function WhyChooseUs({ locale = "en" }: { locale?: "en" | "es" })
 
         <div className="why-photo">
           <Image
-            src="https://cdn.sanity.io/images/celkrwoq/production/3d495269e52ed93bb03e5191f5fd5c2082be1bcd-1024x768.jpg"
+            src="https://cdn.sanity.io/images/celkrwoq/production/3d495269e52ed93bb03e5191f5fd5c2082be1bcd-1024x768.jpg?w=1200&fm=webp&q=80"
             alt={isSpanish ? "Sprinklers regando un patio amplio con adoquines" : "Sprinklers watering a large yard with brick pavers"}
             width={1100}
             height={420}
