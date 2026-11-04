@@ -74,6 +74,8 @@ export default function HighlightsClient({
                     src={h.icon}
                     alt={h.title}
                     className="highlight-svg"
+                    width={48}
+                    height={48}
                     loading="lazy"
                   />
                 </div>
