@@ -56,7 +56,7 @@ const heroPropsEn = {
 
   stats: [
     { value: "1500+", label: "Local Clients Helped" },
-    { value: "5/5", label: "Customer Satisfaction" },
+    { value: "5.0", label: "Google Rating" },
     { value: "Same-Day", label: "Appointments Available Within Business Hours" },
   ],
 };
@@ -77,7 +77,7 @@ const heroPropsEs = {
   imageAlt: "Sprinklers regando un jardín delantero en Miami, con el truck de CallTechCare",
   stats: [
     { value: "1500+", label: "Clientes Locales Atendidos" },
-    { value: "5/5", label: "Satisfacción del Cliente" },
+    { value: "5.0", label: "Calificación en Google" },
     { value: "Mismo Día", label: "Citas Disponibles Dentro del Horario" },
   ],
 };

@@ -35,7 +35,7 @@ export default function Hero({
   imageAlt = "Sprinkler system working",
   stats = [
     { value: "1500+", label: "Local Clients Helped" },
-    { value: "5/5", label: "Customer Satisfaction" },
+    { value: "5.0", label: "Google Rating" },
     { value: "Same-Day", label: "Appointments Available" },
   ],
 }: Props) {

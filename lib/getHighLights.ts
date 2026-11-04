@@ -28,8 +28,8 @@ export async function getHighlights(locale: "en" | "es" = "en"): Promise<Highlig
       },
       {
         _id: "transparent",
-        title: "Precios Transparentes",
-        desc: "Conoce el costo por adelantado, sin sorpresas.",
+        title: "Estimados Claros",
+        desc: "Estimado claro después de la inspección, sin sorpresas.",
         color: "#10B981",
         icon: "/icons/transparent.svg",
         order: 3,
@@ -58,8 +58,8 @@ export async function getHighlights(locale: "en" | "es" = "en"): Promise<Highlig
     },
     {
       _id: "transparent",
-      title: "Transparent Pricing",
-      desc: "Know the cost upfront — no surprises.",
+      title: "Clear Estimates",
+      desc: "Clear estimate after inspection — no surprises.",
       color: "#10B981",
       icon: "/icons/transparent.svg",
       order: 3,
