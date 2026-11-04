@@ -55,6 +55,8 @@ export default function Hero({
             alt=""
             aria-hidden="true"
             className="hero-bg-img"
+            width={1600}
+            height={1200}
             loading="eager"
             fetchPriority="high"
           />

@@ -292,7 +292,6 @@ export default async function RootLayout({
           crossOrigin="anonymous"
         />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
 
         <meta name="apple-mobile-web-app-title" content="CallTechCare" />
         <meta name="mobile-web-app-capable" content="yes" />
