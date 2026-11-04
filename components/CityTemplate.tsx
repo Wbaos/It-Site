@@ -341,7 +341,7 @@ const SHARED_FAQS: Record<Locale, { q: string; a: string }[]> = {
     },
     {
       q: "¿Ofrecen reparación de sprinklers cerca de mí en {CITY}?",
-      a: "Sí. CallTechCare ofrece reparación de sprinklers cerca de ti en {CITY} — citas el mismo día y estimados gratis. Llama al (786) 366-2729 y te confirmaremos la próxima visita disponible.",
+      a: "Sí. CallTechCare ofrece reparación de sprinklers cerca de ti en {CITY} — citas el mismo día dentro del horario e inspección gratis. Llama al (786) 366-2729 y te confirmaremos la próxima visita disponible.",
     },
   ],
 };
