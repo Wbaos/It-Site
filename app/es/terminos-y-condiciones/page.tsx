@@ -118,11 +118,6 @@ export default function TermsAndConditionsPageEs() {
                                 <p>
                                     Puedes cancelar o reprogramar una cita hasta 24 horas antes de la hora programada, sin penalización.
                                 </p>
-
-                                <p className="legal-highlight">Inasistencias (No-shows)</p>
-                                <p>
-                                    Si no estás disponible a la hora programada, puede aplicar un cargo por reprogramación.
-                                </p>
                             </div>
 
                             <div className="terms-step">

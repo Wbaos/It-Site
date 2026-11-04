@@ -22,6 +22,9 @@ const nextConfig: NextConfig = {
 
   // Images
   images: {
+    // Device widths: Next's defaults minus 3840, so full-width images on
+    // retina desktops no longer request the 3840w variant.
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     remotePatterns: [
       {
         protocol: "https",

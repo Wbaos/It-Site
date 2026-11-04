@@ -124,12 +124,6 @@ export default function TermsAndConditionsPage() {
                                     You may cancel or reschedule an appointment up to 24 hours before the
                                     scheduled time without penalty.
                                 </p>
-
-                                <p className="legal-highlight">No-shows</p>
-                                <p>
-                                    If you are not available at the scheduled time, a rescheduling fee may
-                                    apply.
-                                </p>
                             </div>
 
                             <div className="terms-step">
