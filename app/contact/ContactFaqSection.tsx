@@ -39,7 +39,7 @@ const DEFAULT_FAQS: FaqItem[] = [
   },
   {
     q: "Are your technicians experienced?",
-    a: "Our technicians are experienced and follow industry best practices to ensure safe and reliable service. If you have specific requirements, please let us know before scheduling.",
+    a: "Yes. Our technicians work in person at your home, inspect first, then give you a clear estimate before starting. Work is backed by our 1-year warranty when CallTechCare performs the work and provides the materials, and we hold a 5.0 rating from 26 Google reviews.",
   },
   {
     q: "What areas do you serve?",
@@ -78,7 +78,7 @@ const DEFAULT_FAQS_ES: FaqItem[] = [
   },
   {
     q: "¿Sus técnicos tienen experiencia?",
-    a: "Nuestros técnicos tienen experiencia y siguen las mejores prácticas de la industria para asegurar un servicio seguro y confiable. Si tienes requisitos específicos, avísanos antes de agendar.",
+    a: "Sí. Nuestros técnicos trabajan en persona en tu casa, primero inspeccionan y luego te dan un estimado claro antes de empezar. El trabajo tiene nuestra garantía de 1 año cuando CallTechCare hace el trabajo y provee los materiales, y tenemos una calificación 5.0 con 26 reseñas en Google.",
   },
   {
     q: "¿Qué áreas atienden?",
