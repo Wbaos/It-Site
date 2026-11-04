@@ -142,8 +142,6 @@ type LocaleText = {
   ariaWork: string;
   cards: CardDef[];
   steps: { title: string; text: string }[];
-  hubLangText: string;
-  hubLangHref: string;
 };
 
 const TEXT: Record<Locale, LocaleText> = {
@@ -210,8 +208,6 @@ const TEXT: Record<Locale, LocaleText> = {
       { title: "On-site diagnosis", text: "We inspect the system, isolate the issue, and explain the recommended fix clearly." },
       { title: "Repair & test", text: "We complete the repair and test zones so your system runs reliably again." },
     ],
-    hubLangText: "Ver esta página en español →",
-    hubLangHref: "/es/reparacion-de-sprinklers-miami",
   },
   es: {
     detailsText: "Ver detalles completos del servicio de reparación de sprinklers e irrigación →",
@@ -276,8 +272,6 @@ const TEXT: Record<Locale, LocaleText> = {
       { title: "Diagnóstico en sitio", text: "Inspeccionamos el sistema, aislamos el problema y te explicamos claramente la solución recomendada." },
       { title: "Reparación y prueba", text: "Completamos la reparación y probamos las zonas para que tu sistema funcione de forma confiable otra vez." },
     ],
-    hubLangText: "View this page in English →",
-    hubLangHref: "/sprinkler-repair-miami",
   },
 };
 
@@ -550,11 +544,6 @@ export default function CityTemplate({ city, locale }: { city: City; locale: Loc
 
       <section className="seo-intro-section">
         <div className="seo-intro">
-          {isHub && (
-            <p>
-              <Link href={t.hubLangHref}>{t.hubLangText}</Link>
-            </p>
-          )}
           <div className="seo-trust-chips">
             <span>{isEs ? "Inspección gratis" : "Free inspection"}</span>
             <span>{isEs ? "Mismo día dentro del horario" : "Same-day within business hours"}</span>
