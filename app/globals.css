@@ -18800,3 +18800,24 @@ details[open] .faq-toggle {
   object-fit: cover;
   background: #000;
 }
+
+.location-stats-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: space-around;
+  text-align: center;
+}
+.location-stat-item {
+  flex: 1 1 120px;
+}
+.location-stat-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #f8fafc;
+}
+.location-stat-label {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  margin-top: 0.25rem;
+}
