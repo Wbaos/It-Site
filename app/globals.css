@@ -11799,13 +11799,16 @@ object-fit: cover;
   padding: 0;
   overflow: hidden;
   border: none;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
   text-align: left;
 }
 
 .google-cta-photo {
   flex: 0 0 42%;
   min-height: 260px;
+  margin: 16px 0 16px 16px;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 .google-cta-photo img {
@@ -11851,6 +11854,7 @@ object-fit: cover;
     flex: none;
     min-height: 200px;
     order: 2;
+    margin: 0 16px 16px;
   }
   .google-cta-content {
     padding: 1.5rem 1rem 2rem;

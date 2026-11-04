@@ -20,7 +20,7 @@ const STEPS_ES = [
   {
     _id: "es-3",
     title: "Lo Dejamos Bien Instalado",
-    desc: "Inspeccionamos, te damos un estimado claro y hacemos el trabajo bien, con nuestra garantía de 1 año cuando hacemos el trabajo y proveemos los materiales.",
+    desc: "Inspeccionamos, te damos un estimado claro y lo hacemos bien.",
   },
 ];
 
