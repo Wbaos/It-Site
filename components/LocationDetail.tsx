@@ -252,7 +252,9 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                   {location.stats.map((stat, index) => (
                     <div key={index} className="location-stat-item">
                       <div className="location-stat-value">{stat.value}</div>
-                      <div className="location-stat-label">{stat.label}</div>
+                      <div className="location-stat-label">
+                        {isSpanish && stat.labelEs ? stat.labelEs : stat.label}
+                      </div>
                     </div>
                   ))}
                 </div>
