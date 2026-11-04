@@ -88,9 +88,10 @@ export default function PrivacyPolicyPage() {
             <p className="legal-highlight">Personal Information</p>
             <p>
               When you use our services, we may collect your name, email
-              address, phone number, billing address, and payment details. This
+              address, phone number, and service address. This
               information is necessary to provide services and communicate with
-              you.
+              you. There is no online payment on this website: payments are
+              made in person at the end of the appointment.
             </p>
 
             <p className="legal-highlight">Technical Information</p>
@@ -172,7 +173,7 @@ export default function PrivacyPolicyPage() {
             <p className="legal-highlight">Service Providers</p>
             <p>
               We may share necessary information with trusted partners such as
-              payment processors, hosting providers, or analytics tools.
+              hosting providers or analytics tools.
             </p>
 
             <p className="legal-highlight">Legal Requirements</p>

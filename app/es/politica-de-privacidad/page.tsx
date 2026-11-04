@@ -85,7 +85,7 @@ export default function PrivacyPolicyPageEs() {
 
             <p className="legal-highlight">Información personal</p>
             <p>
-              Cuando usas nuestros servicios, podemos recopilar tu nombre, dirección de correo electrónico, número de teléfono, dirección de facturación y datos de pago. Esta información es necesaria para prestar los servicios y comunicarnos contigo.
+              Cuando usas nuestros servicios, podemos recopilar tu nombre, dirección de correo electrónico, número de teléfono y dirección del servicio. Esta información es necesaria para prestar los servicios y comunicarnos contigo. No hay pago en línea en este sitio web: los pagos se realizan en persona al final de la cita.
             </p>
 
             <p className="legal-highlight">Información técnica</p>
@@ -154,7 +154,7 @@ export default function PrivacyPolicyPageEs() {
 
             <p className="legal-highlight">Proveedores de servicios</p>
             <p>
-              Podemos compartir la información necesaria con socios de confianza, como procesadores de pagos, proveedores de alojamiento o herramientas de analítica.
+              Podemos compartir la información necesaria con socios de confianza, como proveedores de alojamiento o herramientas de analítica.
             </p>
 
             <p className="legal-highlight">Requisitos legales</p>
