@@ -242,6 +242,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             changeFrequency: 'weekly',
             priority: 0.9,
         },
+        // Service group pages (fixed entries: groups are not `service`
+        // documents, so they do not come from the service query above).
+        {
+            url: `${baseUrl}/services/home-security`,
+            lastModified: now,
+            changeFrequency: 'weekly',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/services/landscaping`,
+            lastModified: now,
+            changeFrequency: 'weekly',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/es/seguridad-del-hogar`,
+            lastModified: now,
+            changeFrequency: 'weekly',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/es/reparacion-de-sprinklers-e-irrigacion`,
+            lastModified: now,
+            changeFrequency: 'weekly',
+            priority: 0.8,
+        },
         {
             url: `${baseUrl}/blog`,
             lastModified: now,
