@@ -15,7 +15,6 @@ import { groupTitleEs } from "@/lib/groupTitlesEs";
 import { serviceHref } from "@/lib/serviceTwins";
 
 const NAV = [
-  // { href: "/assessment", label: "Free Assessment" },
   { href: "/#contact", label: "Contact" },
   { href: "/blog", label: "Blog" },
 ];

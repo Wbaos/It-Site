@@ -54,6 +54,8 @@ const nextConfig: NextConfig = {
       { source: "/reviews/write", destination: "/contact", permanent: true },
       { source: "/es/servicios", destination: "/es/#services", permanent: true },
       { source: "/reviews", destination: "/contact", permanent: true },
+      { source: "/assessment/:path*", destination: "/request-quote", permanent: true },
+      { source: "/assessment", destination: "/request-quote", permanent: true },
       { source: "/es/carrito", destination: "/es/solicita-una-cotizacion", permanent: true },
       { source: "/es/pago", destination: "/es/solicita-una-cotizacion", permanent: true },
       { source: "/es/iniciar-sesion", destination: "/es/solicita-una-cotizacion", permanent: true },
