@@ -18,10 +18,31 @@ type SubmitStatus =
   | { type: "success"; message: string }
   | { type: "error"; message: string };
 
+export type ContactSideTexts = {
+  sideTitle?: string;
+  sideSubtitle?: string;
+  hoursTitle?: string;
+  dayMonFri?: string;
+  daySat?: string;
+  daySun?: string;
+  emergencyNote?: string;
+  locationTitle?: string;
+  locationCity?: string;
+  locationMuted?: string;
+  locationsLink?: string;
+  emergencyTitle?: string;
+  emergencyText?: string;
+};
+
+// Side-section copy comes from Sanity when provided; the form labels,
+// placeholders, buttons and status messages below stay in code (they are
+// interface strings, not page content).
 export default function ContactMessageSection({
   locale = "en",
+  side,
 }: {
   locale?: "en" | "es";
+  side?: ContactSideTexts;
 }) {
   const [form, setForm] = useState<FormState>({
     name: "",
@@ -157,6 +178,22 @@ export default function ContactMessageSection({
           emergencyText: "For urgent sprinkler issues, call us for same-day priority.",
         };
 
+  const S = {
+    sideTitle: side?.sideTitle ?? T.sideTitle,
+    sideSubtitle: side?.sideSubtitle ?? T.sideSubtitle,
+    hoursTitle: side?.hoursTitle ?? T.hoursTitle,
+    dayMonFri: side?.dayMonFri ?? T.dayMonFri,
+    daySat: side?.daySat ?? T.daySat,
+    daySun: side?.daySun ?? T.daySun,
+    emergencyNote: side?.emergencyNote ?? T.emergencyNote,
+    locationTitle: side?.locationTitle ?? T.locationTitle,
+    locationCity: side?.locationCity ?? T.locationCity,
+    locationMuted: side?.locationMuted ?? T.locationMuted,
+    locationsLink: side?.locationsLink ?? T.locationsLink,
+    emergencyTitle: side?.emergencyTitle ?? T.emergencyTitle,
+    emergencyText: side?.emergencyText ?? T.emergencyText,
+  };
+
   const isSubmitting = status.type === "submitting";
 
   return (
@@ -237,28 +274,28 @@ export default function ContactMessageSection({
         {/* Right: Other ways */}
         <section className="contact-message-side" aria-label={T.sideAriaLabel}>
           <header className="contact-message-sideHeader">
-            <h2 className="contact-message-title">{T.sideTitle}</h2>
-            <p className="contact-message-subtitle">{T.sideSubtitle}</p>
+            <h2 className="contact-message-title">{S.sideTitle}</h2>
+            <p className="contact-message-subtitle">{S.sideSubtitle}</p>
           </header>
 
           <div className="contact-message-sideStack">
             <div className="contact-message-sideCard">
               <div className="contact-message-sideCardTitle">
                 <Clock size={18} className="contact-message-sideIcon" aria-hidden="true" />
-                {T.hoursTitle}
+                {S.hoursTitle}
               </div>
 
               <div className="contact-message-hours">
                 <div className="contact-message-hoursRow">
-                  <div className="contact-message-hoursDay">{T.dayMonFri}</div>
+                  <div className="contact-message-hoursDay">{S.dayMonFri}</div>
                   <div className="contact-message-hoursTime">8:00 AM – 7:00 PM</div>
                 </div>
                 <div className="contact-message-hoursRow">
-                  <div className="contact-message-hoursDay">{T.daySat}</div>
+                  <div className="contact-message-hoursDay">{S.daySat}</div>
                   <div className="contact-message-hoursTime">8:00 AM – 7:00 PM</div>
                 </div>
                 <div className="contact-message-hoursRow">
-                  <div className="contact-message-hoursDay">{T.daySun}</div>
+                  <div className="contact-message-hoursDay">{S.daySun}</div>
                   <div className="contact-message-hoursTime">9:00 AM – 6:00 PM</div>
                 </div>
               </div>
@@ -266,34 +303,34 @@ export default function ContactMessageSection({
               <div className="contact-message-sideDivider" />
               <div className="contact-message-sideNote">
                 <span className="contact-message-sideNoteIcon" aria-hidden="true">📞</span>
-                  {T.emergencyNote}
+                  {S.emergencyNote}
               </div>
             </div>
 
             <div className="contact-message-sideCard">
               <div className="contact-message-sideCardTitle">
                 <MapPin size={18} className="contact-message-sideIcon" aria-hidden="true" />
-                {T.locationTitle}
+                {S.locationTitle}
               </div>
 
               <div className="contact-message-location">
-                <div>{T.locationCity}</div>
-                <div className="contact-message-locationMuted">{T.locationMuted}</div>
+                <div>{S.locationCity}</div>
+                <div className="contact-message-locationMuted">{S.locationMuted}</div>
               </div>
 
               <Link className="contact-message-sideLink" href="/locations">
-                {T.locationsLink}
+                {S.locationsLink}
               </Link>
             </div>
 
             <a className="contact-message-sideCard contact-message-sideCard--emergency" href="tel:+17863662729">
               <div className="contact-message-sideCardTitle">
                 <PhoneCall size={18} className="contact-message-sideIcon" aria-hidden="true" />
-                {T.emergencyTitle}
+                {S.emergencyTitle}
               </div>
 
               <div className="contact-message-emergencyText">
-                {T.emergencyText}
+                {S.emergencyText}
               </div>
               <div className="contact-message-emergencyNumber">+1 (786) 366-2729</div>
             </a>
