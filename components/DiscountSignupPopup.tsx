@@ -627,8 +627,8 @@ export default function DiscountSignupPopup() {
 
               <p className="discount-popup__successHint">
                 {issuedDiscountType === "flat"
-                  ? `Use this code at checkout for ${formatUsd(issuedDiscountValue)} off your first service`
-                  : `Use this code at checkout for ${issuedPercent}% off your first service`}
+                  ? `Use this code for ${formatUsd(issuedDiscountValue)} off your first service`
+                  : `Use this code for ${issuedPercent}% off your first service`}
               </p>
             </div>
           )}
