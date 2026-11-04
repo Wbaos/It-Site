@@ -32,9 +32,12 @@ export async function GET() {
     `*[_type == "post" && publishedAt <= now() && defined(slug.current)]
       | order(publishedAt desc)[0...50]{
         title,
+        titleEs,
         slug,
         excerpt,
+        excerptEs,
         metaDescription,
+        metaDescriptionEs,
         publishedAt,
         _updatedAt,
         "authorName": author->name
@@ -84,21 +87,21 @@ export async function GET() {
   const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>CallTechCare Blog</title>
-    <link>${siteUrl}/blog</link>
+    <title>Blog de CallTechCare</title>
+    <link>${siteUrl}/es/blog</link>
 
     <description>
-    Sprinkler, irrigation, and security camera tips for South Florida — including sprinkler maintenance, irrigation guides, security camera advice, and practical maintenance insights.
+    Consejos de sprinklers, irrigación y cámaras de seguridad para el sur de Florida — incluyendo mantenimiento de sprinklers, guías de irrigación, consejos de cámaras de seguridad e ideas prácticas de mantenimiento.
     </description>
 
-    <generator>CallTechCare Blog RSS</generator>
+    <generator>Blog de CallTechCare RSS</generator>
 
-    <language>en-us</language>
+    <language>es-us</language>
 
     <image>
       <url>https://www.calltechcare.com/logo-schema.png</url>
       <title>CallTechCare</title>
-      <link>${siteUrl}/blog</link>
+      <link>${siteUrl}/es/blog</link>
     </image>
 
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>

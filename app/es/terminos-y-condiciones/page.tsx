@@ -111,7 +111,7 @@ export default function TermsAndConditionsPageEs() {
 
                                 <p className="legal-highlight">Programación</p>
                                 <p>
-                                    Las citas de servicio pueden programarse a través de nuestro sitio web. La confirmación se proporcionará por correo electrónico.
+                                    Las citas de servicio pueden programarse a través de nuestro sitio web o por teléfono. Te llamaremos o te escribiremos dentro de 24 horas para confirmar tu cita.
                                 </p>
 
                                 <p className="legal-highlight">Cancelaciones</p>
@@ -135,13 +135,12 @@ export default function TermsAndConditionsPageEs() {
                                     El precio final se confirma antes de que comience el trabajo.
                                 </p>
                                 <p>
-                                    Los pagos se realizan en persona al final de la cita, en efectivo, con tarjeta o por Zelle. No hay pago en línea.
+                                    Los pagos se realizan en persona al final de la cita, en efectivo, con cheque, con tarjeta o por Zelle. No hay pago en línea.
                                 </p>
 
                                 <p className="legal-highlight">Cargos adicionales pueden aplicar por:</p>
                                 <ul>
                                     <li>Partes y materiales (cotizados por separado)</li>
-                                    <li>Servicio fuera de horario o de emergencia</li>
                                     <li>Viaje más allá de las áreas de servicio estándar</li>
                                 </ul>
                             </div>

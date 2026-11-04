@@ -288,7 +288,7 @@ export async function sendDiscountCodeEmail(params: {
         <div style="padding:18px 18px 14px 18px; background:#0b1220; color:#ffffff;">
           <div style="font-size:12px; letter-spacing:1.2px; opacity:0.9;">CALLTECHCARE</div>
           <div style="font-size:22px; font-weight:800; line-height:1.2; margin-top:8px;">Here’s your ${escapeHtml(valueLabel)} code</div>
-          <div style="font-size:13px; opacity:0.9; margin-top:6px;">Use this code at checkout to save on your first service.</div>
+          <div style="font-size:13px; opacity:0.9; margin-top:6px;">Use this code to save on your first service.</div>
         </div>
 
         <div style="padding:18px;">

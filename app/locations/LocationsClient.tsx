@@ -161,6 +161,7 @@ export default function LocationsClient({ locale = "en" }: { locale?: "en" | "es
                         .url()}
                       alt={`${location.city}, ${location.state}`}
                       fill
+                      sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
                       className="object-cover"
                     />
                     <div className="location-card-gradient" />

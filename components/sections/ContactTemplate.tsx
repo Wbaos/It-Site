@@ -139,7 +139,7 @@ export default function ContactTemplate({
                   aria-hidden="true"
                 />
                 <div className="contact-support-statValue">
-                  {isEs ? "Lun–Sáb" : "Mon–Sat"}
+                  {isEs ? "Lun–Dom" : "Mon–Sun"}
                 </div>
               </div>
 
@@ -186,7 +186,7 @@ export default function ContactTemplate({
                 </div>
 
                 <div className="contact-support-cardMeta">
-                  {isEs ? "Disponible lun–sáb" : "Available Mon–Sat"}
+                  {isEs ? "Disponible lun–dom" : "Available Mon–Sun"}
                 </div>
               </a>
 

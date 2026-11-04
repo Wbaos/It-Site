@@ -115,8 +115,8 @@ export default function TermsAndConditionsPage() {
 
                                 <p className="legal-highlight">Scheduling</p>
                                 <p>
-                                    Service appointments can be scheduled through our website. Confirmation
-                                    will be provided via email.
+                                    Service appointments can be scheduled through our website or by phone.
+                                    We&apos;ll call or message you within 24 hours to confirm your appointment.
                                 </p>
 
                                 <p className="legal-highlight">Cancellations</p>
@@ -142,13 +142,13 @@ export default function TermsAndConditionsPage() {
                                     Final pricing is confirmed before work begins.
                                 </p>
                                 <p>
-                                    Payments are securely processed via Stripe.
+                                    Payments are made in person at the end of the appointment, in cash, by
+                                    check, by card, or by Zelle. There is no online payment.
                                 </p>
 
                                 <p className="legal-highlight">Additional charges may apply for:</p>
                                 <ul>
                                     <li>Parts and materials (quoted separately)</li>
-                                    <li>After-hours or emergency service</li>
                                     <li>Travel beyond standard service areas</li>
                                 </ul>
                             </div>
