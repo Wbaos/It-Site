@@ -52,7 +52,6 @@ const nextConfig: NextConfig = {
       { source: "/cancel", destination: "/request-quote", permanent: true },
       { source: "/thank-you", destination: "/request-quote", permanent: true },
       { source: "/reviews/write", destination: "/contact", permanent: true },
-      { source: "/es/servicios", destination: "/es/#services", permanent: true },
       { source: "/reviews", destination: "/contact", permanent: true },
       { source: "/assessment/:path*", destination: "/request-quote", permanent: true },
       { source: "/assessment", destination: "/request-quote", permanent: true },

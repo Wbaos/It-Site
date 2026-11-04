@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { Providers } from "./Providers";
 import { LoadingProvider } from "@/lib/LoadingContext";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import QuickCallButton from "@/components/QuickCallButton";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import CookieConsent from "@/components/CookieConsent";
@@ -99,6 +100,13 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Locale from middleware (x-locale): Spanish pages get Spanish schema text.
+  const locale = (await headers()).get("x-locale") === "es" ? "es" : "en";
+  const schemaDescription =
+    locale === "es"
+      ? "Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, inspección gratis."
+      : "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service within business hours, free inspection.";
+
   // City list from Sanity (Lote 2): drives the organization areaServed
   // schema and the footer areas. Falls back to the fixed canonical list
   // when Sanity comes back empty, so the layout never breaks on a blip.
@@ -133,8 +141,7 @@ export default async function RootLayout({
       width: 512,
       height: 512,
     },
-    description:
-        "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service within business hours, free inspection.",
+    description: schemaDescription,
     telephone: "+1-786-366-2729",
     areaServed: footerCities.map((c) => ({ "@type": "City", name: c.name })),
     address: {
@@ -187,7 +194,7 @@ export default async function RootLayout({
       "Irrigation System Installation",
       "Security Camera Installation",
     ],
-    paymentAccepted: ["Cash", "Credit Card", "Zelle"],
+    paymentAccepted: ["Cash", "Check", "Credit Card", "Zelle"],
   };
   
 
@@ -198,7 +205,7 @@ export default async function RootLayout({
     url: "https://www.calltechcare.com",
     name: "CallTechCare",
     publisher: { "@id": "https://www.calltechcare.com/#organization" },
-    inLanguage: "en-US",
+    inLanguage: locale === "es" ? "es" : "en-US",
   };
 
   const serviceJsonLd = {

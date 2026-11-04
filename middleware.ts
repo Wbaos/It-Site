@@ -25,7 +25,12 @@ function checkRateLimit(ip: string): boolean {
 }
 
 export async function middleware(request: NextRequest) {
-  const response = NextResponse.next();
+  // Locale for server components (root layout JSON-LD): /es/* pages are Spanish.
+  const pathname = request.nextUrl.pathname;
+  const isSpanish = pathname === "/es" || pathname.startsWith("/es/");
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-locale", isSpanish ? "es" : "en");
+  const response = NextResponse.next({ request: { headers: requestHeaders } });
 
   const setNoIndex = (res: NextResponse) => {
     res.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
