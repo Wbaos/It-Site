@@ -1,7 +1,6 @@
                 
    
-interface SvgIconProps {
-    name:
+export type SvgIconName =
     | "user-avatar"
     | "calltechcare-logo"
     | "arrow-right-simple"
@@ -52,6 +51,9 @@ interface SvgIconProps {
     | "alert-circle"
     | "map-pin"
     | "x";
+
+interface SvgIconProps {
+    name: SvgIconName;
     size?: number;
     color?: string;
     className?: string;

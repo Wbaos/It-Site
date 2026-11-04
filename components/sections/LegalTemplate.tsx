@@ -198,7 +198,9 @@ export default function LegalTemplate({
           {(doc.sections ?? []).map((section, i) => (
             <div className="legal-card" key={i}>
               <div className="legal-card-header">
-                <SvgIcon name={section.icon ?? ""} size={38} className="legal-card-icon" />
+                {section.icon ? (
+                  <SvgIcon name={section.icon} size={38} className="legal-card-icon" />
+                ) : null}
                 <h2>{pick(section.heading, section.headingEs, locale)}</h2>
               </div>
               <Blocks blocks={section.blocks} locale={locale} />
