@@ -50,7 +50,7 @@ export default function HomeVideo({ locale = "en" }: { locale?: "en" | "es" }) {
           <video
             ref={videoRef}
             src="https://cdn.sanity.io/files/celkrwoq/production/2eb0ad49383d3a6f110abb3e6aba30bffd15e2dd.mp4"
-            poster="https://cdn.sanity.io/images/celkrwoq/production/5839c3116edccd85882b50a97612a27ed68bd9f9-1024x768.jpg?w=640&fm=webp&q=70"
+            poster="https://cdn.sanity.io/images/celkrwoq/production/5839c3116edccd85882b50a97612a27ed68bd9f9-1024x768.jpg?w=640&fm=webp&q=50"
             muted
             loop
             playsInline
