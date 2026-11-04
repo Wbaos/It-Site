@@ -13,11 +13,6 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
-const DESCRIPTION_ES: Record<string, string> = {
-  miami: "CallTechCare ofrece reparación profesional de sprinklers e instalación de irrigación en Miami para propiedades residenciales y comerciales. También ofrecemos instalación de cámaras de seguridad. Atendemos todos los barrios de Miami con servicio rápido y confiable y estimados claros.",
-  "fort-lauderdale": "CallTechCare ofrece reparación profesional de sprinklers e instalación de irrigación en Fort Lauderdale para propiedades residenciales y comerciales. También ofrecemos instalación de cámaras de seguridad en todo el condado de Broward con servicio rápido y confiable.",
-};
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const location = await getLocationBySlug(slug, "es");
@@ -30,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${location.city} | Reparación de Sprinklers, Irrigación y Cámaras de Seguridad`,
-    description: DESCRIPTION_ES[slug] || location.description,
+    description: location.descriptionEs || location.description,
     alternates: {
       canonical: `https://www.calltechcare.com/es/areas-de-servicio/${slug}`,
       languages: {
@@ -40,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     openGraph: {
       title: location.city,
-      description: DESCRIPTION_ES[slug] || location.description,
+      description: location.descriptionEs || location.description,
       url: `https://www.calltechcare.com/es/areas-de-servicio/${slug}`,
       siteName: "CallTechCare",
       images: location.heroImage

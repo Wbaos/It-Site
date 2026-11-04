@@ -1,14 +1,4 @@
 
-const DESCRIPTION_ES: Record<string, string> = {
-  miami: "CallTechCare ofrece reparación profesional de sprinklers e instalación de irrigación en Miami para propiedades residenciales y comerciales. También ofrecemos instalación de cámaras de seguridad. Atendemos todos los barrios de Miami con servicio rápido y confiable y estimados claros.",
-  "fort-lauderdale": "CallTechCare ofrece reparación profesional de sprinklers e instalación de irrigación en Fort Lauderdale para propiedades residenciales y comerciales. También ofrecemos instalación de cámaras de seguridad en todo el condado de Broward con servicio rápido y confiable.",
-};
-
-const WHY_ES: Record<string, string[]> = {
-  miami: ["Servicio local en Miami", "Diagnóstico y reparación rápida de sprinklers", "Experiencia residencial y comercial", "Instalaciones profesionales de cámaras de seguridad", "Precios claros desde el principio"],
-  "fort-lauderdale": ["Servicio local en Broward", "Diagnóstico y reparación rápida de sprinklers", "Experiencia residencial y comercial", "Instalaciones profesionales de cámaras de seguridad", "Precios claros desde el principio"],
-};
-
 const BADGE_ES: Record<string, string> = {
   "5-Star Rated": "Calificación 5 estrellas",
   "Locally Owned": "Negocio local",
@@ -168,7 +158,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
     "@type": "Service",
     name: isSpanish ? `Reparación de Sprinklers, Irrigación y Cámaras de Seguridad en ${location.city}, ${location.state}` : `Sprinkler Repair, Irrigation & Security Cameras in ${location.city}, ${location.state}`,
     url: pageUrl,
-    description: isSpanish ? (DESCRIPTION_ES[slug] || location.description) : (location.metaDescription || location.description),
+    description: isSpanish ? (location.descriptionEs || location.description) : (location.metaDescription || location.description),
     areaServed: {
       "@type": "City",
       name: `${location.city}, ${location.state}`,
@@ -247,7 +237,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
               <h2 className="location-section-title">
                 {isSpanish ? `Servicios en ${location.city}` : `Services in ${location.city}`}
               </h2>
-              <p className="location-section-text">{isSpanish ? (DESCRIPTION_ES[slug] || location.description) : location.description}</p>
+              <p className="location-section-text">{isSpanish ? (location.descriptionEs || location.description) : location.description}</p>
               <p className="location-section-text">
                 {isSpanish ? `Nuestro equipo en ${location.city} ayuda con la instalación de cámaras de seguridad y el trabajo de sprinklers e irrigación. Nos enorgullece ofrecer servicio el mismo día dentro del horario, estimados claros tras la inspección y un servicio al cliente excepcional en el área de ${location.city}, ${location.state}.` : `Our ${location.city} team helps with security camera installation and sprinkler & irrigation work. We pride ourselves on providing same-day service within business hours, clear estimates after inspection, and exceptional customer service to the ${location.city}, ${location.state} area.`}
               </p>
@@ -274,7 +264,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                   {isSpanish ? `Por Qué Elegirnos en ${location.city}` : `Why Choose Us in ${location.city}`}
                 </h2>
                 <div className="location-reasons-grid">
-                  {(isSpanish && WHY_ES[slug] ? WHY_ES[slug] : location.whyChooseUs).map((reason, index) => (
+                  {(isSpanish && location.whyChooseUsEs ? location.whyChooseUsEs : location.whyChooseUs).map((reason, index) => (
                     <div key={index} className="location-reason-item">
                       <CheckCircle2 />
                       <span className="location-reason-text">{reason}</span>
