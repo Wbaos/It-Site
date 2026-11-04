@@ -17,6 +17,7 @@ export const SERVICE_ES_PATHS: Record<string, string> = {
   "new-irrigation-installation": "/es/instalacion-nueva-de-irrigacion",
   "wireless-camera-installation": "/es/instalacion-de-camaras-inalambricas",
   "landscaping": "/es/reparacion-de-sprinklers-e-irrigacion",
+  "home-security": "/es/seguridad-del-hogar",
 };
 
 export function serviceHref(slug: string, locale: "en" | "es"): string {
