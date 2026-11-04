@@ -5,8 +5,10 @@ import Link from "next/link";
 
 interface Service {
   title: string;
+  titleEs?: string;
   slug: string | { current: string };
   description?: string;
+  descriptionEs?: string;
   price?: number;
   showPrice?: boolean;
   pricingModel?: "flat" | "hourly";
@@ -15,16 +17,22 @@ interface Service {
 
 interface ServiceGroup {
   title: string;
+  titleEs?: string;
   slug: string | { current: string };
   description?: string;
+  descriptionEs?: string;
   services: Service[];
 }
 
 interface Props {
   serviceGroups: ServiceGroup[];
+  locale?: "en" | "es";
 }
 
-export default function CategoryServicesAccordion({ serviceGroups }: { serviceGroups: any[] }) {
+import { serviceHref } from "@/lib/serviceTwins";
+
+export default function CategoryServicesAccordion({ serviceGroups, locale = "en" }: { serviceGroups: any[]; locale?: "en" | "es" }) {
+  const isSpanish = locale === "es";
   const [openIndex, setOpenIndex] = useState<number | null>(serviceGroups && serviceGroups.length > 0 ? 0 : null);
   const handleToggle = (idx: number) => {
     setOpenIndex(openIndex === idx ? null : idx);
@@ -58,11 +66,11 @@ export default function CategoryServicesAccordion({ serviceGroups }: { serviceGr
                   <SvgIcon name="checkmark-circle" size={40} color="#34d399" className="category-service-check" />
                   <span className="category-service-title-block">
                     <span className="category-service-title-row-flex">
-                      <span className="category-service-title">{group.title}</span>
+                      <span className="category-service-title">{isSpanish && group.titleEs ? group.titleEs : group.title}</span>
                       <span className="category-service-count">({(group.services ?? []).length})</span>
                     </span>
-                    {group.description && (
-                      <span className="category-service-desc">{group.description}</span>
+                    {(isSpanish && group.descriptionEs ? group.descriptionEs : group.description) && (
+                      <span className="category-service-desc">{isSpanish && group.descriptionEs ? group.descriptionEs : group.description}</span>
                     )}
                   </span>
                 </span>
@@ -78,7 +86,7 @@ export default function CategoryServicesAccordion({ serviceGroups }: { serviceGr
                     )}
                     {displayPrice && (
                       <span className="category-service-price-label">
-                        {displayIsHourly ? "starting hourly rate" : "starting price"}
+                        {isSpanish ? (displayIsHourly ? "tarifa inicial por hora" : "precio inicial") : (displayIsHourly ? "starting hourly rate" : "starting price")}
                       </span>
                     )}
                   </span>
@@ -92,10 +100,10 @@ export default function CategoryServicesAccordion({ serviceGroups }: { serviceGr
               <div className="category-service-dropdown">
                 {group.services && group.services.length === 1 ? (
                   <div className="single-service-option" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: 64 }}>
-                    <span className="single-service-title">{group.services[0].title}</span>
+                    <span className="single-service-title">{isSpanish && group.services[0].titleEs ? group.services[0].titleEs : group.services[0].title}</span>
                     <div className="single-service-actions" style={{ marginLeft: 'auto' }}>
-                      <Link href={`/services/${typeof group.services[0].slug === 'string' ? group.services[0].slug : group.services[0].slug.current}`} className="subservice-card-book-btn">
-                        Book Now
+                      <Link href={serviceHref(typeof group.services[0].slug === 'string' ? group.services[0].slug : group.services[0].slug.current, locale)} className="subservice-card-book-btn">
+                        {isSpanish ? "Reserva ahora" : "Book Now"}
                       </Link>
                     </div>
                   </div>
@@ -107,12 +115,12 @@ export default function CategoryServicesAccordion({ serviceGroups }: { serviceGr
                         <div key={serviceSlug} className="subservice-card">
                           <div className="subservice-card-header">
                             <div className="subservice-card-title-row">
-                              <span className="subservice-card-title">{service.title}</span>
+                              <span className="subservice-card-title">{isSpanish && service.titleEs ? service.titleEs : service.title}</span>
                               {service.popular && (
                                 <span className="subservice-card-badge">Popular</span>
                               )}
                             </div>
-                            <div className="subservice-card-desc">{service.description}</div>
+                            <div className="subservice-card-desc">{isSpanish && service.descriptionEs ? service.descriptionEs : service.description}</div>
                           </div>
                           <div className="subservice-card-bottom">
                             {service.showPrice && typeof service.price === "number" && (
@@ -121,8 +129,8 @@ export default function CategoryServicesAccordion({ serviceGroups }: { serviceGr
                                 {service.pricingModel === "hourly" ? "/hr" : ""}
                               </span>
                             )}
-                            <Link href={`/services/${serviceSlug}`} className="subservice-card-book-btn">
-                              Book
+                            <Link href={serviceHref(serviceSlug, locale)} className="subservice-card-book-btn">
+                              {isSpanish ? "Reservar" : "Book"}
                             </Link>
                           </div>
                         </div>

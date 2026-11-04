@@ -511,12 +511,16 @@ export default async function ServicePage({
       sanity.fetch(
         `*[_type == "serviceGroup" && category->slug.current == $slug]|order(order asc){
           title,
+          titleEs,
           slug,
           description,
+          descriptionEs,
           "services": *[_type == "service" && group._ref == ^._id]{
             title,
+            titleEs,
             slug,
             description,
+            descriptionEs,
             pricingModel,
             popular
           }
@@ -527,6 +531,7 @@ export default async function ServicePage({
         `*[_type == "category" && defined(slug.current) && count(*[_type == "serviceGroup" && category._ref == ^._id]) > 0]
           | order(displayOrder asc, title asc){
           title,
+          titleEs,
           slug,
           icon {
             asset->{url},
@@ -537,10 +542,15 @@ export default async function ServicePage({
       sanity.fetch(
         `*[_type == "category" && slug.current == $slug][0]{
           title,
+          titleEs,
           description,
+          descriptionEs,
           seoTitle,
+          seoTitleEs,
           metaDescription,
+          metaDescriptionEs,
           tagline,
+          taglineEs,
           "jobsCompletedValue": jobsCompleted.value,
           "jobsCompletedIconUrl": jobsCompleted.icon.asset->url,
           "customerRatingValue": customerRating.value,
@@ -548,8 +558,14 @@ export default async function ServicePage({
           "yearsExperienceValue": yearsExperience.value,
           "yearsExperienceIconUrl": yearsExperience.icon.asset->url,
           about,
+          aboutEs,
           features,
+          featuresEs,
           faqs[]{
+            question,
+            answer
+          },
+          faqsEs[]{
             question,
             answer
           },
@@ -558,7 +574,17 @@ export default async function ServicePage({
             description,
             "iconUrl": icon.asset->url
           },
+          whyChooseEs[]{
+            title,
+            description,
+            "iconUrl": icon.asset->url
+          },
           badges[]{
+            title,
+            description,
+            "iconUrl": icon.asset->url
+          },
+          badgesEs[]{
             title,
             description,
             "iconUrl": icon.asset->url
@@ -572,6 +598,22 @@ export default async function ServicePage({
       )
     ]);
     if (category) {
+
+      // Spanish fields from Sanity, with English fallback (dynamic, organized:
+      // no hardcoded Spanish copy for category content).
+      const catTitle = isSpanish && category.titleEs ? category.titleEs : category.title;
+      const catTagline = isSpanish && category.taglineEs ? category.taglineEs : category.tagline;
+      const catAbout = isSpanish && category.aboutEs?.length ? category.aboutEs : category.about;
+      const catFeatures = isSpanish && category.featuresEs?.length ? category.featuresEs : category.features;
+      const catFaqs = isSpanish && category.faqsEs?.length ? category.faqsEs : category.faqs;
+      const catBadges = (isSpanish && category.badgesEs?.length ? category.badgesEs : category.badges ?? []).map((b: any, i: number) => ({
+        ...b,
+        iconUrl: b.iconUrl || (category.badges?.[i]?.iconUrl ?? null),
+      }));
+      const catWhyChoose = (isSpanish && category.whyChooseEs?.length ? category.whyChooseEs : category.whyChoose ?? []).map((w: any, i: number) => ({
+        ...w,
+        iconUrl: w.iconUrl || (category.whyChoose?.[i]?.iconUrl ?? null),
+      }));
 
       const categoryBreadcrumbSchema = {
         "@context": "https://schema.org",
@@ -600,11 +642,11 @@ export default async function ServicePage({
       const categoryServiceSchema = {
         "@context": "https://schema.org",
         "@type": "Service",
-        name: `${category.title} in Miami & Broward`,
+        name: isSpanish ? `${catTitle} en Miami y Broward` : `${catTitle} in Miami & Broward`,
         description:
-          category.metaDescription ||
-          category.tagline ||
-          category.description ||
+          (isSpanish && category.metaDescriptionEs ? category.metaDescriptionEs : category.metaDescription) ||
+          catTagline ||
+          (isSpanish && category.descriptionEs ? category.descriptionEs : category.description) ||
           `Professional ${category.title} services in Miami, Fort Lauderdale, and Broward County.`,
 
         areaServed: {
@@ -620,7 +662,7 @@ export default async function ServicePage({
         },
       };
 
-      const categoryFaqMainEntity = (category?.faqs || [])
+      const categoryFaqMainEntity = (catFaqs || [])
         .map((faq: any) => {
           const question = String(faq?.question || "").trim();
           const answer = String(faq?.answer || "").trim();
@@ -692,22 +734,22 @@ export default async function ServicePage({
                 )}
                 <div>
                   <h1 className="category-title">
-                    {category.title} in Miami & Broward
+                    {isSpanish ? `${catTitle} en Miami y Broward` : `${catTitle} in Miami & Broward`}
                   </h1>
-                  {category.tagline && (
-                    <p className="category-desc">{category.tagline}</p>
+                  {catTagline && (
+                    <p className="category-desc">{catTagline}</p>
                   )}
                 </div>
               </div>
             </div>
           </div>
           {/* Sidebar */}
-          <CategorySidebarClient categories={allCategories} selectedSlug={slug} />
+          <CategorySidebarClient categories={allCategories} selectedSlug={slug} locale={locale} />
           <div className="category-main-layout">
             {/* Main Content */}
             <main className="category-main-content">
               {serviceGroups.length > 0 ? (
-                <CategoryServicesAccordion serviceGroups={serviceGroups} />
+                <CategoryServicesAccordion serviceGroups={serviceGroups} locale={locale} />
               ) : (
                 <p className="category-no-services">No service groups found in this category.</p>
               )}
@@ -813,11 +855,11 @@ export default async function ServicePage({
                   </div>
                 )}
 
-                {category.features && category.features.length > 0 && (
+                {catFeatures && catFeatures.length > 0 && (
                   <div className="styled-features-box">
-                    <div className="styled-features-title">What&apos;s Included</div>
+                    <div className="styled-features-title">{isSpanish ? "Qué incluye" : "What&apos;s Included"}</div>
                     <ul className="styled-features-list">
-                      {category.features.map((f: string, i: number) => (
+                      {catFeatures.map((f: string, i: number) => (
                         <li key={i} className="styled-feature-item">
                           <SvgIcon name="checkmark-circle" size={20} color="#10b981" />
                           {f}
@@ -826,7 +868,7 @@ export default async function ServicePage({
                     </ul>
                   </div>
                 )}
-                {category.badges && category.badges.length > 0 && (
+                {catBadges && catBadges.length > 0 && (
                   <div className="styled-badges-row">
                     {category.badges.map((badge: any, i: number) => (
                       <div className="styled-badge" key={i}>
@@ -842,23 +884,23 @@ export default async function ServicePage({
                   </div>
                 )}
 
-                {category.faqs && category.faqs.length > 0 && (
+                {catFaqs && catFaqs.length > 0 && (
                   <div className="styled-category-faq">
                     <FaqAccordion
-                      faqs={category.faqs.map((faq: any) => ({
+                      faqs={catFaqs.map((faq: any) => ({
                         q: faq.question,
                         a: faq.answer,
                       }))}
                     />
                   </div>
                 )}
-                {category.whyChoose && category.whyChoose.length > 0 && (
+                {catWhyChoose && catWhyChoose.length > 0 && (
                   <div className="styled-whychoose-section">
                     <div className="styled-whychoose-title">
-                      Why Choose CallTechCare?
+                      {isSpanish ? "¿Por qué elegir CallTechCare?" : "Why Choose CallTechCare?"}
                     </div>
                     <div className="styled-whychoose-grid">
-                      {category.whyChoose.map((item: any, i: number) => (
+                      {catWhyChoose.map((item: any, i: number) => (
                         <div className="styled-whychoose-card" key={i}>
                           {item.iconUrl && (
                             <img
