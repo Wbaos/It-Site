@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
 import { connectDB } from "@/lib/mongodb";
 import Assessment from "@/app/models/Assessment";
 
