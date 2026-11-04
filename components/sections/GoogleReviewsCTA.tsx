@@ -19,8 +19,8 @@ export default function GoogleReviewsCTA({ locale = "en" }: { locale?: "en" | "e
       <div className="site-container-testimonials google-cta-card">
         <div className="google-cta-photo">
           <Image
-            src="https://cdn.sanity.io/images/celkrwoq/production/6120f13ca37bb09c75a7687af063c8a045b82ed1-1320x904.jpg"
-            alt={isSpanish ? "Sistema de sprinklers funcionando" : "Sprinkler system working"}
+            src="https://cdn.sanity.io/images/celkrwoq/production/7b390027ba801d9cd8d1b588194d1787b25004f8-1024x768.jpg"
+            alt={isSpanish ? "Sprinklers regando un jardín con piedras negras y palmera" : "Sprinklers watering a garden with black stones and a palm tree"}
             width={600}
             height={400}
             loading="lazy"
