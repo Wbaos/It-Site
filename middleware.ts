@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 
 // Rate limiting storage (use Redis in production)
 const rateLimit = new Map<string, { count: number; resetTime: number }>();
@@ -51,59 +50,6 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/api/')) {
     if (!checkRateLimit(ip)) {
       return new NextResponse('Too Many Requests', { status: 429 });
-    }
-  }
-
-  // Protected Routes - Require Authentication
-  const protectedPaths = [
-    '/account',
-    '/es/cuenta',
-    '/reviews/write'
-  ];
-
-  const isProtectedPath = protectedPaths.some(path => 
-    request.nextUrl.pathname.startsWith(path.replace('[slug]', ''))
-  );
-
-  if (isProtectedPath) {
-    const token = await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
-
-    if (!token) {
-      const isSpanishPath = request.nextUrl.pathname.startsWith('/es/');
-      const url = new URL(isSpanishPath ? '/es/iniciar-sesion' : '/login', request.url);
-      url.searchParams.set('callbackUrl', request.nextUrl.pathname);
-      return NextResponse.redirect(url);
-    }
-
-    // Even when authenticated, keep account pages out of search results.
-    if (request.nextUrl.pathname.startsWith('/account') || request.nextUrl.pathname.startsWith('/es/cuenta')) {
-      setNoIndex(response);
-    }
-  }
-
-  // API Route Protection
-  const protectedApiPaths = [
-    '/api/orders',
-    '/api/profile',
-    '/api/manage-subscription',
-    '/api/reviews'
-  ];
-
-  const isProtectedApi = protectedApiPaths.some(path =>
-    request.nextUrl.pathname.startsWith(path)
-  );
-
-  if (isProtectedApi && request.method !== 'OPTIONS') {
-    const token = await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
-
-    if (!token) {
-      return new NextResponse('Unauthorized', { status: 401 });
     }
   }
 
