@@ -45,6 +45,16 @@ export type ApiCategory = {
 };
 
 export type RequestQuoteContent = {
+  heroTitle?: string;
+  heroTitleEs?: string;
+  heroSubtitle?: string;
+  heroSubtitleEs?: string;
+  steps?: Array<{
+    title?: string;
+    titleEs?: string;
+    desc?: string;
+    descEs?: string;
+  }>;
   sidebarBenefitsTitle?: string;
   sidebarBenefits?: Array<{
     title?: string;
@@ -188,6 +198,16 @@ export async function getServiceCategories(): Promise<ApiCategory[]> {
 
 export async function getRequestQuoteContent(): Promise<RequestQuoteContent | null> {
   const query = `*[_type == "requestQuotePage"][0]{
+    heroTitle,
+    heroTitleEs,
+    heroSubtitle,
+    heroSubtitleEs,
+    steps[]{
+      title,
+      titleEs,
+      desc,
+      descEs
+    },
     sidebarBenefitsTitle,
     sidebarBenefits[]{
       title,

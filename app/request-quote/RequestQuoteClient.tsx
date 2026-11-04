@@ -154,7 +154,6 @@ export default function RequestQuoteClient(props: {
   const router = useRouter();
   const pathname = usePathname();
   const locale = props.locale ?? "en";
-  const steps = locale === "es" ? STEPS_ES : STEPS_EN;
   const urgencyOptions =
     locale === "es" ? URGENCY_OPTIONS_ES : URGENCY_OPTIONS_EN;
 
@@ -177,6 +176,37 @@ export default function RequestQuoteClient(props: {
     [props.initialCategories, locale]
   );
   const rqContent = props.initialRqContent;
+
+  // Quote hero and How It Works steps read from Sanity when present; the
+  // hardcoded values are the exact current copy and stay as fallback.
+  const heroTitle =
+    locale === "es"
+      ? (rqContent?.heroTitleEs ?? "Solicita una inspección gratis")
+      : (rqContent?.heroTitle ?? "Request a Free Inspection");
+  const heroSubtitle =
+    locale === "es"
+      ? (rqContent?.heroSubtitleEs ??
+        "Recibe una cotización personalizada para lo que necesitas. Sin obligación, respuesta rápida y recomendaciones de expertos.")
+      : (rqContent?.heroSubtitle ??
+        "Get a personalized quote for your service needs. No obligation, fast response, and expert recommendations.");
+  const steps =
+    rqContent?.steps && rqContent.steps.length > 0
+      ? rqContent.steps.map((s, i) => {
+          const fallback = (locale === "es" ? STEPS_ES : STEPS_EN)[i];
+          return {
+            title:
+              (locale === "es" ? s.titleEs : s.title) ??
+              fallback?.title ??
+              "",
+            desc:
+              (locale === "es" ? s.descEs : s.desc) ??
+              fallback?.desc ??
+              "",
+          };
+        })
+      : locale === "es"
+        ? STEPS_ES
+        : STEPS_EN;
 
   const [activeTab, setActiveTab] = useState<string>(props.initialTab || categories?.[0]?.categorySlug || "all");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -529,16 +559,8 @@ export default function RequestQuoteClient(props: {
           <div className="rq-client__heroIconWrap">
             <SvgIcon name="document" size={34} color="#00E793" />
           </div>
-          <h1 className="rq-client__heroTitle">
-            {locale === "es"
-              ? "Solicita una inspección gratis"
-              : "Request a Free Inspection"}
-          </h1>
-          <p className="rq-client__heroSubtitle">
-{locale === "es"
-              ? "Recibe una cotización personalizada para lo que necesitas. Sin obligación, respuesta rápida y recomendaciones de expertos."
-              : "Get a personalized quote for your service needs. No obligation, fast response, and expert recommendations."}
-          </p>
+          <h1 className="rq-client__heroTitle">{heroTitle}</h1>
+          <p className="rq-client__heroSubtitle">{heroSubtitle}</p>
 
           <div className="rq-client__stepsGrid">
             {steps.map((step, i) => (
