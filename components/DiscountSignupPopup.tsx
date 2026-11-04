@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -90,7 +89,8 @@ function markSeenNow() {
 }
 
 export default function DiscountSignupPopup() {
-  const { data: session, status } = useSession();
+  const session = null;
+  const status = "unauthenticated" as const;
   const pathname = usePathname();
 
   const [hydrated, setHydrated] = useState(false);
