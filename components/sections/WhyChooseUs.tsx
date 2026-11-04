@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ShieldCheck, Users, Clock, Cpu, Network, Smile } from "lucide-react";
+import { ShieldCheck, Users, Clock, Cpu, Star, Smile } from "lucide-react";
 
 export default function WhyChooseUs({ locale = "en" }: { locale?: "en" | "es" }) {
   const isSpanish = locale === "es";
@@ -9,66 +9,66 @@ export default function WhyChooseUs({ locale = "en" }: { locale?: "en" | "es" })
   const features = isSpanish
     ? [
         {
-          icon: <Smile size={32} strokeWidth={1.5} />,
-          title: "Expertos Pacientes y Amables",
-          text: "Ayudamos a dueños de casas y pequeños negocios con explicaciones claras y servicio confiable a domicilio, desde reparaciones de sprinklers hasta cámaras de seguridad.",
+          icon: <ShieldCheck size={32} strokeWidth={1.5} />,
+          title: "Garantía de 1 Año",
+          text: "Garantía de 1 año cuando CallTechCare hace el trabajo y provee los materiales.",
         },
         {
-          icon: <Clock size={32} strokeWidth={1.5} />,
-          title: "Disponibilidad el Mismo Día",
-          text: "La mayoría de las citas están disponibles el mismo día dentro del horario en las 30 áreas de servicio, desde Sunrise hasta Cutler Bay.",
-        },
-        {
-          icon: <Network size={32} strokeWidth={1.5} />,
-          title: "Instalación de Cámaras de Seguridad",
-          text: "Instalamos cámaras de seguridad inalámbricas en los lugares correctos, con la mejor cobertura y ángulos de vista, para casas y pequeños negocios.",
-        },
-        {
-          icon: <Cpu size={32} strokeWidth={1.5} />,
-          title: "Instalaciones Hechas en Persona",
-          text: "Desde la reparación de sprinklers y la solución de problemas de irrigación hasta la instalación de cámaras de seguridad: nos encargamos de los detalles.",
+          icon: <Star size={32} strokeWidth={1.5} />,
+          title: "5.0 en Google",
+          text: "Calificación 5.0 con 26 reseñas en Google, de clientes reales.",
         },
         {
           icon: <Users size={32} strokeWidth={1.5} />,
-          title: "La Confianza de Casas y Pequeños Negocios",
-          text: "Desde una sola reparación de sprinklers hasta un sistema nuevo completo o una instalación de cámaras, apoyamos a casas, oficinas en casa y pequeños negocios.",
+          title: "Más de 1500 Clientes Ayudados",
+          text: "Más de 1500 clientes felices en Miami y Broward.",
         },
         {
-          icon: <ShieldCheck size={32} strokeWidth={1.5} />,
-          title: "Precios Transparentes — Sin Sorpresas",
-          text: "Estimados claros tras la inspección. Sin cargos ocultos. Sin ventas adicionales. Sin presión.",
+          icon: <Smile size={32} strokeWidth={1.5} />,
+          title: "Inspección Gratis, Estimado Claro",
+          text: "Inspección gratis. Estimado claro después de inspeccionar. Sin cargos ocultos. Sin ventas adicionales. Sin presión.",
+        },
+        {
+          icon: <Clock size={32} strokeWidth={1.5} />,
+          title: "Respuesta en 24 Horas",
+          text: "Respondemos dentro de 24 horas, con servicio el mismo día dentro del horario.",
+        },
+        {
+          icon: <Cpu size={32} strokeWidth={1.5} />,
+          title: "Servicio en Persona, en Tu Casa",
+          text: "Trabajo a domicilio, en persona, en tu casa o negocio. Nada remoto.",
         },
       ]
     : [
         {
-          icon: <Smile size={32} strokeWidth={1.5} />,
-          title: "Patient & Friendly Experts",
-          text: "We help homeowners and small businesses with clear explanations and reliable, on-site service—from sprinkler repairs to security cameras.",
+          icon: <ShieldCheck size={32} strokeWidth={1.5} />,
+          title: "1-Year Warranty",
+          text: "1-year warranty when CallTechCare performs the work and provides the materials.",
         },
         {
-          icon: <Clock size={32} strokeWidth={1.5} />,
-          title: "Same-Day Availability",
-          text: "Most appointments available the same day within business hours across all 30 service areas, from Sunrise to Cutler Bay.",
-        },
-        {
-          icon: <Network size={32} strokeWidth={1.5} />,
-          title: "Security Camera Installation",
-          text: "We install wireless security cameras in the right spots, with the best coverage and viewing angles, for homes and small businesses.",
-        },
-        {
-          icon: <Cpu size={32} strokeWidth={1.5} />,
-          title: "Hands-On Installations",
-          text: "From sprinkler repair and irrigation troubleshooting to security camera installation—we handle the details.",
+          icon: <Star size={32} strokeWidth={1.5} />,
+          title: "5.0 on Google",
+          text: "5.0 rating from 26 Google reviews, from real customers.",
         },
         {
           icon: <Users size={32} strokeWidth={1.5} />,
-          title: "Trusted by Homes & Small Businesses",
-          text: "From a single sprinkler repair to a full new system or a camera setup, we support homes, home offices, and small businesses.",
+          title: "1500+ Customers Helped",
+          text: "More than 1500 happy customers across Miami and Broward.",
         },
         {
-          icon: <ShieldCheck size={32} strokeWidth={1.5} />,
-          title: "Transparent Pricing — No Surprises",
-          text: "Clear estimates after inspection. No hidden fees. No upselling. No pressure.",
+          icon: <Smile size={32} strokeWidth={1.5} />,
+          title: "Free Inspection, Clear Estimate",
+          text: "Free inspection. Clear estimates after inspection. No hidden fees. No upselling. No pressure.",
+        },
+        {
+          icon: <Clock size={32} strokeWidth={1.5} />,
+          title: "Response Within 24 Hours",
+          text: "We respond within 24 hours, with same-day service within business hours.",
+        },
+        {
+          icon: <Cpu size={32} strokeWidth={1.5} />,
+          title: "In-Person Service, At Your Home",
+          text: "On-site work, in person, at your home or business. Nothing remote.",
         },
       ];
 
