@@ -811,7 +811,7 @@ export default async function ServicePage({
                       <div className="styled-about-title">{isSpanish ? "Sobre Este Servicio" : "About This Service"}</div>
                       <div className="styled-about-desc">
   <PortableText
-    value={category.about}
+    value={catAbout}
     components={{
       block: {
         normal: ({ children }) => (
@@ -870,7 +870,7 @@ export default async function ServicePage({
                 )}
                 {catBadges && catBadges.length > 0 && (
                   <div className="styled-badges-row">
-                    {category.badges.map((badge: any, i: number) => (
+                    {catBadges.map((badge: any, i: number) => (
                       <div className="styled-badge" key={i}>
                         {badge.iconUrl && (
                           <img src={badge.iconUrl} alt={badge.title} className="styled-badge-icon" width={32} height={32} />
