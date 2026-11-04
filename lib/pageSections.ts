@@ -51,8 +51,8 @@ const heroPropsEn = {
 
   phoneNumber: "+17863662729",
   showCallButton: true,
-  imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/5839c3116edccd85882b50a97612a27ed68bd9f9-1024x768.jpg",
-  imageAlt: "Sprinklers watering a landscaped front yard in Miami",
+  imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/2e7a8e52d7d2f5f052fff1a0c71ebb1970b439c2-4032x3024.jpg",
+  imageAlt: "Sprinklers watering a landscaped front yard in Miami, with the CallTechCare truck",
 
   stats: [
     { value: "1500+", label: "Local Clients Helped" },
@@ -73,8 +73,8 @@ const heroPropsEs = {
   secondaryCtaHref: "/es/solicita-una-cotizacion",
   phoneNumber: "+17863662729",
   showCallButton: true,
-  imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/5839c3116edccd85882b50a97612a27ed68bd9f9-1024x768.jpg",
-  imageAlt: "Sprinklers regando un jardín delantero en Miami",
+  imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/2e7a8e52d7d2f5f052fff1a0c71ebb1970b439c2-4032x3024.jpg",
+  imageAlt: "Sprinklers regando un jardín delantero en Miami, con el truck de CallTechCare",
   stats: [
     { value: "1500+", label: "Clientes Locales Atendidos" },
     { value: "5/5", label: "Satisfacción del Cliente" },
