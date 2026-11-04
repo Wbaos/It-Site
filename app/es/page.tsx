@@ -19,7 +19,7 @@ const EN_HOME_URL = "https://www.calltechcare.com/";
 export const metadata: Metadata = {
   title: "Reparación de Sprinklers en Miami y Broward | CallTechCare",
   description:
-    "Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, estimados gratis. Llama al (786) 366-2729.",
+    "Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, inspección gratis. Llama al (786) 366-2729.",
   alternates: {
     canonical: ES_HOME_URL,
     languages: {
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Reparación de Sprinklers en Miami y Broward | CallTechCare",
     description:
-      "Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, estimados gratis.",
+      "Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, inspección gratis.",
     url: ES_HOME_URL,
     siteName: "CallTechCare",
     images: [
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Reparación de Sprinklers en Miami y Broward | CallTechCare",
     description:
-      "Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, estimados gratis.",
+      "Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, inspección gratis.",
     images: ["https://www.calltechcare.com/logo-og.png"],
   },
 };
