@@ -1204,7 +1204,7 @@ const isTvMounting = tvMountingSlugs.includes(slug);
         </h3>
 
         <div className="review-action-footer">
-          {googleWriteReviewUrl ? (
+          {googleWriteReviewUrl && (
             <a
               href={googleWriteReviewUrl}
               target="_blank"
@@ -1213,15 +1213,6 @@ const isTvMounting = tvMountingSlugs.includes(slug);
             >
               {isSpanish ? "Escribe una reseña" : "Write a Review"}
             </a>
-          ) : (
-            <Link
-              href={`/reviews/write?slug=${slug}&title=${encodeURIComponent(
-                displayTitle || ""
-              )}&img=${encodeURIComponent(service.image?.asset?.url || "")}`}
-              className="btn-write-review"
-            >
-              {isSpanish ? "Escribe una reseña" : "Write a Review"}
-            </Link>
           )}
         </div>
       </div>

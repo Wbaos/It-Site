@@ -230,15 +230,8 @@ export default function Footer({ areas }: { areas?: FooterArea[] }) {
         </div>
 
         <div className="footer-trust">
-          <p>{isSpanishPage ? "Pago seguro • Desarrollado con Stripe" : "Secure Checkout • Powered by Stripe"}</p>
+          <p>{isSpanishPage ? "Llámanos para tu inspección gratis" : "Call us for your free inspection"}</p>
           <div className="trust-icons">
-            <Image
-              src="/icons/stripe-white.png"
-              alt="Stripe Secure Payments"
-              width={60}
-              height={20}
-              style={{ width: "auto", height: "auto" }}
-            />
             <Image
               src="/icons/ssl.png"
               alt="SSL Secured"

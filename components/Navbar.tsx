@@ -2,14 +2,10 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import { Search, Menu, X, ShoppingCart } from "lucide-react";
-import { useCart } from "@/lib/CartContext";
+import { Search, Menu, X } from "lucide-react";
 import { useNav } from "@/lib/NavContext";
 import { useLoading } from "@/lib/LoadingContext";
-import NotificationDropdown from "@/components/NotificationDropdown";
-import UserMenu from "@/components/UserMenu";
 import SearchModal from "@/components/SearchModal";
 import SvgIcon from "@/components/common/SvgIcons";
 import AnnouncementBar from "@/components/AnnouncementBar";
@@ -35,12 +31,10 @@ const NAV_ES = [
 export default function Navbar() {
   const { open, setOpen, dropdownOpen, setDropdownOpen, searchOpen, setSearchOpen, closeAll } = useNav();
   const router = useRouter();
-  const { data: session } = useSession();
   const [categories, setCategories] = useState<any[]>([]);
   const [loadingServices, setLoadingServices] = useState(true);
   const [activeGroup, setActiveGroup] = useState<{catIdx: number, groupIdx: number} | null>(null);
   const pathname = usePathname();
-  const { items } = useCart();
   const { setLoading } = useLoading();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [mobileServicesPanel, setMobileServicesPanel] = useState(false);
@@ -131,12 +125,6 @@ export default function Navbar() {
       "/es/blog/prepara-tu-sistema-de-sprinklers-para-la-temporada-seca-en-miami",
     "/contact": "/es/contacto",
     "/request-quote": "/es/solicita-una-cotizacion",
-    "/cart": "/es/carrito",
-    "/checkout": "/es/pago",
-    "/login": "/es/iniciar-sesion",
-    "/signup": "/es/registrarse",
-    "/forgot-password": "/es/olvido-contrasena",
-    "/account": "/es/cuenta",
     "/about": "/es/sobre-nosotros",
     "/locations": "/es/areas-de-servicio",
     "/locations/miami": "/es/areas-de-servicio/miami",
@@ -222,12 +210,6 @@ export default function Navbar() {
       "/blog/prepare-sprinkler-system-dry-season-miami",
     "/es/contacto": "/contact",
     "/es/solicita-una-cotizacion": "/request-quote",
-    "/es/carrito": "/cart",
-    "/es/pago": "/checkout",
-    "/es/iniciar-sesion": "/login",
-    "/es/registrarse": "/signup",
-    "/es/olvido-contrasena": "/forgot-password",
-    "/es/cuenta": "/account",
     "/es/sobre-nosotros": "/about",
     "/es/areas-de-servicio": "/locations",
     "/es/areas-de-servicio/miami": "/locations/miami",
@@ -668,23 +650,7 @@ export default function Navbar() {
             >
               <Search size={18} />
             </button>
-            <NotificationDropdown
-              userId={session?.user?.id || "guest"}
-              onOpen={closeAllMenus}
-            />
-            <Link
-              href={isSpanishPage ? "/es/carrito" : "/cart"}
-              className="icon-btn cart-btn"
-              onClick={closeAllMenus}
-            >
-              <ShoppingCart size={18} />
-              {items?.length > 0 && (
-                <span className="cart-count">{items.length}</span>
-              )}
-            </Link>
-            <div onClick={closeAllMenus}>
-              <UserMenu />
-            </div>
+
           </div>
         </div>
       </header>

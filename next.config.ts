@@ -35,6 +35,30 @@ const nextConfig: NextConfig = {
   // 🔹 REDIRECTS (FIXES GOOGLE SMART TV ISSUE)
   async redirects() {
     return [
+      // Cleanup 2026-11-03: no cart, checkout, login, accounts, notifications,
+      // bookings or plans anymore (call + in-person quote only). Old URLs go
+      // to the quote form instead of 404ing.
+      { source: "/cart", destination: "/request-quote", permanent: true },
+      { source: "/checkout", destination: "/request-quote", permanent: true },
+      { source: "/login", destination: "/request-quote", permanent: true },
+      { source: "/signup", destination: "/request-quote", permanent: true },
+      { source: "/forgot-password", destination: "/request-quote", permanent: true },
+      { source: "/account", destination: "/request-quote", permanent: true },
+      { source: "/account/:path*", destination: "/request-quote", permanent: true },
+      { source: "/book/:path*", destination: "/request-quote", permanent: true },
+      { source: "/plans/:path*", destination: "/request-quote", permanent: true },
+      { source: "/services/:slug/book/:path*", destination: "/request-quote", permanent: true },
+      { source: "/success", destination: "/request-quote", permanent: true },
+      { source: "/cancel", destination: "/request-quote", permanent: true },
+      { source: "/thank-you", destination: "/request-quote", permanent: true },
+      { source: "/reviews/write", destination: "/contact", permanent: true },
+      { source: "/es/carrito", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/pago", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/iniciar-sesion", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/registrarse", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/olvido-contrasena", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/cuenta", destination: "/es/solicita-una-cotizacion", permanent: true },
+
       {
         source: "/services/smart-tv",
         destination: "/services",

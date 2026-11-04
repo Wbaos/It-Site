@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -90,7 +89,8 @@ function markSeenNow() {
 }
 
 export default function DiscountSignupPopup() {
-  const { data: session, status } = useSession();
+  const session = null;
+  const status = "unauthenticated" as const;
   const pathname = usePathname();
 
   const [hydrated, setHydrated] = useState(false);
@@ -135,7 +135,6 @@ export default function DiscountSignupPopup() {
 
   useEffect(() => {
     if (!hydrated) return;
-    if (status === "loading") return;
     if (session) return;
     if (signedUp) return;
 
@@ -163,7 +162,7 @@ export default function DiscountSignupPopup() {
     }, OPEN_DELAY_MS);
 
     return () => window.clearTimeout(timer);
-  }, [hydrated, pathname, session, signedUp, status]);
+  }, [hydrated, pathname, session, signedUp]);
 
   function close(reason: "dismiss" | "success") {
     setOpen(false);
@@ -381,7 +380,7 @@ export default function DiscountSignupPopup() {
     pathname?.startsWith("/signup") || pathname?.startsWith("/login")
   );
 
-  const canShowUI = hydrated && status !== "loading" && !session && !isBlockedRoute && (!signedUp || open);
+  const canShowUI = hydrated && !session && !isBlockedRoute && (!signedUp || open);
   if (!canShowUI) return null;
 
   return (
