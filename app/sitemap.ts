@@ -8,13 +8,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const now = new Date();
 
-    const [locationSlugs, serviceItems, categoryItems, postItems, cityItems] = await Promise.all([
+    const [locationSlugs, serviceItems, postItems, cityItems] = await Promise.all([
         getAllLocationSlugs(),
         sanity.fetch<Array<{ slug?: { current?: string }; _updatedAt?: string }>>(
             `*[_type == "service" && enabled == true && defined(slug.current)]{ slug, _updatedAt }`
-        ),
-        sanity.fetch<Array<{ slug?: { current?: string }; _updatedAt?: string }>>(
-            `*[_type == "category" && defined(slug.current)]{ slug, _updatedAt }`
         ),
         sanity.fetch<Array<{ slug?: { current?: string }; _updatedAt?: string; publishedAt?: string }>>(
             `*[_type == "post" && publishedAt <= now() && defined(slug.current)]
@@ -34,18 +31,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.7,
     }));
 
-    // /services/[slug] is used for both services and categories
+    // /services/[slug] lists service pages only. Blog categories have no
+    // archive pages, so they must not be emitted here.
     const slugToLastModified = new Map<string, Date>();
 
     for (const item of serviceItems ?? []) {
-        const slug = item.slug?.current;
-        if (!slug) continue;
-        const last = item._updatedAt ? new Date(item._updatedAt) : now;
-        const existing = slugToLastModified.get(slug);
-        if (!existing || last > existing) slugToLastModified.set(slug, last);
-    }
-
-    for (const item of categoryItems ?? []) {
         const slug = item.slug?.current;
         if (!slug) continue;
         const last = item._updatedAt ? new Date(item._updatedAt) : now;

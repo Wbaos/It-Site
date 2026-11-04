@@ -25,6 +25,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getLocationBySlug, getAllLocationSlugs } from "@/lib/sanityLocations";
+import GoogleReviewsCTA from "@/components/sections/GoogleReviewsCTA";
 import { urlFor } from "@/lib/sanityImage";
 import {
   Phone,
@@ -398,34 +399,8 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
               </section>
             )}
 
-            {/* Testimonials */}
-            {location.testimonials && location.testimonials.length > 0 && (
-              <div className="location-section-card">
-                <h2 className="location-section-title">
-                  {isSpanish ? `Lo Que Dicen los Clientes de ${location.city}` : `What ${location.city} Customers Say`}
-                </h2>
-                <div className="location-testimonials">
-                  {location.testimonials.map((testimonial, index) => (
-                    <div key={index} className="location-testimonial-card">
-                      <div className="location-testimonial-stars">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={i < testimonial.rating ? "filled" : "empty"}
-                          />
-                        ))}
-                      </div>
-                      <p className="location-testimonial-text">
-                        &quot;{testimonial.text}&quot;
-                      </p>
-                      <p className="location-testimonial-author">
-                        - {testimonial.name}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Google reviews aggregate (real Google data, same card as the home page) */}
+            <GoogleReviewsCTA locale={locale} />
           </div>
 
           {/* Right Column - Contact Card (Sticky) */}
