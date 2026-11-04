@@ -27,7 +27,6 @@ export default function GoogleReviewsCTA({ locale = "en" }: { locale?: "en" | "e
           />
         </div>
         <div className="google-cta-content">
-        <div className="google-cta-rating">5.0</div>
         <h2 className="testimonials-heading">{isSpanish ? "5.0 en Google" : "5.0 on Google"}</h2>
         <div
           style={{
