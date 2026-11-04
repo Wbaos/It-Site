@@ -287,11 +287,11 @@ const SHARED_FAQS: Record<Locale, { q: string; a: string }[]> = {
   en: [
     {
       q: "How much does sprinkler repair cost in {CITY}?",
-      a: "It depends on the problem and the size of your system. A broken sprinkler head costs less than a valve or zone repair. CallTechCare gives you a clear, upfront estimate before starting any work, and the estimate is free.",
+      a: "It depends on the problem and the size of your system. A broken sprinkler head costs less than a valve or zone repair. CallTechCare gives you a clear, upfront estimate before starting any work, and the inspection is free.",
     },
     {
       q: "How fast can you come to {CITY} for a sprinkler repair?",
-      a: "In {CITY} and most of {COUNTY}, same-day appointments are available. Call (786) 366-2729 and we will confirm the next available visit.",
+      a: "In {CITY} and most of {COUNTY}, same-day appointments within business hours are available. Call (786) 366-2729 and we will confirm the next available visit.",
     },
     {
       q: "Do you serve areas near {CITY}?",
@@ -317,11 +317,11 @@ const SHARED_FAQS: Record<Locale, { q: string; a: string }[]> = {
   es: [
     {
       q: "¿Cuánto cuesta la reparación de sprinklers en {CITY}?",
-      a: "Depende del problema y del tamaño de tu sistema. Un cabezal roto cuesta menos que una reparación de válvula o de zona. CallTechCare te da un estimado claro y por adelantado antes de empezar cualquier trabajo, y el estimado es gratis.",
+      a: "Depende del problema y del tamaño de tu sistema. Un cabezal roto cuesta menos que una reparación de válvula o de zona. CallTechCare te da un estimado claro y por adelantado antes de empezar cualquier trabajo, y la inspección es gratis.",
     },
     {
       q: "¿Qué tan rápido pueden venir a {CITY} para una reparación de sprinklers?",
-      a: "En {CITY} y la mayor parte de {COUNTY}, hay citas disponibles el mismo día. Llama al (786) 366-2729 y te confirmamos la próxima visita disponible.",
+      a: "En {CITY} y la mayor parte de {COUNTY}, hay citas disponibles el mismo día dentro del horario. Llama al (786) 366-2729 y te confirmamos la próxima visita disponible.",
     },
     {
       q: "¿Atienden áreas cerca de {CITY}?",
@@ -555,6 +555,12 @@ export default function CityTemplate({ city, locale }: { city: City; locale: Loc
               <Link href={t.hubLangHref}>{t.hubLangText}</Link>
             </p>
           )}
+          <div className="seo-trust-chips">
+            <span>{isEs ? "Inspección gratis" : "Free inspection"}</span>
+            <span>{isEs ? "Mismo día dentro del horario" : "Same-day within business hours"}</span>
+            <span>{isEs ? "5.0 en Google · 26 reseñas" : "5.0 on Google · 26 reviews"}</span>
+            <span>{isEs ? "Más de 1500 clientes ayudados" : "1500+ customers helped"}</span>
+          </div>
           <h2 className="seo-intro-title">{seoIntroTitle}</h2>
           <p>{introP1}</p>
           <Link href={detailsHref} className="spr-detailsLink" aria-label={t.detailsAria}>
@@ -570,7 +576,7 @@ export default function CityTemplate({ city, locale }: { city: City; locale: Loc
             {t.cameraSuffix}
           </p>
           <h3 className="spr-landing-h3">{t.areaH3}</h3>
-          <p>{renderAreaSegments(areaSegments, locale)}</p>
+          <p className="seo-area-list">{renderAreaSegments(areaSegments, locale)}</p>
           <p>
             {t.finalCtaPrefix}
             <Link href={t.quoteHref}>{t.finalCtaLinkText}</Link>
