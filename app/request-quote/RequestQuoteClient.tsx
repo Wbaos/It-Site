@@ -531,8 +531,8 @@ export default function RequestQuoteClient(props: {
           </div>
           <h1 className="rq-client__heroTitle">
             {locale === "es"
-              ? "Solicita un estimado gratis de sprinklers"
-              : "Request a Free Sprinkler Estimate"}
+              ? "Solicita una inspección gratis"
+              : "Request a Free Inspection"}
           </h1>
           <p className="rq-client__heroSubtitle">
 {locale === "es"

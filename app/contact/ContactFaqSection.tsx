@@ -23,7 +23,7 @@ const DEFAULT_FAQS: FaqItem[] = [
   },
   {
     q: "What payment methods do you accept?",
-    a: "We accept major credit and debit cards through secure checkout, and we also accept cash payments for in-home services. Additional payment options may be available depending on the service.",
+    a: "We accept major credit and debit cards, cash, and Zelle, paid in person at the end of your appointment. There is no online checkout: you call us, we inspect in person, and you pay after the work is done.",
   },
   {
     q: "Do you offer warranties on your services?",

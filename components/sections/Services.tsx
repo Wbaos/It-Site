@@ -122,11 +122,11 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
             {s.image?.asset && (
               <div className="service-card-photo">
                 <Image
-                  src={urlFor(s.image).width(640).height(360).url()}
+                  src={urlFor(s.image).width(480).height(270).url()}
                   alt={s.image?.alt || title}
-                  width={640}
-                  height={360}
-                  sizes="(max-width: 760px) 90vw, 640px"
+                  width={480}
+                  height={270}
+                  sizes="(max-width: 760px) 90vw, 480px"
                 />
               </div>
             )}
