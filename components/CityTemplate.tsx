@@ -363,7 +363,7 @@ const NOT_SURE_P: Record<Locale, string> = {
 
 const ES_STATS = [
   { value: "1500+", label: "Clientes Locales Atendidos" },
-  { value: "5/5", label: "Satisfacción del Cliente" },
+  { value: "5.0", label: "Calificación en Google" },
   { value: "Mismo Día", label: "Citas Disponibles" },
 ];
 

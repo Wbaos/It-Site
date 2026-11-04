@@ -251,7 +251,7 @@ export default function ContactTemplate({
                 </h3>
 
                 <p className="contact-support-cardText">
-                  {isEs ? "Recibe un estimado gratis" : "Get a free estimate"}
+                  {isEs ? "Recibe una inspección gratis" : "Get a free inspection"}
                 </p>
               </Link>
             </div>
