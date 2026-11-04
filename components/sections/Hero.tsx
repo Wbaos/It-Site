@@ -16,6 +16,7 @@ type Props = {
   phoneNumber?: string;
   showCallButton?: boolean;
   imageSrc?: string;
+  mobileImageSrc?: string;
   imageAlt?: string;
   stats?: Stat[];
 };
@@ -32,6 +33,7 @@ export default function Hero({
   phoneNumber = "+17863662729",
   showCallButton = true,
   imageSrc = "https://cdn.sanity.io/images/celkrwoq/production/5deeea70b525963987af93601f412cebdbede547-5712x4284.webp",
+  mobileImageSrc,
   imageAlt = "Sprinkler system working",
   stats = [
     { value: "1500+", label: "Local Clients Helped" },
@@ -49,6 +51,15 @@ export default function Hero({
           alt=""
           aria-hidden="true"
           className="hero-bg"
+          loading="eager"
+        />
+      )}
+      {mobileImageSrc && (
+        <img
+          src={mobileImageSrc}
+          alt=""
+          aria-hidden="true"
+          className="hero-bg-mobile"
           loading="eager"
         />
       )}
