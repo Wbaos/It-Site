@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Sobre CallTechCare | Reparación de Sprinklers en Miami y Broward",
-  description: "Conoce a CallTechCare, la empresa de reparación de sprinklers e irrigación de Miami y Broward. Servicio el mismo día, estimados gratis y garantía de 1 año en nuestro trabajo.",
+  description: "Conoce a CallTechCare, la empresa de reparación de sprinklers e irrigación de Miami y Broward. Servicio el mismo día dentro del horario, inspección gratis y garantía de 1 año en nuestro trabajo.",
   alternates: {
     canonical: "https://www.calltechcare.com/es/sobre-nosotros",
     languages: {

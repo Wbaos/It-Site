@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const description =
     service?.metaDescriptionEs ||
     service?.descriptionEs ||
-    "Reparación de fugas de sprinklers en Miami y Broward para fugas subterráneas de PVC, tuberías rotas, conexiones con fuga, acumulación de agua y pérdida de presión. Servicio el mismo día, estimados gratis.";
+    "Reparación de fugas de sprinklers en Miami y Broward para fugas subterráneas de PVC, tuberías rotas, conexiones con fuga, acumulación de agua y pérdida de presión. Servicio el mismo día dentro del horario, inspección gratis.";
   return {
     title,
     description,

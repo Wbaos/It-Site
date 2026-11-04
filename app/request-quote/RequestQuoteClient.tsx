@@ -92,7 +92,7 @@ const ES_SERVICE: Record<
   "sprinkler-repair-and-installation": {
     title: "Reparación e Instalación de Sprinklers",
     description:
-      "Reparación de sprinklers e instalación de irrigación en Miami y Broward para casas y negocios: cabezales rotos, válvulas, fugas, zonas y controladores. Servicio el mismo día, estimados gratis.",
+      "Reparación de sprinklers e instalación de irrigación en Miami y Broward para casas y negocios: cabezales rotos, válvulas, fugas, zonas y controladores. Servicio el mismo día dentro del horario, inspección gratis.",
     navDescription: "Reparación de sprinklers e instalación de irrigación",
   },
   "new-irrigation-installation": {
@@ -110,7 +110,7 @@ const ES_SERVICE: Record<
   "sprinkler-leak-repair": {
     title: "Reparación de Fugas de Sprinklers",
     description:
-      "Reparación de fugas de sprinklers en Miami y Broward para fugas subterráneas de PVC, tuberías rotas, conexiones con fuga, acumulación de agua y pérdida de presión. Servicio el mismo día, estimados gratis.",
+      "Reparación de fugas de sprinklers en Miami y Broward para fugas subterráneas de PVC, tuberías rotas, conexiones con fuga, acumulación de agua y pérdida de presión. Servicio el mismo día dentro del horario, inspección gratis.",
     navDescription: "Detección de fugas y reparación de tuberías",
   },
   "sprinkler-pump-replacement": {

@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const description =
     service?.metaDescriptionEs ||
     service?.descriptionEs ||
-    "Reparación e instalación de sprinklers en Miami y Broward. Cabezales, válvulas, fugas, zonas y controladores. Servicio el mismo día, estimados gratis.";
+    "Reparación e instalación de sprinklers en Miami y Broward. Cabezales, válvulas, fugas, zonas y controladores. Servicio el mismo día dentro del horario, inspección gratis.";
   return {
     title,
     description,
