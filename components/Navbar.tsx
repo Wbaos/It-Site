@@ -108,6 +108,8 @@ export default function Navbar() {
       "/es/instalacion-de-camaras-inalambricas",
     "/services/landscaping":
       "/es/reparacion-de-sprinklers-e-irrigacion",
+    "/services/home-security":
+      "/es/seguridad-del-hogar",
     "/blog": "/es/blog",
     "/blog/wireless-camera-installation-secure-your-home-or-business":
       "/es/blog/instalacion-de-camaras-inalambricas-para-tu-hogar-o-negocio",
@@ -197,6 +199,8 @@ export default function Navbar() {
       "/services/wireless-camera-installation",
     "/es/reparacion-de-sprinklers-e-irrigacion":
       "/services/landscaping",
+    "/es/seguridad-del-hogar":
+      "/services/home-security",
     "/es/blog": "/blog",
     "/es/blog/instalacion-de-camaras-inalambricas-para-tu-hogar-o-negocio":
       "/blog/wireless-camera-installation-secure-your-home-or-business",
