@@ -76,8 +76,8 @@ export default async function HowItWorks({ locale = "en" }: { locale?: "en" | "e
 
         <div className="how-photo">
           <Image
-            src="https://cdn.sanity.io/images/celkrwoq/production/3d495269e52ed93bb03e5191f5fd5c2082be1bcd-1024x768.jpg"
-            alt={isSpanish ? "Sprinklers regando un patio amplio con adoquines" : "Sprinklers watering a large yard with brick pavers"}
+            src="https://cdn.sanity.io/images/celkrwoq/production/567373c542b5a2eb837d5b644626350e97c4dd49-1600x1200.jpg"
+            alt={isSpanish ? "Camión de CallTechCare en el trabajo" : "CallTechCare truck on site"}
             width={1100}
             height={420}
             loading="lazy"
