@@ -37,7 +37,7 @@ export default function FAQPageEs() {
     },
     {
       q: "¿Qué métodos de pago aceptan?",
-      a: "Aceptamos las principales tarjetas de crédito y débito a través de un pago seguro, y el pago también puede completarse al final de tu cita.",
+      a: "Aceptamos efectivo, cheques, tarjetas de crédito y débito, y Zelle, pagados en persona al final de tu cita. No hay pago en línea.",
     },
     {
       q: "¿Qué pasa si no estoy satisfecho con el servicio?",

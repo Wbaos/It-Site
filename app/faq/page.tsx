@@ -40,7 +40,7 @@ export default function FAQPage() {
     },
     {
       q: "What payment methods do you accept?",
-      a: "We accept major credit and debit cards, cash, and Zelle, paid in person at the end of your appointment. There is no online checkout.",
+      a: "We accept cash, checks, major credit and debit cards, and Zelle, paid in person at the end of your appointment. There is no online checkout.",
     },
     
     
