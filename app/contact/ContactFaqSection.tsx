@@ -23,7 +23,7 @@ const DEFAULT_FAQS: FaqItem[] = [
   },
   {
     q: "What payment methods do you accept?",
-    a: "We accept major credit and debit cards, cash, and Zelle, paid in person at the end of your appointment. There is no online checkout: you call us, we inspect in person, and you pay after the work is done.",
+    a: "We accept cash, checks, major credit and debit cards, and Zelle, paid in person at the end of your appointment. There is no online checkout: you call us, we inspect in person, and you pay after the work is done.",
   },
   {
     q: "Do you offer warranties on your services?",
@@ -62,7 +62,7 @@ const DEFAULT_FAQS_ES: FaqItem[] = [
   },
   {
     q: "¿Qué métodos de pago aceptan?",
-    a: "Aceptamos las principales tarjetas de crédito y débito por pago seguro, y también aceptamos pagos en efectivo para servicios a domicilio. Pueden haber opciones adicionales según el servicio.",
+    a: "Aceptamos efectivo, cheques, tarjetas de crédito y débito, y Zelle, pagados en persona al final de tu cita. No hay pago en línea: nos llamas, inspeccionamos en persona y pagas después de que el trabajo esté hecho.",
   },
   {
     q: "¿Ofrecen garantía en sus servicios?",

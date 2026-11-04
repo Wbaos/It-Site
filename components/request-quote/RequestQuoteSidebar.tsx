@@ -14,6 +14,18 @@ const BENEFITS: Array<{ title: string; desc: string }> = [
   { title: "Servicio local", desc: "Atendemos Miami-Dade y Broward" },
 ];
 
+// Fallback icons in the site's own icon style (Sanity benefit icons are
+// currently empty, so without these the rows show no icon at all).
+// Order matches BENEFITS / Sanity sidebarBenefits.
+const BENEFIT_ICONS = [
+  "checkmark-circle", // No obligation
+  "lightning", // Fast response
+  "verified-check", // Expert technicians
+  "shield", // 1-year warranty
+  "clock", // Flexible scheduling
+  "map-pin", // Local service
+] as const;
+
 export default function RequestQuoteSidebar(props: {
   rqContent: RequestQuoteContent | null;
   locale?: "en" | "es";
@@ -52,7 +64,14 @@ export default function RequestQuoteSidebar(props: {
                         alt={alt}
                         className="rq-sidebar__benefitIcon"
                       />
-                    ) : null}
+                    ) : (
+                      <span
+                        className="rq-sidebar__benefitIcon"
+                        style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+                      >
+                        <SvgIcon name={BENEFIT_ICONS[idx]} size={21} color="#10b981" />
+                      </span>
+                    )}
                   </div>
                   <div>
                     <div className="rq-sidebar__benefitTitle">{item.title}</div>
@@ -205,7 +224,14 @@ export default function RequestQuoteSidebar(props: {
                           alt={alt}
                           className="rq-sidebar__benefitIcon"
                         />
-                      ) : null}
+                      ) : (
+                        <span
+                          className="rq-sidebar__benefitIcon"
+                          style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+                        >
+                          <SvgIcon name={BENEFIT_ICONS[idx]} size={21} color="#10b981" />
+                        </span>
+                      )}
                     </div>
                     <div>
                       <div className="rq-sidebar__benefitTitle">
