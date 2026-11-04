@@ -8,7 +8,7 @@ export const revalidate = 60;
 const STEPS_ES = [
   {
     _id: "es-1",
-    title: "Llámanos o Reserva en Línea",
+    title: "Llámanos o Solicita una Cotización",
     desc: "Cuéntanos con qué necesitas ayuda.",
   },
   {

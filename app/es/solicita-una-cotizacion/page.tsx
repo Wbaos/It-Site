@@ -5,7 +5,7 @@ import { getRequestQuoteContent, getServiceCategories } from "@/lib/request-quot
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Estimado gratis de sprinklers en Miami y Broward | CallTechCare",
+  title: "Inspección gratis de sprinklers en Miami y Broward | CallTechCare",
   description:
     "Solicita una cotización gratis de CallTechCare para reparación de sprinklers, irrigación e instalación de cámaras de seguridad en Miami y Broward. Respondemos dentro de 24 horas.",
   alternates: {

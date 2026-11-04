@@ -4,7 +4,6 @@ import SEOIntro from "@/components/sections/SEOIntro";
 import Services from "@/components/sections/Services";
 import HowItWorks from "@/components/sections/HowItWorks";
 import GoogleReviewsCTA from "@/components/sections/GoogleReviewsCTA";
-import Pricing from "@/components/sections/PricingServer";
 import Contact from "@/components/sections/Contact";
 import HighlightsServer from "@/components/sections/HighLigthsServer";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
@@ -109,7 +108,6 @@ export function getHomeSections(locale: HomeLocale = "en"): Section[] {
       props: { locale },
     },
 
-    { key: "pricing", Component: Pricing, props: {} },
     {
       key: "contact",
       Component: Contact,

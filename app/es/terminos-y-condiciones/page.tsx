@@ -135,7 +135,7 @@ export default function TermsAndConditionsPageEs() {
                                     El precio final se confirma antes de que comience el trabajo.
                                 </p>
                                 <p>
-                                    Los pagos se procesan de forma segura a través de Stripe.
+                                    Los pagos se realizan en persona al final de la cita, en efectivo, con tarjeta o por Zelle. No hay pago en línea.
                                 </p>
 
                                 <p className="legal-highlight">Cargos adicionales pueden aplicar por:</p>
