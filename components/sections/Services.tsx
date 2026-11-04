@@ -126,6 +126,7 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
                   alt={s.image?.alt || title}
                   width={640}
                   height={360}
+                  sizes="(max-width: 760px) 90vw, 640px"
                 />
               </div>
             )}
