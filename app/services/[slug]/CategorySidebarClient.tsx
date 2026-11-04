@@ -5,6 +5,7 @@ import Image from "next/image";
 
 interface Category {
   title: string;
+  titleEs?: string;
   slug: string | { current: string };
   icon?: { asset?: { url?: string }, alt?: string };
 }
@@ -12,9 +13,13 @@ interface Category {
 interface Props {
   categories: Category[];
   selectedSlug: string;
+  locale?: "en" | "es";
 }
 
-export default function CategorySidebarClient({ categories, selectedSlug }: Props) {
+import { serviceHref } from "@/lib/serviceTwins";
+
+export default function CategorySidebarClient({ categories, selectedSlug, locale = "en" }: Props) {
+  const isSpanish = locale === "es";
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   useEffect(() => {
@@ -32,10 +37,11 @@ export default function CategorySidebarClient({ categories, selectedSlug }: Prop
       <div className="category-list">
         {categories.map((cat, i) => {
           const slug = typeof cat.slug === "object" ? cat.slug.current : cat.slug;
+          const displayTitle = isSpanish && cat.titleEs ? cat.titleEs : cat.title;
           return (
             <Link
               key={slug}
-              href={`/services/${slug}`}
+              href={serviceHref(slug, locale)}
               className={`category-list-item${slug === selectedSlug ? " active" : ""}`}
               ref={el => { itemRefs.current[i] = el; }}
             >
@@ -48,7 +54,7 @@ export default function CategorySidebarClient({ categories, selectedSlug }: Prop
                   className="category-list-icon"
                 />
               )}
-              <span>{cat.title}</span>
+              <span>{displayTitle}</span>
             </Link>
           );
         })}
