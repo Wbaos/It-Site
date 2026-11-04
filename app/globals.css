@@ -11850,9 +11850,11 @@ object-fit: cover;
   .google-cta-photo {
     flex: none;
     min-height: 200px;
+    order: 2;
   }
   .google-cta-content {
     padding: 1.5rem 1rem 2rem;
+    order: 1;
   }
 }
 
