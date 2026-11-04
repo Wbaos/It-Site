@@ -13,17 +13,172 @@ import {
 
 import ContactFaqSection from "@/app/contact/ContactFaqSection";
 import ContactMessageSection from "@/app/contact/ContactMessageSection";
+import { getContactPage } from "@/lib/sanityContact";
 
 // Single contact template for both languages: the same sections, in the
-// same order, with the same components and icons. Only the text changes,
-// via `locale`. app/contact/page.tsx renders this with locale="en" and
-// app/es/contacto/page.tsx renders this same component with locale="es".
-export default function ContactTemplate({
+// same order, with the same components and icons. Copy comes from the
+// Sanity `contactPage` document; the fallbacks below are the exact
+// pre-migration texts, used only if the document is missing a field.
+
+type Locale = "en" | "es";
+
+const STAT_ICONS = [Zap, BadgeCheck, Users, Clock];
+
+const FALLBACK_EN = {
+  heroTitle: "Contact CallTechCare for Sprinkler Repair",
+  heroSubtitle:
+    "We're here to help. Contact CallTechCare for service requests, quotes, or questions about our sprinkler, irrigation, and security camera services across Miami and South Florida.",
+  stats: [
+    { value: "24h", label: "Response Time" },
+    { value: "5.0", label: "Google Rating" },
+    { value: "1500+", label: "Happy Customers" },
+    { value: "Mon–Sun", label: "Support Availability" },
+  ],
+  optionsTitle: "How Can We Help You?",
+  cards: [
+    {
+      icon: "phone",
+      title: "Call Us",
+      text: "Talk to a live technician",
+      link: "+1 (786) 366-2729",
+      meta: "Available Mon–Sun",
+    },
+    {
+      icon: "mail",
+      title: "Email Support",
+      text: "Get a response within 24 hours",
+      link: "support@calltechcare.com",
+    },
+    { icon: "faq", title: "FAQs", text: "Find quick answers" },
+    { icon: "quote", title: "Request a Quote", text: "Get a free inspection" },
+  ],
+  sideTitle: "Other Ways to Reach Us",
+  sideSubtitle: "Choose the method that works best for you.",
+  hoursTitle: "Service Hours",
+  dayMonFri: "Monday – Friday",
+  daySat: "Saturday",
+  daySun: "Sunday",
+  emergencyNote: "Emergency service during business hours",
+  locationTitle: "Service Area",
+  locationCity: "South Florida",
+  locationMuted: "Serving Miami, Broward County, and surrounding areas",
+  locationsLink: "View all locations",
+  emergencyTitle: "Emergency Support",
+  emergencyText: "For urgent sprinkler issues, call us for same-day priority.",
+};
+
+const FALLBACK_ES = {
+  heroTitle: "Contacta a CallTechCare para reparación de sprinklers",
+  heroSubtitle:
+    "Estamos aquí para ayudarte. Contacta a CallTechCare para solicitudes de servicio, cotizaciones o preguntas sobre nuestros servicios de sprinklers, irrigación y cámaras de seguridad en Miami y el sur de Florida.",
+  stats: [
+    { value: "24h", label: "Tiempo de respuesta" },
+    { value: "5.0", label: "Calificación en Google" },
+    { value: "1500+", label: "Clientes felices" },
+    { value: "Lun–Dom", label: "Disponibilidad de soporte" },
+  ],
+  optionsTitle: "¿Cómo podemos ayudarte?",
+  cards: [
+    {
+      icon: "phone",
+      title: "Llámanos",
+      text: "Habla con un técnico en vivo",
+      link: "+1 (786) 366-2729",
+      meta: "Disponible lun–dom",
+    },
+    {
+      icon: "mail",
+      title: "Soporte por email",
+      text: "Recibe respuesta dentro de 24 horas",
+      link: "support@calltechcare.com",
+    },
+    { icon: "faq", title: "Preguntas frecuentes", text: "Encuentra respuestas rápidas" },
+    { icon: "quote", title: "Solicita una cotización", text: "Recibe una inspección gratis" },
+  ],
+  sideTitle: "Otras formas de contactarnos",
+  sideSubtitle: "Elige el método que mejor te funcione.",
+  hoursTitle: "Horario de servicio",
+  dayMonFri: "Lunes – Viernes",
+  daySat: "Sábado",
+  daySun: "Domingo",
+  emergencyNote: "Servicio de emergencia durante el horario de servicio",
+  locationTitle: "Área de servicio",
+  locationCity: "Sur de Florida",
+  locationMuted: "Atendemos Miami, Broward y áreas cercanas",
+  locationsLink: "Ver todas las ubicaciones",
+  emergencyTitle: "Soporte de emergencia",
+  emergencyText: "Para problemas urgentes de sprinklers, llámanos para prioridad el mismo día.",
+};
+
+const CARD_ICONS: Record<string, typeof Phone> = {
+  phone: Phone,
+  mail: Mail,
+  faq: HelpCircle,
+  quote: FileText,
+};
+
+const CARD_ICON_CLASSES: Record<string, string> = {
+  phone: "contact-support-cardIcon--phone",
+  mail: "contact-support-cardIcon--mail",
+  faq: "contact-support-cardIcon--faq",
+  quote: "contact-support-cardIcon--quote",
+};
+
+function cardHref(icon: string, locale: Locale): string {
+  if (icon === "phone") return "tel:+17863662729";
+  if (icon === "mail") return "mailto:support@calltechcare.com";
+  if (icon === "faq") return "#contact-faq";
+  return locale === "es" ? "/es/solicita-una-cotizacion" : "/request-quote";
+}
+
+export default async function ContactTemplate({
   locale = "en",
 }: {
-  locale?: "en" | "es";
+  locale?: Locale;
 }) {
+  const doc = await getContactPage();
   const isEs = locale === "es";
+  const fb = isEs ? FALLBACK_ES : FALLBACK_EN;
+
+  const heroTitle = (isEs ? doc?.heroTitleEs : doc?.heroTitle) ?? fb.heroTitle;
+  const heroSubtitle = (isEs ? doc?.heroSubtitleEs : doc?.heroSubtitle) ?? fb.heroSubtitle;
+  const stats =
+    doc?.stats && doc.stats.length > 0
+      ? doc.stats.map((s, i) => ({
+          value: (isEs ? s.valueEs : s.value) ?? fb.stats[i]?.value ?? "",
+          label: (isEs ? s.labelEs : s.label) ?? fb.stats[i]?.label ?? "",
+        }))
+      : fb.stats;
+  const optionsTitle = (isEs ? doc?.optionsTitleEs : doc?.optionsTitle) ?? fb.optionsTitle;
+  const cards =
+    doc?.cards && doc.cards.length > 0
+      ? doc.cards.map((c, i) => ({
+          icon: c.icon ?? fb.cards[i]?.icon ?? "faq",
+          title: (isEs ? c.titleEs : c.title) ?? fb.cards[i]?.title ?? "",
+          text: (isEs ? c.textEs : c.text) ?? fb.cards[i]?.text ?? "",
+          link: c.link ?? fb.cards[i]?.link,
+          meta: (isEs ? c.metaEs : c.meta) ?? fb.cards[i]?.meta,
+        }))
+      : fb.cards;
+  const faqs = (isEs ? doc?.faqsEs : doc?.faqs)?.map((f) => ({
+    q: f.q ?? "",
+    a: f.a ?? "",
+  }));
+  const side = {
+    sideTitle: (isEs ? doc?.sideTitleEs : doc?.sideTitle) ?? fb.sideTitle,
+    sideSubtitle: (isEs ? doc?.sideSubtitleEs : doc?.sideSubtitle) ?? fb.sideSubtitle,
+    hoursTitle: (isEs ? doc?.hoursTitleEs : doc?.hoursTitle) ?? fb.hoursTitle,
+    dayMonFri: (isEs ? doc?.dayMonFriEs : doc?.dayMonFri) ?? fb.dayMonFri,
+    daySat: (isEs ? doc?.daySatEs : doc?.daySat) ?? fb.daySat,
+    daySun: (isEs ? doc?.daySunEs : doc?.daySun) ?? fb.daySun,
+    emergencyNote: (isEs ? doc?.emergencyNoteEs : doc?.emergencyNote) ?? fb.emergencyNote,
+    locationTitle: (isEs ? doc?.locationTitleEs : doc?.locationTitle) ?? fb.locationTitle,
+    locationCity: (isEs ? doc?.locationCityEs : doc?.locationCity) ?? fb.locationCity,
+    locationMuted: (isEs ? doc?.locationMutedEs : doc?.locationMuted) ?? fb.locationMuted,
+    locationsLink: (isEs ? doc?.locationsLinkEs : doc?.locationsLink) ?? fb.locationsLink,
+    emergencyTitle: (isEs ? doc?.emergencyTitleEs : doc?.emergencyTitle) ?? fb.emergencyTitle,
+    emergencyText: (isEs ? doc?.emergencyTextEs : doc?.emergencyText) ?? fb.emergencyText,
+  };
 
   const contactSchema = {
     "@context": "https://schema.org",
@@ -60,17 +215,9 @@ export default function ContactTemplate({
               <Headphones size={34} />
             </div>
 
-            <h1 className="contact-support-title">
-              {isEs
-                ? "Contacta a CallTechCare para reparación de sprinklers"
-                : "Contact CallTechCare for Sprinkler Repair"}
-            </h1>
+            <h1 className="contact-support-title">{heroTitle}</h1>
 
-            <p className="contact-support-subtitle">
-              {isEs
-                ? "Estamos aquí para ayudarte. Contacta a CallTechCare para solicitudes de servicio, cotizaciones o preguntas sobre nuestros servicios de sprinklers, irrigación y cámaras de seguridad en Miami y el sur de Florida."
-                : "We're here to help. Contact CallTechCare for service requests, quotes, or questions about our sprinkler, irrigation, and security camera services across Miami and South Florida."}
-            </p>
+            <p className="contact-support-subtitle">{heroSubtitle}</p>
           </header>
         </div>
       </section>
@@ -82,71 +229,24 @@ export default function ContactTemplate({
       >
         <div className="contact-support-inner">
           <div className="contact-support-stats">
-            <div className="contact-support-stat">
-              <div className="contact-support-statTop">
-                <Zap
-                  size={35}
-                  strokeWidth={2.2}
-                  className="contact-support-statIcon"
-                  aria-hidden="true"
-                />
-                <div className="contact-support-statValue">24h</div>
-              </div>
+            {stats.map((stat, i) => {
+              const Icon = STAT_ICONS[i] ?? Zap;
+              return (
+                <div className="contact-support-stat" key={i}>
+                  <div className="contact-support-statTop">
+                    <Icon
+                      size={35}
+                      strokeWidth={2.2}
+                      className="contact-support-statIcon"
+                      aria-hidden="true"
+                    />
+                    <div className="contact-support-statValue">{stat.value}</div>
+                  </div>
 
-              <div className="contact-support-statLabel">
-                {isEs ? "Tiempo de respuesta" : "Response Time"}
-              </div>
-            </div>
-
-            <div className="contact-support-stat">
-              <div className="contact-support-statTop">
-                <BadgeCheck
-                  size={35}
-                  strokeWidth={2.2}
-                  className="contact-support-statIcon"
-                  aria-hidden="true"
-                />
-                <div className="contact-support-statValue">5.0</div>
-              </div>
-
-              <div className="contact-support-statLabel">
-                {isEs ? "Calificación en Google" : "Google Rating"}
-              </div>
-            </div>
-
-            <div className="contact-support-stat">
-              <div className="contact-support-statTop">
-                <Users
-                  size={35}
-                  strokeWidth={2.2}
-                  className="contact-support-statIcon"
-                  aria-hidden="true"
-                />
-                <div className="contact-support-statValue">1500+</div>
-              </div>
-
-              <div className="contact-support-statLabel">
-                {isEs ? "Clientes felices" : "Happy Customers"}
-              </div>
-            </div>
-
-            <div className="contact-support-stat">
-              <div className="contact-support-statTop">
-                <Clock
-                  size={35}
-                  strokeWidth={2.2}
-                  className="contact-support-statIcon"
-                  aria-hidden="true"
-                />
-                <div className="contact-support-statValue">
-                  {isEs ? "Lun–Dom" : "Mon–Sun"}
+                  <div className="contact-support-statLabel">{stat.label}</div>
                 </div>
-              </div>
-
-              <div className="contact-support-statLabel">
-                {isEs ? "Disponibilidad de soporte" : "Support Availability"}
-              </div>
-            </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -158,102 +258,47 @@ export default function ContactTemplate({
       >
         <div className="contact-support-inner">
           <div className="contact-support-options">
-            <h2 className="contact-support-optionsTitle">
-              {isEs ? "¿Cómo podemos ayudarte?" : "How Can We Help You?"}
-            </h2>
+            <h2 className="contact-support-optionsTitle">{optionsTitle}</h2>
 
             <div className="contact-support-grid">
-              <a className="contact-support-card" href="tel:+17863662729">
-                <div
-                  className="contact-support-cardIcon contact-support-cardIcon--phone"
-                  aria-hidden="true"
-                >
-                  <Phone size={22} />
-                </div>
+              {cards.map((card, i) => {
+                const Icon = CARD_ICONS[card.icon] ?? HelpCircle;
+                const iconClass = CARD_ICON_CLASSES[card.icon] ?? "";
+                const href = cardHref(card.icon, locale);
+                const inner = (
+                  <>
+                    <div
+                      className={`contact-support-cardIcon ${iconClass}`}
+                      aria-hidden="true"
+                    >
+                      <Icon size={22} />
+                    </div>
 
-                <h3 className="contact-support-cardTitle">
-                  {isEs ? "Llámanos" : "Call Us"}
-                </h3>
+                    <h3 className="contact-support-cardTitle">{card.title}</h3>
 
-                <p className="contact-support-cardText">
-                  {isEs
-                    ? "Habla con un técnico en vivo"
-                    : "Talk to a live technician"}
-                </p>
+                    <p className="contact-support-cardText">{card.text}</p>
 
-                <div className="contact-support-cardLink">
-                  +1 (786) 366-2729
-                </div>
+                    {card.link ? (
+                      <div className="contact-support-cardLink">{card.link}</div>
+                    ) : null}
 
-                <div className="contact-support-cardMeta">
-                  {isEs ? "Disponible lun–dom" : "Available Mon–Sun"}
-                </div>
-              </a>
-
-              <a
-                className="contact-support-card"
-                href="mailto:support@calltechcare.com"
-              >
-                <div
-                  className="contact-support-cardIcon contact-support-cardIcon--mail"
-                  aria-hidden="true"
-                >
-                  <Mail size={22} />
-                </div>
-
-                <h3 className="contact-support-cardTitle">
-                  {isEs ? "Soporte por email" : "Email Support"}
-                </h3>
-
-                <p className="contact-support-cardText">
-                  {isEs
-                    ? "Recibe respuesta dentro de 24 horas"
-                    : "Get a response within 24 hours"}
-                </p>
-
-                <div className="contact-support-cardLink">
-                  support@calltechcare.com
-                </div>
-              </a>
-
-              <Link className="contact-support-card" href="#contact-faq">
-                <div
-                  className="contact-support-cardIcon contact-support-cardIcon--faq"
-                  aria-hidden="true"
-                >
-                  <HelpCircle size={22} />
-                </div>
-
-                <h3 className="contact-support-cardTitle">
-                  {isEs ? "Preguntas frecuentes" : "FAQs"}
-                </h3>
-
-                <p className="contact-support-cardText">
-                  {isEs ? "Encuentra respuestas rápidas" : "Find quick answers"}
-                </p>
-              </Link>
-
-              <Link
-                className="contact-support-card"
-                href={
-                  isEs ? "/es/solicita-una-cotizacion" : "/request-quote"
-                }
-              >
-                <div
-                  className="contact-support-cardIcon contact-support-cardIcon--quote"
-                  aria-hidden="true"
-                >
-                  <FileText size={22} />
-                </div>
-
-                <h3 className="contact-support-cardTitle">
-                  {isEs ? "Solicita una cotización" : "Request a Quote"}
-                </h3>
-
-                <p className="contact-support-cardText">
-                  {isEs ? "Recibe una inspección gratis" : "Get a free inspection"}
-                </p>
-              </Link>
+                    {card.meta ? (
+                      <div className="contact-support-cardMeta">{card.meta}</div>
+                    ) : null}
+                  </>
+                );
+                // Phone/mail are plain anchors; faq/quote use Next Link,
+                // exactly as the original template did.
+                return card.icon === "faq" || card.icon === "quote" ? (
+                  <Link className="contact-support-card" href={href} key={i}>
+                    {inner}
+                  </Link>
+                ) : (
+                  <a className="contact-support-card" href={href} key={i}>
+                    {inner}
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -265,14 +310,14 @@ export default function ContactTemplate({
         className="contact-support-section contact-faq-section"
       >
         <div className="contact-support-inner contact-support-inner--narrow">
-          <ContactFaqSection locale={locale} />
+          <ContactFaqSection locale={locale} faqs={faqs && faqs.length > 0 ? faqs : undefined} />
         </div>
       </section>
 
       {/* Contact Form */}
       <section className="contact-support-section contact-message-section">
         <div className="contact-support-inner">
-          <ContactMessageSection locale={locale} />
+          <ContactMessageSection locale={locale} side={side} />
         </div>
       </section>
     </main>
