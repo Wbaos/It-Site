@@ -27,6 +27,12 @@ export default function SEOIntro({ locale = "en" }: { locale?: "en" | "es" }) {
             Con disponibilidad el mismo día en muchas áreas de Miami y Broward, CallTechCare hace que agendar sea
             simple y sin estrés. Llama ahora para reparación de sprinklers o solicita una cotización: confirmamos
             los detalles y reservamos la próxima visita disponible.
+
+          <p>
+            Todos los trabajos tienen 1 año de garantía cuando CallTechCare hace el trabajo y provee los materiales.
+            Y si tienes una emergencia de sprinklers, como una fuga grande o una zona que no apaga, te atendemos el
+            mismo día dentro del horario de servicio (lunes a sábado de 8am a 7pm, domingo de 9am a 6pm).
+          </p>
           </p>
         </div>
       </section>
@@ -54,6 +60,12 @@ export default function SEOIntro({ locale = "en" }: { locale?: "en" | "es" }) {
         <p>
           With same-day availability in many Miami and Broward areas, CallTechCare makes scheduling simple and stress-free.
           Call now for sprinkler repair or request a quote—we’ll confirm details and book the next available visit.
+
+          <p>
+            Every job carries a 1-year warranty when CallTechCare performs the work and provides the materials.
+            And if you have a sprinkler emergency, like a major leak or a zone that won’t turn off, we’ll prioritize
+            same-day service during business hours (Monday–Saturday 8am–7pm, Sunday 9am–6pm).
+          </p>
         </p>
       </div>
     </section>
