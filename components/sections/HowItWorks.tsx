@@ -2,39 +2,24 @@ import { sanity } from "@/lib/sanity";
 
 export const revalidate = 60;
 
-// Spanish steps are a faithful translation of the English steps (which
-// come from Sanity); Sanity is not touched by this change. Same count,
-// same order, only the text changes.
-const STEPS_ES = [
-  {
-    _id: "es-1",
-    title: "Llámanos o Solicita una Cotización",
-    desc: "Cuéntanos con qué necesitas ayuda.",
-  },
-  {
-    _id: "es-2",
-    title: "Visita Amable a Domicilio",
-    desc: "Venimos a tu casa — siempre a domicilio.",
-  },
-  {
-    _id: "es-3",
-    title: "Lo Dejamos Bien Instalado",
-    desc: "Inspeccionamos, te damos un estimado claro y lo hacemos bien.",
-  },
-];
-
 export default async function HowItWorks({ locale = "en" }: { locale?: "en" | "es" }) {
   const isSpanish = locale === "es";
-  const steps: { _id: string; title: string; desc: string }[] = isSpanish
-    ? STEPS_ES
-    : await sanity.fetch(`
+  const rawSteps: { _id: string; title: string; titleEs?: string; desc: string; descEs?: string }[] =
+    await sanity.fetch(`
     *[_type == "howItWorks"] | order(order asc) {
       _id,
       title,
+      titleEs,
       desc,
+      descEs,
       order
     }
   `);
+  const steps: { _id: string; title: string; desc: string }[] = rawSteps.map((s) => ({
+    _id: s._id,
+    title: isSpanish ? s.titleEs || s.title : s.title,
+    desc: isSpanish ? s.descEs || s.desc : s.desc,
+  }));
 
   return (
     <section id="how" className="section how">

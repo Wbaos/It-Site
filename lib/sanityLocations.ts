@@ -43,6 +43,7 @@ export interface Location {
   city: string;
   state: string;
   description: string;
+  descriptionEs?: string;
   metaTitle?: string;
   metaDescription?: string;
   heroImage?: SanityImageSource;
@@ -59,6 +60,7 @@ export interface Location {
   hours?: LocationHours;
   serviceRadius?: LocationServiceRadius;
   whyChooseUs?: string[];
+  whyChooseUsEs?: string[];
   popularServices?: LocationPopularService[];
   badges?: string[];
   isActive: boolean;
@@ -72,6 +74,7 @@ export async function getAllActiveLocations(): Promise<Location[]> {
     city,
     state,
     description,
+    descriptionEs,
     metaTitle,
     metaDescription,
     heroImage,
@@ -87,6 +90,7 @@ export async function getAllActiveLocations(): Promise<Location[]> {
     hours,
     serviceRadius,
     whyChooseUs,
+    whyChooseUsEs,
     popularServices[]{
       "name": coalesce(service->name, service->title, service->serviceName),
       "price": coalesce(priceOverride, service->price),
@@ -114,6 +118,7 @@ export async function getLocationBySlug(slug: string, locale: "en" | "es" = "en"
     city,
     state,
     description,
+    descriptionEs,
     metaTitle,
     metaDescription,
     heroImage,
@@ -130,6 +135,7 @@ export async function getLocationBySlug(slug: string, locale: "en" | "es" = "en"
     hours,
     serviceRadius,
     whyChooseUs,
+    whyChooseUsEs,
     popularServices[]{
       "name": ${serviceName},
       "price": coalesce(priceOverride, service->price),
