@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "Sprinkler Repair & Security Camera Tips | CallTechCare Blog",
   description: "Helpful guides on sprinkler repair, irrigation, security cameras, and home maintenance tips for homeowners in Miami and South Florida.",
   alternates: {
+    types: {
+      "application/rss+xml": "https://www.calltechcare.com/blog/rss.xml",
+    },
     canonical: "https://www.calltechcare.com/blog",
     languages: {
       es: "https://www.calltechcare.com/es/blog",

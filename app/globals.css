@@ -728,7 +728,7 @@ color: #fff;
 }
 
 .category-service-price-label {
-  color: #64748b;
+  color: #94a3b8;
   font-size: 0.78rem;
   font-weight: 500;
   margin-top: 0.1rem;
@@ -1441,13 +1441,13 @@ color: #fff;
 }
 
 .rq-thankyou__btn--primary {
-  background: #10b981;
+  background: #047857;
   color: #fff;
   border: 1px solid transparent;
 }
 
 .rq-thankyou__btn--primary:hover {
-  background: #059669;
+  background: #065f46;
 }
 
 .rq-thankyou__btn--secondary {
@@ -1467,7 +1467,7 @@ color: #fff;
   justify-content: center;
   gap: 2rem;
   font-size: 0.75rem;
-  color: #64748b;
+  color: #94a3b8;
 }
 
 .rq-thankyou__trustItem {
@@ -1617,7 +1617,7 @@ color: #fff;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.08em;
-  color: #64748b;
+  color: #94a3b8;
   background: rgba(15, 23, 42, 0.95);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
@@ -1862,19 +1862,19 @@ color: #fff;
 }
 
 .rq-step1__continue--enabled {
-  background: #10b981;
+  background: #047857;
   color: #fff;
   cursor: pointer;
 }
 
 .rq-step1__continue--enabled:hover {
-  background: #059669;
+  background: #065f46;
 }
 
 .rq-step1__continue--disabled {
   border: 1px solid #1e293b;
   background: #0b1220;
-  color: #64748b;
+  color: #94a3b8;
   cursor: not-allowed;
 }
 
@@ -1999,18 +1999,18 @@ color: #fff;
 
 .rq-step2__btn--primary {
   border: none;
-  background: #10b981;
+  background: #047857;
   color: #fff;
   cursor: pointer;
 }
 .rq-step2__btn--primary:hover {
-  background: #059669;
+  background: #065f46;
 }
 
 .rq-step2__btn--disabled {
   border: 1px solid #1e293b;
   background: #0b1220;
-  color: #64748b;
+  color: #94a3b8;
   cursor: not-allowed;
 }
 
@@ -2139,18 +2139,18 @@ color: #fff;
 
 .rq-step3__btn--primary {
   border: none;
-  background: #10b981;
+  background: #047857;
   color: #fff;
   cursor: pointer;
 }
 .rq-step3__btn--primary:hover {
-  background: #059669;
+  background: #065f46;
 }
 
 .rq-step3__btn--disabled {
   border: 1px solid #1e293b;
   background: #0b1220;
-  color: #64748b;
+  color: #94a3b8;
   cursor: not-allowed;
 }
 
@@ -2313,7 +2313,7 @@ color: #fff;
   margin-top: 0.5rem;
   font-size: .9rem;
   font-style: italic;
-  color: #64748b;
+  color: #94a3b8;
 }
 
 .rq-step4__divider {
@@ -2433,18 +2433,18 @@ color: #fff;
 
 .rq-step4__btn--primary {
   border: none;
-  background: #10b981;
+  background: #047857;
   color: #fff;
   cursor: pointer;
 }
 .rq-step4__btn--primary:hover {
-  background: #059669;
+  background: #065f46;
 }
 
 .rq-step4__btn--disabled {
   border: 1px solid #1e293b;
   background: #0b1220;
-  color: #64748b;
+  color: #94a3b8;
   cursor: not-allowed;
 }
 
@@ -15368,7 +15368,7 @@ details[open] .faq-toggle {
 .test-disclaimer {
   text-align: center;
   font-size: 12px;
-  color: #64748b;
+  color: #94a3b8;
   margin-top: 48px;
   padding: 20px;
   max-width: 700px;
@@ -17333,7 +17333,7 @@ details[open] .faq-toggle {
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #64748b;
+  color: #94a3b8;
 }
 
 .discount-popup__input {

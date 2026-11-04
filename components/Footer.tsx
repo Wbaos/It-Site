@@ -156,12 +156,12 @@ export default function Footer({ areas }: { areas?: FooterArea[] }) {
               </Link>
             </li>
             <li>
-              <Link href="/services/home-security">
+              <Link href={serviceHref("home-security", locale)}>
                 {isSpanishPage ? "Instalación de Cámaras de Seguridad" : "Security Camera Installation"}
               </Link>
             </li>
             <li>
-              <Link href="/services/landscaping">
+              <Link href={serviceHref("landscaping", locale)}>
                 {isSpanishPage ? "Jardinería" : "Landscaping"}
               </Link>
             </li>
