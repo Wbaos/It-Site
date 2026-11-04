@@ -2,8 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export default function HomeVideo({ locale = "en" }: { locale?: "en" | "es" }) {
+import type { HomePage } from "@/lib/sanityHome";
+
+export default function HomeVideo({ locale = "en", doc }: { locale?: "en" | "es"; doc?: HomePage | null }) {
   const isSpanish = locale === "es";
+  const heading =
+    (isSpanish ? doc?.videoHeadingEs : doc?.videoHeading) ??
+    (isSpanish ? "Mira tu sistema trabajando" : "See your system at work");
+  const subtitle =
+    (isSpanish ? doc?.videoSubtitleEs : doc?.videoSubtitle) ??
+    (isSpanish
+      ? "Sistema de sprinklers optimizado para una cobertura del 100% en Fort Lauderdale."
+      : "Optimized sprinkler system for 100% coverage in Fort Lauderdale.");
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -39,12 +49,10 @@ export default function HomeVideo({ locale = "en" }: { locale?: "en" | "es" }) {
     <section className="section home-video" aria-labelledby="home-video-title">
       <div className="site-container">
         <h2 id="home-video-title" className="home-video-heading">
-          {isSpanish ? "Mira tu sistema trabajando" : "See your system at work"}
+          {heading}
         </h2>
         <p className="home-video-sub">
-          {isSpanish
-            ? "Sistema de sprinklers optimizado para una cobertura del 100% en Fort Lauderdale."
-            : "Optimized sprinkler system for 100% coverage in Fort Lauderdale."}
+          {subtitle}
         </p>
         <div className="home-video-frame">
           <video

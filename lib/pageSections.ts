@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import { getHomePage, type HomePage } from "@/lib/sanityHome";
 import Hero from "@/components/sections/Hero";
 import SEOIntro from "@/components/sections/SEOIntro";
 import Services from "@/components/sections/Services";
@@ -83,22 +84,62 @@ const heroPropsEs = {
   ],
 };
 
-export function getHomeSections(locale: HomeLocale = "en"): Section[] {
+function pick(en: string | undefined, es: string | undefined, isSpanish: boolean): string | undefined {
+  if (isSpanish && es) return es;
+  return en;
+}
+
+export async function getHomeSections(locale: HomeLocale = "en"): Promise<Section[]> {
   const isSpanish = locale === "es";
+  let doc: HomePage | null = null;
+  try {
+    doc = await getHomePage();
+  } catch {
+    doc = null;
+  }
+  const heroBase = isSpanish ? heroPropsEs : heroPropsEn;
+  const heroProps = doc
+    ? {
+        ...heroBase,
+        titleLine1: pick(doc.heroTitleLine1, doc.heroTitleLine1Es, isSpanish) ?? heroBase.titleLine1,
+        titleLine2: pick(doc.heroTitleLine2, doc.heroTitleLine2Es, isSpanish) ?? heroBase.titleLine2,
+        subtitle: pick(doc.heroSubtitle, doc.heroSubtitleEs, isSpanish) ?? heroBase.subtitle,
+        badgeText: pick(doc.heroBadgeText, doc.heroBadgeTextEs, isSpanish) ?? heroBase.badgeText,
+        imageAlt: pick(doc.heroImageAlt, doc.heroImageAltEs, isSpanish) ?? heroBase.imageAlt,
+        stats:
+          doc.heroStats && doc.heroStats.length > 0
+            ? doc.heroStats.map((stat) => ({
+                value: pick(stat.value, stat.valueEs, isSpanish) ?? "",
+                label: pick(stat.label, stat.labelEs, isSpanish) ?? "",
+              }))
+            : heroBase.stats,
+      }
+    : heroBase;
+  const contactProps = isSpanish
+    ? {
+        headline: pick(doc?.contactHeadline, doc?.contactHeadlineEs, true) ?? "¿Preguntas? Hablemos.",
+        subtitle: pick(doc?.contactSubtitle, doc?.contactSubtitleEs, true) ?? "¿Tienes una pregunta? Estamos aquí para ayudarte.",
+        locale,
+      }
+    : {
+        headline: doc?.contactHeadline ?? "Questions? Let’s talk.",
+        subtitle: doc?.contactSubtitle ?? "Have a question? We're here to help.",
+        locale,
+      };
   return [
     {
       key: "hero",
       Component: Hero,
-      props: isSpanish ? heroPropsEs : heroPropsEn,
+      props: heroProps,
     },
 
     { key: "highlights", Component: HighlightsServer, props: { locale } },
 
-    { key: "home-video", Component: HomeVideo, props: { locale } },
+    { key: "home-video", Component: HomeVideo, props: { locale, doc } },
 
     { key: "services", Component: Services, props: { locale } },
-    { key: "seo-intro", Component: SEOIntro, props: { locale } },
-    { key: "why", Component: WhyChooseUs, props: { locale } },
+    { key: "seo-intro", Component: SEOIntro, props: { locale, doc } },
+    { key: "why", Component: WhyChooseUs, props: { locale, doc } },
 
     { key: "how", Component: HowItWorks, props: { locale } },
 
@@ -111,21 +152,7 @@ export function getHomeSections(locale: HomeLocale = "en"): Section[] {
     {
       key: "contact",
       Component: Contact,
-      props: isSpanish
-        ? {
-            headline: "¿Preguntas? Hablemos.",
-            subtitle:
-              "¿Tienes una pregunta? Estamos aquí para ayudarte.",
-            locale,
-          }
-        : {
-            headline: "Questions? Let’s talk.",
-            subtitle: "Have a question? We're here to help.",
-            locale,
-          },
+      props: contactProps,
     },
   ];
 }
-
-// English home sections, unchanged from before the single-template refactor.
-export const homeSections: Section[] = getHomeSections("en");
