@@ -253,6 +253,20 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
               </p>
             </div>
 
+            {/* Stats */}
+            {location.stats && location.stats.length > 0 && (
+              <div className="location-section-card">
+                <div className="location-stats-grid">
+                  {location.stats.map((stat, index) => (
+                    <div key={index} className="location-stat-item">
+                      <div className="location-stat-value">{stat.value}</div>
+                      <div className="location-stat-label">{stat.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Why Choose Us */}
             {location.whyChooseUs && location.whyChooseUs.length > 0 && (
               <div className="location-section-card">
