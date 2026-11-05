@@ -551,7 +551,9 @@ export default function CityTemplate({ city, locale }: { city: City; locale: Loc
             <span>{isEs ? "Más de 1500 clientes ayudados" : "1500+ customers helped"}</span>
           </div>
           <h2 className="seo-intro-title">{seoIntroTitle}</h2>
-          <p>{introP1}</p>
+          {introP1.split("\n\n").map((para, idx) => (
+            <p key={idx}>{para}</p>
+          ))}
           <Link href={detailsHref} className="spr-detailsLink" aria-label={t.detailsAria}>
             {t.detailsText}
           </Link>
