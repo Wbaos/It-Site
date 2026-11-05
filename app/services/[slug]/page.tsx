@@ -18,6 +18,7 @@ import ServiceGroupList from "@/components/ServiceGroupList";
 import { SERVICE_ES_PATHS, serviceHref } from "@/lib/serviceTwins";
 import { cityHref } from "@/lib/cityTwins";
 import BeforeAfterSection from "@/components/BeforeAfterSection";
+import QuickLeadForm from "@/components/QuickLeadForm";
 import { PortableText } from "@portabletext/react";
 import type { Metadata } from "next";
 import ServiceGalleryClient from "./ServiceGalleryClient";
@@ -1078,6 +1079,15 @@ export default async function ServicePage({
                     </div>
                   </div>
                 </div>
+
+                {/* Quick lead form: prominent call button + short form posting to
+                    the same /api/quote-request endpoint as the full quote flow. */}
+                <QuickLeadForm
+                  locale={locale}
+                  service={{ category: slug }}
+                  phoneTel={settings.phoneTel}
+                  phoneDisplay={settings.phoneDisplay}
+                />
               </div>
             </main>
           </div>
@@ -1287,6 +1297,15 @@ const isTvMounting = tvMountingSlugs.includes(slug);
             </div>
           </div>
         </div>
+
+        {/* Quick lead form: prominent call button + short form posting to
+            the same /api/quote-request endpoint as the full quote flow. */}
+        <QuickLeadForm
+          locale={locale}
+          service={{ service: slug }}
+          phoneTel={settings.phoneTel}
+          phoneDisplay={settings.phoneDisplay}
+        />
 
         <ServiceGalleryClient
           serviceTitle={displayTitle}
