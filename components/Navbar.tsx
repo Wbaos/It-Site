@@ -27,7 +27,13 @@ const NAV_ES = [
   { href: "/es/blog", label: "Blog" },
 ];
 
-export default function Navbar() {
+export default function Navbar({
+  phoneTel = "+17863662729",
+  phoneDisplay = "(786) 366-2729",
+}: {
+  phoneTel?: string;
+  phoneDisplay?: string;
+}) {
   const { open, setOpen, dropdownOpen, setDropdownOpen, searchOpen, setSearchOpen, closeAll } = useNav();
   const router = useRouter();
   const [categories, setCategories] = useState<any[]>([]);
@@ -597,7 +603,7 @@ export default function Navbar() {
 
   return (
     <>
-      <AnnouncementBar />
+      <AnnouncementBar phoneTel={phoneTel} phoneDisplay={phoneDisplay} />
       <header className="site-header">
         <div className="site-container-var nav-grid">
           {/* BRAND: stays in the current language (Spanish home when in Spanish mode) */}
