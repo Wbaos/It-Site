@@ -2,6 +2,7 @@ import CategoryServicesAccordion from "./CategoryServicesAccordion";
 import CategorySidebarClient from "./CategorySidebarClient";
 import { notFound } from "next/navigation";
 import { sanity } from "@/lib/sanity";
+import { resolveSiteSettings } from "@/lib/sanitySettings";
 import Link from "next/link";
 import Image from "next/image";
 import SvgIcon from "@/components/common/SvgIcons";
@@ -199,6 +200,7 @@ export default async function ServicePage({
   const { slug } = await params;
     console.log("SERVICE SLUG:", slug);
   const isSpanish = locale === "es";
+  const settings = await resolveSiteSettings();
 
   const pageUrl =
     locale === "es"
@@ -945,7 +947,7 @@ export default async function ServicePage({
                       />
                     </Link>
                     <a
-                      href="tel:+17863662729"
+                      href={`tel:${settings.phoneTel}`}
                       className="category-cta-btn"
                       aria-label="Call CallTechCare now"
                     >
@@ -955,7 +957,7 @@ export default async function ServicePage({
                         color="#fff"
                         className="category-cta-btn-icon"
                       />
-                      {isSpanish ? "Llama ahora: (786) 366-2729" : "Call Now: (786) 366-2729"}
+                      {isSpanish ? `Llama ahora: ${settings.phoneDisplay}` : `Call Now: ${settings.phoneDisplay}`}
                     </a>
                   </div>
                   <div className="category-cta-trust-row">
@@ -1153,12 +1155,12 @@ const isTvMounting = tvMountingSlugs.includes(slug);
             <hr />
 
             <div className="service-cta-row">
-              <a href="tel:+17863662729" className="btn-book">
+              <a href={`tel:${settings.phoneTel}`} className="btn-book">
                 <span className="mobile-only">
                   {isSpanish ? "Llama ahora" : "Call Now"}
                 </span>
                 <span className="desktop-only">
-                  {isSpanish ? "Llámanos al (786) 366-2729" : "Call us at (786) 366-2729"}
+                  {isSpanish ? `Llámanos al ${settings.phoneDisplay}` : `Call us at ${settings.phoneDisplay}`}
                 </span>
               </a>
               <Link
