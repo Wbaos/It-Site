@@ -16,7 +16,7 @@ const EN_HOME_URL = "https://www.calltechcare.com/";
 // quote pages, which the switcher links to).
 // No prices, no diagnosis cost, no round-the-clock promise, no invented testimonials:
 // the only review data shown is the real Google aggregate rendered by
-// GoogleReviewsCTA (5.0, 26 reviews, link to Google).
+// GoogleReviewsCTA (live Google rating + review count, link to Google).
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await resolveSiteSettings();
   return {

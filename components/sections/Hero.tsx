@@ -1,6 +1,10 @@
 "use client";
 import SvgIcon from "@/components/common/SvgIcons";
 import Link from "next/link";
+import {
+  FALLBACK_GOOGLE_RATING_SUMMARY,
+  formatGoogleRating,
+} from "@/lib/google-reviews";
 
 type Stat = { value: string; label: string };
 
@@ -19,6 +23,13 @@ type Props = {
   mobileImageSrc?: string;
   imageAlt?: string;
   stats?: Stat[];
+  /**
+   * Live Google rating, already formatted to one decimal, from the single shared
+   * source in lib/google-reviews. Passed by the server parent; when present
+   * it replaces the Google Rating stat value, so the hero updates everywhere
+   * at the same time as the rest of the site.
+   */
+  googleRating?: string;
 };
 
 export default function Hero({
@@ -37,11 +48,19 @@ export default function Hero({
   imageAlt = "Sprinkler system working",
   stats = [
     { value: "1500+", label: "Local Clients Helped" },
-    { value: "5.0", label: "Google Rating" },
+    { value: formatGoogleRating(FALLBACK_GOOGLE_RATING_SUMMARY.rating), label: "Google Rating" },
     { value: "Same-Day", label: "Appointments Available" },
   ],
+  googleRating,
 }: Props) {
   const isPrimaryPhoneLink = typeof primaryCtaHref === "string" && primaryCtaHref.startsWith("tel:");
+  const effectiveStats = googleRating
+    ? stats.map((s) =>
+        s.label === "Google Rating" || s.label === "Calificación en Google"
+          ? { ...s, value: googleRating }
+          : s
+      )
+    : stats;
 
   return (
     <section id="hero" role="region" aria-labelledby="hero-title">
@@ -121,7 +140,7 @@ export default function Hero({
       </div>
 
       <div className="hero-stats">
-        {stats.map((s, i) => (
+        {effectiveStats.map((s, i) => (
           <div className="hero-stat-card" key={i}>
             <div className="stat-value">{s.value}</div>
             <div className="stat-label">{s.label}</div>

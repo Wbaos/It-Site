@@ -1,5 +1,10 @@
 import type { ComponentType } from "react";
 import { getHomePage, type HomePage } from "@/lib/sanityHome";
+import {
+  getGoogleRatingSummary,
+  FALLBACK_GOOGLE_RATING_SUMMARY,
+  formatGoogleRating,
+} from "@/lib/google-reviews";
 import Hero from "@/components/sections/Hero";
 import SEOIntro from "@/components/sections/SEOIntro";
 import Services from "@/components/sections/Services";
@@ -33,6 +38,9 @@ type Section = {
   props?: Record<string, unknown>;
 };
 
+// Fallback Google rating, from the single shared source in lib/google-reviews.
+const FALLBACK_RATING = formatGoogleRating(FALLBACK_GOOGLE_RATING_SUMMARY.rating);
+
 const heroPropsEn = {
   // imageSrc: "/helping2.jpg",
 
@@ -57,7 +65,7 @@ const heroPropsEn = {
 
   stats: [
     { value: "1500+", label: "Local Clients Helped" },
-    { value: "5.0", label: "Google Rating" },
+    { value: FALLBACK_RATING, label: "Google Rating" },
     { value: "Same-Day", label: "Appointments Available Within Business Hours" },
   ],
 };
@@ -79,7 +87,7 @@ const heroPropsEs = {
   imageAlt: "Sprinklers regando un jardín delantero en Miami, con el truck de CallTechCare",
   stats: [
     { value: "1500+", label: "Clientes Locales Atendidos" },
-    { value: "5.0", label: "Calificación en Google" },
+    { value: FALLBACK_RATING, label: "Calificación en Google" },
     { value: "Mismo Día", label: "Citas Disponibles Dentro del Horario" },
   ],
 };
@@ -91,6 +99,12 @@ function pick(en: string | undefined, es: string | undefined, isSpanish: boolean
 
 export async function getHomeSections(locale: HomeLocale = "en"): Promise<Section[]> {
   const isSpanish = locale === "es";
+  // Live Google rating summary, from the single shared source in
+  // lib/google-reviews (one fetch, one fallback). Passed to the sections
+  // below so the rating and the review count change everywhere at once.
+  const ratingSummary =
+    (await getGoogleRatingSummary()) ?? FALLBACK_GOOGLE_RATING_SUMMARY;
+  const googleRating = formatGoogleRating(ratingSummary.rating);
   let doc: HomePage | null = null;
   try {
     doc = await getHomePage();
@@ -113,8 +127,9 @@ export async function getHomeSections(locale: HomeLocale = "en"): Promise<Sectio
                 label: pick(stat.label, stat.labelEs, isSpanish) ?? "",
               }))
             : heroBase.stats,
+        googleRating,
       }
-    : heroBase;
+    : { ...heroBase, googleRating };
   const contactProps = isSpanish
     ? {
         headline: pick(doc?.contactHeadline, doc?.contactHeadlineEs, true) ?? "¿Preguntas? Hablemos.",
@@ -139,14 +154,14 @@ export async function getHomeSections(locale: HomeLocale = "en"): Promise<Sectio
 
     { key: "services", Component: Services, props: { locale } },
     { key: "seo-intro", Component: SEOIntro, props: { locale, doc } },
-    { key: "why", Component: WhyChooseUs, props: { locale, doc } },
+    { key: "why", Component: WhyChooseUs, props: { locale, doc, ratingSummary } },
 
     { key: "how", Component: HowItWorks, props: { locale } },
 
     {
       key: "testimonials",
       Component: GoogleReviewsCTA,
-      props: { locale },
+      props: { locale, ratingSummary },
     },
 
     {

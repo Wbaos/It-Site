@@ -14,6 +14,7 @@ import type {
   ApiCategory,
   RequestQuoteContent,
 } from "@/lib/request-quote-data";
+import type { GoogleRatingSummary } from "@/lib/google-reviews";
 import type {
   SelectableService,
   SelectedService,
@@ -151,6 +152,7 @@ export default function RequestQuoteClient(props: {
   initialRqContent: RequestQuoteContent | null;
   initialTab: string;
   locale?: "en" | "es";
+  ratingSummary?: GoogleRatingSummary;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -530,6 +532,7 @@ export default function RequestQuoteClient(props: {
     return (
       <RequestQuoteThankYou
         locale={locale}
+        ratingSummary={props.ratingSummary}
         topRef={thankYouTopRef}
         referenceNumber={referenceNumber}
         wantsTechnicianVisitFirst={wantsTechnicianVisitFirst}
@@ -699,7 +702,7 @@ export default function RequestQuoteClient(props: {
 
           {/* Right: Sidebar */}
           <div className="rq-client__aside">
-            <RequestQuoteSidebar locale={locale} rqContent={rqContent} />
+            <RequestQuoteSidebar locale={locale} rqContent={rqContent} ratingSummary={props.ratingSummary} />
           </div>
         </div>
       </div>

@@ -15,6 +15,11 @@ import ContactFaqSection from "@/app/contact/ContactFaqSection";
 import ContactMessageSection from "@/app/contact/ContactMessageSection";
 import { getContactPage } from "@/lib/sanityContact";
 import { resolveSiteSettings } from "@/lib/sanitySettings";
+import {
+  getGoogleRatingSummary,
+  FALLBACK_GOOGLE_RATING_SUMMARY,
+  formatGoogleRating,
+} from "@/lib/google-reviews";
 
 // Single contact template for both languages: the same sections, in the
 // same order, with the same components and icons. Copy comes from the
@@ -31,7 +36,7 @@ const FALLBACK_EN = {
     "We're here to help. Contact CallTechCare for service requests, quotes, or questions about our sprinkler, irrigation, and security camera services across Miami and South Florida.",
   stats: [
     { value: "24h", label: "Response Time" },
-    { value: "5.0", label: "Google Rating" },
+    { value: formatGoogleRating(FALLBACK_GOOGLE_RATING_SUMMARY.rating), label: "Google Rating" },
     { value: "1500+", label: "Happy Customers" },
     { value: "Mon–Sun", label: "Support Availability" },
   ],
@@ -74,7 +79,7 @@ const FALLBACK_ES = {
     "Estamos aquí para ayudarte. Contacta a CallTechCare para solicitudes de servicio, cotizaciones o preguntas sobre nuestros servicios de sprinklers, irrigación y cámaras de seguridad en Miami y el sur de Florida.",
   stats: [
     { value: "24h", label: "Tiempo de respuesta" },
-    { value: "5.0", label: "Calificación en Google" },
+    { value: formatGoogleRating(FALLBACK_GOOGLE_RATING_SUMMARY.rating), label: "Calificación en Google" },
     { value: "1500+", label: "Clientes felices" },
     { value: "Lun–Dom", label: "Disponibilidad de soporte" },
   ],
@@ -145,16 +150,26 @@ export default async function ContactTemplate({
   const settings = await resolveSiteSettings();
   const isEs = locale === "es";
   const fb = isEs ? FALLBACK_ES : FALLBACK_EN;
+  // Live Google rating summary, from the single shared source in
+  // lib/google-reviews. Used for the Google Rating stat below and passed to
+  // the FAQ section, so the numbers change everywhere at the same time.
+  const ratingSummary =
+    (await getGoogleRatingSummary()) ?? FALLBACK_GOOGLE_RATING_SUMMARY;
 
   const heroTitle = (isEs ? doc?.heroTitleEs : doc?.heroTitle) ?? fb.heroTitle;
   const heroSubtitle = (isEs ? doc?.heroSubtitleEs : doc?.heroSubtitle) ?? fb.heroSubtitle;
-  const stats =
+  const stats = (
     doc?.stats && doc.stats.length > 0
       ? doc.stats.map((s, i) => ({
           value: (isEs ? s.valueEs : s.value) ?? fb.stats[i]?.value ?? "",
           label: (isEs ? s.labelEs : s.label) ?? fb.stats[i]?.label ?? "",
         }))
-      : fb.stats;
+      : fb.stats
+  ).map((s) =>
+    s.label === "Google Rating" || s.label === "Calificación en Google"
+      ? { ...s, value: formatGoogleRating(ratingSummary.rating) }
+      : s
+  );
   const optionsTitle = (isEs ? doc?.optionsTitleEs : doc?.optionsTitle) ?? fb.optionsTitle;
   const cards =
     doc?.cards && doc.cards.length > 0
@@ -324,7 +339,7 @@ export default async function ContactTemplate({
         className="contact-support-section contact-faq-section"
       >
         <div className="contact-support-inner contact-support-inner--narrow">
-          <ContactFaqSection locale={locale} faqs={faqs && faqs.length > 0 ? faqs : undefined} />
+          <ContactFaqSection locale={locale} faqs={faqs && faqs.length > 0 ? faqs : undefined} ratingSummary={ratingSummary} />
         </div>
       </section>
 
