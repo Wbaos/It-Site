@@ -14,6 +14,7 @@ import {
 import ContactFaqSection from "@/app/contact/ContactFaqSection";
 import ContactMessageSection from "@/app/contact/ContactMessageSection";
 import { getContactPage } from "@/lib/sanityContact";
+import { resolveSiteSettings } from "@/lib/sanitySettings";
 
 // Single contact template for both languages: the same sections, in the
 // same order, with the same components and icons. Copy comes from the
@@ -124,9 +125,13 @@ const CARD_ICON_CLASSES: Record<string, string> = {
   quote: "contact-support-cardIcon--quote",
 };
 
-function cardHref(icon: string, locale: Locale): string {
-  if (icon === "phone") return "tel:+17863662729";
-  if (icon === "mail") return "mailto:support@calltechcare.com";
+function cardHref(
+  icon: string,
+  locale: Locale,
+  settings: { phoneTel: string; email: string },
+): string {
+  if (icon === "phone") return `tel:${settings.phoneTel}`;
+  if (icon === "mail") return `mailto:${settings.email}`;
   if (icon === "faq") return "#contact-faq";
   return locale === "es" ? "/es/solicita-una-cotizacion" : "/request-quote";
 }
@@ -137,6 +142,7 @@ export default async function ContactTemplate({
   locale?: Locale;
 }) {
   const doc = await getContactPage();
+  const settings = await resolveSiteSettings();
   const isEs = locale === "es";
   const fb = isEs ? FALLBACK_ES : FALLBACK_EN;
 
@@ -159,7 +165,15 @@ export default async function ContactTemplate({
           link: c.link ?? fb.cards[i]?.link,
           meta: (isEs ? c.metaEs : c.meta) ?? fb.cards[i]?.meta,
         }))
-      : fb.cards;
+      : fb.cards.map((c) => ({
+          ...c,
+          link:
+            c.icon === "phone"
+              ? settings.phoneCard
+              : c.icon === "mail"
+                ? settings.email
+                : c.link,
+        }));
   const faqs = (isEs ? doc?.faqsEs : doc?.faqs)?.map((f) => ({
     q: f.q ?? "",
     a: f.a ?? "",
@@ -190,8 +204,8 @@ export default async function ContactTemplate({
     about: {
       "@type": "LocalBusiness",
       name: "CallTechCare",
-      telephone: "+1-786-366-2729",
-      email: "support@calltechcare.com",
+      telephone: settings.phoneIntl,
+      email: settings.email,
       areaServed: "South Florida",
     },
   };
@@ -264,7 +278,7 @@ export default async function ContactTemplate({
               {cards.map((card, i) => {
                 const Icon = CARD_ICONS[card.icon] ?? HelpCircle;
                 const iconClass = CARD_ICON_CLASSES[card.icon] ?? "";
-                const href = cardHref(card.icon, locale);
+                const href = cardHref(card.icon, locale, settings);
                 const inner = (
                   <>
                     <div
@@ -317,7 +331,7 @@ export default async function ContactTemplate({
       {/* Contact Form */}
       <section className="contact-support-section contact-message-section">
         <div className="contact-support-inner">
-          <ContactMessageSection locale={locale} side={side} />
+          <ContactMessageSection locale={locale} side={side} emergencyPhone={settings.phoneCard} />
         </div>
       </section>
     </main>

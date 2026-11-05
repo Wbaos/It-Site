@@ -12,6 +12,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import CookieConsent from "@/components/CookieConsent";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { getAllCities, FALLBACK_CITIES } from "@/lib/sanityCities";
+import { resolveSiteSettings } from "@/lib/sanitySettings";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.calltechcare.com"),
@@ -127,6 +128,11 @@ export default async function RootLayout({
     // Fallback list above stays in place.
   }
 
+  // Business data from the Sanity `siteSettings` document; the resolver
+  // falls back to the exact values shown today, so the schema never
+  // changes on a Sanity blip.
+  const settings = await resolveSiteSettings();
+
   /* ITService schema (service-area business) */
   const orgJsonLd = {
     "@context": "https://schema.org",
@@ -142,24 +148,24 @@ export default async function RootLayout({
       height: 512,
     },
     description: schemaDescription,
-    telephone: "+1-786-366-2729",
+    telephone: settings.phoneIntl,
     areaServed: footerCities.map((c) => ({ "@type": "City", name: c.name })),
     address: {
       "@type": "PostalAddress",
-      streetAddress: "18730 SW 122nd Ave",
-      addressLocality: "Miami",
-      addressRegion: "FL",
-      postalCode: "33177",
-      addressCountry: "US",
+      streetAddress: settings.streetAddress,
+      addressLocality: settings.city,
+      addressRegion: settings.region,
+      postalCode: settings.postalCode,
+      addressCountry: settings.country,
     },
     geo: {
       "@type": "GeoCoordinates",
-      latitude: 25.59392,
-      longitude: -80.38922
+      latitude: settings.geoLat,
+      longitude: settings.geoLng
     },
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: "+1-786-366-2729",
+      telephone: settings.phoneIntl,
       contactType: "customer service",
       areaServed: "US",
       availableLanguage: ["English", "Spanish"]
@@ -175,14 +181,14 @@ export default async function RootLayout({
           "Friday",
           "Saturday",
         ],
-        opens: "08:00",
-        closes: "19:00",
+        opens: settings.hoursWeekdayOpens,
+        closes: settings.hoursWeekdayCloses,
       },
       {
         "@type": "OpeningHoursSpecification",
         dayOfWeek: "Sunday",
-        opens: "09:00",
-        closes: "18:00",
+        opens: settings.hoursWeekendOpens,
+        closes: settings.hoursWeekendCloses,
       },
     ],
     sameAs: [
@@ -357,10 +363,23 @@ export default async function RootLayout({
             <LoadingProvider>
               <GoogleAnalytics />
               <div id="top" />
-              <Navbar />
+              <Navbar phoneDisplay={settings.phoneDisplay} phoneTel={settings.phoneTel} />
               <main className="main-content">{children}</main>
-              <Footer areas={footerCities} />
-              <QuickCallButton />
+              <Footer
+                areas={footerCities}
+                phoneDisplay={settings.phoneDisplay}
+                phoneTel={settings.phoneTel}
+                email={settings.email}
+                hoursWeekdayLabel={settings.hoursWeekdayLabel}
+                hoursWeekdayLabelEs={settings.hoursWeekdayLabelEs}
+                hoursWeekdayTime={settings.hoursWeekdayTime}
+                hoursWeekendLabel={settings.hoursWeekendLabel}
+                hoursWeekendLabelEs={settings.hoursWeekendLabelEs}
+                hoursWeekendTime={settings.hoursWeekendTime}
+                serviceAreaLine={settings.serviceAreaLine}
+                serviceAreaLineEs={settings.serviceAreaLineEs}
+              />
+              <QuickCallButton phoneDisplay={settings.phoneDisplay} phoneTel={settings.phoneTel} />
               <CookieConsent />
             </LoadingProvider>
           </Providers>
