@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import ContactTemplate from "@/components/sections/ContactTemplate";
 import { getContactPage } from "@/lib/sanityContact";
+import { resolveSiteSettings } from "@/lib/sanitySettings";
 
 // Thin Spanish route: renders the SAME shared contact template as the
 // English route, with locale="es". No duplicated page copy lives here:
@@ -9,11 +10,12 @@ import { getContactPage } from "@/lib/sanityContact";
 // changes.
 export async function generateMetadata(): Promise<Metadata> {
   const doc = await getContactPage();
+  const settings = await resolveSiteSettings();
   return {
     title: doc?.metaTitleEs ?? "Contacta a CallTechCare | Reparación de Sprinklers Miami y Broward",
     description:
       doc?.metaDescriptionEs ??
-      "Contacta a CallTechCare para reparación de sprinklers e irrigación en Miami y Broward. Llama al (786) 366-2729 o envía un mensaje — respondemos dentro de 24 horas.",
+      `Contacta a CallTechCare para reparación de sprinklers e irrigación en Miami y Broward. Llama al ${settings.phoneDisplay} o envía un mensaje — respondemos dentro de 24 horas.`,
     alternates: {
       canonical: "https://www.calltechcare.com/es/contacto",
       languages: {

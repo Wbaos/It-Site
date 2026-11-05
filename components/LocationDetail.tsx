@@ -25,6 +25,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getLocationBySlug, getAllLocationSlugs } from "@/lib/sanityLocations";
+import { resolveSiteSettings } from "@/lib/sanitySettings";
 import GoogleReviewsCTA from "@/components/sections/GoogleReviewsCTA";
 import { urlFor } from "@/lib/sanityImage";
 import {
@@ -108,6 +109,7 @@ function formatPhone(phone: string): string {
 export default async function LocationDetail({ slug, locale = "en" }: { slug: string; locale?: "en" | "es" }) {
   const isSpanish = locale === "es";
   const location = await getLocationBySlug(slug, locale);
+  const settings = await resolveSiteSettings();
 
   if (!location) {
     notFound();
@@ -150,8 +152,8 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
       "@type": "City",
       name: `${location.city}, ${location.state}`,
     },
-    telephone: location.phone || "+1-786-366-2729",
-    email: location.email || "support@calltechcare.com",
+    telephone: location.phone || settings.phoneIntl,
+    email: location.email || settings.email,
   };
 
   const locationServiceSchema = {

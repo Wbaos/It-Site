@@ -72,11 +72,18 @@ export default function LegalTemplate({
   doc,
   page,
   locale = "en",
+  settings,
 }: {
   doc: LegalPage;
   page: "privacy" | "terms";
   locale?: Locale;
+  settings?: { email?: string; phoneTel?: string; phoneDisplay?: string };
 }) {
+  const s = {
+    email: settings?.email ?? "support@calltechcare.com",
+    phoneTel: settings?.phoneTel ?? "+17863662729",
+    phoneDisplay: settings?.phoneDisplay ?? "(786) 366-2729",
+  };
   const isEs = locale === "es";
   const canonical =
     page === "privacy"
@@ -155,15 +162,15 @@ export default function LegalTemplate({
                     <p>{pick(card.text, card.textEs, locale)}</p>
                     <p>
                       <strong>{pick(card.emailLabel, card.emailLabelEs, locale)} </strong>
-                      <a href="mailto:support@calltechcare.com" className="terms-contact-item-email">
-                        support@calltechcare.com
+                      <a href={`mailto:${s.email}`} className="terms-contact-item-email">
+                        {s.email}
                       </a>
                     </p>
                     <p>
                       <strong>{pick(card.phoneLabel, card.phoneLabelEs, locale)}</strong>
-                      <a href="tel:+17863662729" className="terms-contact-item-phone">
+                      <a href={`tel:${s.phoneTel}`} className="terms-contact-item-phone">
                         {" "}
-                        (786) 366-2729
+                        {s.phoneDisplay}
                       </a>
                     </p>
                   </div>
@@ -215,10 +222,10 @@ export default function LegalTemplate({
                 <h2>{pick(card.title, card.titleEs, locale)}</h2>
                 <p>{pick(card.text, card.textEs, locale)}</p>
                 <p>
-                  <strong>{pick(card.emailLabel, card.emailLabelEs, locale)}</strong> support@calltechcare.com
+                  <strong>{pick(card.emailLabel, card.emailLabelEs, locale)}</strong> {s.email}
                 </p>
                 <p>
-                  <strong>{pick(card.phoneLabel, card.phoneLabelEs, locale)}</strong> (786) 366-2729
+                  <strong>{pick(card.phoneLabel, card.phoneLabelEs, locale)}</strong> {s.phoneDisplay}
                 </p>
                 {card.mailLabel ? (
                   <p>

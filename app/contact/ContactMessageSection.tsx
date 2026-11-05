@@ -40,9 +40,11 @@ export type ContactSideTexts = {
 export default function ContactMessageSection({
   locale = "en",
   side,
+  emergencyPhone = "+1 (786) 366-2729",
 }: {
   locale?: "en" | "es";
   side?: ContactSideTexts;
+  emergencyPhone?: string;
 }) {
   const [form, setForm] = useState<FormState>({
     name: "",
@@ -323,7 +325,7 @@ export default function ContactMessageSection({
               </Link>
             </div>
 
-            <a className="contact-message-sideCard contact-message-sideCard--emergency" href="tel:+17863662729">
+            <a className="contact-message-sideCard contact-message-sideCard--emergency" href={`tel:+${emergencyPhone.replace(/\D/g, "")}`}>
               <div className="contact-message-sideCardTitle">
                 <PhoneCall size={18} className="contact-message-sideIcon" aria-hidden="true" />
                 {S.emergencyTitle}
@@ -332,7 +334,7 @@ export default function ContactMessageSection({
               <div className="contact-message-emergencyText">
                 {S.emergencyText}
               </div>
-              <div className="contact-message-emergencyNumber">+1 (786) 366-2729</div>
+              <div className="contact-message-emergencyNumber">{emergencyPhone}</div>
             </a>
           </div>
         </section>

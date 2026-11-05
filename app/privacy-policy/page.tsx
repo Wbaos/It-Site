@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import LegalTemplate from "@/components/sections/LegalTemplate";
 import { getLegalPage } from "@/lib/sanityLegal";
+import { resolveSiteSettings } from "@/lib/sanitySettings";
 
 // Thin route: all copy comes from the Sanity `legalPage` document
 // (page: privacy). Structure lives in LegalTemplate.
@@ -32,5 +33,6 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function PrivacyPolicyPage() {
   const doc = await getLegalPage("privacy");
   if (!doc) notFound();
-  return <LegalTemplate doc={doc} page="privacy" locale="en" />;
+  const settings = await resolveSiteSettings();
+  return <LegalTemplate doc={doc} page="privacy" locale="en" settings={settings} />;
 }

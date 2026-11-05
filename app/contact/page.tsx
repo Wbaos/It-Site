@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import ContactTemplate from "@/components/sections/ContactTemplate";
 import { getContactPage } from "@/lib/sanityContact";
+import { resolveSiteSettings } from "@/lib/sanitySettings";
 
 // Thin English route: renders the SAME shared contact template as the
 // Spanish route, with locale="en". No duplicated page copy lives here:
@@ -9,11 +10,12 @@ import { getContactPage } from "@/lib/sanityContact";
 // changes.
 export async function generateMetadata(): Promise<Metadata> {
   const doc = await getContactPage();
+  const settings = await resolveSiteSettings();
   return {
     title: doc?.metaTitle ?? "Contact CallTechCare | Sprinkler Repair Miami & Broward",
     description:
       doc?.metaDescription ??
-      "Contact CallTechCare for sprinkler repair and irrigation in Miami and Broward. Call (786) 366-2729 or send a message — we respond within 24 hours.",
+      `Contact CallTechCare for sprinkler repair and irrigation in Miami and Broward. Call ${settings.phoneDisplay} or send a message — we respond within 24 hours.`,
     alternates: {
       canonical: "https://www.calltechcare.com/contact",
       languages: {

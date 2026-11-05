@@ -11,7 +11,35 @@ import { serviceHref } from "@/lib/serviceTwins";
 
 type FooterArea = { name: string; slug: string; esSlug: string };
 
-export default function Footer({ areas }: { areas?: FooterArea[] }) {
+// Contact data comes from the siteSettings document via the layout;
+// the defaults below are the exact values shown today.
+export default function Footer({
+  areas,
+  phoneTel = "+17863662729",
+  phoneDisplay = "(786) 366-2729",
+  email = "support@calltechcare.com",
+  hoursWeekdayLabel = "Mon–Sat",
+  hoursWeekdayLabelEs = "Lun–Sáb",
+  hoursWeekdayTime = "8 AM – 7 PM",
+  hoursWeekendLabel = "Sun",
+  hoursWeekendLabelEs = "Dom",
+  hoursWeekendTime = "9 AM – 6 PM",
+  serviceAreaLine = "Serving South Florida — from Sunrise to Cutler Bay",
+  serviceAreaLineEs = "Sirviendo al sur de Florida — desde Sunrise hasta Cutler Bay",
+}: {
+  areas?: FooterArea[];
+  phoneTel?: string;
+  phoneDisplay?: string;
+  email?: string;
+  hoursWeekdayLabel?: string;
+  hoursWeekdayLabelEs?: string;
+  hoursWeekdayTime?: string;
+  hoursWeekendLabel?: string;
+  hoursWeekendLabelEs?: string;
+  hoursWeekendTime?: string;
+  serviceAreaLine?: string;
+  serviceAreaLineEs?: string;
+}) {
   const year = new Date().getFullYear();
   const pathname = usePathname();
   // Same locale check as the Navbar: "/es" itself plus any "/es/*" route.
@@ -174,22 +202,20 @@ export default function Footer({ areas }: { areas?: FooterArea[] }) {
           <p>
             <strong>CallTechCare</strong>
             <br />
-            {isSpanishPage
-              ? "Sirviendo al sur de Florida — desde Sunrise hasta Cutler Bay"
-              : "Serving South Florida — from Sunrise to Cutler Bay"}
+            {isSpanishPage ? serviceAreaLineEs : serviceAreaLine}
           </p>
           <p>
-            📞 <a href="tel:+17863662729" title="Call CallTechCare">(786) 366-2729</a>
+            📞 <a href={`tel:${phoneTel}`} title="Call CallTechCare">{phoneDisplay}</a>
             <br />
             ✉️{" "}
-              <a href="mailto:support@calltechcare.com" title="Email CallTechCare support">
-              support@calltechcare.com
+              <a href={`mailto:${email}`} title="Email CallTechCare support">
+              {email}
             </a>
           </p>
           <p>
-            {isSpanishPage ? "Lun–Sáb: 8 AM – 7 PM" : "Mon–Sat: 8 AM – 7 PM"}
+            {isSpanishPage ? `${hoursWeekdayLabelEs}: ${hoursWeekdayTime}` : `${hoursWeekdayLabel}: ${hoursWeekdayTime}`}
             <br />
-            {isSpanishPage ? "Dom: 9 AM – 6 PM" : "Sun: 9 AM – 6 PM"}
+            {isSpanishPage ? `${hoursWeekendLabelEs}: ${hoursWeekendTime}` : `${hoursWeekendLabel}: ${hoursWeekendTime}`}
           </p>
           <div className="footer-areas">
             <p className="areas-title">{isSpanishPage ? "📍 Áreas de Servicio" : "📍 Service Areas"}</p>
