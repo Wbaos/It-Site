@@ -7,6 +7,13 @@ import { getAllActiveLocations, Location } from "@/lib/sanityLocations";
 import { urlFor } from "@/lib/sanityImage";
 import { MapPin, Phone, Search, ArrowRight } from "lucide-react";
 
+function formatPhone(phone: string): string {
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length === 11 && digits.startsWith("1")) return `(${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
+  if (digits.length === 10) return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  return phone;
+}
+
 const DESCRIPTION_ES: Record<string, string> = {
   miami: "CallTechCare ofrece reparación profesional de sprinklers e instalación de irrigación en Miami para propiedades residenciales y comerciales. También ofrecemos instalación de cámaras de seguridad. Atendemos todos los barrios de Miami con servicio rápido y confiable y estimados claros.",
   "fort-lauderdale": "CallTechCare ofrece reparación profesional de sprinklers e instalación de irrigación en Fort Lauderdale para propiedades residenciales y comerciales. También ofrecemos instalación de cámaras de seguridad en todo el condado de Broward con servicio rápido y confiable.",
@@ -182,7 +189,7 @@ export default function LocationsClient({ locale = "en" }: { locale?: "en" | "es
                     {location.phone && (
                       <div className="location-card-info-item">
                         <Phone />
-                        <span>{location.phone}</span>
+                        <span>{formatPhone(location.phone)}</span>
                       </div>
                     )}
                     <div className="location-card-info-item">
