@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import SvgIcon from "@/components/common/SvgIcons";
 import RequestQuoteSidebar from "@/components/request-quote/RequestQuoteSidebar";
@@ -25,15 +24,15 @@ import type {
 const STEPS_EN = [
   {
     title: "Submit Your Request",
-    desc: "Fill out the form with your service needs and preferred schedule.",
+    desc: "Fill out the form with your service needs. We'll call you to confirm the day and time of your visit.",
   },
   {
     title: "Receive Your Quote",
     desc: "We’ll review your request and send a detailed quote within 24 hours.",
   },
   {
-    title: "Schedule Service",
-    desc: "Once you approve, we’ll confirm your appointment with our technician.",
+    title: "Confirm Your Visit",
+    desc: "Once you approve, we'll call you to agree on the day and time of your visit.",
   },
   {
     title: "Get It Done",
@@ -44,15 +43,15 @@ const STEPS_EN = [
 const STEPS_ES = [
   {
     title: "Envía tu solicitud",
-    desc: "Completa el formulario con lo que necesitas y tu horario preferido.",
+    desc: "Completa el formulario con lo que necesitas. Te llamamos para confirmar el día y la hora de tu visita.",
   },
   {
     title: "Recibe tu cotización",
     desc: "Revisaremos tu solicitud y te enviaremos una cotización detallada dentro de 24 horas.",
   },
   {
-    title: "Agenda el servicio",
-    desc: "Cuando apruebes, confirmaremos tu cita con nuestro técnico.",
+    title: "Confirma tu visita",
+    desc: "Cuando apruebes, te llamamos para acordar el día y la hora de tu visita.",
   },
   {
     title: "Trabajo hecho",
@@ -232,8 +231,6 @@ export default function RequestQuoteClient(props: {
 
   const [projectDetails, setProjectDetails] = useState("");
   const [wantsTechnicianVisitFirst, setWantsTechnicianVisitFirst] = useState(true);
-  const [preferredDate, setPreferredDate] = useState("");
-  const [preferredTime, setPreferredTime] = useState("");
   const [heardAbout, setHeardAbout] = useState("");
 
   const [submitting, setSubmitting] = useState(false);
@@ -406,9 +403,7 @@ export default function RequestQuoteClient(props: {
     canContinueStep2 && streetAddress.trim() && city.trim() && zipCode.trim()
   );
 
-  const canSubmit = Boolean(
-    canContinueStep3 && (!wantsTechnicianVisitFirst || (preferredDate && preferredTime))
-  );
+  const canSubmit = Boolean(canContinueStep3);
 
   const serviceSummary = useMemo(() => {
     if (selectedService?.title) return selectedService.title;
@@ -483,12 +478,6 @@ export default function RequestQuoteClient(props: {
         details: {
           projectDetails: projectDetails.trim() || undefined,
           wantsTechnicianVisitFirst,
-          preferredDate: wantsTechnicianVisitFirst
-            ? preferredDate || undefined
-            : undefined,
-          preferredTime: wantsTechnicianVisitFirst
-            ? preferredTime || undefined
-            : undefined,
           heardAbout: heardAbout || undefined,
         },
       };
@@ -541,8 +530,6 @@ export default function RequestQuoteClient(props: {
         topRef={thankYouTopRef}
         referenceNumber={referenceNumber}
         wantsTechnicianVisitFirst={wantsTechnicianVisitFirst}
-        preferredDate={preferredDate}
-        preferredTime={preferredTime}
         contactEmail={contactEmail}
         contactPhone={contactPhone}
         onBackHome={() => router.push("/")}
@@ -585,17 +572,6 @@ export default function RequestQuoteClient(props: {
               </div>
             ))}
           </div>
-
-          {/* Scheduling page link (English only: no Spanish schedule route
-              exists). The schedule page is kept as its own route. */}
-          {locale === "en" && (
-            <p className="rq-client__heroSubtitle">
-              Already know what you need?{" "}
-              <Link href="/request-quote/schedule">
-                Pick a time on our scheduling page
-              </Link>
-            </p>
-          )}
         </div>
       </div>
 
@@ -689,10 +665,6 @@ export default function RequestQuoteClient(props: {
                   setProjectDetails={setProjectDetails}
                   wantsTechnicianVisitFirst={wantsTechnicianVisitFirst}
                   setWantsTechnicianVisitFirst={setWantsTechnicianVisitFirst}
-                  preferredDate={preferredDate}
-                  setPreferredDate={setPreferredDate}
-                  preferredTime={preferredTime}
-                  setPreferredTime={setPreferredTime}
                   heardAbout={heardAbout}
                   setHeardAbout={setHeardAbout}
                   canSubmit={canSubmit}
