@@ -53,8 +53,7 @@ export default function Navbar({
   // ("/sprinkler-repair-{city}" <-> "/es/reparacion-de-sprinklers-{city}",
   // hub Miami included), the nine service page pairs, the ten blog
   // pairs ("/blog" <-> "/es/blog" and nine posts),
-  // "/contact" <-> "/es/contacto" and "/request-quote" <->
-  // "/es/solicita-una-cotizacion".
+  // "/contact" <-> "/es/contacto".
   const ES_HUB_HREF = "/es/";
   const EN_TO_ES: Record<string, string> = {
     "/": "/es/",
@@ -130,7 +129,6 @@ export default function Navbar({
     "/blog/prepare-sprinkler-system-dry-season-miami":
       "/es/blog/prepara-tu-sistema-de-sprinklers-para-la-temporada-seca-en-miami",
     "/contact": "/es/contacto",
-    "/request-quote": "/es/solicita-una-cotizacion",
     "/about": "/es/sobre-nosotros",
     "/locations": "/es/areas-de-servicio",
     "/locations/miami": "/es/areas-de-servicio/miami",
@@ -215,7 +213,6 @@ export default function Navbar({
     "/es/blog/prepara-tu-sistema-de-sprinklers-para-la-temporada-seca-en-miami":
       "/blog/prepare-sprinkler-system-dry-season-miami",
     "/es/contacto": "/contact",
-    "/es/solicita-una-cotizacion": "/request-quote",
     "/es/sobre-nosotros": "/about",
     "/es/areas-de-servicio": "/locations",
     "/es/areas-de-servicio/miami": "/locations/miami",

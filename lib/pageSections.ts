@@ -55,8 +55,9 @@ const heroPropsEn = {
   primaryCtaText: "Call Now",
   primaryCtaHref: `tel:${FALLBACK_SETTINGS.phoneTel}`,
 
-  secondaryCtaText: "Request a Quote",
-  secondaryCtaHref: "/request-quote",
+  // No secondary CTA: the quote flow is hidden for now, so the hero
+  // only offers the call button. (The Hero component still supports a
+  // secondary CTA if a caller passes one; none does right now.)
 
   phoneNumber: FALLBACK_SETTINGS.phoneTel,
   showCallButton: true,
@@ -79,8 +80,8 @@ const heroPropsEs = {
   badgeText: "Reparación de Sprinklers e Irrigación en Miami y Broward",
   primaryCtaText: "Llama Ahora",
   primaryCtaHref: `tel:${FALLBACK_SETTINGS.phoneTel}`,
-  secondaryCtaText: "Solicita una Cotización",
-  secondaryCtaHref: "/es/solicita-una-cotizacion",
+  // Sin CTA secundario: la cotización está escondida por ahora; el hero
+  // solo ofrece el botón de llamar.
   phoneNumber: FALLBACK_SETTINGS.phoneTel,
   showCallButton: true,
   imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/33438c04872f15d5d2aa76f5ede7dcae856fd67a-1600x1200.webp?w=1600&auto=format&q=80",

@@ -56,7 +56,6 @@ const FALLBACK_EN = {
       link: "support@calltechcare.com",
     },
     { icon: "faq", title: "FAQs", text: "Find quick answers" },
-    { icon: "quote", title: "Request a Quote", text: "Get a free inspection" },
   ],
   sideTitle: "Other Ways to Reach Us",
   sideSubtitle: "Choose the method that works best for you.",
@@ -99,7 +98,6 @@ const FALLBACK_ES = {
       link: "support@calltechcare.com",
     },
     { icon: "faq", title: "Preguntas frecuentes", text: "Encuentra respuestas rápidas" },
-    { icon: "quote", title: "Solicita una cotización", text: "Recibe una inspección gratis" },
   ],
   sideTitle: "Otras formas de contactarnos",
   sideSubtitle: "Elige el método que mejor te funcione.",
@@ -132,13 +130,13 @@ const CARD_ICON_CLASSES: Record<string, string> = {
 
 function cardHref(
   icon: string,
-  locale: Locale,
   settings: { phoneTel: string; email: string },
 ): string {
   if (icon === "phone") return `tel:${settings.phoneTel}`;
   if (icon === "mail") return `mailto:${settings.email}`;
-  if (icon === "faq") return "#contact-faq";
-  return locale === "es" ? "/es/solicita-una-cotizacion" : "/request-quote";
+  // The quote card is hidden while the quote flow is hidden (see the
+  // filter below), so only the FAQ anchor remains here.
+  return "#contact-faq";
 }
 
 export default async function ContactTemplate({
@@ -201,6 +199,10 @@ export default async function ContactTemplate({
                 : sub(c.link),
           meta: sub(c.meta),
         }));
+  // The quote card also lives in the Sanity contactPage doc; hide it at
+  // render while the quote flow is hidden. The doc itself is untouched,
+  // so the card comes back if the flow returns.
+  const visibleCards = cards.filter((c) => c.icon !== "quote");
   const faqs = (isEs ? doc?.faqsEs : doc?.faqs)?.map((f) => ({
     q: sub(f.q ?? ""),
     a: sub(f.a ?? ""),
@@ -302,10 +304,10 @@ export default async function ContactTemplate({
             <h2 className="contact-support-optionsTitle">{optionsTitle}</h2>
 
             <div className="contact-support-grid">
-              {cards.map((card, i) => {
+              {visibleCards.map((card, i) => {
                 const Icon = CARD_ICONS[card.icon] ?? HelpCircle;
                 const iconClass = CARD_ICON_CLASSES[card.icon] ?? "";
-                const href = cardHref(card.icon, locale, settings);
+                const href = cardHref(card.icon, settings);
                 const inner = (
                   <>
                     <div
@@ -328,9 +330,9 @@ export default async function ContactTemplate({
                     ) : null}
                   </>
                 );
-                // Phone/mail are plain anchors; faq/quote use Next Link,
+                // Phone/mail are plain anchors; faq uses Next Link,
                 // exactly as the original template did.
-                return card.icon === "faq" || card.icon === "quote" ? (
+                return card.icon === "faq" ? (
                   <Link className="contact-support-card" href={href} key={i}>
                     {inner}
                   </Link>
