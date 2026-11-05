@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Clock, MapPin, PhoneCall } from "lucide-react";
 import Link from "next/link";
 import SvgIcon from "@/components/common/SvgIcons";
+import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 
 type FormState = {
   name: string;
@@ -40,7 +41,7 @@ export type ContactSideTexts = {
 export default function ContactMessageSection({
   locale = "en",
   side,
-  emergencyPhone = "+1 (786) 366-2729",
+  emergencyPhone = FALLBACK_SETTINGS.phoneCard,
 }: {
   locale?: "en" | "es";
   side?: ContactSideTexts;

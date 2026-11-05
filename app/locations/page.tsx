@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import LocationsClient from "./LocationsClient";
+import { resolveSiteSettings } from "@/lib/sanitySettings";
 
 export const metadata: Metadata = {
   title: "Sprinkler Repair Service Areas | Miami & Broward | CallTechCare",
@@ -32,7 +33,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function LocationsPage() {
+export default async function LocationsPage() {
+  const settings = await resolveSiteSettings();
 
   const locationsSchema = {
     "@context": "https://schema.org",
@@ -87,7 +89,7 @@ export default function LocationsPage() {
         }}
       />
 
-      <LocationsClient />
+      <LocationsClient phoneDisplay={settings.phoneDisplay} />
     </>
   );
 }

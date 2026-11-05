@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getFaqPage, type FaqPage, type FaqItem } from "@/lib/sanityFaq";
+import { resolveSiteSettings, substitutePhonePlaceholders } from "@/lib/sanitySettings";
 
 // Single FAQ template for both languages: the same sections, in the same
 // order, with the same classes. Copy comes from the Sanity `faqPage`
@@ -43,11 +44,11 @@ const FALLBACK_EN: FaqCopy = {
     },
     {
       q: "Do you repair sprinkler systems in HOA communities?",
-      a: "Yes. We repair and install sprinkler systems in HOA communities across Miami and Broward. Call (786) 366-2729 and we'll confirm coverage for your community.",
+      a: "Yes. We repair and install sprinkler systems in HOA communities across Miami and Broward. Call {{phone}} and we'll confirm coverage for your community.",
     },
     {
       q: "How can I book a service?",
-      a: "You can request service directly on our website using the request form or call us at (786) 366-2729 to schedule an appointment.",
+      a: "You can request service directly on our website using the request form or call us at {{phone}} to schedule an appointment.",
     },
     {
       q: "What payment methods do you accept?",
@@ -85,11 +86,11 @@ const FALLBACK_ES: FaqCopy = {
     },
     {
       q: "¿Reparan sistemas de sprinklers en comunidades HOA?",
-      a: "Sí. Reparamos e instalamos sistemas de sprinklers en comunidades HOA en Miami y Broward. Llama al (786) 366-2729 y confirmaremos la cobertura para tu comunidad.",
+      a: "Sí. Reparamos e instalamos sistemas de sprinklers en comunidades HOA en Miami y Broward. Llama al {{phone}} y confirmaremos la cobertura para tu comunidad.",
     },
     {
       q: "¿Cómo puedo reservar un servicio?",
-      a: "Puedes reservar directamente en nuestro sitio web usando el formulario de solicitud o llamarnos al (786) 366-2729 para programar una cita.",
+      a: "Puedes reservar directamente en nuestro sitio web usando el formulario de solicitud o llamarnos al {{phone}} para programar una cita.",
     },
     {
       q: "¿Qué métodos de pago aceptan?",
@@ -114,24 +115,29 @@ export default async function FaqTemplate({ locale = "en" }: { locale?: Locale }
   }
   const isEs = locale === "es";
   const fb = isEs ? FALLBACK_ES : FALLBACK_EN;
+  // Live phone from site-settings; every text below (Sanity or fallback)
+  // goes through the placeholder helper, so {{phone}} in Sanity copy
+  // resolves to the single number in settings.
+  const settings = await resolveSiteSettings();
+  const sub = (s: string | undefined) => substitutePhonePlaceholders(s ?? "", settings);
 
-  const title = (isEs ? doc?.titleEs : doc?.title) ?? fb.title;
-  const introBefore = (isEs ? doc?.introBeforeEs : doc?.introBefore) ?? fb.introBefore;
-  const introLink1Text = (isEs ? doc?.introLink1TextEs : doc?.introLink1Text) ?? fb.introLink1Text;
-  const introBetween = (isEs ? doc?.introBetweenEs : doc?.introBetween) ?? fb.introBetween;
-  const introLink2Text = (isEs ? doc?.introLink2TextEs : doc?.introLink2Text) ?? fb.introLink2Text;
-  const introAfter = (isEs ? doc?.introAfterEs : doc?.introAfter) ?? fb.introAfter;
+  const title = sub((isEs ? doc?.titleEs : doc?.title) ?? fb.title);
+  const introBefore = sub((isEs ? doc?.introBeforeEs : doc?.introBefore) ?? fb.introBefore);
+  const introLink1Text = sub((isEs ? doc?.introLink1TextEs : doc?.introLink1Text) ?? fb.introLink1Text);
+  const introBetween = sub((isEs ? doc?.introBetweenEs : doc?.introBetween) ?? fb.introBetween);
+  const introLink2Text = sub((isEs ? doc?.introLink2TextEs : doc?.introLink2Text) ?? fb.introLink2Text);
+  const introAfter = sub((isEs ? doc?.introAfterEs : doc?.introAfter) ?? fb.introAfter);
   const rawFaqs: FaqItem[] | undefined = isEs ? doc?.faqsEs : doc?.faqs;
   const faqs =
     rawFaqs && rawFaqs.length > 0
       ? rawFaqs.map((f, i) => ({
-          q: f.q ?? fb.faqs[i]?.q ?? "",
-          a: f.a ?? fb.faqs[i]?.a ?? "",
+          q: sub(f.q ?? fb.faqs[i]?.q ?? ""),
+          a: sub(f.a ?? fb.faqs[i]?.a ?? ""),
         }))
-      : fb.faqs;
-  const contactBefore = (isEs ? doc?.contactBeforeEs : doc?.contactBefore) ?? fb.contactBefore;
-  const contactLinkText = (isEs ? doc?.contactLinkTextEs : doc?.contactLinkText) ?? fb.contactLinkText;
-  const contactAfter = (isEs ? doc?.contactAfterEs : doc?.contactAfter) ?? fb.contactAfter;
+      : fb.faqs.map((f) => ({ q: sub(f.q), a: sub(f.a) }));
+  const contactBefore = sub((isEs ? doc?.contactBeforeEs : doc?.contactBefore) ?? fb.contactBefore);
+  const contactLinkText = sub((isEs ? doc?.contactLinkTextEs : doc?.contactLinkText) ?? fb.contactLinkText);
+  const contactAfter = sub((isEs ? doc?.contactAfterEs : doc?.contactAfter) ?? fb.contactAfter);
 
   const cityHref = isEs ? "/es/reparacion-de-sprinklers-miami" : "/sprinkler-repair-miami";
   const contactHref = isEs ? "/es/contacto" : "/contact";

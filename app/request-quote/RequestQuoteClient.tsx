@@ -153,6 +153,10 @@ export default function RequestQuoteClient(props: {
   initialTab: string;
   locale?: "en" | "es";
   ratingSummary?: GoogleRatingSummary;
+  // Business phone from site-settings, resolved by the server page.
+  phoneTel?: string;
+  phoneDisplay?: string;
+  phoneCard?: string;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -533,6 +537,7 @@ export default function RequestQuoteClient(props: {
       <RequestQuoteThankYou
         locale={locale}
         ratingSummary={props.ratingSummary}
+        phoneCard={props.phoneCard}
         topRef={thankYouTopRef}
         referenceNumber={referenceNumber}
         wantsTechnicianVisitFirst={wantsTechnicianVisitFirst}
@@ -702,7 +707,7 @@ export default function RequestQuoteClient(props: {
 
           {/* Right: Sidebar */}
           <div className="rq-client__aside">
-            <RequestQuoteSidebar locale={locale} rqContent={rqContent} ratingSummary={props.ratingSummary} />
+            <RequestQuoteSidebar locale={locale} rqContent={rqContent} ratingSummary={props.ratingSummary} phoneTel={props.phoneTel} phoneDisplay={props.phoneDisplay} />
           </div>
         </div>
       </div>

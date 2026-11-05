@@ -13,6 +13,7 @@ import MobileServicesPanel from "./MobileServicesPanel";
 import ServiceGroupList from "./ServiceGroupList";
 import { groupTitleEs } from "@/lib/groupTitlesEs";
 import { serviceHref } from "@/lib/serviceTwins";
+import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 
 const NAV = [
   { href: "/#contact", label: "Contact" },
@@ -28,8 +29,8 @@ const NAV_ES = [
 ];
 
 export default function Navbar({
-  phoneTel = "+17863662729",
-  phoneDisplay = "(786) 366-2729",
+  phoneTel = FALLBACK_SETTINGS.phoneTel,
+  phoneDisplay = FALLBACK_SETTINGS.phoneDisplay,
 }: {
   phoneTel?: string;
   phoneDisplay?: string;

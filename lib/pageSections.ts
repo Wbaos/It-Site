@@ -5,6 +5,7 @@ import {
   FALLBACK_GOOGLE_RATING_SUMMARY,
   formatGoogleRating,
 } from "@/lib/google-reviews";
+import { FALLBACK_SETTINGS, resolveSiteSettings } from "@/lib/sanitySettings";
 import Hero from "@/components/sections/Hero";
 import SEOIntro from "@/components/sections/SEOIntro";
 import Services from "@/components/sections/Services";
@@ -52,12 +53,12 @@ const heroPropsEn = {
   badgeText: "Sprinkler Repair & Irrigation in Miami & Broward",
 
   primaryCtaText: "Call Now",
-  primaryCtaHref: "tel:+17863662729",
+  primaryCtaHref: `tel:${FALLBACK_SETTINGS.phoneTel}`,
 
   secondaryCtaText: "Request a Quote",
   secondaryCtaHref: "/request-quote",
 
-  phoneNumber: "+17863662729",
+  phoneNumber: FALLBACK_SETTINGS.phoneTel,
   showCallButton: true,
   imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/33438c04872f15d5d2aa76f5ede7dcae856fd67a-1600x1200.webp?w=1600&auto=format&q=80",
   mobileImageSrc: "https://cdn.sanity.io/images/celkrwoq/production/66fa6374e721953321827264b014a7ea5c47a930-750x1000.webp?w=750&auto=format&q=50",
@@ -77,10 +78,10 @@ const heroPropsEs = {
     "Servicios profesionales de reparación de sprinklers e irrigación en Miami y Broward. También instalamos cámaras de seguridad.",
   badgeText: "Reparación de Sprinklers e Irrigación en Miami y Broward",
   primaryCtaText: "Llama Ahora",
-  primaryCtaHref: "tel:+17863662729",
+  primaryCtaHref: `tel:${FALLBACK_SETTINGS.phoneTel}`,
   secondaryCtaText: "Solicita una Cotización",
   secondaryCtaHref: "/es/solicita-una-cotizacion",
-  phoneNumber: "+17863662729",
+  phoneNumber: FALLBACK_SETTINGS.phoneTel,
   showCallButton: true,
   imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/33438c04872f15d5d2aa76f5ede7dcae856fd67a-1600x1200.webp?w=1600&auto=format&q=80",
   mobileImageSrc: "https://cdn.sanity.io/images/celkrwoq/production/66fa6374e721953321827264b014a7ea5c47a930-750x1000.webp?w=750&auto=format&q=50",
@@ -105,6 +106,9 @@ export async function getHomeSections(locale: HomeLocale = "en"): Promise<Sectio
   const ratingSummary =
     (await getGoogleRatingSummary()) ?? FALLBACK_GOOGLE_RATING_SUMMARY;
   const googleRating = formatGoogleRating(ratingSummary.rating);
+  // Live phone from site-settings; the hero constants above only carry the
+  // single fallback, so a number change in Sanity reaches the home hero.
+  const settings = await resolveSiteSettings();
   let doc: HomePage | null = null;
   try {
     doc = await getHomePage();
@@ -115,6 +119,8 @@ export async function getHomeSections(locale: HomeLocale = "en"): Promise<Sectio
   const heroProps = doc
     ? {
         ...heroBase,
+        primaryCtaHref: `tel:${settings.phoneTel}`,
+        phoneNumber: settings.phoneTel,
         titleLine1: pick(doc.heroTitleLine1, doc.heroTitleLine1Es, isSpanish) ?? heroBase.titleLine1,
         titleLine2: pick(doc.heroTitleLine2, doc.heroTitleLine2Es, isSpanish) ?? heroBase.titleLine2,
         subtitle: pick(doc.heroSubtitle, doc.heroSubtitleEs, isSpanish) ?? heroBase.subtitle,
@@ -129,7 +135,12 @@ export async function getHomeSections(locale: HomeLocale = "en"): Promise<Sectio
             : heroBase.stats,
         googleRating,
       }
-    : { ...heroBase, googleRating };
+    : {
+        ...heroBase,
+        primaryCtaHref: `tel:${settings.phoneTel}`,
+        phoneNumber: settings.phoneTel,
+        googleRating,
+      };
   const contactProps = isSpanish
     ? {
         headline: pick(doc?.contactHeadline, doc?.contactHeadlineEs, true) ?? "¿Preguntas? Hablemos.",

@@ -5,14 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { getAllActiveLocations, Location } from "@/lib/sanityLocations";
 import { urlFor } from "@/lib/sanityImage";
+import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 import { MapPin, Phone, Search, ArrowRight } from "lucide-react";
-
-function formatPhone(phone: string): string {
-  const digits = phone.replace(/\D/g, "");
-  if (digits.length === 11 && digits.startsWith("1")) return `(${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
-  if (digits.length === 10) return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
-  return phone;
-}
 
 const DESCRIPTION_ES: Record<string, string> = {
   miami: "CallTechCare ofrece reparación profesional de sprinklers e instalación de irrigación en Miami para propiedades residenciales y comerciales. También ofrecemos instalación de cámaras de seguridad. Atendemos todos los barrios de Miami con servicio rápido y confiable y estimados claros.",
@@ -52,7 +46,16 @@ const CITY_LINKS_ES: Array<[string, string]> = [
   ["Cutler Bay", "/es/reparacion-de-sprinklers-cutler-bay"],
 ];
 
-export default function LocationsClient({ locale = "en" }: { locale?: "en" | "es" }) {
+export default function LocationsClient({
+  locale = "en",
+  phoneDisplay = FALLBACK_SETTINGS.phoneDisplay,
+}: {
+  locale?: "en" | "es";
+  // Business phone from site-settings (passed by the server page). The
+  // structured phone field on the Sanity location doc is only a presence
+  // flag; the number shown always comes from settings.
+  phoneDisplay?: string;
+}) {
   const isSpanish = locale === "es";
   const [locations, setLocations] = useState<Location[]>([]);
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
@@ -189,7 +192,7 @@ export default function LocationsClient({ locale = "en" }: { locale?: "en" | "es
                     {location.phone && (
                       <div className="location-card-info-item">
                         <Phone />
-                        <span>{formatPhone(location.phone)}</span>
+                        <span>{phoneDisplay}</span>
                       </div>
                     )}
                     <div className="location-card-info-item">

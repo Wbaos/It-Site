@@ -14,7 +14,7 @@ import {
 import ContactFaqSection from "@/app/contact/ContactFaqSection";
 import ContactMessageSection from "@/app/contact/ContactMessageSection";
 import { getContactPage } from "@/lib/sanityContact";
-import { resolveSiteSettings } from "@/lib/sanitySettings";
+import { resolveSiteSettings, substitutePhonePlaceholders } from "@/lib/sanitySettings";
 import {
   getGoogleRatingSummary,
   FALLBACK_GOOGLE_RATING_SUMMARY,
@@ -46,7 +46,7 @@ const FALLBACK_EN = {
       icon: "phone",
       title: "Call Us",
       text: "Talk to a live technician",
-      link: "+1 (786) 366-2729",
+      link: "{{phoneCard}}",
       meta: "Available Mon–Sun",
     },
     {
@@ -89,7 +89,7 @@ const FALLBACK_ES = {
       icon: "phone",
       title: "Llámanos",
       text: "Habla con un técnico en vivo",
-      link: "+1 (786) 366-2729",
+      link: "{{phoneCard}}",
       meta: "Disponible lun–dom",
     },
     {
@@ -150,19 +150,23 @@ export default async function ContactTemplate({
   const settings = await resolveSiteSettings();
   const isEs = locale === "es";
   const fb = isEs ? FALLBACK_ES : FALLBACK_EN;
+  // Every Sanity text below goes through the phone-placeholder helper, so
+  // {{phone}} / {{phoneTel}} / {{phoneCard}} in contact copy resolves to
+  // the single number in site-settings.
+  const sub = (s: string | undefined) => substitutePhonePlaceholders(s ?? "", settings);
   // Live Google rating summary, from the single shared source in
   // lib/google-reviews. Used for the Google Rating stat below and passed to
   // the FAQ section, so the numbers change everywhere at the same time.
   const ratingSummary =
     (await getGoogleRatingSummary()) ?? FALLBACK_GOOGLE_RATING_SUMMARY;
 
-  const heroTitle = (isEs ? doc?.heroTitleEs : doc?.heroTitle) ?? fb.heroTitle;
-  const heroSubtitle = (isEs ? doc?.heroSubtitleEs : doc?.heroSubtitle) ?? fb.heroSubtitle;
+  const heroTitle = sub((isEs ? doc?.heroTitleEs : doc?.heroTitle) ?? fb.heroTitle);
+  const heroSubtitle = sub((isEs ? doc?.heroSubtitleEs : doc?.heroSubtitle) ?? fb.heroSubtitle);
   const stats = (
     doc?.stats && doc.stats.length > 0
       ? doc.stats.map((s, i) => ({
-          value: (isEs ? s.valueEs : s.value) ?? fb.stats[i]?.value ?? "",
-          label: (isEs ? s.labelEs : s.label) ?? fb.stats[i]?.label ?? "",
+          value: sub((isEs ? s.valueEs : s.value) ?? fb.stats[i]?.value ?? ""),
+          label: sub((isEs ? s.labelEs : s.label) ?? fb.stats[i]?.label ?? ""),
         }))
       : fb.stats
   ).map((s) =>
@@ -170,43 +174,51 @@ export default async function ContactTemplate({
       ? { ...s, value: formatGoogleRating(ratingSummary.rating) }
       : s
   );
-  const optionsTitle = (isEs ? doc?.optionsTitleEs : doc?.optionsTitle) ?? fb.optionsTitle;
+  const optionsTitle = sub((isEs ? doc?.optionsTitleEs : doc?.optionsTitle) ?? fb.optionsTitle);
   const cards =
     doc?.cards && doc.cards.length > 0
       ? doc.cards.map((c, i) => ({
           icon: c.icon ?? fb.cards[i]?.icon ?? "faq",
-          title: (isEs ? c.titleEs : c.title) ?? fb.cards[i]?.title ?? "",
-          text: (isEs ? c.textEs : c.text) ?? fb.cards[i]?.text ?? "",
-          link: c.link ?? fb.cards[i]?.link,
-          meta: (isEs ? c.metaEs : c.meta) ?? fb.cards[i]?.meta,
+          title: sub((isEs ? c.titleEs : c.title) ?? fb.cards[i]?.title ?? ""),
+          text: sub((isEs ? c.textEs : c.text) ?? fb.cards[i]?.text ?? ""),
+          // The phone card always shows the number from site-settings,
+          // never the structured phone field stored on the Sanity card.
+          link:
+            (c.icon ?? fb.cards[i]?.icon) === "phone"
+              ? settings.phoneCard
+              : sub(c.link ?? fb.cards[i]?.link),
+          meta: sub((isEs ? c.metaEs : c.meta) ?? fb.cards[i]?.meta),
         }))
       : fb.cards.map((c) => ({
           ...c,
+          title: sub(c.title),
+          text: sub(c.text),
           link:
             c.icon === "phone"
               ? settings.phoneCard
               : c.icon === "mail"
                 ? settings.email
-                : c.link,
+                : sub(c.link),
+          meta: sub(c.meta),
         }));
   const faqs = (isEs ? doc?.faqsEs : doc?.faqs)?.map((f) => ({
-    q: f.q ?? "",
-    a: f.a ?? "",
+    q: sub(f.q ?? ""),
+    a: sub(f.a ?? ""),
   }));
   const side = {
-    sideTitle: (isEs ? doc?.sideTitleEs : doc?.sideTitle) ?? fb.sideTitle,
-    sideSubtitle: (isEs ? doc?.sideSubtitleEs : doc?.sideSubtitle) ?? fb.sideSubtitle,
-    hoursTitle: (isEs ? doc?.hoursTitleEs : doc?.hoursTitle) ?? fb.hoursTitle,
-    dayMonFri: (isEs ? doc?.dayMonFriEs : doc?.dayMonFri) ?? fb.dayMonFri,
-    daySat: (isEs ? doc?.daySatEs : doc?.daySat) ?? fb.daySat,
-    daySun: (isEs ? doc?.daySunEs : doc?.daySun) ?? fb.daySun,
-    emergencyNote: (isEs ? doc?.emergencyNoteEs : doc?.emergencyNote) ?? fb.emergencyNote,
-    locationTitle: (isEs ? doc?.locationTitleEs : doc?.locationTitle) ?? fb.locationTitle,
-    locationCity: (isEs ? doc?.locationCityEs : doc?.locationCity) ?? fb.locationCity,
-    locationMuted: (isEs ? doc?.locationMutedEs : doc?.locationMuted) ?? fb.locationMuted,
-    locationsLink: (isEs ? doc?.locationsLinkEs : doc?.locationsLink) ?? fb.locationsLink,
-    emergencyTitle: (isEs ? doc?.emergencyTitleEs : doc?.emergencyTitle) ?? fb.emergencyTitle,
-    emergencyText: (isEs ? doc?.emergencyTextEs : doc?.emergencyText) ?? fb.emergencyText,
+    sideTitle: sub((isEs ? doc?.sideTitleEs : doc?.sideTitle) ?? fb.sideTitle),
+    sideSubtitle: sub((isEs ? doc?.sideSubtitleEs : doc?.sideSubtitle) ?? fb.sideSubtitle),
+    hoursTitle: sub((isEs ? doc?.hoursTitleEs : doc?.hoursTitle) ?? fb.hoursTitle),
+    dayMonFri: sub((isEs ? doc?.dayMonFriEs : doc?.dayMonFri) ?? fb.dayMonFri),
+    daySat: sub((isEs ? doc?.daySatEs : doc?.daySat) ?? fb.daySat),
+    daySun: sub((isEs ? doc?.daySunEs : doc?.daySun) ?? fb.daySun),
+    emergencyNote: sub((isEs ? doc?.emergencyNoteEs : doc?.emergencyNote) ?? fb.emergencyNote),
+    locationTitle: sub((isEs ? doc?.locationTitleEs : doc?.locationTitle) ?? fb.locationTitle),
+    locationCity: sub((isEs ? doc?.locationCityEs : doc?.locationCity) ?? fb.locationCity),
+    locationMuted: sub((isEs ? doc?.locationMutedEs : doc?.locationMuted) ?? fb.locationMuted),
+    locationsLink: sub((isEs ? doc?.locationsLinkEs : doc?.locationsLink) ?? fb.locationsLink),
+    emergencyTitle: sub((isEs ? doc?.emergencyTitleEs : doc?.emergencyTitle) ?? fb.emergencyTitle),
+    emergencyText: sub((isEs ? doc?.emergencyTextEs : doc?.emergencyText) ?? fb.emergencyText),
   };
 
   const contactSchema = {

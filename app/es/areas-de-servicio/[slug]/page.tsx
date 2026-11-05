@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getLocationBySlug, getAllLocationSlugs } from "@/lib/sanityLocations";
 import { urlFor } from "@/lib/sanityImage";
+import { resolveSiteSettings, substitutePhonePlaceholders } from "@/lib/sanitySettings";
 import LocationDetail from "@/components/LocationDetail";
 
 type Props = {
@@ -16,6 +17,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const location = await getLocationBySlug(slug, "es");
+  const settings = await resolveSiteSettings();
 
   if (!location) {
     return {
@@ -23,9 +25,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  // Location copy may carry {{phone}} markers; they resolve to site-settings.
+  const description = substitutePhonePlaceholders(
+    location.descriptionEs || location.description,
+    settings,
+  );
+
   return {
     title: `${location.city} | Reparación de Sprinklers, Irrigación y Cámaras`,
-    description: location.descriptionEs || location.description,
+    description,
     alternates: {
       canonical: `https://www.calltechcare.com/es/areas-de-servicio/${slug}`,
       languages: {
@@ -36,7 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     openGraph: {
       title: location.city,
-      description: location.descriptionEs || location.description,
+      description,
       url: `https://www.calltechcare.com/es/areas-de-servicio/${slug}`,
       siteName: "CallTechCare",
       images: location.heroImage
