@@ -34,8 +34,8 @@ export default function SEOIntro({ locale = "en", doc }: { locale?: "en" | "es";
       : "After sprinkler repair and irrigation service, we also provide security camera installation for homes and small businesses.");
   const p3 = pick(doc?.seoIntroP3, doc?.seoIntroP3Es, isSpanish) ||
     (isSpanish
-      ? "Con disponibilidad el mismo día en muchas áreas de Miami y Broward, CallTechCare hace que agendar sea simple y sin estrés. Llama ahora para reparación de sprinklers o solicita una cotización: confirmamos los detalles y reservamos la próxima visita disponible."
-      : "With same-day availability in many Miami and Broward areas, CallTechCare makes scheduling simple and stress-free. Call now for sprinkler repair or request a quote—we’ll confirm details and book the next available visit.");
+      ? "Con disponibilidad el mismo día en muchas áreas de Miami y Broward, CallTechCare hace que agendar sea simple y sin estrés. Llama ahora para reparación de sprinklers o envíanos un mensaje rápido: confirmamos los detalles y reservamos la próxima visita disponible."
+      : "With same-day availability in many Miami and Broward areas, CallTechCare makes scheduling simple and stress-free. Call now for sprinkler repair or send us a quick message—we’ll confirm details and book the next available visit.");
   const p4 = pick(doc?.seoIntroP4, doc?.seoIntroP4Es, isSpanish) ||
     (isSpanish
       ? "Todos los trabajos tienen 1 año de garantía cuando CallTechCare hace el trabajo y provee los materiales. Y si tienes una emergencia de sprinklers, como una fuga grande o una zona que no apaga, te atendemos el mismo día dentro del horario de servicio (lunes a sábado de 8am a 7pm, domingo de 9am a 6pm)."

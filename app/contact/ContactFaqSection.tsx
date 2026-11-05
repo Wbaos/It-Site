@@ -23,7 +23,7 @@ const FALLBACK_TOTAL = FALLBACK_GOOGLE_RATING_SUMMARY.total;
 const DEFAULT_FAQS: FaqItem[] = [
   {
     q: "How do I schedule a service appointment?",
-    a: "You can request a free inspection through our quote form or contact us directly to schedule a service visit that works best for you.",
+    a: "You can request a free inspection through our quick message form or contact us directly to schedule a service visit that works best for you.",
   },
   {
     q: "What are your service hours?",
@@ -62,7 +62,7 @@ const DEFAULT_FAQS: FaqItem[] = [
 const DEFAULT_FAQS_ES: FaqItem[] = [
   {
     q: "¿Cómo agendo una cita de servicio?",
-    a: "Puedes solicitar una inspección gratis con nuestro formulario de cotización o contactarnos directamente para agendar una visita de servicio que te convenga.",
+    a: "Puedes solicitar una inspección gratis con nuestro formulario de mensaje rápido o contactarnos directamente para agendar una visita de servicio que te convenga.",
   },
   {
     q: "¿Cuál es su horario de servicio?",

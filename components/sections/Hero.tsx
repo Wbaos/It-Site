@@ -124,7 +124,7 @@ export default function Hero({
           <Link
             href={secondaryCtaHref}
             className="btn-cta btn-secondary flex items-center gap-2"
-            aria-label="Request a quote for sprinkler repair in Miami and Broward"
+            aria-label="Send us a quick message for sprinkler repair in Miami and Broward"
           >
             <SvgIcon name="document" size={20} />
             {secondaryCtaText}
