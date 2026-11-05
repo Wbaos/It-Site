@@ -132,7 +132,7 @@ export default function WhyChooseUs({ locale = "en", doc }: { locale?: "en" | "e
 
         <div className="why-photo">
           <img
-            src="https://cdn.sanity.io/images/celkrwoq/production/3d495269e52ed93bb03e5191f5fd5c2082be1bcd-1024x768.jpg?w=800&fm=webp&q=80"
+            src="https://cdn.sanity.io/images/celkrwoq/production/3d495269e52ed93bb03e5191f5fd5c2082be1bcd-1024x768.jpg?w=800&auto=format&q=80"
             alt={whyPhotoAlt}
             width={1100}
             height={420}
