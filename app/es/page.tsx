@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import HomeTemplate from "@/components/sections/HomeTemplate";
+import { resolveSiteSettings } from "@/lib/sanitySettings";
 
 export const dynamic = "force-dynamic";
 
@@ -16,10 +17,11 @@ const EN_HOME_URL = "https://www.calltechcare.com/";
 // No prices, no diagnosis cost, no round-the-clock promise, no invented testimonials:
 // the only review data shown is the real Google aggregate rendered by
 // GoogleReviewsCTA (5.0, 26 reviews, link to Google).
-export const metadata: Metadata = {
-  title: "Reparación de Sprinklers en Miami y Broward | CallTechCare",
-  description:
-    "Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, inspección gratis. Llama al (786) 366-2729.",
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await resolveSiteSettings();
+  return {
+    title: "Reparación de Sprinklers en Miami y Broward | CallTechCare",
+    description: `Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, inspección gratis. Llama al ${settings.phoneDisplay}.`,
   alternates: {
     canonical: ES_HOME_URL,
     languages: {
@@ -50,7 +52,8 @@ export const metadata: Metadata = {
       "Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, inspección gratis.",
     images: ["https://www.calltechcare.com/logo-og.png"],
   },
-};
+  };
+}
 
 export default function Page() {
   return <HomeTemplate locale="es" />;

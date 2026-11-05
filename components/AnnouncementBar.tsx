@@ -7,12 +7,16 @@ type AnnouncementBarProps = {
   messages?: string[];
   intervalMs?: number;
   fadeMs?: number;
+  phoneTel?: string;
+  phoneDisplay?: string;
 };
 
 export default function AnnouncementBar({
   messages,
   intervalMs = 10_000,
   fadeMs = 300,
+  phoneTel = "+17863662729",
+  phoneDisplay = "(786) 366-2729",
 }: AnnouncementBarProps) {
   const pathname = usePathname();
   const isSpanishPage =
@@ -97,7 +101,7 @@ export default function AnnouncementBar({
           </div>
 
           <div className="announcement-right">
-            <a className="announcement-phone" href="tel:+17863662729">(786) 366-2729</a>
+            <a className="announcement-phone" href={`tel:${phoneTel}`}>{phoneDisplay}</a>
           </div>
         </div>
       </div>
