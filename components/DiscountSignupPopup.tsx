@@ -88,10 +88,119 @@ function markSeenNow() {
   }
 }
 
+type PopupCopy = {
+  teaserTitle: string;
+  teaserSub: string;
+  teaserOpenLabel: string;
+  teaserDismissLabel: string;
+  leftSmall: string;
+  dialogLabel: string;
+  closeLabel: string;
+  title: string;
+  subtitle: string;
+  emailLabel: string;
+  phoneLabel: string;
+  consent: string;
+  consentViewOur: string;
+  privacyPolicy: string;
+  privacyHref: string;
+  cta: string;
+  sending: string;
+  decline: string;
+  successTitle: string;
+  successSubtitle: string;
+  codeLabel: string;
+  successHintFlat: (value: string) => string;
+  successHintPercent: (percent: number) => string;
+  alreadySignedUp: string;
+  alreadyUsed: string;
+  enterEmail: string;
+  validEmail: string;
+  enterPhone: string;
+  agreeMarketing: string;
+  timedOut: string;
+  networkError: string;
+};
+
+// Interface copy lives in code (not Sanity): English on EN pages, Spanish
+// on /es/* pages. Same popup, same structure — only the text changes.
+const POPUP_COPY: Record<"en" | "es", PopupCopy> = {
+  en: {
+    teaserTitle: "Get 10% OFF",
+    teaserSub: "Claim your discount →",
+    teaserOpenLabel: "Open discount popup",
+    teaserDismissLabel: "Dismiss discount teaser",
+    leftSmall: "Your First Service",
+    dialogLabel: "Discount",
+    closeLabel: "Close",
+    title: "Unlock Your Discount",
+    subtitle: "Join our list and get exclusive offers",
+    emailLabel: "EMAIL ADDRESS",
+    phoneLabel: "PHONE NUMBER",
+    consent:
+      "I agree to receive marketing communications including promotions, discounts, and service updates via email and SMS. I can unsubscribe at any time.",
+    consentViewOur: "View our",
+    privacyPolicy: "Privacy Policy",
+    privacyHref: "/privacy-policy",
+    cta: "Get My 10% Off",
+    sending: "Sending...",
+    decline: "No thanks, maybe later",
+    successTitle: "You're All Set!",
+    successSubtitle: "Your discount code has been sent to your email:",
+    codeLabel: "YOUR CODE",
+    successHintFlat: (value) => `Use this code for ${value} off your first service`,
+    successHintPercent: (percent) => `Use this code for ${percent}% off your first service`,
+    alreadySignedUp: "This email is already signed up.",
+    alreadyUsed: "This email has already used the one-time discount.",
+    enterEmail: "Please enter your email.",
+    validEmail: "Please enter a valid email.",
+    enterPhone: "Please enter your phone number.",
+    agreeMarketing: "Please agree to receive marketing communications.",
+    timedOut: "Request timed out. Please try again.",
+    networkError: "Network error. Please try again.",
+  },
+  es: {
+    teaserTitle: "Obtén 10% DE DESCUENTO",
+    teaserSub: "Reclama tu descuento →",
+    teaserOpenLabel: "Abrir el popup de descuento",
+    teaserDismissLabel: "Descartar el aviso de descuento",
+    leftSmall: "Tu primer servicio",
+    dialogLabel: "Descuento",
+    closeLabel: "Cerrar",
+    title: "Desbloquea tu descuento",
+    subtitle: "Únete a nuestra lista y recibe ofertas exclusivas",
+    emailLabel: "CORREO ELECTRÓNICO",
+    phoneLabel: "NÚMERO DE TELÉFONO",
+    consent:
+      "Acepto recibir comunicaciones de marketing, incluyendo promociones, descuentos y novedades del servicio por correo electrónico y SMS. Puedo cancelar en cualquier momento.",
+    consentViewOur: "Ver nuestra",
+    privacyPolicy: "Política de Privacidad",
+    privacyHref: "/es/politica-de-privacidad",
+    cta: "Obtener mi 10% de descuento",
+    sending: "Enviando...",
+    decline: "No gracias, quizás más tarde",
+    successTitle: "¡Todo listo!",
+    successSubtitle: "Tu código de descuento fue enviado a tu correo:",
+    codeLabel: "TU CÓDIGO",
+    successHintFlat: (value) => `Usa este código para ${value} de descuento en tu primer servicio`,
+    successHintPercent: (percent) => `Usa este código para ${percent}% de descuento en tu primer servicio`,
+    alreadySignedUp: "Este correo ya está registrado.",
+    alreadyUsed: "Este correo ya usó el descuento único.",
+    enterEmail: "Ingresa tu correo electrónico.",
+    validEmail: "Ingresa un correo electrónico válido.",
+    enterPhone: "Ingresa tu número de teléfono.",
+    agreeMarketing: "Acepta recibir comunicaciones de marketing.",
+    timedOut: "La solicitud tardó demasiado. Inténtalo de nuevo.",
+    networkError: "Error de red. Inténtalo de nuevo.",
+  },
+};
+
 export default function DiscountSignupPopup() {
   const session = null;
   const status = "unauthenticated" as const;
   const pathname = usePathname();
+  const isSpanish = pathname?.startsWith("/es") ?? false;
+  const t = POPUP_COPY[isSpanish ? "es" : "en"];
 
   const [hydrated, setHydrated] = useState(false);
   const [signedUp, setSignedUp] = useState(false);
@@ -233,9 +342,9 @@ export default function DiscountSignupPopup() {
         setEmailTaken(exists);
 
         if (exists) {
-          setFormStatus("This email is already signed up.");
+          setFormStatus(t.alreadySignedUp);
         } else {
-          setFormStatus((prev) => (prev === "This email is already signed up." ? null : prev));
+          setFormStatus((prev) => (prev === t.alreadySignedUp ? null : prev));
         }
       } catch {
         // ignore check errors
@@ -248,7 +357,7 @@ export default function DiscountSignupPopup() {
       controller.abort();
       window.clearTimeout(timer);
     };
-  }, [email, hydrated, signedUp]);
+  }, [email, hydrated, signedUp, t]);
 
   useEffect(() => {
     if (!open) return;
@@ -269,22 +378,22 @@ export default function DiscountSignupPopup() {
     const trimmedPhone = phone.trim();
 
     if (!trimmedEmail) {
-      setFormStatus("Please enter your email.");
+      setFormStatus(t.enterEmail);
       return;
     }
 
     if (!isValidEmail(trimmedEmail)) {
-      setFormStatus("Please enter a valid email.");
+      setFormStatus(t.validEmail);
       return;
     }
 
     if (!trimmedPhone) {
-      setFormStatus("Please enter your phone number.");
+      setFormStatus(t.enterPhone);
       return;
     }
 
     if (!consent) {
-      setFormStatus("Please agree to receive marketing communications.");
+      setFormStatus(t.agreeMarketing);
       return;
     }
 
@@ -315,12 +424,12 @@ export default function DiscountSignupPopup() {
       if (!res.ok || !data?.ok) {
         if (data?.code === "EMAIL_EXISTS") {
           setEmailTaken(true);
-          setFormStatus("This email is already signed up.");
+          setFormStatus(t.alreadySignedUp);
           return;
         }
         if (data?.code === "ALREADY_USED") {
           setEmailTaken(true);
-          setFormStatus("This email has already used the one-time discount.");
+          setFormStatus(t.alreadyUsed);
           return;
         }
         setFormStatus(String(data?.error || "Something went wrong"));
@@ -367,9 +476,9 @@ export default function DiscountSignupPopup() {
     } catch (err: unknown) {
       const anyErr = err as { name?: unknown };
       if (anyErr?.name === "AbortError") {
-        setFormStatus("Request timed out. Please try again.");
+        setFormStatus(t.timedOut);
       } else {
-        setFormStatus("Network error. Please try again.");
+        setFormStatus(t.networkError);
       }
     } finally {
       setBusy(false);
@@ -390,7 +499,7 @@ export default function DiscountSignupPopup() {
           className="discount-popup__teaser"
           role="button"
           tabIndex={0}
-          aria-label="Open discount popup"
+          aria-label={t.teaserOpenLabel}
           onClick={openPopup}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") openPopup();
@@ -399,7 +508,7 @@ export default function DiscountSignupPopup() {
           <button
             type="button"
             className="discount-popup__teaserDismiss"
-            aria-label="Dismiss discount teaser"
+            aria-label={t.teaserDismissLabel}
             onClick={(e) => {
               e.stopPropagation();
               dismissTeaser();
@@ -435,8 +544,8 @@ export default function DiscountSignupPopup() {
             </div>
 
             <div className="discount-popup__teaserText">
-              <div className="discount-popup__teaserTitle">Get 10% OFF</div>
-              <div className="discount-popup__teaserSub">Claim your discount →</div>
+              <div className="discount-popup__teaserTitle">{t.teaserTitle}</div>
+              <div className="discount-popup__teaserSub">{t.teaserSub}</div>
             </div>
 
             <div className="discount-popup__teaserChevron" aria-hidden="true">
@@ -455,7 +564,7 @@ export default function DiscountSignupPopup() {
       ) : null}
 
       {open ? (
-        <aside className="discount-popup" role="dialog" aria-label="Discount" aria-live="polite" aria-modal="true">
+        <aside className="discount-popup" role="dialog" aria-label={t.dialogLabel} aria-live="polite" aria-modal="true">
           <div className="discount-popup__backdrop" />
 
           <div className={`discount-popup__panel ${step === "success" ? "discount-popup__panel--success" : ""}`}>
@@ -497,26 +606,26 @@ export default function DiscountSignupPopup() {
                 </div>
                 <div className="discount-popup__leftBig">10% OFF</div>
                 {/* <div className="discount-popup__leftOff">OFF</div> */}
-                <div className="discount-popup__leftSmall">Your First Service</div>
+                <div className="discount-popup__leftSmall">{t.leftSmall}</div>
               </div>
             )}
 
             <div className="discount-popup__right">
-              <button type="button" className="discount-popup__close" onClick={() => close("dismiss")} aria-label="Close">
+              <button type="button" className="discount-popup__close" onClick={() => close("dismiss")} aria-label={t.closeLabel}>
                 ×
               </button>
 
           {step === "form" && (
             <>
               <div className="discount-popup__header">
-                <h3 className="discount-popup__title">Unlock Your Discount</h3>
-                <p className="discount-popup__subtitle">Join our list and get exclusive offers</p>
+                <h3 className="discount-popup__title">{t.title}</h3>
+                <p className="discount-popup__subtitle">{t.subtitle}</p>
               </div>
 
               <form className="discount-popup__form" onSubmit={handleSubmit}>
                 <div className="discount-popup__field">
                   <label className="discount-popup__label" htmlFor="discount_email">
-                    EMAIL ADDRESS
+                    {t.emailLabel}
                   </label>
                   <div className="discount-popup__inputWrap">
                     <span className="discount-popup__inputIcon" aria-hidden="true">
@@ -550,7 +659,7 @@ export default function DiscountSignupPopup() {
 
                 <div className="discount-popup__field">
                   <label className="discount-popup__label" htmlFor="discount_phone">
-                    PHONE NUMBER
+                    {t.phoneLabel}
                   </label>
                   <div className="discount-popup__inputWrap">
                     <span className="discount-popup__inputIcon" aria-hidden="true">
@@ -584,18 +693,18 @@ export default function DiscountSignupPopup() {
                     required
                   />
                   <span>
-                    I agree to receive marketing communications including promotions, discounts, and service updates via email and SMS. I can unsubscribe at any time.
-                    View our <a className="discount-popup__link" href="/privacy-policy">Privacy Policy</a>.
+                    {t.consent}
+                    {" "}{t.consentViewOur}{" "}<a className="discount-popup__link" href={t.privacyHref}>{t.privacyPolicy}</a>.
                   </span>
                 </label>
 
                 <button type="submit" className="discount-popup__cta" disabled={busy || emailTaken || emailCheckBusy}>
-                  {busy ? "Sending..." : "Get My 10% Off"}
+                  {busy ? t.sending : t.cta}
                   <span className="discount-popup__ctaArrow" aria-hidden="true">→</span>
                 </button>
 
                 <button type="button" className="discount-popup__decline" onClick={() => close("dismiss")}>
-                  No thanks, maybe later
+                  {t.decline}
                 </button>
               </form>
             </>
@@ -615,20 +724,20 @@ export default function DiscountSignupPopup() {
                 </svg>
               </div>
 
-              <h3 className="discount-popup__successTitle">You&apos;re All Set!</h3>
+              <h3 className="discount-popup__successTitle">{t.successTitle}</h3>
               <p className="discount-popup__successSubtitle">
-                Your discount code has been sent to your email:
+                {t.successSubtitle}
               </p>
 
               <div className="discount-popup__codeCard">
-                <div className="discount-popup__codeLabel">YOUR CODE</div>
+                <div className="discount-popup__codeLabel">{t.codeLabel}</div>
                 <div className="discount-popup__codeValue">{issuedCode}</div>
               </div>
 
               <p className="discount-popup__successHint">
                 {issuedDiscountType === "flat"
-                  ? `Use this code for ${formatUsd(issuedDiscountValue)} off your first service`
-                  : `Use this code for ${issuedPercent}% off your first service`}
+                  ? t.successHintFlat(formatUsd(issuedDiscountValue))
+                  : t.successHintPercent(issuedPercent)}
               </p>
             </div>
           )}
