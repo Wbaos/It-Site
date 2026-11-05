@@ -1,4 +1,5 @@
 import { sanity } from "@/lib/sanity";
+import type { PortableTextBlock, PortableTextSpan } from "@portabletext/types";
 
 // Sanity fetchers for the `siteSettings` document (business data shown
 // across the site). One document, id `site-settings`.
@@ -105,4 +106,36 @@ export function substitutePhonePlaceholders(text: string, settings: PhoneSetting
     .replaceAll("{{phoneTel}}", settings.phoneTel)
     .replaceAll("{{phoneIntl}}", settings.phoneIntl)
     .replaceAll("{{phoneCard}}", settings.phoneCard);
+}
+
+// Same phone substitution, applied inside PortableText blocks (blog body,
+// service "about" text): every span child's text goes through
+// substitutePhonePlaceholders. Returns a new array — the input blocks and
+// their spans are never mutated, so the Sanity-fetched data stays untouched
+// for the other locale — and every other block field (_key, _type, style,
+// marks, markDefs, listItem, level, inline objects) is carried over
+// untouched. Blocks without children, and non-span children, pass through
+// unchanged. A missing/empty input comes back as an empty array.
+export function substitutePhonePlaceholdersInBlocks(
+  blocks: PortableTextBlock[] | undefined | null,
+  settings: PhoneSettings,
+): PortableTextBlock[] {
+  if (!blocks) return [];
+  return blocks.map((block) => {
+    if (!block || block._type !== "block" || !Array.isArray(block.children)) {
+      return block;
+    }
+    let changed = false;
+    const children = block.children.map((child) => {
+      const span = child as PortableTextSpan;
+      if (span?._type !== "span" || typeof span.text !== "string") {
+        return child;
+      }
+      const text = substitutePhonePlaceholders(span.text, settings);
+      if (text === span.text) return child;
+      changed = true;
+      return { ...span, text };
+    });
+    return changed ? { ...block, children } : block;
+  });
 }

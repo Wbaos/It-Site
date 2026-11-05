@@ -8,6 +8,10 @@ import RelatedArticlesCarousel from "@/components/RelatedArticlesCarousel";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { blogHref, BLOG_ES_PATHS } from "@/lib/blogTwins";
+import {
+  resolveSiteSettings,
+  substitutePhonePlaceholdersInBlocks,
+} from "@/lib/sanitySettings";
 
 
 type SanityImage = {
@@ -180,6 +184,8 @@ export default async function BlogPost({
     notFound();
   }
 
+  const settings = await resolveSiteSettings();
+
   const displayTitle = isSpanish ? post.titleEs || post.title : post.title;
   const displayDescription = isSpanish
     ? post.metaDescriptionEs ||
@@ -188,7 +194,13 @@ export default async function BlogPost({
     : post.metaDescription ||
       post.excerpt ||
       "Sprinkler repair and irrigation guides for Miami and Broward — leaks, valves, timers, pumps and new systems — plus security camera guides from CallTechCare.";
-  const displayBody = isSpanish ? post.bodyEs || post.body : post.body;
+  // Phone placeholders ({{phone}} etc.) in the Sanity body resolve against
+  // site-settings, same as the plain-text templates, so the number lives in
+  // exactly one place. No-op until a post body carries a marker.
+  const displayBody = substitutePhonePlaceholdersInBlocks(
+    isSpanish ? post.bodyEs || post.body : post.body,
+    settings,
+  );
   const displayTags: string[] = isSpanish
     ? post.tagsEs || post.tags || []
     : post.tags || [];

@@ -2,7 +2,10 @@ import CategoryServicesAccordion from "./CategoryServicesAccordion";
 import CategorySidebarClient from "./CategorySidebarClient";
 import { notFound } from "next/navigation";
 import { sanity } from "@/lib/sanity";
-import { resolveSiteSettings } from "@/lib/sanitySettings";
+import {
+  resolveSiteSettings,
+  substitutePhonePlaceholdersInBlocks,
+} from "@/lib/sanitySettings";
 import Link from "next/link";
 import Image from "next/image";
 import SvgIcon from "@/components/common/SvgIcons";
@@ -685,7 +688,10 @@ export default async function ServicePage({
       // no hardcoded Spanish copy for category content).
       const catTitle = isSpanish && category.titleEs ? category.titleEs : category.title;
       const catTagline = isSpanish && category.taglineEs ? category.taglineEs : category.tagline;
-      const catAbout = isSpanish && category.aboutEs?.length ? category.aboutEs : category.about;
+      const catAbout = substitutePhonePlaceholdersInBlocks(
+        isSpanish && category.aboutEs?.length ? category.aboutEs : category.about,
+        settings,
+      );
       const catFeatures = isSpanish && category.featuresEs?.length ? category.featuresEs : category.features;
       const catFaqs = isSpanish && category.faqsEs?.length ? category.faqsEs : category.faqs;
       // Related-services pills for the camera group page, mirroring the
