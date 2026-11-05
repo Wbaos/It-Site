@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import Hero from "@/components/sections/Hero";
+import QuickLeadForm from "@/components/QuickLeadForm";
 import { serviceHref } from "@/lib/serviceTwins";
 import { cityHref } from "@/lib/cityTwins";
 import { sanityImageUrl } from "@/lib/sanityCities";
@@ -563,6 +564,16 @@ export default async function CityTemplate({ city, locale }: { city: City; local
         showCallButton={false}
         googleRating={googleRating}
         {...(isEs ? { stats: ES_STATS } : {})}
+      />
+
+      {/* Quick lead form: prominent call button + short form posting to the
+          same /api/quote-request endpoint as the full quote flow. */}
+      <QuickLeadForm
+        locale={locale}
+        service={{ service: "sprinkler-repair-and-installation" }}
+        cityName={name}
+        phoneTel={settings.phoneTel}
+        phoneDisplay={settings.phoneDisplay}
       />
 
       <section className="seo-intro-section">

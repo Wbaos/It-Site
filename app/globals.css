@@ -16303,6 +16303,174 @@ details[open] .faq-toggle {
   }
 }
 
+/* Quick lead form (service + city templates): prominent call button and a
+   short name/phone/message form posting to the same /api/quote-request
+   endpoint as the full quote flow. Mobile-first: full-width stacked fields
+   and a thumb-friendly call button. */
+.quick-lead {
+  padding: 2rem 1rem;
+}
+
+.quick-lead__card {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.75rem 1.25rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
+}
+
+.quick-lead__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+}
+
+.quick-lead__sub {
+  margin: 0 0 1.25rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #475569;
+  text-align: center;
+}
+
+.quick-lead__call {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  min-height: 52px;
+  margin-bottom: 1.25rem;
+  padding: 0.85rem 1.25rem;
+  background: linear-gradient(135deg, #0b7568, #0c8274);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(13, 164, 143, 0.25);
+}
+
+.quick-lead__call:hover {
+  background: linear-gradient(135deg, #0c8a7b, #0d9686);
+}
+
+.quick-lead__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.quick-lead__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.quick-lead__label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.quick-lead__input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.7rem 0.9rem;
+  font: inherit;
+  font-size: 1rem;
+  color: #0f172a;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
+
+.quick-lead__input:focus {
+  outline: 2px solid var(--brand-teal);
+  outline-offset: 1px;
+  border-color: var(--brand-teal);
+}
+
+.quick-lead__textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
+.quick-lead__submit {
+  min-height: 52px;
+  padding: 0.85rem 1.25rem;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: linear-gradient(135deg, #0b7568, #0c8274);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(13, 164, 143, 0.25);
+  cursor: pointer;
+}
+
+.quick-lead__submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0c8a7b, #0d9686);
+}
+
+.quick-lead__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.quick-lead__trust {
+  margin: 1rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #475569;
+  text-align: center;
+}
+
+.quick-lead__success {
+  padding: 1rem 1.125rem;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 10px;
+  color: #065f46;
+}
+
+.quick-lead__success p {
+  margin: 0.25rem 0;
+}
+
+.quick-lead__success-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.quick-lead__error {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  font-size: 0.95rem;
+}
+
+@media (min-width: 768px) {
+  .quick-lead__card {
+    padding: 2rem 2.25rem;
+  }
+
+  .quick-lead__title {
+    font-size: 1.75rem;
+  }
+}
+
 .location-testimonials {
   display: flex;
   flex-direction: column;
