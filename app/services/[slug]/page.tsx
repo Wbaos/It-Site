@@ -263,7 +263,7 @@ export default async function ServicePage({
             {serviceAreas.map((area) => (
               <Link
                 key={area.slug}
-                href={`/locations/${area.slug}`}
+                href={isSpanish ? `/es/areas-de-servicio/${area.slug}` : `/locations/${area.slug}`}
                 className="service-area-pill"
                 aria-label={
                   isSpanish
