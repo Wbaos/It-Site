@@ -13,6 +13,11 @@ export async function generateMetadata(): Promise<Metadata> {
     description: doc?.metaDescription ?? "",
     alternates: {
       canonical: "https://www.calltechcare.com/terms-and-conditions",
+      languages: {
+        es: "https://www.calltechcare.com/es/terminos-y-condiciones",
+        en: "https://www.calltechcare.com/terms-and-conditions",
+        "x-default": "https://www.calltechcare.com/terms-and-conditions",
+      },
     },
     openGraph: {
       title: doc?.metaTitle ?? "Terms of Service | CallTechCare",

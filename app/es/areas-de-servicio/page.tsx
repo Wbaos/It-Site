@@ -2,16 +2,17 @@ import type { Metadata } from "next";
 import LocationsClient from "@/app/locations/LocationsClient";
 
 export const metadata: Metadata = {
-  title: "Áreas de Servicio de Reparación de Sprinklers | Miami y Broward | CallTechCare",
+  title: "Áreas de Servicio de Sprinklers | Miami y Broward | CallTechCare",
 
   description:
-    "Explora las 30 ciudades que CallTechCare atiende en Miami-Dade y Broward para reparación de sprinklers, instalación de irrigación, reemplazo de válvulas y temporizadores.",
+    "Explora las 30 ciudades que CallTechCare atiende en Miami-Dade y Broward para reparación de sprinklers e instalación de irrigación.",
 
   alternates: {
     canonical: "https://www.calltechcare.com/es/areas-de-servicio",
     languages: {
       es: "https://www.calltechcare.com/es/areas-de-servicio",
       en: "https://www.calltechcare.com/locations",
+      "x-default": "https://www.calltechcare.com/locations",
     },
   },
 

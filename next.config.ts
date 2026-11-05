@@ -64,6 +64,10 @@ const nextConfig: NextConfig = {
       { source: "/es/registrarse", destination: "/es/solicita-una-cotizacion", permanent: true },
       { source: "/es/olvido-contrasena", destination: "/es/solicita-una-cotizacion", permanent: true },
       { source: "/es/cuenta", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/cart", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/login", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/book", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/reservar", destination: "/es/solicita-una-cotizacion", permanent: true },
 
       {
         source: "/services/smart-tv",

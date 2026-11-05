@@ -167,10 +167,23 @@ export async function generateMetadata({
       category.description ||
       `Professional ${category.title} services in Miami, Fort Lauderdale, and Broward County.`;
 
+    // Spanish twin exists for the home-security and landscaping groups
+    // (their ES pages already emit hreflang back to this URL); other
+    // categories keep canonical only so no false hreflang is emitted.
+    const esTwinPath = SERVICE_ES_PATHS[slug];
     return {
       title,
       description,
-      alternates: { canonical: url },
+      alternates: esTwinPath
+        ? {
+            canonical: url,
+            languages: {
+              es: `https://www.calltechcare.com${esTwinPath}`,
+              en: url,
+              "x-default": url,
+            },
+          }
+        : { canonical: url },
       openGraph: {
         title,
         description,
@@ -291,9 +304,16 @@ export default async function ServicePage({
                 href={cityHref(city.href.replace("/sprinkler-repair-", ""), locale)}
                 className="service-area-pill"
                 aria-label={
-                  isSpanish
-                    ? `Reparación de sprinklers en ${city.name}`
-                    : `Sprinkler repair in ${city.name}`
+                  // Camera pages link to sprinkler city pages too, but the
+                  // label must not claim sprinkler repair: keep it neutral.
+                  slug === "home-security" ||
+                  slug === "wireless-camera-installation"
+                    ? isSpanish
+                      ? `Ver servicios en ${city.name}`
+                      : `See services in ${city.name}`
+                    : isSpanish
+                      ? `Reparación de sprinklers en ${city.name}`
+                      : `Sprinkler repair in ${city.name}`
                 }
               >
                 <SvgIcon
@@ -417,6 +437,54 @@ export default async function ServicePage({
       if (t?.slug && t?.titleEs) sprinklerTitlesEs[t.slug] = t.titleEs;
     }
   }
+
+  // Related-services pills for the camera service page, mirroring the
+  // "Related sprinkler services" section below: the camera service is the
+  // only service without one, so it links to its parent group. The group
+  // label is the ES twin page title in Spanish mode; in English it is the
+  // category title from Sanity.
+  const cameraRelatedLinks =
+    slug === "wireless-camera-installation"
+      ? [
+          {
+            href: serviceHref("home-security", locale),
+            label: isSpanish
+              ? "Seguridad del Hogar"
+              : ((service as any)?.category?.title ?? "Home Security"),
+          },
+        ]
+      : [];
+
+  // Shared related-pills section (same markup as the sprinkler related
+  // section). Renders nothing when there are no links.
+  const RelatedLinksSection = ({
+    links,
+  }: {
+    links: { href: string; label: string }[];
+  }) =>
+    links.length > 0 ? (
+      <section className="service-areas-section">
+        <div className="site-container">
+          <div className="service-areas-inner">
+            <h2 className="service-areas-title">
+              {isSpanish ? "Servicios relacionados" : "Related services"}
+            </h2>
+            <div className="service-areas-pills">
+              {links.map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="service-area-pill"
+                  aria-label={l.label}
+                >
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    ) : null;
 
  const serviceBreadcrumbSchema = service
   ? {
@@ -608,6 +676,23 @@ export default async function ServicePage({
       const catAbout = isSpanish && category.aboutEs?.length ? category.aboutEs : category.about;
       const catFeatures = isSpanish && category.featuresEs?.length ? category.featuresEs : category.features;
       const catFaqs = isSpanish && category.faqsEs?.length ? category.faqsEs : category.faqs;
+      // Related-services pills for the camera group page, mirroring the
+      // sprinkler related section: the group's own services, titles from
+      // Sanity (Spanish field with English fallback). Other categories
+      // get no related section from this block.
+      const categoryCameraLinks =
+        slug === "home-security"
+          ? (serviceGroups as any[])
+              .flatMap((g: any) => g.services ?? [])
+              .map((s: any) => ({
+                href: serviceHref(
+                  typeof s.slug === "string" ? s.slug : s.slug?.current,
+                  locale
+                ),
+                label: isSpanish && s.titleEs ? s.titleEs : s.title,
+              }))
+              .filter((l: any) => Boolean(l.href) && Boolean(l.label))
+          : [];
       const catBadges = (isSpanish && category.badgesEs?.length ? category.badgesEs : category.badges ?? []).map((b: any, i: number) => ({
         ...b,
         iconUrl: b.iconUrl || (category.badges?.[i]?.iconUrl ?? null),
@@ -980,6 +1065,7 @@ export default async function ServicePage({
           </div>
         </section>
 
+        <RelatedLinksSection links={categoryCameraLinks} />
         <ServiceAreasSection />
         </>
       );
@@ -1061,6 +1147,7 @@ export default async function ServicePage({
         </div>
       </section>
 
+      <RelatedLinksSection links={cameraRelatedLinks} />
       <ServiceAreasSection />
     </>
   );
@@ -1094,6 +1181,16 @@ const isTvMounting = tvMountingSlugs.includes(slug);
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(serviceSchema),
         }}
+      />
+    )}
+
+    {/* FAQ schema (only if FAQs exist) — same questions as the visible
+        FAQ accordion below, which renders displayFaqs. The subservices
+        branch above already emits this; this branch was missing it. */}
+    {faqSchema && (
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
     )}
 
@@ -1252,6 +1349,7 @@ const isTvMounting = tvMountingSlugs.includes(slug);
       </section>
     )}
 
+    <RelatedLinksSection links={cameraRelatedLinks} />
     <ServiceAreasSection />
   </>
   );

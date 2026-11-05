@@ -18,6 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
       languages: {
         es: "https://www.calltechcare.com/es/preguntas-frecuentes",
         en: "https://www.calltechcare.com/faq",
+        "x-default": "https://www.calltechcare.com/faq",
       },
     },
   };

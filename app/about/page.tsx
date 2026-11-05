@@ -13,6 +13,11 @@ export async function generateMetadata(): Promise<Metadata> {
       "Learn about CallTechCare, Miami and Broward's sprinkler repair and irrigation company. Same-day service within business hours, free inspection, and a 1-year warranty when CallTechCare performs the work and provides the materials.",
     alternates: {
       canonical: "https://www.calltechcare.com/about",
+      languages: {
+        es: "https://www.calltechcare.com/es/sobre-nosotros",
+        en: "https://www.calltechcare.com/about",
+        "x-default": "https://www.calltechcare.com/about",
+      },
     },
   };
 }

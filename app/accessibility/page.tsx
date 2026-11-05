@@ -13,6 +13,11 @@ export async function generateMetadata(): Promise<Metadata> {
       "Accessibility Statement for CallTechCare: Learn about our ongoing efforts to ensure digital accessibility for all users visiting our site for sprinkler repair & irrigation services and security cameras in Miami and Broward.",
     alternates: {
       canonical: "https://www.calltechcare.com/accessibility",
+      languages: {
+        es: "https://www.calltechcare.com/es/accesibilidad",
+        en: "https://www.calltechcare.com/accessibility",
+        "x-default": "https://www.calltechcare.com/accessibility",
+      },
     },
   };
 }

@@ -16,6 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
       languages: {
         es: "https://www.calltechcare.com/es/terminos-y-condiciones",
         en: "https://www.calltechcare.com/terms-and-conditions",
+        "x-default": "https://www.calltechcare.com/terms-and-conditions",
       },
     },
     openGraph: {

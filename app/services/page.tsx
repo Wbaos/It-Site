@@ -12,6 +12,11 @@ export const metadata: Metadata = {
 
   alternates: {
     canonical: "https://www.calltechcare.com/services",
+    languages: {
+      es: "https://www.calltechcare.com/es/servicios",
+      en: "https://www.calltechcare.com/services",
+      "x-default": "https://www.calltechcare.com/services",
+    },
   },
 
   openGraph: {

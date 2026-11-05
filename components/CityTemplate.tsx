@@ -571,6 +571,11 @@ export default function CityTemplate({ city, locale }: { city: City; locale: Loc
             <Link href={t.quoteHref}>{t.finalCtaLinkText}</Link>
             {t.finalCtaSuffix}
           </p>
+          <p>
+            {isEs
+              ? "Garantía: 1 año cuando CallTechCare hace el trabajo y provee los materiales."
+              : "Warranty: 1 year when CallTechCare performs the work and provides the materials."}
+          </p>
         </div>
       </section>
 

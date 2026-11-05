@@ -30,6 +30,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: location.metaDescription || location.description,
     alternates: {
       canonical: `https://www.calltechcare.com/locations/${slug}`,
+      languages: {
+        es: `https://www.calltechcare.com/es/areas-de-servicio/${slug}`,
+        en: `https://www.calltechcare.com/locations/${slug}`,
+        "x-default": `https://www.calltechcare.com/locations/${slug}`,
+      },
     },
     openGraph: {
       title: location.metaTitle || location.title,

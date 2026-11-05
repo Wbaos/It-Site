@@ -16,6 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
       languages: {
         es: "https://www.calltechcare.com/es/accesibilidad",
         en: "https://www.calltechcare.com/accessibility",
+        "x-default": "https://www.calltechcare.com/accessibility",
       },
     },
   };

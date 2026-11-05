@@ -13,6 +13,11 @@ export async function generateMetadata(): Promise<Metadata> {
       "Find answers to common questions about CallTechCare sprinkler repair and irrigation in Miami and Broward: costs, same-day service, leaks, valves, and timers.",
     alternates: {
       canonical: "https://www.calltechcare.com/faq",
+      languages: {
+        es: "https://www.calltechcare.com/es/preguntas-frecuentes",
+        en: "https://www.calltechcare.com/faq",
+        "x-default": "https://www.calltechcare.com/faq",
+      },
     },
   };
 }
