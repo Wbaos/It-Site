@@ -108,30 +108,26 @@ export default async function RootLayout({
       ? "Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, inspección gratis."
       : "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service within business hours, free inspection.";
 
-  // City list from Sanity (Lote 2): drives the organization areaServed
-  // schema and the footer areas. Falls back to the fixed canonical list
-  // when Sanity comes back empty, so the layout never breaks on a blip.
+  // City list and business data load in parallel (they are independent),
+  // so the layout waits for one Sanity round trip instead of two. The
+  // fallback semantics are unchanged: a cities failure keeps the fixed
+  // list, and the settings resolver already falls back to the exact values
+  // shown today, so the schema never changes on a Sanity blip.
+  const [cityItems, settings] = await Promise.all([
+    getAllCities().catch(() => []),
+    resolveSiteSettings(),
+  ]);
   let footerCities = FALLBACK_CITIES;
-  try {
-    const items = await getAllCities();
-    if (items.length) {
-      footerCities = items
-        .filter((c) => c.slug?.current)
-        .map((c) => ({
-          name: c.name ?? "",
-          slug: c.slug?.current ?? "",
-          esSlug: c.esSlug ?? "",
-        }))
-        .filter((c) => c.name && c.slug);
-    }
-  } catch {
-    // Fallback list above stays in place.
+  if (cityItems.length) {
+    footerCities = cityItems
+      .filter((c) => c.slug?.current)
+      .map((c) => ({
+        name: c.name ?? "",
+        slug: c.slug?.current ?? "",
+        esSlug: c.esSlug ?? "",
+      }))
+      .filter((c) => c.name && c.slug);
   }
-
-  // Business data from the Sanity `siteSettings` document; the resolver
-  // falls back to the exact values shown today, so the schema never
-  // changes on a Sanity blip.
-  const settings = await resolveSiteSettings();
 
   /* ITService schema (service-area business) */
   const orgJsonLd = {
@@ -278,7 +274,10 @@ export default async function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <head>
-        
+        {/* Preconnect before the GTM loader below, so the tag manager
+            connection is already warm when its script is injected. */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+
         <script
           dangerouslySetInnerHTML={{
             __html: `
