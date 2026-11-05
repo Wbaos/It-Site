@@ -9,6 +9,7 @@ export interface LocationTestimonial {
 
 export interface LocationStat {
   value: string;
+  valueEs?: string;
   label: string;
   labelEs?: string;
 }
