@@ -26,10 +26,13 @@ function checkRateLimit(ip: string): boolean {
 
 export async function middleware(request: NextRequest) {
   // Locale for server components (root layout JSON-LD): /es/* pages are Spanish.
+  // Pathname for the same layout: the LocalBusiness description varies by
+  // page type (camera pages describe cameras, the rest describe sprinklers).
   const pathname = request.nextUrl.pathname;
   const isSpanish = pathname === "/es" || pathname.startsWith("/es/");
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-locale", isSpanish ? "es" : "en");
+  requestHeaders.set("x-pathname", pathname);
   const response = NextResponse.next({ request: { headers: requestHeaders } });
 
   const setNoIndex = (res: NextResponse) => {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import SvgIcon from "@/components/common/SvgIcons";
 import RequestQuoteSidebar from "@/components/request-quote/RequestQuoteSidebar";
@@ -576,6 +577,17 @@ export default function RequestQuoteClient(props: {
               </div>
             ))}
           </div>
+
+          {/* Scheduling page link (English only: no Spanish schedule route
+              exists). The schedule page is kept as its own route. */}
+          {locale === "en" && (
+            <p className="rq-client__heroSubtitle">
+              Already know what you need?{" "}
+              <Link href="/request-quote/schedule">
+                Pick a time on our scheduling page
+              </Link>
+            </p>
+          )}
         </div>
       </div>
 

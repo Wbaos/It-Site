@@ -213,6 +213,11 @@ export default async function ServicePage({
   const { slug } = await params;
     console.log("SERVICE SLUG:", slug);
   const isSpanish = locale === "es";
+  // Camera pages (group + wireless install) must not show sprinkler-city
+  // pills: their destinations are sprinkler repair pages, which does not
+  // correspond to a camera page. The neutral city row above stays.
+  const isCameraPage =
+    slug === "home-security" || slug === "wireless-camera-installation";
   const settings = await resolveSiteSettings();
 
   const pageUrl =
@@ -294,6 +299,11 @@ export default async function ServicePage({
               </Link>
             ))}
           </div>
+          {/* Sprinkler-city pills: sprinkler pages only. On camera pages
+              these destinations would not correspond to the page, so the
+              whole row is skipped there (the neutral city row above stays). */}
+          {!isCameraPage && (
+            <>
           <p className="service-areas-subtitle">
             {isSpanish ? "Atendemos estas ciudades:" : "We serve these cities:"}
           </p>
@@ -326,6 +336,8 @@ export default async function ServicePage({
               </Link>
             ))}
           </div>
+            </>
+          )}
         </div>
       </div>
     </section>

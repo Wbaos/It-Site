@@ -102,11 +102,24 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   // Locale from middleware (x-locale): Spanish pages get Spanish schema text.
+  // Page type from middleware (x-pathname): camera pages describe security
+  // cameras, every other page describes sprinkler/irrigation work — the
+  // business description must match the page, not stay global sprinklers.
   const locale = (await headers()).get("x-locale") === "es" ? "es" : "en";
+  const pathname = (await headers()).get("x-pathname") ?? "";
+  const isCameraPage =
+    pathname.includes("camera") ||
+    pathname.includes("camaras") ||
+    pathname.includes("home-security") ||
+    pathname.includes("seguridad-del-hogar");
   const schemaDescription =
     locale === "es"
-      ? "Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, inspección gratis."
-      : "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service within business hours, free inspection.";
+      ? isCameraPage
+        ? "Instalación profesional de cámaras de seguridad en Miami y Broward. Servicio el mismo día dentro del horario de servicio, inspección gratis."
+        : "Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, inspección gratis."
+      : isCameraPage
+        ? "Professional security camera installation in Miami and Broward. Same-day service within business hours, free inspection."
+        : "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service within business hours, free inspection.";
 
   // City list and business data load in parallel (they are independent),
   // so the layout waits for one Sanity round trip instead of two. The
