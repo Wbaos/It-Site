@@ -5,6 +5,7 @@ import {
   FALLBACK_GOOGLE_RATING_SUMMARY,
   formatGoogleRating,
 } from "@/lib/google-reviews";
+import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 
 type Stat = { value: string; label: string };
 
@@ -38,10 +39,10 @@ export default function Hero({
   subtitle = "Professional sprinkler repair and irrigation services in Miami and Broward. We also install security cameras.",
   badgeText = "Sprinkler Repair & Irrigation in Miami & Broward",
   primaryCtaText = "Call Now",
-  primaryCtaHref = "tel:+17863662729",
+  primaryCtaHref = `tel:${FALLBACK_SETTINGS.phoneTel}`,
   secondaryCtaText = "Request a Quote",
   secondaryCtaHref = "/request-quote",
-  phoneNumber = "+17863662729",
+  phoneNumber = FALLBACK_SETTINGS.phoneTel,
   showCallButton = true,
   imageSrc = "https://cdn.sanity.io/images/celkrwoq/production/5deeea70b525963987af93601f412cebdbede547-5712x4284.webp",
   mobileImageSrc,

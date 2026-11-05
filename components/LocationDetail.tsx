@@ -99,13 +99,6 @@ const SPRINKLER_CITY_LINKS: Record<string, { label: string; href: string }[]> = 
 };
 
 
-function formatPhone(phone: string): string {
-  const digits = phone.replace(/\D/g, "");
-  if (digits.length === 11 && digits.startsWith("1")) return `(${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
-  if (digits.length === 10) return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
-  return phone;
-}
-
 export default async function LocationDetail({ slug, locale = "en" }: { slug: string; locale?: "en" | "es" }) {
   const isSpanish = locale === "es";
   const location = await getLocationBySlug(slug, locale);
@@ -152,7 +145,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
       "@type": "City",
       name: `${location.city}, ${location.state}`,
     },
-    telephone: location.phone || settings.phoneIntl,
+    telephone: settings.phoneIntl,
     email: location.email || settings.email,
   };
 
@@ -437,10 +430,10 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                     <div>
                       <p className="location-sidebar-info-label">{isSpanish ? "Teléfono" : "Phone"}</p>
                       <a
-                        href={`tel:${location.phone}`}
+                        href={`tel:${settings.phoneTel}`}
                         className="location-sidebar-info-value"
                       >
-                        {formatPhone(location.phone)}
+                        {settings.phoneDisplay}
                       </a>
                     </div>
                   </div>
@@ -491,7 +484,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
               <div className="location-sidebar-buttons">
                 {location.phone && (
                   <a
-                    href={`tel:${location.phone}`}
+                    href={`tel:${settings.phoneTel}`}
                     className="location-call-button"
                   >
                     {isSpanish ? "Llama Ahora" : "Call Now"}

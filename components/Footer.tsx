@@ -8,6 +8,7 @@ import SvgIcon from "./common/SvgIcons";
 
 import { cityHref } from "@/lib/cityTwins";
 import { serviceHref } from "@/lib/serviceTwins";
+import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 
 type FooterArea = { name: string; slug: string; esSlug: string };
 
@@ -15,8 +16,8 @@ type FooterArea = { name: string; slug: string; esSlug: string };
 // the defaults below are the exact values shown today.
 export default function Footer({
   areas,
-  phoneTel = "+17863662729",
-  phoneDisplay = "(786) 366-2729",
+  phoneTel = FALLBACK_SETTINGS.phoneTel,
+  phoneDisplay = FALLBACK_SETTINGS.phoneDisplay,
   email = "support@calltechcare.com",
   hoursWeekdayLabel = "Mon–Sat",
   hoursWeekdayLabelEs = "Lun–Sáb",

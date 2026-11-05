@@ -83,3 +83,26 @@ export async function resolveSiteSettings(): Promise<Required<SiteSettings>> {
   }
   return { ...FALLBACK_SETTINGS, ...(doc ?? {}) } as Required<SiteSettings>;
 }
+
+// Phone fields of the resolved site settings, used by the placeholder helper.
+export type PhoneSettings = Pick<
+  Required<SiteSettings>,
+  "phoneDisplay" | "phoneTel" | "phoneIntl" | "phoneCard"
+>;
+
+// Replaces phone placeholders in Sanity copy with the values from
+// site-settings, so the number lives in exactly one place. Text that has
+// no placeholders comes back unchanged (a no-op until the Sanity text
+// carries a marker). Markers:
+//   {{phone}}     -> phoneDisplay (e.g. "Call {{phone}}")
+//   {{phoneTel}}  -> phoneTel     (tel: link form)
+//   {{phoneIntl}} -> phoneIntl    (schema form)
+//   {{phoneCard}} -> phoneCard    (contact-card form)
+export function substitutePhonePlaceholders(text: string, settings: PhoneSettings): string {
+  if (!text) return text;
+  return text
+    .replaceAll("{{phone}}", settings.phoneDisplay)
+    .replaceAll("{{phoneTel}}", settings.phoneTel)
+    .replaceAll("{{phoneIntl}}", settings.phoneIntl)
+    .replaceAll("{{phoneCard}}", settings.phoneCard);
+}

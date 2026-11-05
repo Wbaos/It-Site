@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import Link from "next/link";
 import SvgIcon from "@/components/common/SvgIcons";
 import type { LegalPage, LegalBlock } from "@/lib/sanityLegal";
+import { FALLBACK_SETTINGS, substitutePhonePlaceholders } from "@/lib/sanitySettings";
 
 // Single legal template for privacy + terms, EN + ES. Structure, icons
 // and classes come from here; all copy comes from the Sanity `legalPage`
@@ -36,29 +37,37 @@ function IntroText({ text }: { text: string }) {
   );
 }
 
-function Blocks({ blocks, locale }: { blocks: LegalBlock[] | undefined; locale: Locale }) {
+function Blocks({
+  blocks,
+  locale,
+  sub,
+}: {
+  blocks: LegalBlock[] | undefined;
+  locale: Locale;
+  sub: (s: string | undefined) => string;
+}) {
   return (
     <>
       {(blocks ?? []).map((block, i) => (
         <Fragment key={i}>
           {block.highlight ? (
-            <p className="legal-highlight">{pick(block.highlight, block.highlightEs, locale)}</p>
+            <p className="legal-highlight">{sub(pick(block.highlight, block.highlightEs, locale))}</p>
           ) : null}
-          {block.text ? <p>{pick(block.text, block.textEs, locale)}</p> : null}
+          {block.text ? <p>{sub(pick(block.text, block.textEs, locale))}</p> : null}
           {block.list && block.list.length > 0 ? (
             <ul>
               {pickList(block.list, block.listEs, locale).map((item, j) => (
-                <li key={j}>{item}</li>
+                <li key={j}>{sub(item)}</li>
               ))}
             </ul>
           ) : null}
           {block.calloutTitle ? (
             <div className="terms-callout">
               <p className="terms-callout-title">
-                {pick(block.calloutTitle, block.calloutTitleEs, locale)}
+                {sub(pick(block.calloutTitle, block.calloutTitleEs, locale))}
               </p>
               <p className="terms-callout-text">
-                {pick(block.calloutText, block.calloutTextEs, locale)}
+                {sub(pick(block.calloutText, block.calloutTextEs, locale))}
               </p>
             </div>
           ) : null}
@@ -77,13 +86,18 @@ export default function LegalTemplate({
   doc: LegalPage;
   page: "privacy" | "terms";
   locale?: Locale;
-  settings?: { email?: string; phoneTel?: string; phoneDisplay?: string };
+  settings?: { email?: string; phoneTel?: string; phoneDisplay?: string; phoneIntl?: string; phoneCard?: string };
 }) {
   const s = {
     email: settings?.email ?? "support@calltechcare.com",
-    phoneTel: settings?.phoneTel ?? "+17863662729",
-    phoneDisplay: settings?.phoneDisplay ?? "(786) 366-2729",
+    phoneTel: settings?.phoneTel ?? FALLBACK_SETTINGS.phoneTel,
+    phoneDisplay: settings?.phoneDisplay ?? FALLBACK_SETTINGS.phoneDisplay,
+    phoneIntl: settings?.phoneIntl ?? FALLBACK_SETTINGS.phoneIntl,
+    phoneCard: settings?.phoneCard ?? FALLBACK_SETTINGS.phoneCard,
   };
+  // Every Sanity text below goes through the phone-placeholder helper, so
+  // {{phone}} / {{phoneTel}} in legal copy resolves to site-settings.
+  const sub = (t: string | undefined) => substitutePhonePlaceholders(t ?? "", s);
   const isEs = locale === "es";
   const canonical =
     page === "privacy"
@@ -138,7 +152,7 @@ export default function LegalTemplate({
             <div className="terms-inner terms-body">
               <div className="legal-card">
                 <p>
-                  <IntroText text={pick(doc.intro, doc.introEs, locale)} />
+                  <IntroText text={sub(pick(doc.intro, doc.introEs, locale))} />
                 </p>
               </div>
               <div className="terms-steps">
@@ -148,7 +162,7 @@ export default function LegalTemplate({
                       <span className="terms-step-badge">{i + 1}</span>
                       <h2>{pick(section.heading, section.headingEs, locale)}</h2>
                     </div>
-                    <Blocks blocks={section.blocks} locale={locale} />
+                    <Blocks blocks={section.blocks} locale={locale} sub={sub} />
                   </div>
                 ))}
               </div>
@@ -158,8 +172,8 @@ export default function LegalTemplate({
                     <SvgIcon name="mail" size={64} className="legal-card-icon" />
                   </div>
                   <div className="legal-contact-content-col">
-                    <h2>{pick(card.title, card.titleEs, locale)}</h2>
-                    <p>{pick(card.text, card.textEs, locale)}</p>
+                    <h2>{sub(pick(card.title, card.titleEs, locale))}</h2>
+                    <p>{sub(pick(card.text, card.textEs, locale))}</p>
                     <p>
                       <strong>{pick(card.emailLabel, card.emailLabelEs, locale)} </strong>
                       <a href={`mailto:${s.email}`} className="terms-contact-item-email">
@@ -200,7 +214,7 @@ export default function LegalTemplate({
             <SvgIcon name={doc.headerIcon ?? "privacy-shield"} size={80} className="legal-header-icon" />
             <h1>{title}</h1>
             <p className="legal-updated">{pick(doc.updated, doc.updatedEs, locale)}</p>
-            <p className="legal-intro">{pick(doc.intro, doc.introEs, locale)}</p>
+            <p className="legal-intro">{sub(pick(doc.intro, doc.introEs, locale))}</p>
           </div>
           {(doc.sections ?? []).map((section, i) => (
             <div className="legal-card" key={i}>
@@ -210,7 +224,7 @@ export default function LegalTemplate({
                 ) : null}
                 <h2>{pick(section.heading, section.headingEs, locale)}</h2>
               </div>
-              <Blocks blocks={section.blocks} locale={locale} />
+              <Blocks blocks={section.blocks} locale={locale} sub={sub} />
             </div>
           ))}
           {card ? (
@@ -219,8 +233,8 @@ export default function LegalTemplate({
                 <SvgIcon name={card.icon ?? "privacy-questions"} size={80} className="legal-card-icon" />
               </div>
               <div className="legal-contact-content-col">
-                <h2>{pick(card.title, card.titleEs, locale)}</h2>
-                <p>{pick(card.text, card.textEs, locale)}</p>
+                <h2>{sub(pick(card.title, card.titleEs, locale))}</h2>
+                <p>{sub(pick(card.text, card.textEs, locale))}</p>
                 <p>
                   <strong>{pick(card.emailLabel, card.emailLabelEs, locale)}</strong> {s.email}
                 </p>

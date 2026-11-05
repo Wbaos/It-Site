@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import LocationsClient from "@/app/locations/LocationsClient";
+import { resolveSiteSettings } from "@/lib/sanitySettings";
 
 export const metadata: Metadata = {
   title: "Áreas de Servicio de Sprinklers | Miami y Broward | CallTechCare",
@@ -32,7 +33,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function LocationsPageEs() {
+export default async function LocationsPageEs() {
+  const settings = await resolveSiteSettings();
   const locationsSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -86,7 +88,7 @@ export default function LocationsPageEs() {
         }}
       />
 
-      <LocationsClient locale="es" />
+      <LocationsClient locale="es" phoneDisplay={settings.phoneDisplay} />
     </>
   );
 }

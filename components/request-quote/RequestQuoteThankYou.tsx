@@ -7,6 +7,7 @@ import {
   formatGoogleRating,
   type GoogleRatingSummary,
 } from "@/lib/google-reviews";
+import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 
 export default function RequestQuoteThankYou(props: {
   topRef: RefObject<HTMLDivElement | null>;
@@ -20,8 +21,12 @@ export default function RequestQuoteThankYou(props: {
   onBrowseServices: () => void;
   locale?: "en" | "es";
   ratingSummary?: GoogleRatingSummary;
+  // Business phone from site-settings (passed by the server page via the
+  // quote client); the fallback is the single shared one, never a literal.
+  phoneCard?: string;
 }) {
   const locale = props.locale ?? "en";
+  const phoneCard = props.phoneCard ?? FALLBACK_SETTINGS.phoneCard;
   // Live Google rating, from the single shared source in lib/google-reviews.
   const googleRating = formatGoogleRating(
     (props.ratingSummary ?? FALLBACK_GOOGLE_RATING_SUMMARY).rating
@@ -129,7 +134,7 @@ export default function RequestQuoteThankYou(props: {
             <div className="rq-thankyou__helpRow">
               <div className="rq-thankyou__helpItem">
                 <SvgIcon name="phone" size={16} color="#10b981" />
-                <span>+1 (786) 3662729</span>
+                <span>{phoneCard}</span>
               </div>
               <div className="rq-thankyou__helpItem">
                 <SvgIcon name="mail" size={16} color="#10b981" />

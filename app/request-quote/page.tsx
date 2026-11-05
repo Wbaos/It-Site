@@ -5,6 +5,7 @@ import {
   getGoogleRatingSummary,
   FALLBACK_GOOGLE_RATING_SUMMARY,
 } from "@/lib/google-reviews";
+import { resolveSiteSettings } from "@/lib/sanitySettings";
 
 export const revalidate = 60;
 
@@ -31,10 +32,11 @@ export default async function RequestQuotePage({
   const tabRaw = sp.tab;
   const requestedTab = Array.isArray(tabRaw) ? tabRaw[0] : tabRaw;
 
-  const [initialCategories, initialRqContent, ratingSummary] = await Promise.all([
+  const [initialCategories, initialRqContent, ratingSummary, settings] = await Promise.all([
     getServiceCategories(),
     getRequestQuoteContent(),
     getGoogleRatingSummary().then((s) => s ?? FALLBACK_GOOGLE_RATING_SUMMARY),
+    resolveSiteSettings(),
   ]);
 
   const safeCategories = Array.isArray(initialCategories) ? initialCategories : [];
@@ -50,6 +52,9 @@ export default async function RequestQuotePage({
       initialRqContent={initialRqContent}
       initialTab={initialTab}
       ratingSummary={ratingSummary}
+      phoneTel={settings.phoneTel}
+      phoneDisplay={settings.phoneDisplay}
+      phoneCard={settings.phoneCard}
     />
   );
 }

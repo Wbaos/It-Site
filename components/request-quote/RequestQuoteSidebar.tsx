@@ -7,6 +7,7 @@ import {
   formatGoogleRating,
   type GoogleRatingSummary,
 } from "@/lib/google-reviews";
+import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 
 // Spanish benefits (static translations of the current Sanity values;
 // icons, phone number and rating still come from Sanity at render time).
@@ -35,9 +36,16 @@ export default function RequestQuoteSidebar(props: {
   rqContent: RequestQuoteContent | null;
   locale?: "en" | "es";
   ratingSummary?: GoogleRatingSummary;
+  // Business phone from site-settings (passed by the server page via the
+  // quote client). The Sanity immediateHelp phone field is only used as a
+  // presence flag; the number shown and dialed always comes from settings.
+  phoneTel?: string;
+  phoneDisplay?: string;
 }) {
   const locale = props.locale ?? "en";
   const rqContent = props.rqContent;
+  const phoneTel = props.phoneTel ?? FALLBACK_SETTINGS.phoneTel;
+  const phoneDisplay = props.phoneDisplay ?? FALLBACK_SETTINGS.phoneDisplay;
   // Live Google rating summary, from the single shared source in
   // lib/google-reviews. The rating and the review count shown here come
   // from it, so they change everywhere at the same time.
@@ -147,7 +155,7 @@ export default function RequestQuoteSidebar(props: {
             <div className="rq-sidebar__actions">
               {rqContent.immediateHelp.phoneNumber ? (
                 <a
-                  href={`tel:${rqContent.immediateHelp.phoneNumber}`}
+                  href={`tel:${phoneTel}`}
                   className="rq-sidebar__action"
                 >
                   <span className="rq-sidebar__actionIcon">
@@ -164,8 +172,7 @@ export default function RequestQuoteSidebar(props: {
 
                   <span className="rq-sidebar__actionText">
                     <div className="rq-sidebar__actionLabel">
-                      {rqContent.immediateHelp.phoneLabel ||
-                        rqContent.immediateHelp.phoneNumber}
+                      {phoneDisplay}
                     </div>
                     <div className="rq-sidebar__actionSublabel">
                       Durante el horario de servicio
@@ -330,7 +337,7 @@ export default function RequestQuoteSidebar(props: {
           <div className="rq-sidebar__actions">
             {rqContent.immediateHelp.phoneNumber ? (
               <a
-                href={`tel:${rqContent.immediateHelp.phoneNumber}`}
+                href={`tel:${phoneTel}`}
                 className="rq-sidebar__action"
               >
                 <span className="rq-sidebar__actionIcon">
@@ -347,8 +354,7 @@ export default function RequestQuoteSidebar(props: {
 
                 <span className="rq-sidebar__actionText">
                   <div className="rq-sidebar__actionLabel">
-                    {rqContent.immediateHelp.phoneLabel ||
-                      rqContent.immediateHelp.phoneNumber}
+                    {phoneDisplay}
                   </div>
                   {rqContent.immediateHelp.phoneSubLabel ? (
                     <div className="rq-sidebar__actionSublabel">

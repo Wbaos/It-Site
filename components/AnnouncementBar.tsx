@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 
 type AnnouncementBarProps = {
   messages?: string[];
@@ -15,8 +16,8 @@ export default function AnnouncementBar({
   messages,
   intervalMs = 10_000,
   fadeMs = 300,
-  phoneTel = "+17863662729",
-  phoneDisplay = "(786) 366-2729",
+  phoneTel = FALLBACK_SETTINGS.phoneTel,
+  phoneDisplay = FALLBACK_SETTINGS.phoneDisplay,
 }: AnnouncementBarProps) {
   const pathname = usePathname();
   const isSpanishPage =

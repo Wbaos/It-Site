@@ -4,6 +4,7 @@ import Hero from "@/components/sections/Hero";
 import { serviceHref } from "@/lib/serviceTwins";
 import { cityHref } from "@/lib/cityTwins";
 import { sanityImageUrl } from "@/lib/sanityCities";
+import { resolveSiteSettings, substitutePhonePlaceholders } from "@/lib/sanitySettings";
 import {
   getGoogleRatingSummary,
   FALLBACK_GOOGLE_RATING_SUMMARY,
@@ -290,7 +291,7 @@ const SHARED_FAQS: Record<Locale, { q: string; a: string }[]> = {
     },
     {
       q: "How fast can you come to {CITY} for a sprinkler repair?",
-      a: "In {CITY} and most of {COUNTY}, same-day appointments within business hours are available. Call (786) 366-2729 and we will confirm the next available visit.",
+      a: "In {CITY} and most of {COUNTY}, same-day appointments within business hours are available. Call {{phone}} and we will confirm the next available visit.",
     },
     {
       q: "Do you serve areas near {CITY}?",
@@ -310,7 +311,7 @@ const SHARED_FAQS: Record<Locale, { q: string; a: string }[]> = {
     },
     {
       q: "Do you offer sprinkler repair near me in {CITY}?",
-      a: "Yes. CallTechCare offers sprinkler repair near you in {CITY} — same-day appointments within business hours and free inspection. Call (786) 366-2729 and we'll confirm the next available visit.",
+      a: "Yes. CallTechCare offers sprinkler repair near you in {CITY} — same-day appointments within business hours and free inspection. Call {{phone}} and we'll confirm the next available visit.",
     },
   ],
   es: [
@@ -320,7 +321,7 @@ const SHARED_FAQS: Record<Locale, { q: string; a: string }[]> = {
     },
     {
       q: "¿Qué tan rápido pueden venir a {CITY} para una reparación de sprinklers?",
-      a: "En {CITY} y la mayor parte de {COUNTY}, hay citas disponibles el mismo día dentro del horario. Llama al (786) 366-2729 y te confirmamos la próxima visita disponible.",
+      a: "En {CITY} y la mayor parte de {COUNTY}, hay citas disponibles el mismo día dentro del horario. Llama al {{phone}} y te confirmamos la próxima visita disponible.",
     },
     {
       q: "¿Atienden áreas cerca de {CITY}?",
@@ -340,7 +341,7 @@ const SHARED_FAQS: Record<Locale, { q: string; a: string }[]> = {
     },
     {
       q: "¿Ofrecen reparación de sprinklers cerca de mí en {CITY}?",
-      a: "Sí. CallTechCare ofrece reparación de sprinklers cerca de ti en {CITY} — citas el mismo día dentro del horario e inspección gratis. Llama al (786) 366-2729 y te confirmaremos la próxima visita disponible.",
+      a: "Sí. CallTechCare ofrece reparación de sprinklers cerca de ti en {CITY} — citas el mismo día dentro del horario e inspección gratis. Llama al {{phone}} y te confirmaremos la próxima visita disponible.",
     },
   ],
 };
@@ -366,27 +367,34 @@ const ES_STATS = [
   { value: "Mismo Día", label: "Citas Disponibles" },
 ];
 
-function composeFaqs(city: City, locale: Locale): { q: string; a: string }[] {
+function composeFaqs(
+  city: City,
+  locale: Locale,
+  settings: { phoneDisplay: string; phoneTel: string; phoneIntl: string; phoneCard: string },
+): { q: string; a: string }[] {
+  const sub = (s: string) => substitutePhonePlaceholders(s, settings);
   if (city.isHub) {
     const list = locale === "es" && city.faqsOverrideEs?.length ? city.faqsOverrideEs : city.faqsOverride;
-    return (list ?? []).map((f) => ({ q: f.q ?? "", a: f.a ?? "" })).filter((f) => f.q);
+    return (list ?? [])
+      .map((f) => ({ q: sub(f.q ?? ""), a: sub(f.a ?? "") }))
+      .filter((f) => f.q);
   }
   const name = city.name ?? "";
   const county = city.county ?? "";
   const sisters = (city.sisters ?? []).map((s) => s.name ?? "");
   const sistersJoined = locale === "en" ? oxfordJoin(sisters) : esJoin(sisters);
-  const sub = (s: string) =>
+  const subPlaceholders = (s: string) =>
     s.replaceAll("{CITY}", name).replaceAll("{COUNTY}", county).replaceAll("{SISTERS}", sistersJoined);
-  const shared = SHARED_FAQS[locale].map((f) => ({ q: sub(f.q), a: sub(f.a) }));
+  const shared = SHARED_FAQS[locale].map((f) => ({ q: sub(subPlaceholders(f.q)), a: sub(subPlaceholders(f.a)) }));
   const local = (locale === "es" && city.localFaqsEs?.length ? city.localFaqsEs : city.localFaqs ?? [])
-    .map((f) => ({ q: f.q ?? "", a: f.a ?? "" }))
+    .map((f) => ({ q: sub(f.q ?? ""), a: sub(f.a ?? "") }))
     .filter((f) => f.q);
   const faqs = [...shared.slice(0, 6), ...local, shared[6]];
   const overrides = locale === "es" && city.faqOverridesEs?.length ? city.faqOverridesEs : city.faqOverrides;
   for (const o of overrides ?? []) {
     if (o.index == null || !faqs[o.index]) continue;
-    if (o.q) faqs[o.index].q = o.q;
-    if (o.a) faqs[o.index].a = o.a;
+    if (o.q) faqs[o.index].q = sub(o.q);
+    if (o.a) faqs[o.index].a = sub(o.a);
   }
   return faqs;
 }
@@ -429,6 +437,9 @@ export default async function CityTemplate({ city, locale }: { city: City; local
   const ratingSummary =
     (await getGoogleRatingSummary()) ?? FALLBACK_GOOGLE_RATING_SUMMARY;
   const googleRating = formatGoogleRating(ratingSummary.rating);
+  // Live phone from site-settings (single source); Sanity city texts may
+  // carry {{phone}} / {{phoneTel}} markers, resolved below.
+  const settings = await resolveSiteSettings();
   const t = TEXT[locale];
   const isEs = locale === "es";
   const slug = city.slug?.current ?? "";
@@ -444,9 +455,9 @@ export default async function CityTemplate({ city, locale }: { city: City; local
   const heroSubtitle = pick(city.heroSubtitle, city.heroSubtitleEs, locale);
   const heroBadge = pick(city.heroBadge, city.heroBadgeEs, locale);
   const seoIntroTitle = pick(city.seoIntroTitle, city.seoIntroTitleEs, locale);
-  const introP1 = pick(city.introP1, city.introP1Es, locale);
+  const introP1 = substitutePhonePlaceholders(pick(city.introP1, city.introP1Es, locale), settings);
   const areaSegments = isEs && city.areaSegmentsEs?.length ? city.areaSegmentsEs : city.areaSegments ?? [];
-  const faqs = composeFaqs(city, locale);
+  const faqs = composeFaqs(city, locale, settings);
   const variant = city.highlightsVariant ?? "";
 
   // Derivations (see header comment + exported helpers above).
@@ -502,7 +513,7 @@ export default async function CityTemplate({ city, locale }: { city: City; local
             provider: {
               "@type": "LocalBusiness",
               name: "CallTechCare",
-              telephone: "+1-786-366-2729",
+              telephone: settings.phoneIntl,
               url: "https://www.calltechcare.com",
             },
             areaServed: {
@@ -546,7 +557,7 @@ export default async function CityTemplate({ city, locale }: { city: City; local
         subtitle={heroSubtitle}
         badgeText={heroBadge}
         primaryCtaText={t.callNow}
-        primaryCtaHref="tel:+17863662729"
+        primaryCtaHref={`tel:${settings.phoneTel}`}
         secondaryCtaText={t.requestQuote}
         secondaryCtaHref={t.quoteHref}
         showCallButton={false}
