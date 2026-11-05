@@ -51,8 +51,8 @@ const heroPropsEn = {
 
   phoneNumber: "+17863662729",
   showCallButton: true,
-  imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/2e7a8e52d7d2f5f052fff1a0c71ebb1970b439c2-4032x3024.jpg?w=1600&fm=webp&q=80",
-  mobileImageSrc: "https://cdn.sanity.io/images/celkrwoq/production/7227e848c3104ef4ef67fe1e81623e2c8fbe023a-3024x4032.jpg?w=750&fm=webp&q=50",
+  imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/2e7a8e52d7d2f5f052fff1a0c71ebb1970b439c2-4032x3024.jpg?w=1600&auto=format&q=80",
+  mobileImageSrc: "https://cdn.sanity.io/images/celkrwoq/production/7227e848c3104ef4ef67fe1e81623e2c8fbe023a-3024x4032.jpg?w=750&auto=format&q=50",
   imageAlt: "Sprinklers watering a landscaped front yard in Miami, with the CallTechCare truck",
 
   stats: [
@@ -74,8 +74,8 @@ const heroPropsEs = {
   secondaryCtaHref: "/es/solicita-una-cotizacion",
   phoneNumber: "+17863662729",
   showCallButton: true,
-  imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/2e7a8e52d7d2f5f052fff1a0c71ebb1970b439c2-4032x3024.jpg?w=1600&fm=webp&q=80",
-  mobileImageSrc: "https://cdn.sanity.io/images/celkrwoq/production/7227e848c3104ef4ef67fe1e81623e2c8fbe023a-3024x4032.jpg?w=750&fm=webp&q=50",
+  imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/2e7a8e52d7d2f5f052fff1a0c71ebb1970b439c2-4032x3024.jpg?w=1600&auto=format&q=80",
+  mobileImageSrc: "https://cdn.sanity.io/images/celkrwoq/production/7227e848c3104ef4ef67fe1e81623e2c8fbe023a-3024x4032.jpg?w=750&auto=format&q=50",
   imageAlt: "Sprinklers regando un jardín delantero en Miami, con el truck de CallTechCare",
   stats: [
     { value: "1500+", label: "Clientes Locales Atendidos" },

@@ -60,7 +60,7 @@ export default async function HowItWorks({ locale = "en" }: { locale?: "en" | "e
 
         <div className="how-photo">
           <img
-            src="https://cdn.sanity.io/images/celkrwoq/production/567373c542b5a2eb837d5b644626350e97c4dd49-1600x1200.jpg?w=800&fm=webp&q=80"
+            src="https://cdn.sanity.io/images/celkrwoq/production/567373c542b5a2eb837d5b644626350e97c4dd49-1600x1200.jpg?w=800&auto=format&q=80"
             alt={isSpanish ? "Camión de CallTechCare en el trabajo" : "CallTechCare truck on site"}
             width={1100}
             height={420}
