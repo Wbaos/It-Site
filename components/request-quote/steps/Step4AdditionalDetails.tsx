@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import SvgIcon from "@/components/common/SvgIcons";
-import { isTimeSlotAvailableForDate, STANDARD_TIME_SLOTS } from "@/lib/time-slots";
 
 declare global {
   interface Window {
@@ -15,10 +13,6 @@ export default function Step4AdditionalDetails(props: {
   setProjectDetails: (v: string) => void;
   wantsTechnicianVisitFirst: boolean;
   setWantsTechnicianVisitFirst: (v: boolean) => void;
-  preferredDate: string;
-  setPreferredDate: (v: string) => void;
-  preferredTime: string;
-  setPreferredTime: (v: string) => void;
   heardAbout: string;
   setHeardAbout: (v: string) => void;
   canSubmit: boolean;
@@ -29,27 +23,6 @@ export default function Step4AdditionalDetails(props: {
   locale?: "en" | "es";
 }) {
   const locale = props.locale ?? "en";
-  const preferredDateInputRef = useRef<HTMLInputElement | null>(null);
-
-  const todayIso = new Date(Date.now() - new Date().getTimezoneOffset() * 60_000)
-    .toISOString()
-    .slice(0, 10);
-
-  useEffect(() => {
-    if (!props.wantsTechnicianVisitFirst) return;
-    if (!props.preferredDate || !props.preferredTime) return;
-
-    const selected = STANDARD_TIME_SLOTS.find((t) => t.value === props.preferredTime);
-    if (!selected) return;
-    if (
-      !isTimeSlotAvailableForDate({
-        dateIso: props.preferredDate,
-        startHour: selected.startHour,
-      })
-    ) {
-      props.setPreferredTime("");
-    }
-  }, [props.wantsTechnicianVisitFirst, props.preferredDate]);
 
   return (
     <div className="rq-step4">
@@ -130,103 +103,8 @@ export default function Step4AdditionalDetails(props: {
           <>
             <div className="rq-step4__divider" />
 
-            <div className="rq-step4__subheading">
-              {locale === "es" ? "¿Cuándo te conviene más?" : "When works best for you?"}
-            </div>
-
-            <div className="rq-step4__twoCol">
-              <div>
-                <label className="rq-step4__label">
-                  {locale === "es" ? "Fecha preferida" : "Preferred Date"}
-                </label>
-
-                <div className="rq-step4__dateWrap">
-                  <input
-                    type="date"
-                    ref={preferredDateInputRef}
-                    value={props.preferredDate}
-                    min={todayIso}
-                    onPointerDown={(e) => {
-                      const el = preferredDateInputRef.current;
-                      if (!el) return;
-
-                      if (document.activeElement === el) {
-                        e.preventDefault();
-                        el.blur();
-                        return;
-                      }
-
-                      try {
-                        el.showPicker?.();
-                      } catch {}
-                    }}
-                    onChange={(e) => {
-                      const next = e.target.value;
-                      props.setPreferredDate(
-                        next && next < todayIso ? todayIso : next
-                      );
-                    }}
-                    className="rq-date-input rq-step4__input rq-step4__input--date"
-                  />
-
-                  <span
-                    className="rq-step4__dateIcon"
-                    aria-hidden="true"
-                  >
-                    <SvgIcon
-                      name="calendar"
-                      size={18}
-                      color="currentColor"
-                    />
-                  </span>
-                </div>
-              </div>
-
-              <div>
-                <label className="rq-step4__label">
-                  {locale === "es" ? "Hora preferida" : "Preferred Time"}
-                </label>
-
-                <div className="rq-step4__selectWrap">
-                  <select
-                    value={props.preferredTime}
-                    onChange={(e) =>
-                      props.setPreferredTime(e.target.value)
-                    }
-                    className="rq-step4__select"
-                  >
-                    <option value="">
-                      {locale === "es" ? "Selecciona una hora" : "Select a time"}
-                    </option>
-
-                    {STANDARD_TIME_SLOTS.map((slot) => (
-                      <option
-                        key={slot.value}
-                        value={slot.value}
-                        disabled={
-                          !isTimeSlotAvailableForDate({
-                            dateIso: props.preferredDate,
-                            startHour: slot.startHour,
-                          })
-                        }
-                      >
-                        {slot.label}
-                      </option>
-                    ))}
-                  </select>
-
-                  <span
-                    className="rq-step4__selectIcon"
-                    aria-hidden="true"
-                  >
-                    <SvgIcon
-                      name="chevron-down"
-                      size={18}
-                      color="currentColor"
-                    />
-                  </span>
-                </div>
-              </div>
+            <div className="rq-step4__cardNote">
+              {locale === "es" ? "Te llamamos para confirmar el día y la hora de la visita." : "We'll call you to confirm the day and time of the visit."}
             </div>
           </>
         ) : null}
@@ -295,18 +173,6 @@ export default function Step4AdditionalDetails(props: {
     </div>
       {props.submitError ? (
         <div className="rq-step4__error">{props.submitError}</div>
-      ) : null}
-
-      {!props.canSubmit ? (
-        <div className="rq-step4__hint">
-          {props.wantsTechnicianVisitFirst
-            ? (locale === "es"
-                ? "Selecciona una fecha y hora preferidas para continuar."
-                : "Select a preferred date and time to continue.")
-            : (locale === "es"
-                ? "Puedes enviar ahora o seleccionar la opción de visita del técnico."
-                : "You can submit now, or select the technician visit option.")}
-        </div>
       ) : null}
     </div>
   );
