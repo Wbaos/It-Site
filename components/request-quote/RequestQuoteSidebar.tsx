@@ -2,6 +2,11 @@
 
 import SvgIcon from "@/components/common/SvgIcons";
 import type { RequestQuoteContent } from "@/lib/request-quote-data";
+import {
+  FALLBACK_GOOGLE_RATING_SUMMARY,
+  formatGoogleRating,
+  type GoogleRatingSummary,
+} from "@/lib/google-reviews";
 
 // Spanish benefits (static translations of the current Sanity values;
 // icons, phone number and rating still come from Sanity at render time).
@@ -29,9 +34,15 @@ const BENEFIT_ICONS = [
 export default function RequestQuoteSidebar(props: {
   rqContent: RequestQuoteContent | null;
   locale?: "en" | "es";
+  ratingSummary?: GoogleRatingSummary;
 }) {
   const locale = props.locale ?? "en";
   const rqContent = props.rqContent;
+  // Live Google rating summary, from the single shared source in
+  // lib/google-reviews. The rating and the review count shown here come
+  // from it, so they change everywhere at the same time.
+  const summary = props.ratingSummary ?? FALLBACK_GOOGLE_RATING_SUMMARY;
+  const googleRating = formatGoogleRating(summary.rating);
 
   const defaultSupportEmail = "support@calltechcare.com";
   const defaultEmailHref = `mailto:${defaultSupportEmail}?subject=${encodeURIComponent(
@@ -112,12 +123,12 @@ export default function RequestQuoteSidebar(props: {
             <div className="rq-sidebar__ratingRow">
               <div className="rq-sidebar__stars">★★★★★</div>
               <div className="rq-sidebar__ratingValue">
-                {rqContent.socialProof.ratingValue}
+                {googleRating}
               </div>
             </div>
           )}
           <div className="rq-sidebar__reviewsText">
-            Basado en más de 25 reseñas de clientes
+            Basado en {summary.total} reseñas en Google
           </div>
         </div>
 
@@ -290,13 +301,13 @@ export default function RequestQuoteSidebar(props: {
             <div className="rq-sidebar__ratingRow">
               <div className="rq-sidebar__stars">★★★★★</div>
               <div className="rq-sidebar__ratingValue">
-                {rqContent.socialProof.ratingValue}
+                {googleRating}
               </div>
             </div>
           )}
           {rqContent?.socialProof?.reviewsText && (
             <div className="rq-sidebar__reviewsText">
-              {rqContent.socialProof.reviewsText}
+              Based on {summary.total} Google reviews
             </div>
           )}
         </div>

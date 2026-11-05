@@ -2,6 +2,11 @@
 
 import type { RefObject } from "react";
 import SvgIcon from "@/components/common/SvgIcons";
+import {
+  FALLBACK_GOOGLE_RATING_SUMMARY,
+  formatGoogleRating,
+  type GoogleRatingSummary,
+} from "@/lib/google-reviews";
 
 export default function RequestQuoteThankYou(props: {
   topRef: RefObject<HTMLDivElement | null>;
@@ -14,8 +19,13 @@ export default function RequestQuoteThankYou(props: {
   onBackHome: () => void;
   onBrowseServices: () => void;
   locale?: "en" | "es";
+  ratingSummary?: GoogleRatingSummary;
 }) {
   const locale = props.locale ?? "en";
+  // Live Google rating, from the single shared source in lib/google-reviews.
+  const googleRating = formatGoogleRating(
+    (props.ratingSummary ?? FALLBACK_GOOGLE_RATING_SUMMARY).rating
+  );
   return (
     <main className="rq-thankyou__page">
       <div ref={props.topRef} />
@@ -149,7 +159,7 @@ export default function RequestQuoteThankYou(props: {
         <div className="rq-thankyou__trustRow">
           <div className="rq-thankyou__trustItem">
             <SvgIcon name="star-outline" size={16} color="#64748b" />
-            {locale === "es" ? "Calificación 5.0" : "5.0 Rating"}
+            {locale === "es" ? `Calificación ${googleRating}` : `${googleRating} Rating`}
           </div>
         </div>
       </section>

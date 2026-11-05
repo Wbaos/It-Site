@@ -4,6 +4,11 @@ import Hero from "@/components/sections/Hero";
 import { serviceHref } from "@/lib/serviceTwins";
 import { cityHref } from "@/lib/cityTwins";
 import { sanityImageUrl } from "@/lib/sanityCities";
+import {
+  getGoogleRatingSummary,
+  FALLBACK_GOOGLE_RATING_SUMMARY,
+  formatGoogleRating,
+} from "@/lib/google-reviews";
 import type { City, CityAreaSegment } from "@/lib/sanityCities";
 
 // Single template for every city landing page (Lote 2 migration).
@@ -357,7 +362,7 @@ const NOT_SURE_P: Record<Locale, string> = {
 
 const ES_STATS = [
   { value: "1500+", label: "Clientes Locales Atendidos" },
-  { value: "5.0", label: "Calificación en Google" },
+  { value: formatGoogleRating(FALLBACK_GOOGLE_RATING_SUMMARY.rating), label: "Calificación en Google" },
   { value: "Mismo Día", label: "Citas Disponibles" },
 ];
 
@@ -417,7 +422,13 @@ function renderAreaSegments(segments: CityAreaSegment[], locale: Locale) {
   return nodes;
 }
 
-export default function CityTemplate({ city, locale }: { city: City; locale: Locale }) {
+export default async function CityTemplate({ city, locale }: { city: City; locale: Locale }) {
+  // Live Google rating summary, from the single shared source in
+  // lib/google-reviews. Used for the hero stat (via the googleRating prop)
+  // and the trust chip below, so the numbers change everywhere at once.
+  const ratingSummary =
+    (await getGoogleRatingSummary()) ?? FALLBACK_GOOGLE_RATING_SUMMARY;
+  const googleRating = formatGoogleRating(ratingSummary.rating);
   const t = TEXT[locale];
   const isEs = locale === "es";
   const slug = city.slug?.current ?? "";
@@ -539,6 +550,7 @@ export default function CityTemplate({ city, locale }: { city: City; locale: Loc
         secondaryCtaText={t.requestQuote}
         secondaryCtaHref={t.quoteHref}
         showCallButton={false}
+        googleRating={googleRating}
         {...(isEs ? { stats: ES_STATS } : {})}
       />
 
@@ -547,7 +559,7 @@ export default function CityTemplate({ city, locale }: { city: City; locale: Loc
           <div className="seo-trust-chips">
             <span>{isEs ? "Inspección gratis" : "Free inspection"}</span>
             <span>{isEs ? "Mismo día dentro del horario" : "Same-day within business hours"}</span>
-            <span>{isEs ? "5.0 en Google · 26 reseñas" : "5.0 on Google · 26 reviews"}</span>
+            <span>{isEs ? `${googleRating} en Google · ${ratingSummary.total} reseñas` : `${googleRating} on Google · ${ratingSummary.total} reviews`}</span>
             <span>{isEs ? "Más de 1500 clientes ayudados" : "1500+ customers helped"}</span>
           </div>
           <h2 className="seo-intro-title">{seoIntroTitle}</h2>

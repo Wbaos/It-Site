@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import RequestQuoteClient from "./RequestQuoteClient";
 import { getRequestQuoteContent, getServiceCategories } from "@/lib/request-quote-data";
+import {
+  getGoogleRatingSummary,
+  FALLBACK_GOOGLE_RATING_SUMMARY,
+} from "@/lib/google-reviews";
 
 export const revalidate = 60;
 
@@ -27,9 +31,10 @@ export default async function RequestQuotePage({
   const tabRaw = sp.tab;
   const requestedTab = Array.isArray(tabRaw) ? tabRaw[0] : tabRaw;
 
-  const [initialCategories, initialRqContent] = await Promise.all([
+  const [initialCategories, initialRqContent, ratingSummary] = await Promise.all([
     getServiceCategories(),
     getRequestQuoteContent(),
+    getGoogleRatingSummary().then((s) => s ?? FALLBACK_GOOGLE_RATING_SUMMARY),
   ]);
 
   const safeCategories = Array.isArray(initialCategories) ? initialCategories : [];
@@ -44,6 +49,7 @@ export default async function RequestQuotePage({
       initialCategories={safeCategories}
       initialRqContent={initialRqContent}
       initialTab={initialTab}
+      ratingSummary={ratingSummary}
     />
   );
 }

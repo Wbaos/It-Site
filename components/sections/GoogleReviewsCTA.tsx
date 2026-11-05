@@ -1,17 +1,35 @@
-import { getGoogleReviewsUrl } from "@/lib/google-reviews";
+import {
+  getGoogleReviewsUrl,
+  getGoogleRatingSummary,
+  FALLBACK_GOOGLE_RATING_SUMMARY,
+  formatGoogleRating,
+  type GoogleRatingSummary,
+} from "@/lib/google-reviews";
 import SvgIcon from "@/components/common/SvgIcons";
 
 /**
  * Google reviews CTA for the home page.
- * Shows only verified summary data (5.0 rating, 26 Google reviews) and a
- * link to the real Google reviews page. No reviewer names or review texts
- * are rendered here: the live Google reviews feed is empty.
+ * Shows the live Google rating summary (rating + review count) from the
+ * single shared source in lib/google-reviews, with the 5.0/26 fallback when
+ * Google is unreachable, and a link to the real Google reviews page. No
+ * reviewer names or review texts are rendered here: the live Google reviews
+ * feed is empty.
  * Locale-aware: English on "/" and Spanish on "/es/*".
  */
-export default function GoogleReviewsCTA({ locale = "en" }: { locale?: "en" | "es" }) {
+export default async function GoogleReviewsCTA({
+  locale = "en",
+  ratingSummary,
+}: {
+  locale?: "en" | "es";
+  ratingSummary?: GoogleRatingSummary;
+}) {
   const isSpanish = locale === "es";
   const googleReviewsUrl = getGoogleReviewsUrl();
   if (!googleReviewsUrl) return null;
+  const summary =
+    ratingSummary ?? (await getGoogleRatingSummary()) ?? FALLBACK_GOOGLE_RATING_SUMMARY;
+  const rating = formatGoogleRating(summary.rating);
+  const total = summary.total;
 
   return (
     <section className="section testimonials">
@@ -26,7 +44,7 @@ export default function GoogleReviewsCTA({ locale = "en" }: { locale?: "en" | "e
           />
         </div>
         <div className="google-cta-content">
-        <h2 className="testimonials-heading">{isSpanish ? "5.0 en Google" : "5.0 on Google"}</h2>
+        <h2 className="testimonials-heading">{isSpanish ? `${rating} en Google` : `${rating} on Google`}</h2>
         <div
           style={{
             display: "flex",
@@ -45,7 +63,7 @@ export default function GoogleReviewsCTA({ locale = "en" }: { locale?: "en" | "e
             />
           ))}
         </div>
-        <p className="testimonials-sub">{isSpanish ? "26 reseñas de Google" : "26 Google reviews"}</p>
+        <p className="testimonials-sub">{isSpanish ? `${total} reseñas de Google` : `${total} Google reviews`}</p>
         <div style={{ textAlign: "center", marginTop: "1rem" }}>
           <a
             href={googleReviewsUrl}
@@ -53,7 +71,7 @@ export default function GoogleReviewsCTA({ locale = "en" }: { locale?: "en" | "e
             rel="noreferrer"
             className="btn-write-review"
           >
-            {isSpanish ? "Ver las 26 reseñas en Google" : "See all 26 reviews on Google"}
+            {isSpanish ? `Ver las ${total} reseñas en Google` : `See all ${total} reviews on Google`}
           </a>
         </div>
         </div>

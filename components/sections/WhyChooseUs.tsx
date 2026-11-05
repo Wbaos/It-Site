@@ -1,5 +1,11 @@
 import { ShieldCheck, Users, Clock, Cpu, Star, Smile } from "lucide-react";
 import type { HomePage } from "@/lib/sanityHome";
+import {
+  getGoogleRatingSummary,
+  FALLBACK_GOOGLE_RATING_SUMMARY,
+  formatGoogleRating,
+  type GoogleRatingSummary,
+} from "@/lib/google-reviews";
 
 function pick(en: string | undefined, es: string | undefined, isSpanish: boolean): string | undefined {
   if (isSpanish && es) return es;
@@ -8,8 +14,19 @@ function pick(en: string | undefined, es: string | undefined, isSpanish: boolean
 
 const WHY_ICONS = [ShieldCheck, Star, Users, Smile, Clock, Cpu];
 
-export default function WhyChooseUs({ locale = "en", doc }: { locale?: "en" | "es"; doc?: HomePage | null }) {
+export default async function WhyChooseUs({
+  locale = "en",
+  doc,
+  ratingSummary,
+}: {
+  locale?: "en" | "es";
+  doc?: HomePage | null;
+  ratingSummary?: GoogleRatingSummary;
+}) {
   const isSpanish = locale === "es";
+  // Fallback numbers, from the single shared source in lib/google-reviews.
+  const fallbackRating = formatGoogleRating(FALLBACK_GOOGLE_RATING_SUMMARY.rating);
+  const fallbackTotal = FALLBACK_GOOGLE_RATING_SUMMARY.total;
   // Same six cards, same icons, same order in both languages; only the
   // text changes. The Spanish wording is a faithful translation of the
   // English wording.
@@ -22,8 +39,8 @@ export default function WhyChooseUs({ locale = "en", doc }: { locale?: "en" | "e
         },
         {
           icon: <Star size={32} strokeWidth={1.5} />,
-          title: "5.0 en Google",
-          text: "Calificación 5.0 con 26 reseñas en Google, de clientes reales.",
+          title: `${fallbackRating} en Google`,
+          text: `Calificación ${fallbackRating} con ${fallbackTotal} reseñas en Google, de clientes reales.`,
         },
         {
           icon: <Users size={32} strokeWidth={1.5} />,
@@ -54,8 +71,8 @@ export default function WhyChooseUs({ locale = "en", doc }: { locale?: "en" | "e
         },
         {
           icon: <Star size={32} strokeWidth={1.5} />,
-          title: "5.0 on Google",
-          text: "5.0 rating from 26 Google reviews, from real customers.",
+          title: `${fallbackRating} on Google`,
+          text: `${fallbackRating} rating from ${fallbackTotal} Google reviews, from real customers.`,
         },
         {
           icon: <Users size={32} strokeWidth={1.5} />,
@@ -90,6 +107,26 @@ export default function WhyChooseUs({ locale = "en", doc }: { locale?: "en" | "e
           };
         })
       : fallbackFeatures;
+  // The Google card (Sanity whyCards or the code fallback) quotes the
+  // rating and the review count. Both come from the single shared source in
+  // lib/google-reviews, so the card updates everywhere at the same time.
+  // Detected by its title, which Sanity and the fallback share.
+  const summary =
+    ratingSummary ?? (await getGoogleRatingSummary()) ?? FALLBACK_GOOGLE_RATING_SUMMARY;
+  const rating = formatGoogleRating(summary.rating);
+  const liveFeatures = features.map((f) => {
+    // The Google card is the one quoting the review count (Sanity whyCards
+    // or the code fallback). Detected by its text, not by the numbers, so it
+    // keeps working when the rating or the total changes.
+    if (!f.text.includes("Google reviews") && !f.text.includes("reseñas en Google")) return f;
+    return {
+      ...f,
+      title: isSpanish ? `${rating} en Google` : `${rating} on Google`,
+      text: isSpanish
+        ? `Calificación ${rating} con ${summary.total} reseñas en Google, de clientes reales.`
+        : `${rating} rating from ${summary.total} Google reviews, from real customers.`,
+    };
+  });
   const whyTitle =
     pick(doc?.whyTitle, doc?.whyTitleEs, isSpanish) ??
     (isSpanish
@@ -141,7 +178,7 @@ export default function WhyChooseUs({ locale = "en", doc }: { locale?: "en" | "e
         </div>
 
         <div className="why-grid">
-          {features.map((f, i) => (
+          {liveFeatures.map((f, i) => (
             <div key={i} className="why-card">
               <div className="why-icon">{f.icon}</div>
               <h3>{f.title}</h3>
