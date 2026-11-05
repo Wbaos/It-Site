@@ -24,13 +24,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${location.city} | Reparación de Sprinklers, Irrigación y Cámaras de Seguridad`,
+    title: `${location.city} | Reparación de Sprinklers, Irrigación y Cámaras`,
     description: location.descriptionEs || location.description,
     alternates: {
       canonical: `https://www.calltechcare.com/es/areas-de-servicio/${slug}`,
       languages: {
         es: `https://www.calltechcare.com/es/areas-de-servicio/${slug}`,
         en: `https://www.calltechcare.com/locations/${slug}`,
+        "x-default": `https://www.calltechcare.com/locations/${slug}`,
       },
     },
     openGraph: {

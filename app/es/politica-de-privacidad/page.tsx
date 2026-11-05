@@ -16,6 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
       languages: {
         es: "https://www.calltechcare.com/es/politica-de-privacidad",
         en: "https://www.calltechcare.com/privacy-policy",
+        "x-default": "https://www.calltechcare.com/privacy-policy",
       },
     },
     openGraph: {
