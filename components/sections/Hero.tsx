@@ -40,8 +40,10 @@ export default function Hero({
   badgeText = "Sprinkler Repair & Irrigation in Miami & Broward",
   primaryCtaText = "Call Now",
   primaryCtaHref = `tel:${FALLBACK_SETTINGS.phoneTel}`,
-  secondaryCtaText = "Request a Quote",
-  secondaryCtaHref = "/request-quote",
+  // No secondary CTA by default: the quote flow is hidden for now.
+  // Callers must pass secondaryCtaText + secondaryCtaHref explicitly.
+  secondaryCtaText,
+  secondaryCtaHref,
   phoneNumber = FALLBACK_SETTINGS.phoneTel,
   showCallButton = true,
   imageSrc = "https://cdn.sanity.io/images/celkrwoq/production/5deeea70b525963987af93601f412cebdbede547-5712x4284.webp",

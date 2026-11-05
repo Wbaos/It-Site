@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAboutPage, type AboutPage } from "@/lib/sanityAbout";
+import { resolveSiteSettings, FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 
 // Single about template for both languages: the same sections, in the
 // same order, with the same classes. Copy comes from the Sanity
@@ -129,10 +130,16 @@ export default async function AboutTemplate({ locale = "en" }: { locale?: Locale
   const ctaBefore = (isEs ? doc?.ctaBeforeEs : doc?.ctaBefore) ?? fb.ctaBefore;
   const ctaLinkText = (isEs ? doc?.ctaLinkTextEs : doc?.ctaLinkText) ?? fb.ctaLinkText;
   const ctaAfter = (isEs ? doc?.ctaAfterEs : doc?.ctaAfter) ?? fb.ctaAfter;
-  const ctaButtonText = (isEs ? doc?.ctaButtonTextEs : doc?.ctaButtonText) ?? fb.ctaButtonText;
+  // The quote button below was the only CTA of this section; the quote
+  // flow is hidden for now, so the section keeps a call button instead.
+  let settings = FALLBACK_SETTINGS;
+  try {
+    settings = await resolveSiteSettings();
+  } catch {
+    settings = FALLBACK_SETTINGS;
+  }
 
   const cityHref = isEs ? "/es/reparacion-de-sprinklers-miami" : "/sprinkler-repair-miami";
-  const quoteHref = isEs ? "/es/solicita-una-cotizacion" : "/request-quote";
 
   return (
     <main className="about-page-container">
@@ -179,9 +186,9 @@ export default async function AboutTemplate({ locale = "en" }: { locale?: Locale
             <Link href={cityHref}>{ctaLinkText}</Link>
             {ctaAfter}
           </p>
-          <Link href={quoteHref} className="about-button">
-            {ctaButtonText}
-          </Link>
+          <a href={`tel:${settings.phoneTel}`} className="about-button">
+            {isEs ? "Llama ahora" : "Call Now"}
+          </a>
         </section>
       </div>
     </main>

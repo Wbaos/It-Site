@@ -141,8 +141,10 @@ type LocaleText = {
   ctaSuffix: string;
   ourWorkTitle: string;
   callNow: string;
-  requestQuote: string;
-  quoteHref: string;
+  // The two inline "request a quote" links below point at the sprinkler
+  // service page (which carries the short lead form) while the full quote
+  // flow is hidden. Not the quote page.
+  serviceHref: string;
   ariaHighlights: string;
   ariaSteps: string;
   ariaFaq: string;
@@ -172,8 +174,7 @@ const TEXT: Record<Locale, LocaleText> = {
     ctaSuffix: ".",
     ourWorkTitle: "Our Work",
     callNow: "Call Now",
-    requestQuote: "Request a Quote",
-    quoteHref: "/request-quote",
+    serviceHref: "/services/sprinkler-repair-and-installation",
     ariaHighlights: "Sprinkler repair highlights",
     ariaSteps: "How it works",
     ariaFaq: "Frequently asked questions",
@@ -236,8 +237,7 @@ const TEXT: Record<Locale, LocaleText> = {
     ctaSuffix: ".",
     ourWorkTitle: "Nuestro Trabajo",
     callNow: "Llama ahora",
-    requestQuote: "Solicita una cotización",
-    quoteHref: "/es/solicita-una-cotizacion",
+    serviceHref: "/es/reparacion-de-sprinklers-e-irrigacion",
     ariaHighlights: "Sprinkler repair highlights",
     ariaSteps: "How it works",
     ariaFaq: "Frequently asked questions",
@@ -559,8 +559,6 @@ export default async function CityTemplate({ city, locale }: { city: City; local
         badgeText={heroBadge}
         primaryCtaText={t.callNow}
         primaryCtaHref={`tel:${settings.phoneTel}`}
-        secondaryCtaText={t.requestQuote}
-        secondaryCtaHref={t.quoteHref}
         showCallButton={false}
         googleRating={googleRating}
         {...(isEs ? { stats: ES_STATS } : {})}
@@ -604,7 +602,7 @@ export default async function CityTemplate({ city, locale }: { city: City; local
           <p className="seo-area-list">{renderAreaSegments(areaSegments, locale)}</p>
           <p>
             {t.finalCtaPrefix}
-            <Link href={t.quoteHref}>{t.finalCtaLinkText}</Link>
+            <Link href={t.serviceHref}>{t.finalCtaLinkText}</Link>
             {t.finalCtaSuffix}
           </p>
           <p>
@@ -675,7 +673,7 @@ export default async function CityTemplate({ city, locale }: { city: City; local
 
           <p className="spr-landing-cta">
             {t.ctaPrefix}
-            <Link href={t.quoteHref}>{t.ctaLink1}</Link>
+            <Link href={t.serviceHref}>{t.ctaLink1}</Link>
             {t.ctaMid}
             <Link href={detailsHref}>{t.ctaLink2}</Link>
             {t.ctaSuffix}

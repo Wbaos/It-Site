@@ -1041,15 +1041,6 @@ export default async function ServicePage({
                       : "Our expert technicians are ready to help. Book your service today and experience the difference professional installation makes."}
                   </div>
                   <div className="category-cta-btn-row">
-                    <Link href={isSpanish ? "/es/solicita-una-cotizacion" : "/request-quote"} className="category-cta-btn">
-                      {isSpanish ? "Obtén tu inspección gratis" : "Get Your Free Inspection"}
-                      <SvgIcon
-                        name="arrow-right-simple"
-                        size={16}
-                        color="#fff"
-                        className="category-cta-btn-icon"
-                      />
-                    </Link>
                     <a
                       href={`tel:${settings.phoneTel}`}
                       className="category-cta-btn"
@@ -1288,12 +1279,6 @@ const isTvMounting = tvMountingSlugs.includes(slug);
                   {isSpanish ? `Llámanos al ${settings.phoneDisplay}` : `Call us at ${settings.phoneDisplay}`}
                 </span>
               </a>
-              <Link
-                href={isSpanish ? "/es/solicita-una-cotizacion" : "/request-quote"}
-                className="btn-book btn-book--secondary"
-              >
-                {isSpanish ? "Solicita una inspección gratis" : "Request a Free Inspection"}
-              </Link>
             </div>
           </div>
         </div>
