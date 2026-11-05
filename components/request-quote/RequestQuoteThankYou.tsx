@@ -13,8 +13,6 @@ export default function RequestQuoteThankYou(props: {
   topRef: RefObject<HTMLDivElement | null>;
   referenceNumber: string;
   wantsTechnicianVisitFirst: boolean;
-  preferredDate: string;
-  preferredTime: string;
   contactEmail: string;
   contactPhone: string;
   onBackHome: () => void;
@@ -57,18 +55,9 @@ export default function RequestQuoteThankYou(props: {
 
         {props.wantsTechnicianVisitFirst ? (
           <div className="rq-thankyou__visitRow">
-            {locale === "es" ? "Visita del técnico solicitada:" : "Technician visit requested:"}{" "}
-            <span className="rq-thankyou__refValue">
-              {props.preferredDate || "____-__-__"}
-            </span>
-            {props.preferredTime ? (
-              <>
-                {" "}•{" "}
-                <span className="rq-thankyou__refValue">
-                  {props.preferredTime}
-                </span>
-              </>
-            ) : null}
+            {locale === "es"
+              ? "Visita del técnico solicitada: te llamamos para confirmar el día y la hora."
+              : "Technician visit requested — we'll call you to confirm the day and time."}
           </div>
         ) : null}
 
