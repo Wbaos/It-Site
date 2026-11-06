@@ -160,15 +160,20 @@ export default function TestimonialsList({
               onTransitionEnd={handleTransitionEnd}
             >
               {visible.map((t, i) => {
+                // Dates from the Sanity Google-reviews bridge are relative
+                // strings ("a week ago", "10 weeks ago") — show the raw
+                // string when it cannot be parsed as a calendar date,
+                // never invent a date.
+                const parsedDate = t.date ? new Date(t.date) : null;
                 const date =
-                  t.date && !isNaN(new Date(t.date).getTime())
-                    ? new Date(t.date).toLocaleDateString("en-US", {
+                  parsedDate && !isNaN(parsedDate.getTime())
+                    ? parsedDate.toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "short",
                         day: "numeric",
                         timeZone: "UTC",
                       })
-                    : "";
+                    : (t.date ?? "");
 
                 const fullText = t.text ?? "";
                 const isLong = fullText.split(" ").length > 15;

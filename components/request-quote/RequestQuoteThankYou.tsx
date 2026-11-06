@@ -3,7 +3,6 @@
 import type { RefObject } from "react";
 import SvgIcon from "@/components/common/SvgIcons";
 import {
-  FALLBACK_GOOGLE_RATING_SUMMARY,
   formatGoogleRating,
   type GoogleRatingSummary,
 } from "@/lib/google-reviews";
@@ -18,17 +17,19 @@ export default function RequestQuoteThankYou(props: {
   onBackHome: () => void;
   onBrowseServices: () => void;
   locale?: "en" | "es";
-  ratingSummary?: GoogleRatingSummary;
+  ratingSummary?: GoogleRatingSummary | null;
   // Business phone from site-settings (passed by the server page via the
   // quote client); the fallback is the single shared one, never a literal.
   phoneCard?: string;
 }) {
   const locale = props.locale ?? "en";
   const phoneCard = props.phoneCard ?? FALLBACK_SETTINGS.phoneCard;
-  // Live Google rating, from the single shared source in lib/google-reviews.
-  const googleRating = formatGoogleRating(
-    (props.ratingSummary ?? FALLBACK_GOOGLE_RATING_SUMMARY).rating
-  );
+  // Live Google rating, from the single shared source in lib/google-reviews
+  // (Sanity site-settings). Without a summary the trust row below hides
+  // instead of showing a stale number.
+  const googleRating = props.ratingSummary
+    ? formatGoogleRating(props.ratingSummary.rating)
+    : null;
   return (
     <main className="rq-thankyou__page">
       <div ref={props.topRef} />
@@ -150,12 +151,14 @@ export default function RequestQuoteThankYou(props: {
           </button>
         </div>
 
-        <div className="rq-thankyou__trustRow">
-          <div className="rq-thankyou__trustItem">
-            <SvgIcon name="star-outline" size={16} color="#64748b" />
-            {locale === "es" ? `Calificación ${googleRating}` : `${googleRating} Rating`}
+        {googleRating && (
+          <div className="rq-thankyou__trustRow">
+            <div className="rq-thankyou__trustItem">
+              <SvgIcon name="star-outline" size={16} color="#64748b" />
+              {locale === "es" ? `Calificación ${googleRating}` : `${googleRating} Rating`}
+            </div>
           </div>
-        </div>
+        )}
       </section>
     </main>
   );

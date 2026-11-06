@@ -151,7 +151,7 @@ export default function RequestQuoteClient(props: {
   initialRqContent: RequestQuoteContent | null;
   initialTab: string;
   locale?: "en" | "es";
-  ratingSummary?: GoogleRatingSummary;
+  ratingSummary?: GoogleRatingSummary | null;
   // Business phone from site-settings, resolved by the server page.
   phoneTel?: string;
   phoneDisplay?: string;

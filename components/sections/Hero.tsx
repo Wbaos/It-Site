@@ -1,10 +1,6 @@
 "use client";
 import SvgIcon from "@/components/common/SvgIcons";
 import Link from "next/link";
-import {
-  FALLBACK_GOOGLE_RATING_SUMMARY,
-  formatGoogleRating,
-} from "@/lib/google-reviews";
 import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 
 type Stat = { value: string; label: string };
@@ -51,7 +47,10 @@ export default function Hero({
   imageAlt = "Sprinkler system working",
   stats = [
     { value: "1500+", label: "Local Clients Helped" },
-    { value: formatGoogleRating(FALLBACK_GOOGLE_RATING_SUMMARY.rating), label: "Google Rating" },
+    // Google Rating value comes from the `googleRating` prop (live Sanity
+    // value, passed by the server parent). The empty default is filtered
+    // out at render below, so no stale number ever shows.
+    { value: "", label: "Google Rating" },
     { value: "Same-Day", label: "Appointments Available" },
   ],
   googleRating,
@@ -64,6 +63,9 @@ export default function Hero({
           : s
       )
     : stats;
+  // Stats with no value (e.g. the Google Rating stat when no live rating
+  // was passed) are hidden instead of rendering an empty or stale number.
+  const visibleStats = effectiveStats.filter((s) => s.value);
 
   return (
     <section id="hero" role="region" aria-labelledby="hero-title">
@@ -143,7 +145,7 @@ export default function Hero({
       </div>
 
       <div className="hero-stats">
-        {effectiveStats.map((s, i) => (
+        {visibleStats.map((s, i) => (
           <div className="hero-stat-card" key={i}>
             <div className="stat-value">{s.value}</div>
             <div className="stat-label">{s.label}</div>

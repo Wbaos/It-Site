@@ -4,6 +4,15 @@ import type { PortableTextBlock, PortableTextSpan } from "@portabletext/types";
 // Sanity fetchers for the `siteSettings` document (business data shown
 // across the site). One document, id `site-settings`.
 
+export type SanityGoogleReview = {
+  name?: string;
+  rating?: number;
+  text?: string;
+  date?: string;
+  verified?: boolean;
+  _key?: string;
+};
+
 export type SiteSettings = {
   businessName?: string;
   phoneDisplay?: string;
@@ -30,11 +39,23 @@ export type SiteSettings = {
   hoursWeekendCloses?: string;
   serviceAreaLine?: string;
   serviceAreaLineEs?: string;
+  // Interim Google-reviews bridge (see lib/google-reviews.ts): the rating,
+  // the review count and the review texts live here in Sanity while the
+  // Business Profile Reviews API access is pending. These fields have NO
+  // code fallback — when they are missing the site hides the numbers
+  // instead of showing a stale count.
+  googleRating?: number;
+  googleReviewCount?: number;
+  googleReviews?: SanityGoogleReview[];
 };
 
 // Exact values shown today; used when the document (or a field) is
-// missing, so a Sanity blip never changes what visitors see.
-export const FALLBACK_SETTINGS: Required<SiteSettings> = {
+// missing, so a Sanity blip never changes what visitors see. The Google
+// review fields are deliberately NOT part of this fallback: there is no
+// hardcoded rating/count to fall back to (see lib/google-reviews.ts).
+export const FALLBACK_SETTINGS: Required<
+  Omit<SiteSettings, "googleRating" | "googleReviewCount" | "googleReviews">
+> = {
   businessName: "CallTechCare",
   phoneDisplay: "(786) 366-2729",
   phoneTel: "+17863662729",
@@ -67,7 +88,8 @@ const SETTINGS_FIELDS = `businessName, phoneDisplay, phoneTel, phoneIntl,
   geoLat, geoLng, hoursWeekdayLabel, hoursWeekdayLabelEs, hoursWeekdayTime,
   hoursWeekendLabel, hoursWeekendLabelEs, hoursWeekendTime,
   hoursWeekdayOpens, hoursWeekdayCloses, hoursWeekendOpens,
-  hoursWeekendCloses, serviceAreaLine, serviceAreaLineEs`;
+  hoursWeekendCloses, serviceAreaLine, serviceAreaLineEs,
+  googleRating, googleReviewCount, googleReviews`;
 
 export async function getSiteSettings(): Promise<SiteSettings | null> {
   return sanity.fetch<SiteSettings | null>(
@@ -75,14 +97,20 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
   );
 }
 
-export async function resolveSiteSettings(): Promise<Required<SiteSettings>> {
+export async function resolveSiteSettings(): Promise<
+  Required<Omit<SiteSettings, "googleRating" | "googleReviewCount" | "googleReviews">> &
+    Pick<SiteSettings, "googleRating" | "googleReviewCount" | "googleReviews">
+> {
   let doc: SiteSettings | null = null;
   try {
     doc = await getSiteSettings();
   } catch {
     doc = null;
   }
-  return { ...FALLBACK_SETTINGS, ...(doc ?? {}) } as Required<SiteSettings>;
+  return { ...FALLBACK_SETTINGS, ...(doc ?? {}) } as Required<
+    Omit<SiteSettings, "googleRating" | "googleReviewCount" | "googleReviews">
+  > &
+    Pick<SiteSettings, "googleRating" | "googleReviewCount" | "googleReviews">;
 }
 
 // Phone fields of the resolved site settings, used by the placeholder helper.
