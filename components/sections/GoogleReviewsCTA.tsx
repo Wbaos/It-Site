@@ -1,20 +1,25 @@
 import {
   getGoogleReviewsUrl,
+  getGoogleReviews,
   getGoogleRatingSummary,
   formatGoogleRating,
   type GoogleRatingSummary,
 } from "@/lib/google-reviews";
 import SvgIcon from "@/components/common/SvgIcons";
+import TestimonialsList from "@/components/common/TestimonialsList";
 
 /**
  * Google reviews CTA for the home page.
  * Shows the live Google rating summary (rating + review count) from the
- * single shared source in lib/google-reviews (Sanity site-settings), and
- * a link to the real Google reviews page. No reviewer names or review
- * texts are rendered here.
+ * single shared source in lib/google-reviews (Sanity site-settings), a
+ * link to the real Google reviews page, and the customer review texts
+ * themselves (also from Sanity site-settings googleReviews) rendered
+ * with TestimonialsList. Review texts display as-is, in the language
+ * the reviewer wrote them; only the surrounding chrome is translated.
  * Locale-aware: English on "/" and Spanish on "/es/*".
  * When Sanity cannot be read (no summary), the whole section hides
- * instead of showing a stale number.
+ * instead of showing a stale number. When the review list is empty,
+ * only the list hides — the rating/count card stays.
  */
 export default async function GoogleReviewsCTA({
   locale = "en",
@@ -29,6 +34,7 @@ export default async function GoogleReviewsCTA({
   if (!summary) return null;
   const rating = formatGoogleRating(summary.rating);
   const total = summary.total;
+  const reviews = await getGoogleReviews();
 
   return (
     <section className="section testimonials">
@@ -75,6 +81,18 @@ export default async function GoogleReviewsCTA({
         </div>
         </div>
       </div>
+      {reviews.length > 0 && (
+        <TestimonialsList
+          items={reviews}
+          locale={locale}
+          title={isSpanish ? "Lo que dicen nuestros clientes" : "What Our Customers Say"}
+          subtitle={
+            isSpanish
+              ? "Reseñas reales de nuestros clientes en Google."
+              : "Real reviews from our customers on Google."
+          }
+        />
+      )}
     </section>
   );
 }
