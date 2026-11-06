@@ -2,7 +2,6 @@ import type { ComponentType } from "react";
 import { getHomePage, type HomePage } from "@/lib/sanityHome";
 import {
   getGoogleRatingSummary,
-  FALLBACK_GOOGLE_RATING_SUMMARY,
   formatGoogleRating,
 } from "@/lib/google-reviews";
 import { FALLBACK_SETTINGS, resolveSiteSettings } from "@/lib/sanitySettings";
@@ -39,8 +38,9 @@ type Section = {
   props?: Record<string, unknown>;
 };
 
-// Fallback Google rating, from the single shared source in lib/google-reviews.
-const FALLBACK_RATING = formatGoogleRating(FALLBACK_GOOGLE_RATING_SUMMARY.rating);
+// The Google Rating stat value below is an empty placeholder, filled from
+// the live summary at render (Hero's googleRating prop); when there is no
+// summary Hero filters the stat out, so no stale number ever shows.
 
 const heroPropsEn = {
   // imageSrc: "/helping2.jpg",
@@ -67,7 +67,7 @@ const heroPropsEn = {
 
   stats: [
     { value: "1500+", label: "Local Clients Helped" },
-    { value: FALLBACK_RATING, label: "Google Rating" },
+    { value: "", label: "Google Rating" },
     { value: "Same-Day", label: "Appointments Available Within Business Hours" },
   ],
 };
@@ -89,7 +89,7 @@ const heroPropsEs = {
   imageAlt: "Sprinklers regando un jardín delantero en Miami, con el truck de CallTechCare",
   stats: [
     { value: "1500+", label: "Clientes Locales Atendidos" },
-    { value: FALLBACK_RATING, label: "Calificación en Google" },
+    { value: "", label: "Calificación en Google" },
     { value: "Mismo Día", label: "Citas Disponibles Dentro del Horario" },
   ],
 };
@@ -102,11 +102,14 @@ function pick(en: string | undefined, es: string | undefined, isSpanish: boolean
 export async function getHomeSections(locale: HomeLocale = "en"): Promise<Section[]> {
   const isSpanish = locale === "es";
   // Live Google rating summary, from the single shared source in
-  // lib/google-reviews (one fetch, one fallback). Passed to the sections
-  // below so the rating and the review count change everywhere at once.
-  const ratingSummary =
-    (await getGoogleRatingSummary()) ?? FALLBACK_GOOGLE_RATING_SUMMARY;
-  const googleRating = formatGoogleRating(ratingSummary.rating);
+  // lib/google-reviews (Sanity site-settings; one fetch). Passed to the
+  // sections below so the rating and the review count change everywhere
+  // at once. When there is no summary, each section hides its numbers
+  // instead of showing a stale count (see the components).
+  const ratingSummary = await getGoogleRatingSummary();
+  const googleRating = ratingSummary
+    ? formatGoogleRating(ratingSummary.rating)
+    : undefined;
   // Live phone from site-settings; the hero constants above only carry the
   // single fallback, so a number change in Sanity reaches the home hero.
   const settings = await resolveSiteSettings();

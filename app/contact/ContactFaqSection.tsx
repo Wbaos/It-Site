@@ -3,8 +3,6 @@
 import { useMemo, useState } from "react";
 import { ChevronDown, Search } from "lucide-react";
 import {
-  FALLBACK_GOOGLE_RATING_SUMMARY,
-  formatGoogleRating,
   applyGoogleRatingSummaryToText,
   type GoogleRatingSummary,
 } from "@/lib/google-reviews";
@@ -14,12 +12,10 @@ type FaqItem = {
   a: string;
 };
 
-// The rating/count numbers below come from the single shared source in
-// lib/google-reviews (one fallback constant), never as literals, so the
-// site never shows a second copy of the numbers.
-const FALLBACK_RATING = formatGoogleRating(FALLBACK_GOOGLE_RATING_SUMMARY.rating);
-const FALLBACK_TOTAL = FALLBACK_GOOGLE_RATING_SUMMARY.total;
-
+// The rating/count inside the answers below is a placeholder, never a
+// literal number: applyGoogleRatingSummaryToText replaces it with the
+// live Sanity values (or neutral wording when there is no summary), so
+// the site never renders a stale rating/count.
 const DEFAULT_FAQS: FaqItem[] = [
   {
     q: "How do I schedule a service appointment?",
@@ -51,7 +47,7 @@ const DEFAULT_FAQS: FaqItem[] = [
   },
   {
     q: "Are your technicians experienced?",
-    a: `Yes. Our technicians work in person at your home, inspect first, then give you a clear estimate before starting. Work is backed by our 1-year warranty when CallTechCare performs the work and provides the materials, and we hold a ${FALLBACK_RATING} rating from ${FALLBACK_TOTAL} Google reviews.`,
+    a: `Yes. Our technicians work in person at your home, inspect first, then give you a clear estimate before starting. Work is backed by our 1-year warranty when CallTechCare performs the work and provides the materials, and we hold {{googleRatingEn}}.`,
   },
   {
     q: "What areas do you serve?",
@@ -90,7 +86,7 @@ const DEFAULT_FAQS_ES: FaqItem[] = [
   },
   {
     q: "¿Sus técnicos tienen experiencia?",
-    a: `Sí. Nuestros técnicos trabajan en persona en tu casa, primero inspeccionan y luego te dan un estimado claro antes de empezar. El trabajo tiene nuestra garantía de 1 año cuando CallTechCare hace el trabajo y provee los materiales, y tenemos una calificación ${FALLBACK_RATING} con ${FALLBACK_TOTAL} reseñas en Google.`,
+    a: `Sí. Nuestros técnicos trabajan en persona en tu casa, primero inspeccionan y luego te dan un estimado claro antes de empezar. El trabajo tiene nuestra garantía de 1 año cuando CallTechCare hace el trabajo y provee los materiales, y tenemos {{googleRatingEs}}.`,
   },
   {
     q: "¿Qué áreas atienden?",
@@ -105,9 +101,12 @@ export default function ContactFaqSection({
 }: {
   faqs?: FaqItem[];
   locale?: "en" | "es";
-  ratingSummary?: GoogleRatingSummary;
+  ratingSummary?: GoogleRatingSummary | null;
 }) {
-  const summary = ratingSummary ?? FALLBACK_GOOGLE_RATING_SUMMARY;
+  // No summary, no stale numbers: applyGoogleRatingSummaryToText swaps
+  // the placeholders/legacy phrases for neutral wording when the summary
+  // is null, so the FAQ stays visible without ever showing 5.0/26.
+  const summary = ratingSummary ?? null;
   // The rating/count inside the answers (Sanity faqs or the code defaults)
   // come from the single shared source, so they change everywhere at once.
   const effectiveFaqs = useMemo(() => {

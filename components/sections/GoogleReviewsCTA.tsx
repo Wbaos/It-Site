@@ -1,7 +1,6 @@
 import {
   getGoogleReviewsUrl,
   getGoogleRatingSummary,
-  FALLBACK_GOOGLE_RATING_SUMMARY,
   formatGoogleRating,
   type GoogleRatingSummary,
 } from "@/lib/google-reviews";
@@ -10,24 +9,24 @@ import SvgIcon from "@/components/common/SvgIcons";
 /**
  * Google reviews CTA for the home page.
  * Shows the live Google rating summary (rating + review count) from the
- * single shared source in lib/google-reviews, with the 5.0/26 fallback when
- * Google is unreachable, and a link to the real Google reviews page. No
- * reviewer names or review texts are rendered here: the live Google reviews
- * feed is empty.
+ * single shared source in lib/google-reviews (Sanity site-settings), and
+ * a link to the real Google reviews page. No reviewer names or review
+ * texts are rendered here.
  * Locale-aware: English on "/" and Spanish on "/es/*".
+ * When Sanity cannot be read (no summary), the whole section hides
+ * instead of showing a stale number.
  */
 export default async function GoogleReviewsCTA({
   locale = "en",
   ratingSummary,
 }: {
   locale?: "en" | "es";
-  ratingSummary?: GoogleRatingSummary;
+  ratingSummary?: GoogleRatingSummary | null;
 }) {
   const isSpanish = locale === "es";
   const googleReviewsUrl = getGoogleReviewsUrl();
-  if (!googleReviewsUrl) return null;
-  const summary =
-    ratingSummary ?? (await getGoogleRatingSummary()) ?? FALLBACK_GOOGLE_RATING_SUMMARY;
+  const summary = ratingSummary ?? (await getGoogleRatingSummary());
+  if (!summary) return null;
   const rating = formatGoogleRating(summary.rating);
   const total = summary.total;
 

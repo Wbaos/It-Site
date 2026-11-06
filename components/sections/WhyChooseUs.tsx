@@ -2,7 +2,6 @@ import { ShieldCheck, Users, Clock, Cpu, Star, Smile } from "lucide-react";
 import type { HomePage } from "@/lib/sanityHome";
 import {
   getGoogleRatingSummary,
-  FALLBACK_GOOGLE_RATING_SUMMARY,
   formatGoogleRating,
   type GoogleRatingSummary,
 } from "@/lib/google-reviews";
@@ -21,12 +20,12 @@ export default async function WhyChooseUs({
 }: {
   locale?: "en" | "es";
   doc?: HomePage | null;
-  ratingSummary?: GoogleRatingSummary;
+  ratingSummary?: GoogleRatingSummary | null;
 }) {
   const isSpanish = locale === "es";
-  // Fallback numbers, from the single shared source in lib/google-reviews.
-  const fallbackRating = formatGoogleRating(FALLBACK_GOOGLE_RATING_SUMMARY.rating);
-  const fallbackTotal = FALLBACK_GOOGLE_RATING_SUMMARY.total;
+  // The Google card below carries NO numbers until the live summary is
+  // applied: without a summary the card is dropped from the grid (see
+  // below) instead of showing a stale rating/count.
   // Same six cards, same icons, same order in both languages; only the
   // text changes. The Spanish wording is a faithful translation of the
   // English wording.
@@ -39,8 +38,8 @@ export default async function WhyChooseUs({
         },
         {
           icon: <Star size={32} strokeWidth={1.5} />,
-          title: `${fallbackRating} en Google`,
-          text: `Calificación ${fallbackRating} con ${fallbackTotal} reseñas en Google, de clientes reales.`,
+          title: "Mejor Calificados en Google",
+          text: "Calificados por clientes reales en Google.",
         },
         {
           icon: <Users size={32} strokeWidth={1.5} />,
@@ -71,8 +70,8 @@ export default async function WhyChooseUs({
         },
         {
           icon: <Star size={32} strokeWidth={1.5} />,
-          title: `${fallbackRating} on Google`,
-          text: `${fallbackRating} rating from ${fallbackTotal} Google reviews, from real customers.`,
+          title: "Top Rated on Google",
+          text: "Rated by real customers on Google.",
         },
         {
           icon: <Users size={32} strokeWidth={1.5} />,
@@ -109,24 +108,29 @@ export default async function WhyChooseUs({
       : fallbackFeatures;
   // The Google card (Sanity whyCards or the code fallback) quotes the
   // rating and the review count. Both come from the single shared source in
-  // lib/google-reviews, so the card updates everywhere at the same time.
-  // Detected by its title, which Sanity and the fallback share.
-  const summary =
-    ratingSummary ?? (await getGoogleRatingSummary()) ?? FALLBACK_GOOGLE_RATING_SUMMARY;
-  const rating = formatGoogleRating(summary.rating);
-  const liveFeatures = features.map((f) => {
-    // The Google card is the one quoting the review count (Sanity whyCards
-    // or the code fallback). Detected by its text, not by the numbers, so it
-    // keeps working when the rating or the total changes.
-    if (!f.text.includes("Google reviews") && !f.text.includes("reseñas en Google")) return f;
-    return {
-      ...f,
-      title: isSpanish ? `${rating} en Google` : `${rating} on Google`,
-      text: isSpanish
-        ? `Calificación ${rating} con ${summary.total} reseñas en Google, de clientes reales.`
-        : `${rating} rating from ${summary.total} Google reviews, from real customers.`,
-    };
-  });
+  // lib/google-reviews (Sanity site-settings), so the card updates
+  // everywhere at the same time. Detected by its text mentioning Google,
+  // not by the numbers, so it keeps working when the rating or the total
+  // changes. Without a summary the card is dropped from the grid rather
+  // than showing a stale number.
+  const summary = ratingSummary ?? (await getGoogleRatingSummary());
+  const liveFeatures = features
+    .map((f) => {
+      if (!summary) return f;
+      // The Google card is the one quoting the review count (Sanity whyCards
+      // or the code fallback). Detected by its text, not by the numbers, so it
+      // keeps working when the rating or the total changes.
+      if (!f.text.includes("Google")) return f;
+      const rating = formatGoogleRating(summary.rating);
+      return {
+        ...f,
+        title: isSpanish ? `${rating} en Google` : `${rating} on Google`,
+        text: isSpanish
+          ? `Calificación ${rating} con ${summary.total} reseñas en Google, de clientes reales.`
+          : `${rating} rating from ${summary.total} Google reviews, from real customers.`,
+      };
+    })
+    .filter((f) => summary || !f.text.includes("Google"));
   const whyTitle =
     pick(doc?.whyTitle, doc?.whyTitleEs, isSpanish) ??
     (isSpanish

@@ -8,7 +8,6 @@ import { sanityImageUrl } from "@/lib/sanityCities";
 import { resolveSiteSettings, substitutePhonePlaceholders } from "@/lib/sanitySettings";
 import {
   getGoogleRatingSummary,
-  FALLBACK_GOOGLE_RATING_SUMMARY,
   formatGoogleRating,
 } from "@/lib/google-reviews";
 import type { City, CityAreaSegment } from "@/lib/sanityCities";
@@ -364,7 +363,10 @@ const NOT_SURE_P: Record<Locale, string> = {
 
 const ES_STATS = [
   { value: "1500+", label: "Clientes Locales Atendidos" },
-  { value: formatGoogleRating(FALLBACK_GOOGLE_RATING_SUMMARY.rating), label: "Calificación en Google" },
+  // Google Rating value comes from the live summary (googleRating prop on
+  // Hero); the empty default is filtered out at render when there is no
+  // summary, so no stale number ever shows.
+  { value: "", label: "Calificación en Google" },
   { value: "Mismo Día", label: "Citas Disponibles" },
 ];
 
@@ -433,11 +435,14 @@ function renderAreaSegments(segments: CityAreaSegment[], locale: Locale) {
 
 export default async function CityTemplate({ city, locale }: { city: City; locale: Locale }) {
   // Live Google rating summary, from the single shared source in
-  // lib/google-reviews. Used for the hero stat (via the googleRating prop)
-  // and the trust chip below, so the numbers change everywhere at once.
-  const ratingSummary =
-    (await getGoogleRatingSummary()) ?? FALLBACK_GOOGLE_RATING_SUMMARY;
-  const googleRating = formatGoogleRating(ratingSummary.rating);
+  // lib/google-reviews (Sanity site-settings). Used for the hero stat (via
+  // the googleRating prop) and the trust chip below, so the numbers change
+  // everywhere at once. When there is no summary the Google stat and the
+  // trust chip hide instead of showing a stale number.
+  const ratingSummary = await getGoogleRatingSummary();
+  const googleRating = ratingSummary
+    ? formatGoogleRating(ratingSummary.rating)
+    : undefined;
   // Live phone from site-settings (single source); Sanity city texts may
   // carry {{phone}} / {{phoneTel}} markers, resolved below.
   const settings = await resolveSiteSettings();
@@ -579,7 +584,9 @@ export default async function CityTemplate({ city, locale }: { city: City; local
           <div className="seo-trust-chips">
             <span>{isEs ? "Inspección gratis" : "Free inspection"}</span>
             <span>{isEs ? "Mismo día dentro del horario" : "Same-day within business hours"}</span>
-            <span>{isEs ? `${googleRating} en Google · ${ratingSummary.total} reseñas` : `${googleRating} on Google · ${ratingSummary.total} reviews`}</span>
+            {ratingSummary && (
+              <span>{isEs ? `${googleRating} en Google · ${ratingSummary.total} reseñas` : `${googleRating} on Google · ${ratingSummary.total} reviews`}</span>
+            )}
             <span>{isEs ? "Más de 1500 clientes ayudados" : "1500+ customers helped"}</span>
           </div>
           <h2 className="seo-intro-title">{seoIntroTitle}</h2>

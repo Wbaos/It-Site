@@ -3,7 +3,6 @@
 import SvgIcon from "@/components/common/SvgIcons";
 import type { RequestQuoteContent } from "@/lib/request-quote-data";
 import {
-  FALLBACK_GOOGLE_RATING_SUMMARY,
   formatGoogleRating,
   type GoogleRatingSummary,
 } from "@/lib/google-reviews";
@@ -35,7 +34,7 @@ const BENEFIT_ICONS = [
 export default function RequestQuoteSidebar(props: {
   rqContent: RequestQuoteContent | null;
   locale?: "en" | "es";
-  ratingSummary?: GoogleRatingSummary;
+  ratingSummary?: GoogleRatingSummary | null;
   // Business phone from site-settings (passed by the server page via the
   // quote client). The Sanity immediateHelp phone field is only used as a
   // presence flag; the number shown and dialed always comes from settings.
@@ -47,10 +46,11 @@ export default function RequestQuoteSidebar(props: {
   const phoneTel = props.phoneTel ?? FALLBACK_SETTINGS.phoneTel;
   const phoneDisplay = props.phoneDisplay ?? FALLBACK_SETTINGS.phoneDisplay;
   // Live Google rating summary, from the single shared source in
-  // lib/google-reviews. The rating and the review count shown here come
-  // from it, so they change everywhere at the same time.
-  const summary = props.ratingSummary ?? FALLBACK_GOOGLE_RATING_SUMMARY;
-  const googleRating = formatGoogleRating(summary.rating);
+  // lib/google-reviews (Sanity site-settings). Without a summary the
+  // rating row and the review-count line below hide instead of showing
+  // a stale number.
+  const summary = props.ratingSummary ?? null;
+  const googleRating = summary ? formatGoogleRating(summary.rating) : null;
 
   const defaultSupportEmail = "support@calltechcare.com";
   const defaultEmailHref = `mailto:${defaultSupportEmail}?subject=${encodeURIComponent(
@@ -127,7 +127,7 @@ export default function RequestQuoteSidebar(props: {
             ) : null}
             <div className="rq-sidebar__muted">+50 cotizaciones este mes</div>
           </div>
-          {typeof rqContent?.socialProof?.ratingValue === "number" && (
+          {summary && typeof rqContent?.socialProof?.ratingValue === "number" && (
             <div className="rq-sidebar__ratingRow">
               <div className="rq-sidebar__stars">★★★★★</div>
               <div className="rq-sidebar__ratingValue">
@@ -135,9 +135,11 @@ export default function RequestQuoteSidebar(props: {
               </div>
             </div>
           )}
-          <div className="rq-sidebar__reviewsText">
-            Basado en {summary.total} reseñas en Google
-          </div>
+          {summary && (
+            <div className="rq-sidebar__reviewsText">
+              Basado en {summary.total} reseñas en Google
+            </div>
+          )}
         </div>
 
         {/* Immediate help card (corrected text, in Spanish) */}
@@ -304,7 +306,7 @@ export default function RequestQuoteSidebar(props: {
               ) : null}
             </div>
           )}
-          {typeof rqContent?.socialProof?.ratingValue === "number" && (
+          {summary && typeof rqContent?.socialProof?.ratingValue === "number" && (
             <div className="rq-sidebar__ratingRow">
               <div className="rq-sidebar__stars">★★★★★</div>
               <div className="rq-sidebar__ratingValue">
@@ -312,7 +314,7 @@ export default function RequestQuoteSidebar(props: {
               </div>
             </div>
           )}
-          {rqContent?.socialProof?.reviewsText && (
+          {summary && rqContent?.socialProof?.reviewsText && (
             <div className="rq-sidebar__reviewsText">
               Based on {summary.total} Google reviews
             </div>
