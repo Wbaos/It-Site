@@ -8,7 +8,9 @@ export const dynamic = "force-dynamic";
 // Search (v1) candidates, plus location-biased Text Search (v1)
 // candidates for the same queries, plus phone-number / address Text
 // Search (v1) candidates and a geocode check of the listing's pin
-// address, so I can get the current Place ID.
+// address, plus Nearby Search (v1 and legacy) around the business's
+// own Maps pin and a location-restricted Text Search, so I can get
+// the current Place ID.
 // It never includes the API key in the response.
 export async function GET() {
   const placeId = process.env.GOOGLE_PLACE_ID;
@@ -264,5 +266,164 @@ export async function GET() {
     geocodeCheck.geocodeErrorMessage = "fetch failed";
   }
 
-  return NextResponse.json({ details, finds, textSearch, textSearchBiased, textSearchPhone, geocodeCheck });
+  // Nearby Search around the business's own Maps pin: it does not
+  // depend on name matching at all — it returns whatever places exist
+  // at that location, so the business should appear if Google indexes
+  // it there. Pin coordinates from the public Maps listing.
+  const pin = { latitude: 25.8818525, longitude: -80.272828 };
+
+  const nearbySearch = await Promise.all([
+    // (a) Places API (New) Nearby Search, 500 m circle.
+    (async () => {
+      try {
+        const res = await fetch("https://places.googleapis.com/v1/places:searchNearby", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": apiKey,
+            "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress,places.types",
+          },
+          body: JSON.stringify({
+            locationRestriction: { circle: { center: pin, radius: 500.0 } },
+            maxResultCount: 20,
+          }),
+          cache: "no-store",
+        });
+        const data = await res.json().catch(() => null);
+        const candidates = Array.isArray(data?.places)
+          ? data.places.map((p: any) => ({
+              placeId: p?.id ?? null,
+              name: p?.displayName?.text ?? null,
+              address: p?.formattedAddress ?? null,
+              types: p?.types ?? null,
+            }))
+          : [];
+        return {
+          method: "v1 searchNearby",
+          radius: 500,
+          httpStatus: res.status,
+          status: data?.error?.status ?? null,
+          errorMessage: data?.error?.message ?? null,
+          candidates,
+        };
+      } catch {
+        return { method: "v1 searchNearby", radius: 500, httpStatus: null, status: null, errorMessage: "fetch failed", candidates: [] };
+      }
+    })(),
+    // (b) Same v1 Nearby Search, tighter 100 m circle around the pin.
+    (async () => {
+      try {
+        const res = await fetch("https://places.googleapis.com/v1/places:searchNearby", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": apiKey,
+            "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress,places.types",
+          },
+          body: JSON.stringify({
+            locationRestriction: { circle: { center: pin, radius: 100.0 } },
+            maxResultCount: 20,
+          }),
+          cache: "no-store",
+        });
+        const data = await res.json().catch(() => null);
+        const candidates = Array.isArray(data?.places)
+          ? data.places.map((p: any) => ({
+              placeId: p?.id ?? null,
+              name: p?.displayName?.text ?? null,
+              address: p?.formattedAddress ?? null,
+              types: p?.types ?? null,
+            }))
+          : [];
+        return {
+          method: "v1 searchNearby",
+          radius: 100,
+          httpStatus: res.status,
+          status: data?.error?.status ?? null,
+          errorMessage: data?.error?.message ?? null,
+          candidates,
+        };
+      } catch {
+        return { method: "v1 searchNearby", radius: 100, httpStatus: null, status: null, errorMessage: "fetch failed", candidates: [] };
+      }
+    })(),
+    // (c) Legacy Nearby Search, 500 m circle.
+    (async () => {
+      try {
+        const res = await fetch(
+          `https://maps.googleapis.com/maps/api/place/nearbysearch/json` +
+            `?location=${pin.latitude},${pin.longitude}` +
+            `&radius=500` +
+            `&key=${apiKey}`,
+          { cache: "no-store" }
+        );
+        const data = await res.json().catch(() => null);
+        const candidates = Array.isArray(data?.results)
+          ? data.results.map((r: any) => ({
+              placeId: r?.place_id ?? null,
+              name: r?.name ?? null,
+              address: r?.vicinity ?? null,
+            }))
+          : [];
+        return {
+          method: "legacy nearbysearch",
+          radius: 500,
+          httpStatus: res.status,
+          status: data?.status ?? null,
+          errorMessage: data?.error_message ?? null,
+          candidates,
+        };
+      } catch {
+        return { method: "legacy nearbysearch", radius: 500, httpStatus: null, status: null, errorMessage: "fetch failed", candidates: [] };
+      }
+    })(),
+  ]);
+
+  // Location-restricted Text Search (v1): a hard restriction (not a
+  // bias) to a small circle around the pin — a generic "sprinkler"
+  // query should return nearby sprinkler businesses, including this
+  // one if Google indexes it at the pin.
+  let textSearchRestricted: {
+    query: string;
+    httpStatus: number | null;
+    status: string | null;
+    errorMessage: string | null;
+    candidates: { placeId: string | null; name: string | null; address: string | null }[];
+  } = { query: "sprinkler", httpStatus: null, status: null, errorMessage: null, candidates: [] };
+
+  try {
+    const res = await fetch("https://places.googleapis.com/v1/places:searchText", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": apiKey,
+        "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress",
+      },
+      body: JSON.stringify({
+        textQuery: "sprinkler",
+        maxResultCount: 10,
+        locationRestriction: { circle: { center: pin, radius: 1000.0 } },
+      }),
+      cache: "no-store",
+    });
+    const data = await res.json().catch(() => null);
+    const candidates = Array.isArray(data?.places)
+      ? data.places.map((p: any) => ({
+          placeId: p?.id ?? null,
+          name: p?.displayName?.text ?? null,
+          address: p?.formattedAddress ?? null,
+        }))
+      : [];
+    textSearchRestricted = {
+      query: "sprinkler",
+      httpStatus: res.status,
+      status: data?.error?.status ?? null,
+      errorMessage: data?.error?.message ?? null,
+      candidates,
+    };
+  } catch {
+    textSearchRestricted = { query: "sprinkler", httpStatus: null, status: null, errorMessage: "fetch failed", candidates: [] };
+  }
+
+  return NextResponse.json({ details, finds, textSearch, textSearchBiased, textSearchPhone, geocodeCheck, nearbySearch, textSearchRestricted });
 }
