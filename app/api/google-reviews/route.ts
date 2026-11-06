@@ -5,8 +5,9 @@ export const dynamic = "force-dynamic";
 // TEMPORARY DIAGNOSTIC ONLY — to be reverted. Reports the error Google
 // returns for the Place Details request, plus Find Place candidates for
 // the business under three name-only inputs, plus new Places API Text
-// Search (v1) candidates, so I can get the current Place ID. It never
-// includes the API key in the response.
+// Search (v1) candidates, plus location-biased Text Search (v1)
+// candidates for the same queries, so I can get the current Place ID.
+// It never includes the API key in the response.
 export async function GET() {
   const placeId = process.env.GOOGLE_PLACE_ID;
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
@@ -107,5 +108,47 @@ export async function GET() {
     })
   );
 
-  return NextResponse.json({ details, finds, textSearch });
+  // Location-biased Text Search (v1): a service-area business may only
+  // surface when the search is biased to its area. The third query is a
+  // control — a generic query that should return results in this area.
+  const locationBias = {
+    circle: { center: { latitude: 25.7617, longitude: -80.1918 }, radius: 50000.0 },
+  };
+  const biasedQueries = ["CallTechCare", "CallTechCare Miami", "sprinkler repair Miami"];
+
+  const textSearchBiased = await Promise.all(
+    biasedQueries.map(async (query) => {
+      try {
+        const res = await fetch("https://places.googleapis.com/v1/places:searchText", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": apiKey,
+            "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress",
+          },
+          body: JSON.stringify({ textQuery: query, maxResultCount: 5, locationBias }),
+          cache: "no-store",
+        });
+        const data = await res.json().catch(() => null);
+        const candidates = Array.isArray(data?.places)
+          ? data.places.map((p: any) => ({
+              placeId: p?.id ?? null,
+              name: p?.displayName?.text ?? null,
+              address: p?.formattedAddress ?? null,
+            }))
+          : [];
+        return {
+          query,
+          httpStatus: res.status,
+          status: data?.error?.status ?? null,
+          errorMessage: data?.error?.message ?? null,
+          candidates,
+        };
+      } catch {
+        return { query, httpStatus: null, status: null, errorMessage: "fetch failed", candidates: [] };
+      }
+    })
+  );
+
+  return NextResponse.json({ details, finds, textSearch, textSearchBiased });
 }
