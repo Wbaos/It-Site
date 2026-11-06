@@ -6,7 +6,9 @@ export const dynamic = "force-dynamic";
 // returns for the Place Details request, plus Find Place candidates for
 // the business under three name-only inputs, plus new Places API Text
 // Search (v1) candidates, plus location-biased Text Search (v1)
-// candidates for the same queries, so I can get the current Place ID.
+// candidates for the same queries, plus phone-number / address Text
+// Search (v1) candidates and a geocode check of the listing's pin
+// address, so I can get the current Place ID.
 // It never includes the API key in the response.
 export async function GET() {
   const placeId = process.env.GOOGLE_PLACE_ID;
@@ -150,5 +152,117 @@ export async function GET() {
     })
   );
 
-  return NextResponse.json({ details, finds, textSearch, textSearchBiased });
+  // Phone-number / address Text Search (v1): a business that never
+  // surfaces by name may surface by its phone number or by the address
+  // shown on its Maps pin. Same location bias as above.
+  const phoneQueries = [
+    "(786) 366-2729",
+    "CallTechCare 7863662729",
+    "14125 SW 142nd Ave Miami",
+  ];
+
+  const textSearchPhone = await Promise.all(
+    phoneQueries.map(async (query) => {
+      try {
+        const res = await fetch("https://places.googleapis.com/v1/places:searchText", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": apiKey,
+            "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress",
+          },
+          body: JSON.stringify({ textQuery: query, maxResultCount: 5, locationBias }),
+          cache: "no-store",
+        });
+        const data = await res.json().catch(() => null);
+        const candidates = Array.isArray(data?.places)
+          ? data.places.map((p: any) => ({
+              placeId: p?.id ?? null,
+              name: p?.displayName?.text ?? null,
+              address: p?.formattedAddress ?? null,
+            }))
+          : [];
+        return {
+          query,
+          httpStatus: res.status,
+          status: data?.error?.status ?? null,
+          errorMessage: data?.error?.message ?? null,
+          candidates,
+        };
+      } catch {
+        return { query, httpStatus: null, status: null, errorMessage: "fetch failed", candidates: [] };
+      }
+    })
+  );
+
+  // Geocode check: geocode the address shown on the Maps pin, then run
+  // Place Details on the geocoded place_id to see whether it resolves
+  // to the business or just to the street address.
+  const geocodeAddress = "14125 SW 142nd Ave, Miami, FL 33186";
+  const geocodeCheck: {
+    geocodeHttpStatus: number | null;
+    geocodeStatus: string | null;
+    geocodeErrorMessage: string | null;
+    placeId: string | null;
+    formattedAddress: string | null;
+    detailsHttpStatus: number | null;
+    detailsStatus: string | null;
+    detailsErrorMessage: string | null;
+    detailsName: string | null;
+    detailsRating: number | null;
+    detailsUserRatingsTotal: number | null;
+  } = {
+    geocodeHttpStatus: null,
+    geocodeStatus: null,
+    geocodeErrorMessage: null,
+    placeId: null,
+    formattedAddress: null,
+    detailsHttpStatus: null,
+    detailsStatus: null,
+    detailsErrorMessage: null,
+    detailsName: null,
+    detailsRating: null,
+    detailsUserRatingsTotal: null,
+  };
+
+  try {
+    const geoRes = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json` +
+        `?address=${encodeURIComponent(geocodeAddress)}` +
+        `&key=${apiKey}`,
+      { cache: "no-store" }
+    );
+    const geoData = await geoRes.json().catch(() => null);
+    geocodeCheck.geocodeHttpStatus = geoRes.status;
+    geocodeCheck.geocodeStatus = geoData?.status ?? null;
+    geocodeCheck.geocodeErrorMessage = geoData?.error_message ?? null;
+    const top = Array.isArray(geoData?.results) ? geoData.results[0] : null;
+    geocodeCheck.placeId = top?.place_id ?? null;
+    geocodeCheck.formattedAddress = top?.formatted_address ?? null;
+
+    if (geocodeCheck.placeId) {
+      try {
+        const detRes = await fetch(
+          `https://maps.googleapis.com/maps/api/place/details/json` +
+            `?place_id=${geocodeCheck.placeId}` +
+            `&fields=name,rating,user_ratings_total` +
+            `&key=${apiKey}`,
+          { cache: "no-store" }
+        );
+        const detData = await detRes.json().catch(() => null);
+        geocodeCheck.detailsHttpStatus = detRes.status;
+        geocodeCheck.detailsStatus = detData?.status ?? null;
+        geocodeCheck.detailsErrorMessage = detData?.error_message ?? null;
+        geocodeCheck.detailsName = detData?.result?.name ?? null;
+        geocodeCheck.detailsRating = detData?.result?.rating ?? null;
+        geocodeCheck.detailsUserRatingsTotal = detData?.result?.user_ratings_total ?? null;
+      } catch {
+        geocodeCheck.detailsErrorMessage = "fetch failed";
+      }
+    }
+  } catch {
+    geocodeCheck.geocodeErrorMessage = "fetch failed";
+  }
+
+  return NextResponse.json({ details, finds, textSearch, textSearchBiased, textSearchPhone, geocodeCheck });
 }
