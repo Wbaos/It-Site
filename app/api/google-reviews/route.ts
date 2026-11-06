@@ -4,8 +4,8 @@ export const dynamic = "force-dynamic";
 
 // TEMPORARY DIAGNOSTIC ONLY — to be reverted. Reports the error Google
 // returns for the Place Details request, plus Find Place candidates for
-// the business, so I can get the current Place ID. It never includes
-// the API key or the old place ID in the response.
+// the business under three name-only inputs, so I can get the current
+// Place ID. It never includes the API key in the response.
 export async function GET() {
   const placeId = process.env.GOOGLE_PLACE_ID;
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
@@ -23,12 +23,7 @@ export async function GET() {
     `&fields=reviews` +
     `&key=${apiKey}`;
 
-  const findUrl =
-    `https://maps.googleapis.com/maps/api/place/findplacefromtext/json` +
-    `?input=${encodeURIComponent("CallTechCare 18730 SW 122nd Ave Miami FL 33177")}` +
-    `&inputtype=textquery` +
-    `&fields=place_id,name,formatted_address` +
-    `&key=${apiKey}`;
+  const inputs = ["CallTechCare Miami", "CallTechCare Miami FL", "CallTechCare"];
 
   let details: {
     httpStatus: number | null;
@@ -50,27 +45,30 @@ export async function GET() {
     details = { httpStatus: null, apiStatus: null, errorMessage: "fetch failed", hasResult: false };
   }
 
-  try {
-    const res = await fetch(findUrl, { cache: "no-store" });
-    const data = await res.json();
-    const candidates = Array.isArray(data?.candidates)
-      ? data.candidates.map((c: any) => ({
-          place_id: c?.place_id ?? null,
-          name: c?.name ?? null,
-          formatted_address: c?.formatted_address ?? null,
-        }))
-      : [];
-    return NextResponse.json({
-      ...details,
-      findStatus: data?.status ?? null,
-      candidates,
-    });
-  } catch {
-    return NextResponse.json({
-      ...details,
-      findStatus: null,
-      candidates: [],
-      findError: "fetch failed",
-    });
-  }
+  const finds = await Promise.all(
+    inputs.map(async (input) => {
+      const findUrl =
+        `https://maps.googleapis.com/maps/api/place/findplacefromtext/json` +
+        `?input=${encodeURIComponent(input)}` +
+        `&inputtype=textquery` +
+        `&fields=place_id,name,formatted_address` +
+        `&key=${apiKey}`;
+      try {
+        const res = await fetch(findUrl, { cache: "no-store" });
+        const data = await res.json();
+        const candidates = Array.isArray(data?.candidates)
+          ? data.candidates.map((c: any) => ({
+              place_id: c?.place_id ?? null,
+              name: c?.name ?? null,
+              formatted_address: c?.formatted_address ?? null,
+            }))
+          : [];
+        return { input, findStatus: data?.status ?? null, candidates };
+      } catch {
+        return { input, findStatus: null, candidates: [], findError: "fetch failed" };
+      }
+    })
+  );
+
+  return NextResponse.json({ details, finds });
 }
