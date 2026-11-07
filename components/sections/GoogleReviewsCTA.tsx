@@ -11,13 +11,14 @@ import TestimonialsList from "@/components/common/TestimonialsList";
 /**
  * Google reviews CTA for the home page.
  * Shows the live Google rating summary (rating + review count) from the
- * single shared source in lib/google-reviews (Sanity site-settings), a
- * link to the real Google reviews page, and the customer review texts
- * themselves (also from Sanity site-settings googleReviews) rendered
- * with TestimonialsList. Review texts display as-is, in the language
- * the reviewer wrote them; only the surrounding chrome is translated.
- * Locale-aware: English on "/" and Spanish on "/es/*".
- * When Sanity cannot be read (no summary), the whole section hides
+ * single shared source in lib/google-reviews (Google Business Profile
+ * Reviews API), a link to the real Google reviews page, and the customer
+ * review texts themselves (also from the Business Profile API, with each
+ * review's createTime converted to a relative string like "a week ago")
+ * rendered with TestimonialsList. Review texts display as-is, in the
+ * language the reviewer wrote them; only the surrounding chrome is
+ * translated. Locale-aware: English on "/" and Spanish on "/es/*".
+ * When Google cannot be read (no summary), the whole section hides
  * instead of showing a stale number. When the review list is empty,
  * only the list hides — the rating/count card stays.
  */

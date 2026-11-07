@@ -54,21 +54,18 @@ export default function ServiceReviews({
       setLoading(false);
     }
 
-    // TV-mounting pages show the Google reviews from Sanity
-    // site-settings (the interim bridge in lib/google-reviews.ts): the
-    // same array the server wrapper passes as initialReviews. Dates are
-    // the relative strings from the Business Profile dashboard ("a week
-    // ago") — passed through as-is, never converted or invented. Entries
-    // with a name but no text still render (name + stars).
+    // TV-mounting pages show the live Google reviews from the Business
+    // Profile Reviews API, served by /api/google-reviews (see
+    // lib/google-reviews.ts). Dates are the relative strings converted
+    // from each review's createTime ("a week ago") — passed through
+    // as-is, never converted or invented. Entries with a name but no
+    // text still render (name + stars).
     async function fetchGoogleReviews() {
       try {
-        const data = await sanity.fetch(
-          `*[_id == "site-settings"][0]{googleReviews}`
-        );
+        const res = await fetch("/api/google-reviews", { cache: "no-store" });
+        const data = await res.json().catch(() => null);
 
-        const reviews = Array.isArray(data?.googleReviews)
-          ? data.googleReviews
-          : [];
+        const reviews = Array.isArray(data?.reviews) ? data.reviews : [];
         const formatted: Testimonial[] = reviews
           .filter(
             (r: any) =>
