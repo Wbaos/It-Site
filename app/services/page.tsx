@@ -5,6 +5,37 @@ import Link from "next/link";
 import { Briefcase } from "lucide-react";
 import type { Metadata } from "next";
 
+// Fixed display order for the services list: the main repair service first,
+// then repairs, then installs/controls, then the maintenance plan, cameras
+// last. Services not listed here sort last, alphabetically by title.
+const SERVICE_ORDER = [
+  "sprinkler-repair-and-installation",
+  "sprinkler-leak-repair",
+  "sprinkler-valve-repair",
+  "sprinkler-pump-replacement",
+  "sprinkler-timer-installation",
+  "wifi-sprinkler-controller-upgrade",
+  "rain-sensor-installation",
+  "new-irrigation-installation",
+  "sprinkler-maintenance-plan",
+  "wireless-camera-installation",
+];
+
+const serviceOrderIndex = (slug: unknown) =>
+  typeof slug === "string" ? SERVICE_ORDER.indexOf(slug) : -1;
+
+const compareServiceOrder = (a: any, b: any) => {
+  const aIndex = serviceOrderIndex(a?.slug?.current);
+  const bIndex = serviceOrderIndex(b?.slug?.current);
+  if (aIndex !== bIndex) {
+    return (
+      (aIndex === -1 ? SERVICE_ORDER.length : aIndex) -
+      (bIndex === -1 ? SERVICE_ORDER.length : bIndex)
+    );
+  }
+  return String(a?.title ?? "").localeCompare(String(b?.title ?? ""));
+};
+
 export const metadata: Metadata = {
   title: "Sprinkler Repair & Irrigation Services | CallTechCare",
 
@@ -37,7 +68,7 @@ export const metadata: Metadata = {
 export default async function ServicesPage() {
 
   const services = await sanity.fetch(`
-    *[_type == "service" && enabled == true] | order(title asc) {
+    *[_type == "service" && enabled == true] {
         _id,
         title,
         slug,
@@ -47,6 +78,9 @@ export default async function ServicesPage() {
         image
     }
   `);
+
+  // Display order is fixed (SERVICE_ORDER above), not alphabetical.
+  services.sort(compareServiceOrder);
 
   const pageUrl = "https://www.calltechcare.com/services";
 
@@ -130,7 +164,7 @@ export default async function ServicesPage() {
         const aPriority = Math.min(getServicePriority(a?.title), getServicePriority(a?.category?.title));
         const bPriority = Math.min(getServicePriority(b?.title), getServicePriority(b?.category?.title));
         if (aPriority !== bPriority) return aPriority - bPriority;
-        return String(a?.title ?? "").localeCompare(String(b?.title ?? ""));
+        return compareServiceOrder(a, b);
       });
 
       return [category, sortedServices] as const;
