@@ -12,6 +12,7 @@ import type { Metadata } from "next";
 // alphabetically by title.
 const SERVICE_ORDER = [
   "sprinkler-repair-and-installation",
+  "emergency-sprinkler-repair",
   "sprinkler-leak-repair",
   "sprinkler-valve-repair",
   "sprinkler-pump-replacement",

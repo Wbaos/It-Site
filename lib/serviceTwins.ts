@@ -17,6 +17,7 @@ export const SERVICE_ES_PATHS: Record<string, string> = {
   "new-irrigation-installation": "/es/instalacion-nueva-de-irrigacion",
   "wireless-camera-installation": "/es/instalacion-de-camaras-inalambricas",
   "sprinkler-maintenance-plan": "/es/plan-de-mantenimiento-de-sprinklers",
+  "emergency-sprinkler-repair": "/es/reparacion-de-emergencia-de-sprinklers",
   "landscaping": "/es/reparacion-de-sprinklers-e-irrigacion",
   "home-security": "/es/seguridad-del-hogar",
 };

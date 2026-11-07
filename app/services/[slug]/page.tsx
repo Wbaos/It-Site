@@ -77,6 +77,7 @@ const SPRINKLER_CITY_LINKS = [
 
 const SPRINKLER_SERVICE_LINKS = [
   { slug: "sprinkler-repair-and-installation", title: "Sprinkler Repair & Installation" },
+  { slug: "emergency-sprinkler-repair", title: "Emergency Sprinkler Repair" },
   { slug: "sprinkler-leak-repair", title: "Sprinkler Leak Repair" },
   { slug: "sprinkler-valve-repair", title: "Sprinkler Valve Repair" },
   { slug: "sprinkler-timer-installation", title: "Sprinkler Timer Installation" },
@@ -115,8 +116,8 @@ export async function generateMetadata({
       service.metaDescription ||
       service.description ||
       `Professional ${service.title} service in Miami, Fort Lauderdale, and Broward County.`;
-    // Spanish twin exists for all nine services (main service since phase 1,
-    // the other eight since the Spanish services lot).
+    // Spanish twin exists for all eleven services (main service since phase 1,
+    // the other ten since the Spanish services lot).
     const esTwinPath = SERVICE_ES_PATHS[slug];
     return {
       title,
@@ -448,7 +449,7 @@ export default async function ServicePage({
   const sprinklerTitlesEs: Record<string, string> = {};
   if (isSpanish && service) {
     const esTitles = await sanity.fetch(
-      `*[_type == "service" && slug.current in ["sprinkler-repair-and-installation", "sprinkler-leak-repair", "sprinkler-valve-repair", "sprinkler-timer-installation", "sprinkler-pump-replacement", "rain-sensor-installation", "wifi-sprinkler-controller-upgrade", "new-irrigation-installation", "wireless-camera-installation", "sprinkler-maintenance-plan"]]{ "slug": slug.current, titleEs }`
+      `*[_type == "service" && slug.current in ["sprinkler-repair-and-installation", "emergency-sprinkler-repair", "sprinkler-leak-repair", "sprinkler-valve-repair", "sprinkler-timer-installation", "sprinkler-pump-replacement", "rain-sensor-installation", "wifi-sprinkler-controller-upgrade", "new-irrigation-installation", "wireless-camera-installation", "sprinkler-maintenance-plan"]]{ "slug": slug.current, titleEs }`
     );
     for (const t of (esTitles as any[]) ?? []) {
       if (t?.slug && t?.titleEs) sprinklerTitlesEs[t.slug] = t.titleEs;
