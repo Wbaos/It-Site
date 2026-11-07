@@ -20,14 +20,14 @@ export default function SEOIntro({ locale = "en", doc }: { locale?: "en" | "es";
       : "Sprinkler Repair & Irrigation Services in Miami & Broward");
   const p1Before = pick(doc?.seoIntroP1Before, doc?.seoIntroP1BeforeEs, isSpanish) ||
     (isSpanish
-      ? "CallTechCare es un equipo local de servicio enfocado en la "
-      : "CallTechCare is a local service team focused on ");
+      ? "CallTechCare es un equipo local de servicio enfocado en la reparación de sprinklers — incluyendo la "
+      : "CallTechCare is a local service team focused on sprinkler repair — including ");
   const p1LinkText = pick(doc?.seoIntroP1LinkText, doc?.seoIntroP1LinkTextEs, isSpanish) ||
     (isSpanish ? "reparación de sprinklers en Miami" : "Sprinkler Repair Miami");
   const p1After = pick(doc?.seoIntroP1After, doc?.seoIntroP1AfterEs, isSpanish) ||
     (isSpanish
-      ? " y la solución de problemas de irrigación en Miami-Dade y Broward. Ayudamos con fugas, cabezales rotos, mala cobertura, problemas de temporizador o controlador y mantenimiento del sistema, con comunicación clara y servicio confiable a domicilio."
-      : " and irrigation troubleshooting across Miami-Dade and Broward. We help with leaks, broken sprinkler heads, poor coverage, timer/controller issues, and system tune-ups—with clear communication and reliable on-site service.");
+      ? " — y la solución de problemas de irrigación en Miami-Dade y Broward. Ayudamos con fugas, cabezales rotos, mala cobertura, problemas de temporizador o controlador y mantenimiento del sistema, con comunicación clara y servicio confiable a domicilio."
+      : " — and irrigation troubleshooting across Miami-Dade and Broward. We help with leaks, broken sprinkler heads, poor coverage, timer/controller issues, and system tune-ups—with clear communication and reliable on-site service.");
   const p2 = pick(doc?.seoIntroP2, doc?.seoIntroP2Es, isSpanish) ||
     (isSpanish
       ? "Después de la reparación de sprinklers y el servicio de irrigación, también ofrecemos instalación de cámaras de seguridad para casas y pequeños negocios."
