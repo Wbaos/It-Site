@@ -51,7 +51,7 @@ export default function Navbar({
   // back to their English twin, or to the English home when there is none.
   // Twin pairs: "/" <-> "/es/", the thirty city page pairs
   // ("/sprinkler-repair-{city}" <-> "/es/reparacion-de-sprinklers-{city}",
-  // hub Miami included), the nine service page pairs, the ten blog
+  // hub Miami included), the ten service page pairs, the ten blog
   // pairs ("/blog" <-> "/es/blog" and nine posts),
   // "/contact" <-> "/es/contacto".
   const ES_HUB_HREF = "/es/";
@@ -105,6 +105,8 @@ export default function Navbar({
       "/es/instalacion-nueva-de-irrigacion",
     "/services/wireless-camera-installation":
       "/es/instalacion-de-camaras-inalambricas",
+    "/services/sprinkler-maintenance-plan":
+      "/es/plan-de-mantenimiento-de-sprinklers",
     "/services/landscaping":
       "/es/reparacion-de-sprinklers-e-irrigacion",
     "/services/home-security":
@@ -189,6 +191,8 @@ export default function Navbar({
       "/services/new-irrigation-installation",
     "/es/instalacion-de-camaras-inalambricas":
       "/services/wireless-camera-installation",
+    "/es/plan-de-mantenimiento-de-sprinklers":
+      "/services/sprinkler-maintenance-plan",
     "/es/reparacion-de-sprinklers-e-irrigacion":
       "/services/landscaping",
     "/es/seguridad-del-hogar":
