@@ -24,6 +24,12 @@ import type { Testimonial } from "@/components/common/TestimonialsList";
  * error), the getters below return null / [] and every consumer HIDES
  * the rating/count instead of showing a stale number.
  *
+ * TEMPORARY diagnostic logging: the console.error calls in
+ * fetchAccessToken / fetchGoogleReviewsData log only HTTP statuses,
+ * Google's error fields and env-var presence booleans — never any
+ * values or tokens — so a failing token exchange can be seen in the
+ * Vercel function logs. Remove them once the failure is diagnosed.
+ *
  * One short in-memory cache (60 s) lets the rating summary and the
  * review list share a single Google call per render. Only successful
  * responses are cached — a failed call is never cached, so a transient
@@ -98,7 +104,15 @@ async function fetchAccessToken(): Promise<string | null> {
   const clientId = process.env.GBP_OAUTH_CLIENT_ID;
   const clientSecret = process.env.GBP_OAUTH_CLIENT_SECRET;
   const refreshToken = process.env.GBP_REFRESH_TOKEN;
-  if (!clientId || !clientSecret || !refreshToken) return null;
+  if (!clientId || !clientSecret || !refreshToken) {
+    // TEMPORARY diagnostic logging: booleans only, never any values.
+    console.error("[google-reviews] missing OAuth env vars", {
+      clientId: Boolean(clientId),
+      clientSecret: Boolean(clientSecret),
+      refreshToken: Boolean(refreshToken),
+    });
+    return null;
+  }
   try {
     const res = await fetch("https://oauth2.googleapis.com/token", {
       method: "POST",
@@ -111,9 +125,24 @@ async function fetchAccessToken(): Promise<string | null> {
       }),
       cache: "no-store",
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      // TEMPORARY diagnostic logging: status + Google's error fields.
+      const errBody = await res.json().catch(() => null);
+      console.error(
+        "[google-reviews] token exchange failed",
+        res.status,
+        errBody?.error,
+        errBody?.error_description
+      );
+      return null;
+    }
     const data = await res.json().catch(() => null);
-    return typeof data?.access_token === "string" ? data.access_token : null;
+    if (typeof data?.access_token !== "string") {
+      // TEMPORARY diagnostic logging.
+      console.error("[google-reviews] token response has no access_token");
+      return null;
+    }
+    return data.access_token;
   } catch {
     return null;
   }
@@ -126,7 +155,14 @@ async function fetchGoogleReviewsData(): Promise<GbpReviewsResponse | null> {
   }
   const accountId = process.env.GBP_ACCOUNT_ID;
   const locationId = process.env.GBP_LOCATION_ID;
-  if (!accountId || !locationId) return null;
+  if (!accountId || !locationId) {
+    // TEMPORARY diagnostic logging: booleans only, never any values.
+    console.error("[google-reviews] missing GBP ids", {
+      accountId: Boolean(accountId),
+      locationId: Boolean(locationId),
+    });
+    return null;
+  }
   const accessToken = await fetchAccessToken();
   if (!accessToken) return null;
   try {
@@ -137,7 +173,16 @@ async function fetchGoogleReviewsData(): Promise<GbpReviewsResponse | null> {
         cache: "no-store",
       }
     );
-    if (!res.ok) return null;
+    if (!res.ok) {
+      // TEMPORARY diagnostic logging: status + Google's error message.
+      const errBody = await res.json().catch(() => null);
+      const message =
+        typeof errBody?.error === "string"
+          ? errBody.error
+          : errBody?.error?.message;
+      console.error("[google-reviews] reviews API failed", res.status, message);
+      return null;
+    }
     const data = (await res.json().catch(() => null)) as GbpReviewsResponse | null;
     if (!data || typeof data !== "object") return null;
     cachedResponse = data;
