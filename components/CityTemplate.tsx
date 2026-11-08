@@ -406,6 +406,13 @@ function routeAreaHref(href: string, locale: Locale): string {
   if (href.startsWith("/sprinkler-repair-")) {
     return cityHref(href.replace("/sprinkler-repair-", ""), locale);
   }
+  // Location detail pages: in Spanish mode they must land on the Spanish
+  // twin (/es/areas-de-servicio/<slug>), never on the English /locations/
+  // page. English keeps the /locations/ URL as-is.
+  if (href.startsWith("/locations/")) {
+    const slug = href.replace("/locations/", "");
+    return locale === "es" ? `/es/areas-de-servicio/${slug}` : href;
+  }
   return href;
 }
 
