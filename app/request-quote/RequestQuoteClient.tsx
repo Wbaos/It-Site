@@ -96,11 +96,23 @@ const ES_SERVICE: Record<
       "Reparación de sprinklers e instalación de irrigación en Miami y Broward para casas y negocios: cabezales rotos, válvulas, fugas, zonas y controladores. Servicio el mismo día dentro del horario, inspección gratis.",
     navDescription: "Reparación de sprinklers e instalación de irrigación",
   },
+  "emergency-sprinkler-repair": {
+    title: "Reparación de Emergencia de Sprinklers",
+    description:
+      "Reparación de emergencia de sprinklers en Miami y Broward: tubería rota, válvula trabada abierta, bomba prendida sin parar. Mismo día dentro del horario, inspección gratis.",
+    navDescription: "Emergencia el mismo día, dentro del horario.",
+  },
   "new-irrigation-installation": {
     title: "Instalación de Irrigación Nueva",
     description:
       "Instalación de irrigación nueva en Miami y Broward: zonas de sprinklers, tuberías de PVC, válvulas, rotores, cabezales, controladores, relés de bomba y sensores de lluvia.",
     navDescription: "Instalación de zonas nuevas de sprinklers",
+  },
+  "sprinkler-maintenance-plan": {
+    title: "Plan de Mantenimiento de Sprinklers",
+    description:
+      "Plan de mantenimiento de sprinklers en Miami y Broward: dos visitas programadas al año, revisión de zonas, cabezales, válvulas y sensor de lluvia, con reporte escrito después de cada visita.",
+    navDescription: "Dos visitas de mantenimiento al año, con reporte escrito.",
   },
   "rain-sensor-installation": {
     title: "Instalación de Sensores de Lluvia",
