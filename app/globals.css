@@ -16086,6 +16086,14 @@ details[open] .faq-toggle {
   gap: 2rem;
 }
 
+/* Phones: the reviews carousel inside the left column (its viewport is
+   capped at 1200px and its track holds every review) blows the
+   single-column grid out to ~1200px, so the whole page scrolls sideways.
+   Let the grid items shrink below their content size. */
+.location-content-grid > * {
+  min-width: 0;
+}
+
 .location-left-column {
   display: flex;
   flex-direction: column;

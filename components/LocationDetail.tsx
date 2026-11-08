@@ -110,7 +110,11 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
     notFound();
   }
   const pageUrl = isSpanish ? `https://www.calltechcare.com/es/areas-de-servicio/${slug}` : `https://www.calltechcare.com/locations/${slug}`;
-  const sprinklerCityLinks = SPRINKLER_CITY_LINKS[slug] || [];
+  // The page itself is already about this city, so the nearby-cities grid
+  // must not list the city again.
+  const sprinklerCityLinks = (SPRINKLER_CITY_LINKS[slug] || []).filter(
+    (city) => city.label.trim().toLowerCase() !== location.city.trim().toLowerCase()
+  );
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",

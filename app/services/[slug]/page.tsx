@@ -271,6 +271,16 @@ export default async function ServicePage({
     ).values()
   );
 
+  // The featured location pills above already link to Miami and Fort
+  // Lauderdale (the active location pages), so the sprinkler-city row
+  // below must not repeat them.
+  const featuredCityNames = new Set(
+    serviceAreas.map((a) => a.city.trim().toLowerCase())
+  );
+  const sprinklerCityLinks = SPRINKLER_CITY_LINKS.filter(
+    (city) => !featuredCityNames.has(city.name.trim().toLowerCase())
+  );
+
   const ServiceAreasSection = () => (
     serviceAreas.length > 0 ? (
     <section className="service-areas-section">
@@ -315,7 +325,7 @@ export default async function ServicePage({
             {isSpanish ? "Atendemos estas ciudades:" : "We serve these cities:"}
           </p>
           <div className="service-areas-pills">
-            {SPRINKLER_CITY_LINKS.map((city) => (
+            {sprinklerCityLinks.map((city) => (
               <Link
                 key={city.href}
                 href={cityHref(city.href.replace("/sprinkler-repair-", ""), locale)}
