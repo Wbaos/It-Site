@@ -25,6 +25,28 @@ export default function HomeVideo({ locale = "en", doc }: { locale?: "en" | "es"
       : "Optimized sprinkler system for 100% coverage in Fort Lauderdale.");
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  // The poster (65 KB) is deferred until the video is about to scroll
+  // into view, so it never downloads on the initial page load. Same URL
+  // as before — no quality change — it is set 600px before the section
+  // enters the viewport, so it is already in place when the visitor
+  // reaches it. The VideoObject schema keeps using the constant directly.
+  const [poster, setPoster] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setPoster(HOME_VIDEO_POSTER_URL);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "600px 0px" }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
 
   // Autoplay muted only once the section scrolls into view, so the video
   // never downloads on the initial page load.
@@ -67,7 +89,7 @@ export default function HomeVideo({ locale = "en", doc }: { locale?: "en" | "es"
           <video
             ref={videoRef}
             src={HOME_VIDEO_URL}
-            poster={HOME_VIDEO_POSTER_URL}
+            poster={poster}
             muted
             loop
             playsInline

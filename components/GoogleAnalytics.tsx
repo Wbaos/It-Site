@@ -32,16 +32,20 @@ export default function GoogleAnalytics() {
 
   if (!gaId || !enabled) return null;
 
+  // GA4 itself is loaded by the Google tag inside Google Tag Manager
+  // (GTM-NTDHKLLQ, tag for G-R1HZ7W3YL9, fires on every page load), so
+  // this component must NOT load gtag.js or configure the GA4 property
+  // again — that second config double-counted page views for consented
+  // visitors. What lives here is only the Google Ads setup: the AW
+  // config and the phone-click conversion, which GTM does not provide.
+  // Commands queue in dataLayer and run once GTM's gtag.js loads.
   return (
     <>
-      <Script src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} strategy="afterInteractive" />
-      <Script id="ga4" strategy="afterInteractive">
+      <Script id="google-ads" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-
-          gtag('config', '${gaId}', { anonymize_ip: true });
 
           // Google Ads conversion tracking
           gtag('config', 'AW-17496959572');

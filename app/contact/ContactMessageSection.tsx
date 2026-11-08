@@ -321,7 +321,7 @@ export default function ContactMessageSection({
                 <div className="contact-message-locationMuted">{S.locationMuted}</div>
               </div>
 
-              <Link className="contact-message-sideLink" href="/locations">
+              <Link className="contact-message-sideLink" href={locale === "es" ? "/es/areas-de-servicio" : "/locations"}>
                 {S.locationsLink}
               </Link>
             </div>
