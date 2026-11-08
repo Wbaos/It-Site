@@ -27,7 +27,7 @@ const DEFAULT_FAQS: FaqItem[] = [
   },
   {
     q: "How can I track my service request?",
-    a: "After you submit a request, we’ll call or message you within 24 hours to confirm your service. If you don’t hear from us, contact us for an update.",
+    a: "After you submit a request, we’ll call or message you in less than two hours to confirm your service. If you don’t hear from us, contact us for an update.",
   },
   {
     q: "What payment methods do you accept?",
@@ -66,7 +66,7 @@ const DEFAULT_FAQS_ES: FaqItem[] = [
   },
   {
     q: "¿Cómo sigo mi solicitud de servicio?",
-    a: "Después de enviar tu solicitud, te llamaremos o te escribiremos dentro de 24 horas para confirmar tu servicio. Si no tienes noticias nuestras, contáctanos para una actualización.",
+    a: "Después de enviar tu solicitud, te llamaremos o te escribiremos en menos de dos horas para confirmar tu servicio. Si no tienes noticias nuestras, contáctanos para una actualización.",
   },
   {
     q: "¿Qué métodos de pago aceptan?",

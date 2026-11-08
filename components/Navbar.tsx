@@ -109,6 +109,10 @@ export default function Navbar({
       "/es/plan-de-mantenimiento-de-sprinklers",
     "/services/emergency-sprinkler-repair":
       "/es/reparacion-de-emergencia-de-sprinklers",
+    "/services/commercial-irrigation-hoa-services":
+      "/es/riego-comercial-y-para-hoa",
+    "/services/new-irrigation-well-installation":
+      "/es/instalacion-de-pozos-nuevos-de-irrigacion",
     "/services/landscaping":
       "/es/reparacion-de-sprinklers-e-irrigacion",
     "/services/home-security":
@@ -132,6 +136,8 @@ export default function Navbar({
       "/es/blog/por-que-cambiar-de-un-temporizador-intermatic-a-un-controlador-inteligente-guia-miami-2026",
     "/blog/prepare-sprinkler-system-dry-season-miami":
       "/es/blog/prepara-tu-sistema-de-sprinklers-para-la-temporada-seca-en-miami",
+    "/blog/smart-sprinkler-controllers-miami-wifi-timers":
+      "/es/blog/controladores-inteligentes-de-sprinklers-en-miami-timers-wifi",
     "/contact": "/es/contacto",
     "/about": "/es/sobre-nosotros",
     "/locations": "/es/areas-de-servicio",
@@ -197,6 +203,10 @@ export default function Navbar({
       "/services/sprinkler-maintenance-plan",
     "/es/reparacion-de-emergencia-de-sprinklers":
       "/services/emergency-sprinkler-repair",
+    "/es/riego-comercial-y-para-hoa":
+      "/services/commercial-irrigation-hoa-services",
+    "/es/instalacion-de-pozos-nuevos-de-irrigacion":
+      "/services/new-irrigation-well-installation",
     "/es/reparacion-de-sprinklers-e-irrigacion":
       "/services/landscaping",
     "/es/seguridad-del-hogar":
@@ -220,6 +230,8 @@ export default function Navbar({
       "/blog/why-upgrade-from-an-intermatic-timer-to-a-smart-irrigation-controller-miami-guide-2026",
     "/es/blog/prepara-tu-sistema-de-sprinklers-para-la-temporada-seca-en-miami":
       "/blog/prepare-sprinkler-system-dry-season-miami",
+    "/es/blog/controladores-inteligentes-de-sprinklers-en-miami-timers-wifi":
+      "/blog/smart-sprinkler-controllers-miami-wifi-timers",
     "/es/contacto": "/contact",
     "/es/sobre-nosotros": "/about",
     "/es/areas-de-servicio": "/locations",

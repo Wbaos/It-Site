@@ -11201,6 +11201,68 @@ object-fit: cover;
   text-align: left;
 }
 
+/* Related-services cards inside the service detail main content: same dark
+   card treatment as .included-box, linking to the specific service pages. */
+.related-services-box {
+  background: #0f172a80;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+}
+
+.related-services-box h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  margin-top: 0;
+  text-align: left;
+}
+
+.related-services-intro {
+  color: #cbd5e1;
+  font-size: 0.96rem;
+  margin: 0 0 1.25rem;
+}
+
+.related-services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.75rem;
+}
+
+.related-service-card {
+  display: block;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  text-decoration: none;
+  transition: border-color 0.2s ease;
+}
+
+.related-service-card:hover {
+  border-color: var(--brand-teal);
+}
+
+.related-service-title {
+  display: block;
+  font-weight: 700;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.related-service-desc {
+  display: block;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
 .included-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -11253,6 +11315,10 @@ object-fit: cover;
   }
   .included-box {
    margin: 0 auto 2rem;
+  }
+  .related-services-box {
+   margin: 0 auto 2rem;
+   padding: 1.5rem;
   }
 }
 

@@ -12,7 +12,7 @@ import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 // icons, phone number and rating still come from Sanity at render time).
 const BENEFITS: Array<{ title: string; desc: string }> = [
   { title: "Sin obligación", desc: "Inspección gratis sin compromiso" },
-  { title: "Respuesta rápida", desc: "Recibe tu cotización dentro de 24 horas" },
+  { title: "Respuesta rápida", desc: "Recibe tu cotización en menos de dos horas" },
   { title: "Técnicos expertos", desc: "Técnicos con experiencia, a domicilio en tu casa" },
   { title: "Garantía de 1 año", desc: "1 año de garantía cuando CallTechCare hace el trabajo y provee los materiales" },
     { title: "Horario flexible", desc: "Servicio el mismo día dentro del horario de servicio" },

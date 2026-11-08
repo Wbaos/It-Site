@@ -14,11 +14,13 @@ const SERVICE_ORDER = [
   "sprinkler-leak-repair",
   "sprinkler-valve-repair",
   "sprinkler-pump-replacement",
+  "new-irrigation-well-installation",
   "sprinkler-timer-installation",
   "wifi-sprinkler-controller-upgrade",
   "rain-sensor-installation",
   "new-irrigation-installation",
   "sprinkler-maintenance-plan",
+  "commercial-irrigation-hoa-services",
   "wireless-camera-installation",
 ];
 

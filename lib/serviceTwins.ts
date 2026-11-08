@@ -18,6 +18,9 @@ export const SERVICE_ES_PATHS: Record<string, string> = {
   "wireless-camera-installation": "/es/instalacion-de-camaras-inalambricas",
   "sprinkler-maintenance-plan": "/es/plan-de-mantenimiento-de-sprinklers",
   "emergency-sprinkler-repair": "/es/reparacion-de-emergencia-de-sprinklers",
+  "commercial-irrigation-hoa-services": "/es/riego-comercial-y-para-hoa",
+  "new-irrigation-well-installation":
+    "/es/instalacion-de-pozos-nuevos-de-irrigacion",
   "landscaping": "/es/reparacion-de-sprinklers-e-irrigacion",
   "home-security": "/es/seguridad-del-hogar",
 };

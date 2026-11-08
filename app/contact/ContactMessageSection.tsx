@@ -113,11 +113,11 @@ export default function ContactMessageSection({
           emailNotConfigured:
             "Mensaje recibido. Las notificaciones por email no est\u00e1n configuradas en este entorno, pero tu mensaje se guard\u00f3 correctamente.",
           success:
-            "\u00a1Gracias! Recibimos tu mensaje y te responderemos dentro de 24 horas.",
+            "\u00a1Gracias! Recibimos tu mensaje y te responderemos en menos de dos horas.",
           networkError: "Error de red. Por favor, int\u00e9ntalo de nuevo.",
           formAriaLabel: "Env\u00edanos un mensaje",
           formTitle: "Env\u00edanos un mensaje",
-          formSubtitle: "Completa el formulario y te responderemos dentro de 24 horas.",
+          formSubtitle: "Completa el formulario y te responderemos en menos de dos horas.",
           nameLabel: "Nombre",
           namePlaceholder: "Tu nombre",
           emailLabel: "Correo electr\u00f3nico",
@@ -150,11 +150,11 @@ export default function ContactMessageSection({
           emailNotConfigured:
             "Message received. Email notifications are not configured in this environment, but your message was saved successfully.",
           success:
-            "Thanks! We received your message and will get back to you within 24 hours.",
+            "Thanks! We received your message and will get back to you in less than two hours.",
           networkError: "Network error. Please try again.",
           formAriaLabel: "Send us a message",
           formTitle: "Send Us a Message",
-          formSubtitle: "Fill out the form and we\u2019ll get back to you within 24 hours.",
+          formSubtitle: "Fill out the form and we\u2019ll get back to you in less than two hours.",
           nameLabel: "Name",
           namePlaceholder: "Your name",
           emailLabel: "Email",

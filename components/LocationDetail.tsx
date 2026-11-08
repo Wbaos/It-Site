@@ -14,6 +14,8 @@ const SERVICE_SLUG_ES: Record<string, string> = {
   "sprinkler-timer-installation": "instalacion-de-temporizadores-de-sprinklers",
   "sprinkler-valve-repair": "reparacion-de-valvulas-de-sprinklers",
   "wifi-sprinkler-controller-upgrade": "actualizacion-a-controlador-wifi-de-sprinklers",
+  "commercial-irrigation-hoa-services": "riego-comercial-y-para-hoa",
+  "new-irrigation-well-installation": "instalacion-de-pozos-nuevos-de-irrigacion",
 };
 
 const esCityHref = (href: string) => {

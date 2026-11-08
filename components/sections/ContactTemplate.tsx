@@ -34,7 +34,7 @@ const FALLBACK_EN = {
   heroSubtitle:
     "We're here to help. Contact CallTechCare for service requests, quotes, or questions about our sprinkler, irrigation, and security camera services across Miami and South Florida.",
   stats: [
-    { value: "24h", label: "Response Time" },
+    { value: "<2h", label: "Response Time" },
     // Google Rating value is filled from the live summary below; the
     // empty default is dropped when there is no summary, so no stale
     // number ever shows.
@@ -54,7 +54,7 @@ const FALLBACK_EN = {
     {
       icon: "mail",
       title: "Email Support",
-      text: "Get a response within 24 hours",
+      text: "Get a response in less than two hours",
       link: "support@calltechcare.com",
     },
     { icon: "faq", title: "FAQs", text: "Find quick answers" },
@@ -79,7 +79,7 @@ const FALLBACK_ES = {
   heroSubtitle:
     "Estamos aquí para ayudarte. Contacta a CallTechCare para solicitudes de servicio, cotizaciones o preguntas sobre nuestros servicios de sprinklers, irrigación y cámaras de seguridad en Miami y el sur de Florida.",
   stats: [
-    { value: "24h", label: "Tiempo de respuesta" },
+    { value: "<2h", label: "Tiempo de respuesta" },
     { value: "", label: "Calificación en Google" },
     { value: "1500+", label: "Clientes felices" },
     { value: "Lun–Dom", label: "Disponibilidad de soporte" },
@@ -96,7 +96,7 @@ const FALLBACK_ES = {
     {
       icon: "mail",
       title: "Soporte por email",
-      text: "Recibe respuesta dentro de 24 horas",
+      text: "Recibe respuesta en menos de dos horas",
       link: "support@calltechcare.com",
     },
     { icon: "faq", title: "Preguntas frecuentes", text: "Encuentra respuestas rápidas" },

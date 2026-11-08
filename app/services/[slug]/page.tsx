@@ -10,8 +10,7 @@ import Link from "next/link";
 import Image from "next/image";
 import SvgIcon from "@/components/common/SvgIcons";
 import ServiceReviewsWrapper from "@/components/ServiceReviewsWrapper";
-import { getGoogleWriteReviewUrl } from "@/lib/google-reviews";
-  const googleWriteReviewUrl = getGoogleWriteReviewUrl();
+import { getGoogleRatingSummary } from "@/lib/google-reviews";
 import ServiceRating from "@/components/ServiceRating";
 import FaqAccordion from "@/components/FaqAccordion";
 import ServiceGroupList from "@/components/ServiceGroupList";
@@ -76,16 +75,18 @@ const SPRINKLER_CITY_LINKS = [
 ];
 
 const SPRINKLER_SERVICE_LINKS = [
-  { slug: "sprinkler-repair-and-installation", title: "Sprinkler Repair & Installation" },
+  { slug: "sprinkler-repair-and-installation", title: "Sprinkler Repair" },
   { slug: "emergency-sprinkler-repair", title: "Emergency Sprinkler Repair" },
   { slug: "sprinkler-leak-repair", title: "Sprinkler Leak Repair" },
   { slug: "sprinkler-valve-repair", title: "Sprinkler Valve Repair" },
   { slug: "sprinkler-timer-installation", title: "Sprinkler Timer Installation" },
   { slug: "sprinkler-pump-replacement", title: "Sprinkler Pump Replacement" },
+  { slug: "new-irrigation-well-installation", title: "New Irrigation Well Installation" },
   { slug: "rain-sensor-installation", title: "Rain Sensor Installation" },
   { slug: "wifi-sprinkler-controller-upgrade", title: "WiFi Sprinkler Controller Upgrade" },
   { slug: "new-irrigation-installation", title: "New Irrigation Installation" },
   { slug: "sprinkler-maintenance-plan", title: "Sprinkler Maintenance Plan" },
+  { slug: "commercial-irrigation-hoa-services", title: "Commercial Irrigation & HOA Services" },
 ];
 
 export async function generateMetadata({
@@ -360,8 +361,6 @@ export default async function ServicePage({
       descriptionEs,
       mode,
       category-> { title },
-      rating,
-      reviewsCount,
       warranty,
       warrantyEs,
       image { asset->{ url }, alt },
@@ -414,6 +413,13 @@ export default async function ServicePage({
     { slug }
   );
 
+  // Live Google rating summary (5.0 + review count) from the same source
+  // as the home page. Shares the 60-second cache with getGoogleReviews()
+  // (used by ServiceReviewsWrapper below), so one Google call serves both
+  // the rating badge and the review list per render. When the API fails
+  // or returns nothing, the badge hides instead of showing a stale number.
+  const googleRatingSummary = await getGoogleRatingSummary();
+
   // Single-template locale: display values resolve to the Spanish field
   // when locale is "es" and the field is present, otherwise English.
   // Testimonials, gallery, videos and before/after comparisons have no
@@ -443,18 +449,51 @@ export default async function ServicePage({
             service.beforeAfter?.subheading,
         }
       : service?.beforeAfter;
-  // Spanish titles for the related-services pills (EN pages; only the
-  // title text changes). Fetched only in Spanish mode so the EN path
-  // performs no extra query.
-  const sprinklerTitlesEs: Record<string, string> = {};
-  if (isSpanish && service) {
-    const esTitles = await sanity.fetch(
-      `*[_type == "service" && slug.current in ["sprinkler-repair-and-installation", "emergency-sprinkler-repair", "sprinkler-leak-repair", "sprinkler-valve-repair", "sprinkler-timer-installation", "sprinkler-pump-replacement", "rain-sensor-installation", "wifi-sprinkler-controller-upgrade", "new-irrigation-installation", "wireless-camera-installation", "sprinkler-maintenance-plan"]]{ "slug": slug.current, titleEs }`
+  // Related sprinkler services: title + short description per service, in
+  // both languages, for the related-services cards inside the main content
+  // (below) and the Spanish titles of the pills at the bottom. One fetch
+  // serves both locales; the current service is excluded at render time.
+  // A service with no Sanity doc yet (the two new ones) falls back to its
+  // hardcoded title in SPRINKLER_SERVICE_LINKS until the doc exists.
+  const relatedServiceInfo: Record<
+    string,
+    {
+      title?: string;
+      titleEs?: string;
+      description?: string;
+      descriptionEs?: string;
+    }
+  > = {};
+  if (service) {
+    const related = await sanity.fetch(
+      `*[_type == "service" && slug.current in ["sprinkler-repair-and-installation", "emergency-sprinkler-repair", "sprinkler-leak-repair", "sprinkler-valve-repair", "sprinkler-timer-installation", "sprinkler-pump-replacement", "new-irrigation-well-installation", "rain-sensor-installation", "wifi-sprinkler-controller-upgrade", "new-irrigation-installation", "wireless-camera-installation", "sprinkler-maintenance-plan", "commercial-irrigation-hoa-services"]]{ "slug": slug.current, title, titleEs, description, descriptionEs }`
     );
-    for (const t of (esTitles as any[]) ?? []) {
-      if (t?.slug && t?.titleEs) sprinklerTitlesEs[t.slug] = t.titleEs;
+    for (const t of (related as any[]) ?? []) {
+      if (t?.slug) relatedServiceInfo[t.slug] = t;
     }
   }
+  // Spanish titles for the related-services pills (only the title text
+  // changes); derived from the same fetch above.
+  const sprinklerTitlesEs: Record<string, string> = {};
+  for (const [s, info] of Object.entries(relatedServiceInfo)) {
+    if (info?.titleEs) sprinklerTitlesEs[s] = info.titleEs;
+  }
+  // Cards for the related-services section: every sprinkler service except
+  // the current one, title + short description in the page locale.
+  const relatedServices = SPRINKLER_SERVICE_LINKS.filter(
+    (s) => s.slug !== slug
+  ).map((s) => {
+    const info = relatedServiceInfo[s.slug];
+    return {
+      slug: s.slug,
+      title:
+        isSpanish && info?.titleEs ? info.titleEs : info?.title ?? s.title,
+      description:
+        isSpanish && info?.descriptionEs
+          ? info.descriptionEs
+          : info?.description,
+    };
+  });
 
   // Related-services pills for the camera service page, mirroring the
   // "Related sprinkler services" section below: the camera service is the
@@ -1176,13 +1215,6 @@ export default async function ServicePage({
 
 
   const includedList = displayDetails || [];
-  const tvMountingSlugs = [
-  "small-tv-up-to-32",
-  "standard-tv-33-60",
-  "large-tv-61",
-];
-
-const isTvMounting = tvMountingSlugs.includes(slug);
 
   return (
   <>
@@ -1245,10 +1277,10 @@ const isTvMounting = tvMountingSlugs.includes(slug);
             <h1>{isSpanish ? `${displayTitle} en Miami, Broward y el Sur de Florida` : `${displayTitle} in Miami, Broward & South Florida`}</h1>
 
 
-            {service.rating && (
+            {googleRatingSummary && (
               <ServiceRating
-                rating={service.rating}
-                reviewsCount={service.reviewsCount}
+                rating={googleRatingSummary.rating}
+                reviewsCount={googleRatingSummary.total}
               />
             )}
 
@@ -1317,28 +1349,40 @@ const isTvMounting = tvMountingSlugs.includes(slug);
 
         {displayFaqs && <FaqAccordion faqs={displayFaqs} locale={locale} />}
 
+        {/* Related sprinkler services, inside the main content (not just
+            the pills at the bottom): the hub and every sprinkler page link
+            visibly to the specific problem pages — leaks, valves, timer,
+            pump — with a one-line description each. Same single template
+            for EN/ES; only the text changes. */}
+        {SPRINKLER_SERVICE_LINKS.some((s) => s.slug === slug) && (
+          <div className="related-services-box">
+            <h2>
+              {isSpanish ? "Más servicios de sprinklers" : "More sprinkler services"}
+            </h2>
+            <p className="related-services-intro">
+              {isSpanish
+                ? "Reparamos e instalamos cada parte de tu sistema de riego:"
+                : "We repair and install every part of your irrigation system:"}
+            </p>
+            <div className="related-services-grid">
+              {relatedServices.map((s) => (
+                <Link
+                  key={s.slug}
+                  href={serviceHref(s.slug, locale)}
+                  className="related-service-card"
+                >
+                  <span className="related-service-title">{s.title}</span>
+                  {s.description && (
+                    <span className="related-service-desc">{s.description}</span>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
+      <ServiceReviewsWrapper slug={slug} locale={locale} />
 
-      {isTvMounting && <ServiceReviewsWrapper slug={slug} />}
-
-      <div className="reviews-section">
-        <h3 className="reviews-title">
-          {isSpanish ? "Reseñas de clientes" : "Customer Reviews"}
-        </h3>
-
-        <div className="review-action-footer">
-          {googleWriteReviewUrl && (
-            <a
-              href={googleWriteReviewUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-write-review"
-            >
-              {isSpanish ? "Escribe una reseña" : "Write a Review"}
-            </a>
-          )}
-        </div>
-      </div>
       </div>
 
     </section>

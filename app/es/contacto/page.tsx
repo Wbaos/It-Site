@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: doc?.metaTitleEs ?? "Contacta a CallTechCare | Reparación de Sprinklers Miami y Broward",
     description: doc?.metaDescriptionEs
       ? substitutePhonePlaceholders(doc.metaDescriptionEs, settings)
-      : `Contacta a CallTechCare para reparación de sprinklers e irrigación en Miami y Broward. Llama al ${settings.phoneDisplay} o envía un mensaje — respondemos dentro de 24 horas.`,
+      : `Contacta a CallTechCare para reparación de sprinklers e irrigación en Miami y Broward. Llama al ${settings.phoneDisplay} o envía un mensaje — respondemos en menos de dos horas.`,
     alternates: {
       canonical: "https://www.calltechcare.com/es/contacto",
       languages: {

@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const title =
     service?.metaTitleEs ||
     service?.titleEs ||
-    "Reparación e Instalación de Sprinklers";
+    "Reparación de Sprinklers";
   const description =
     service?.metaDescriptionEs ||
     service?.descriptionEs ||

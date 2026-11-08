@@ -22,6 +22,8 @@ export const BLOG_ES_PATHS: Record<string, string> = {
     "/es/blog/por-que-cambiar-de-un-temporizador-intermatic-a-un-controlador-inteligente-guia-miami-2026",
   "prepare-sprinkler-system-dry-season-miami":
     "/es/blog/prepara-tu-sistema-de-sprinklers-para-la-temporada-seca-en-miami",
+  "smart-sprinkler-controllers-miami-wifi-timers":
+    "/es/blog/controladores-inteligentes-de-sprinklers-en-miami-timers-wifi",
 };
 
 export function blogHref(slug: string, locale: "en" | "es"): string {

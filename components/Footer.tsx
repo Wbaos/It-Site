@@ -146,7 +146,7 @@ export default function Footer({
             </li>
             <li>
               <Link href={serviceHref("sprinkler-repair-and-installation", locale)}>
-                {isSpanishPage ? "Reparación e Instalación de Sprinklers" : "Sprinkler Repair & Irrigation"}
+                {isSpanishPage ? "Reparación de Sprinklers" : "Sprinkler Repair & Irrigation"}
               </Link>
             </li>
             <li>
@@ -162,6 +162,11 @@ export default function Footer({
             <li>
               <Link href={serviceHref("sprinkler-pump-replacement", locale)}>
                 {isSpanishPage ? "Reemplazo de Bombas de Sprinklers" : "Sprinkler Pump Replacement"}
+              </Link>
+            </li>
+            <li>
+              <Link href={serviceHref("new-irrigation-well-installation", locale)}>
+                {isSpanishPage ? "Pozos Nuevos de Irrigación" : "New Irrigation Wells"}
               </Link>
             </li>
             <li>
@@ -182,6 +187,11 @@ export default function Footer({
             <li>
               <Link href={serviceHref("new-irrigation-installation", locale)}>
                 {isSpanishPage ? "Instalación Nueva de Irrigación" : "New Irrigation Installation"}
+              </Link>
+            </li>
+            <li>
+              <Link href={serviceHref("commercial-irrigation-hoa-services", locale)}>
+                {isSpanishPage ? "Riego Comercial y para HOA" : "Commercial Irrigation & HOA"}
               </Link>
             </li>
             <li>

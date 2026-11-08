@@ -8,10 +8,12 @@ export default function ServiceReviews({
   slug,
   initialReviews,
   googleReviewsUrl,
+  locale = "en",
 }: {
   slug: string;
   initialReviews?: Testimonial[];
   googleReviewsUrl?: string;
+  locale?: "en" | "es";
 }) {
   const [reviews, setReviews] = useState<Testimonial[]>(initialReviews ?? []);
   const [loading, setLoading] = useState(initialReviews ? false : true);
@@ -102,7 +104,7 @@ export default function ServiceReviews({
       {!loading && reviews.length > 0 && (
         <TestimonialsList
           items={reviews}
-          title="Customer Reviews"
+          title={locale === "es" ? "Reseñas de clientes" : "Customer Reviews"}
           afterSubtitle={
             googleReviewsUrl ? (
               <a
@@ -111,7 +113,9 @@ export default function ServiceReviews({
                 target="_blank"
                 rel="noreferrer"
               >
-                View all reviews on Google
+                {locale === "es"
+                  ? "Ver todas las reseñas en Google"
+                  : "View all reviews on Google"}
               </a>
             ) : null
           }
