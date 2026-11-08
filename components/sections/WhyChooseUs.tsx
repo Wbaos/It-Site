@@ -53,8 +53,8 @@ export default async function WhyChooseUs({
         },
         {
           icon: <Clock size={32} strokeWidth={1.5} />,
-          title: "Respuesta en 24 Horas",
-          text: "Respondemos dentro de 24 horas, con servicio el mismo día dentro del horario.",
+          title: "Respuesta en Menos de Dos Horas",
+          text: "Respondemos en menos de dos horas, con servicio el mismo día dentro del horario.",
         },
         {
           icon: <Cpu size={32} strokeWidth={1.5} />,
@@ -85,8 +85,8 @@ export default async function WhyChooseUs({
         },
         {
           icon: <Clock size={32} strokeWidth={1.5} />,
-          title: "Response Within 24 Hours",
-          text: "We respond within 24 hours, with same-day service within business hours.",
+          title: "Response in Less Than Two Hours",
+          text: "We respond in less than two hours, with same-day service within business hours.",
         },
         {
           icon: <Cpu size={32} strokeWidth={1.5} />,

@@ -67,6 +67,23 @@ type RelatedPostResult = {
 /* =========================
    SEO METADATA (English route only; the Spanish routes export their own)
 ========================= */
+
+// Schema dates must be the calendar date the visitor sees
+// (America/New_York), not the UTC day: a post published 2026-05-12T00:58Z
+// reads "May 12" on the page but "2026-05-13" in the schema if the raw UTC
+// timestamp is emitted. The visible <time> element is left untouched.
+function schemaLocalDate(iso?: string): string | undefined {
+  if (!iso) return undefined;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return undefined;
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(d);
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -266,8 +283,8 @@ export default async function BlogPost({
       : post.metaTitle || post.title,
     description: displayDescription,
     image: image ? [image] : undefined,
-    datePublished: post.publishedAt,
-    dateModified: post._updatedAt || post.publishedAt,
+    datePublished: schemaLocalDate(post.publishedAt),
+    dateModified: schemaLocalDate(post._updatedAt) || schemaLocalDate(post.publishedAt),
 
     author: {
       "@type": "Person",

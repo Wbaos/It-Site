@@ -1,21 +1,47 @@
+import { getGoogleReviews, getGoogleReviewsUrl, getGoogleWriteReviewUrl } from "@/lib/google-reviews";
 import ServiceReviews from "./ServiceReviews";
-import { getGoogleReviews, getGoogleReviewsUrl } from "@/lib/google-reviews";
 
-export default async function ServiceReviewsWrapper({ slug }: { slug: string }) {
-    let initialReviews;
-    const googleReviewsUrl = getGoogleReviewsUrl() ?? undefined;
+// Live Google reviews on every service page, from the same API source as
+// the home page (lib/google-reviews). Limited to the 3 most recent
+// reviews. When the API fails or returns nothing, renders nothing — the
+// count and the review text are never hardcoded. The "Write a Review"
+// button lives here too, so it only shows when reviews exist.
+const MAX_SERVICE_REVIEWS = 3;
 
-    try {
-        initialReviews = await getGoogleReviews();
-    } catch {
-        initialReviews = undefined;
-    }
-
-    return (
-        <ServiceReviews
-            slug={slug}
-            initialReviews={initialReviews}
-            googleReviewsUrl={googleReviewsUrl}
-        />
-    );
+export default async function ServiceReviewsWrapper({
+  slug,
+  locale = "en",
+}: {
+  slug: string;
+  locale?: "en" | "es";
+}) {
+  const reviews = await getGoogleReviews();
+  const initialReviews = (reviews ?? []).slice(0, MAX_SERVICE_REVIEWS);
+  if (initialReviews.length === 0) return null;
+  const googleReviewsUrl = getGoogleReviewsUrl();
+  const googleWriteReviewUrl = getGoogleWriteReviewUrl();
+  return (
+    <div className="site-container-testimonials">
+      <ServiceReviews
+        slug={slug}
+        initialReviews={initialReviews}
+        locale={locale}
+        googleReviewsUrl={googleReviewsUrl}
+      />
+      <div className="reviews-section">
+        <div className="review-action-footer">
+          {googleWriteReviewUrl && (
+            <a
+              href={googleWriteReviewUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-write-review"
+            >
+              {locale === "es" ? "Escribe una reseña" : "Write a Review"}
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }

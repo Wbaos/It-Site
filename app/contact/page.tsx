@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: doc?.metaTitle ?? "Contact CallTechCare | Sprinkler Repair Miami & Broward",
     description: doc?.metaDescription
       ? substitutePhonePlaceholders(doc.metaDescription, settings)
-      : `Contact CallTechCare for sprinkler repair and irrigation in Miami and Broward. Call ${settings.phoneDisplay} or send a message — we respond within 24 hours.`,
+      : `Contact CallTechCare for sprinkler repair and irrigation in Miami and Broward. Call ${settings.phoneDisplay} or send a message — we respond in less than two hours.`,
     alternates: {
       canonical: "https://www.calltechcare.com/contact",
       languages: {

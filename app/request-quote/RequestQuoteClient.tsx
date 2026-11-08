@@ -28,7 +28,7 @@ const STEPS_EN = [
   },
   {
     title: "Receive Your Quote",
-    desc: "We’ll review your request and send a detailed quote within 24 hours.",
+    desc: "We’ll review your request and send a detailed quote in less than two hours.",
   },
   {
     title: "Confirm Your Visit",
@@ -47,7 +47,7 @@ const STEPS_ES = [
   },
   {
     title: "Recibe tu cotización",
-    desc: "Revisaremos tu solicitud y te enviaremos una cotización detallada dentro de 24 horas.",
+    desc: "Revisaremos tu solicitud y te enviaremos una cotización detallada en menos de dos horas.",
   },
   {
     title: "Confirma tu visita",
@@ -91,7 +91,7 @@ const ES_SERVICE: Record<
   { title: string; description: string; navDescription: string }
 > = {
   "sprinkler-repair-and-installation": {
-    title: "Reparación e Instalación de Sprinklers",
+    title: "Reparación de Sprinklers",
     description:
       "Reparación de sprinklers e instalación de irrigación en Miami y Broward para casas y negocios: cabezales rotos, válvulas, fugas, zonas y controladores. Servicio el mismo día dentro del horario, inspección gratis.",
     navDescription: "Reparación de sprinklers e instalación de irrigación",
@@ -143,6 +143,18 @@ const ES_SERVICE: Record<
     description:
       "Instalación y configuración profesional de cámaras inalámbricas de seguridad en Miami y Broward para tu casa o pequeño negocio. Incluye montaje, optimización de ubicación, configuración de la app y pruebas de conexión.",
     navDescription: "Instala cámaras inalámbricas de seguridad",
+  },
+  "commercial-irrigation-hoa-services": {
+    title: "Riego Comercial y para HOA",
+    description:
+      "Riego comercial y para HOA en Miami y Broward para casas, HOAs, administradores y negocios: auditoría gratis, chequeos mensuales con reporte escrito y plan de mantenimiento. Servicio el mismo día dentro del horario, inspección gratis.",
+    navDescription: "Riego comercial y para HOA",
+  },
+  "new-irrigation-well-installation": {
+    title: "Instalación de Pozos Nuevos de Irrigación",
+    description:
+      "Instalación de pozos nuevos de irrigación en Miami y Broward para casas y negocios: pozo nuevo, bomba y conexión al sistema de riego. Servicio el mismo día dentro del horario, inspección gratis.",
+    navDescription: "Instalación de pozos nuevos de irrigación",
   },
 };
 

@@ -13,7 +13,7 @@ export const revalidate = 0;
 // is identical in both languages.
 const SERVICES_ES: Record<string, { title: string; description: string }> = {
   "sprinkler-repair-and-installation": {
-    title: "Reparación e Instalación de Sprinklers",
+    title: "Reparación de Sprinklers",
     description:
       "Reparación de sprinklers e irrigación, y sistemas nuevos, a domicilio en Miami y Broward.",
   },
@@ -45,6 +45,16 @@ const SERVICES_ES: Record<string, { title: string; description: string }> = {
   "new-irrigation-installation": {
     title: "Instalación Nueva de Irrigación",
     description: "Sistemas de irrigación nuevos, diseñados e instalados desde cero.",
+  },
+  "commercial-irrigation-hoa-services": {
+    title: "Riego Comercial y para HOA",
+    description:
+      "Riego comercial y para HOA en Miami y Broward: auditoría gratis, chequeos mensuales con reporte escrito y plan de mantenimiento.",
+  },
+  "new-irrigation-well-installation": {
+    title: "Instalación de Pozos Nuevos de Irrigación",
+    description:
+      "Instalación de pozos nuevos de irrigación en Miami y Broward para casas y negocios.",
   },
   "home-security": {
     title: "Instalación de Cámaras de Seguridad",

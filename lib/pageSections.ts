@@ -101,7 +101,9 @@ function pick(en: string | undefined, es: string | undefined, isSpanish: boolean
   return en;
 }
 
-export async function getHomeSections(locale: HomeLocale = "en"): Promise<Section[]> {
+export async function getHomeSections(
+  locale: HomeLocale = "en"
+): Promise<{ sections: Section[]; doc: HomePage | null }> {
   const isSpanish = locale === "es";
   // Live Google rating summary, from the single shared source in
   // lib/google-reviews (Sanity site-settings; one fetch). Passed to the
@@ -158,7 +160,7 @@ export async function getHomeSections(locale: HomeLocale = "en"): Promise<Sectio
         subtitle: doc?.contactSubtitle ?? "Have a question? We're here to help.",
         locale,
       };
-  return [
+  const sections: Section[] = [
     {
       key: "hero",
       Component: Hero,
@@ -204,4 +206,5 @@ export async function getHomeSections(locale: HomeLocale = "en"): Promise<Sectio
       props: contactProps,
     },
   ];
+  return { sections, doc };
 }
