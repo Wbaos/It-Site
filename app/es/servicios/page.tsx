@@ -218,10 +218,6 @@ export default async function ServicesPageEs() {
             Servicios de reparación de sprinklers e irrigación en Miami y Broward, más instalación de cámaras de seguridad.
           </p>
 
-          <p className="services-list-hero-subtitle">
-            ¿Buscas <Link href="/es/reparacion-de-sprinklers-miami">Reparación de Sprinklers en Miami</Link>?
-          </p>
-
           <p className="services-list-hero-badge">
             {services.length} servicios disponibles
           </p>
