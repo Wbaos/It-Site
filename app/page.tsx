@@ -8,7 +8,7 @@ import { resolveSiteSettings } from "@/lib/sanitySettings";
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await resolveSiteSettings();
   return {
-    title: "Sprinkler Repair Miami & Broward | Same-Day | CallTechCare",
+    title: "CallTechCare | Sprinkler Repair, Irrigation & Security Cameras in Miami & Broward",
     description: `Sprinkler repair and irrigation in Miami and Broward. Same-day service within business hours, free inspection, leaks, valves, timers and new systems. Call ${settings.phoneDisplay}.`,
     alternates: {
       canonical: "https://www.calltechcare.com/",

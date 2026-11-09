@@ -370,7 +370,7 @@ export default async function ContactTemplate({
       {/* Contact Form */}
       <section className="contact-support-section contact-message-section">
         <div className="contact-support-inner">
-          <ContactMessageSection locale={locale} side={side} emergencyPhone={settings.phoneCard} />
+          <ContactMessageSection locale={locale} side={side} emergencyPhone={settings.phoneCard} phoneTel={settings.phoneTel} phoneDisplay={settings.phoneDisplay} />
         </div>
       </section>
     </main>

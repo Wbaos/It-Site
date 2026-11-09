@@ -140,10 +140,9 @@ type LocaleText = {
   ctaSuffix: string;
   ourWorkTitle: string;
   callNow: string;
-  // The two inline "request a quote" links below point at the sprinkler
-  // service page (which carries the short lead form) while the full quote
+  // The two inline "send us a quick message" links below point at the
+  // short lead form on this same page (#quick-lead) while the full quote
   // flow is hidden. Not the quote page.
-  serviceHref: string;
   ariaHighlights: string;
   ariaSteps: string;
   ariaFaq: string;
@@ -162,18 +161,17 @@ const TEXT: Record<Locale, LocaleText> = {
     cameraLinkText: "wireless camera installation",
     cameraSuffix: " for homes and small businesses.",
     finalCtaPrefix: "Ready to get started? Call now or ",
-    finalCtaLinkText: "request a quote",
+    finalCtaLinkText: "send us a quick message",
     finalCtaSuffix: " and we’ll confirm details and schedule the next available visit.",
     highlightsTitle: "Fix the sprinklers. Protect the yard. Stop wasting water.",
     stepsTitle: "How it works",
     ctaPrefix: "Prefer to go straight to scheduling? ",
-    ctaLink1: "Request a quote",
+    ctaLink1: "Send us a quick message",
     ctaMid: " or call now. Want full service details? View ",
     ctaLink2: "Sprinkler Repair & Irrigation",
     ctaSuffix: ".",
     ourWorkTitle: "Our Work",
     callNow: "Call Now",
-    serviceHref: "/services/sprinkler-repair-and-installation",
     ariaHighlights: "Sprinkler repair highlights",
     ariaSteps: "How it works",
     ariaFaq: "Frequently asked questions",
@@ -225,18 +223,17 @@ const TEXT: Record<Locale, LocaleText> = {
     cameraLinkText: "instalación de cámaras inalámbricas",
     cameraSuffix: " para hogares y pequeños negocios.",
     finalCtaPrefix: "¿Listo para empezar? Llama ahora o ",
-    finalCtaLinkText: "solicita una cotización",
+    finalCtaLinkText: "envíanos un mensaje rápido",
     finalCtaSuffix: " y te confirmamos los detalles y programamos la próxima visita disponible.",
     highlightsTitle: "Repara los sprinklers. Protege el jardín. Deja de desperdiciar agua.",
     stepsTitle: "Cómo funciona",
     ctaPrefix: "¿Prefieres agendar directo? ",
-    ctaLink1: "Solicita una cotización",
+    ctaLink1: "Envíanos un mensaje rápido",
     ctaMid: " o llama ahora. ¿Quieres los detalles completos del servicio? Ver ",
     ctaLink2: "Reparación de Sprinklers e Irrigación",
     ctaSuffix: ".",
     ourWorkTitle: "Nuestro Trabajo",
     callNow: "Llama ahora",
-    serviceHref: "/es/reparacion-de-sprinklers-e-irrigacion",
     ariaHighlights: "Sprinkler repair highlights",
     ariaSteps: "How it works",
     ariaFaq: "Frequently asked questions",
@@ -564,6 +561,10 @@ export default async function CityTemplate({ city, locale }: { city: City; local
         }}
       />
 
+      {/* City hero: the H1 already names the city. The form no longer
+          sits right under it — a button scrolls to it instead, so the
+          city's own content (seo-intro below) is what the visitor sees
+          first after the hero. */}
       <Hero
         titleLine1={heroTitle1}
         titleLine2={heroTitle2}
@@ -571,19 +572,11 @@ export default async function CityTemplate({ city, locale }: { city: City; local
         badgeText={heroBadge}
         primaryCtaText={t.callNow}
         primaryCtaHref={`tel:${settings.phoneTel}`}
+        secondaryCtaText={isEs ? "Pide tu inspección gratis" : "Get your free inspection"}
+        secondaryCtaHref="#quick-lead"
         showCallButton={false}
         googleRating={googleRating}
         {...(isEs ? { stats: ES_STATS } : {})}
-      />
-
-      {/* Quick lead form: prominent call button + short form posting to the
-          same /api/quote-request endpoint as the full quote flow. */}
-      <QuickLeadForm
-        locale={locale}
-        service={{ service: "sprinkler-repair-and-installation" }}
-        cityName={name}
-        phoneTel={settings.phoneTel}
-        phoneDisplay={settings.phoneDisplay}
       />
 
       <section className="seo-intro-section">
@@ -616,7 +609,7 @@ export default async function CityTemplate({ city, locale }: { city: City; local
           <p className="seo-area-list">{renderAreaSegments(areaSegments, locale)}</p>
           <p>
             {t.finalCtaPrefix}
-            <Link href={t.serviceHref}>{t.finalCtaLinkText}</Link>
+            <Link href="#quick-lead">{t.finalCtaLinkText}</Link>
             {t.finalCtaSuffix}
           </p>
           <p>
@@ -626,6 +619,17 @@ export default async function CityTemplate({ city, locale }: { city: City; local
           </p>
         </div>
       </section>
+
+      {/* Quick lead form, AFTER the city's own content: prominent call
+          button + short form posting to the same /api/quote-request
+          endpoint as the full quote flow (same Google Ads conversion). */}
+      <QuickLeadForm
+        locale={locale}
+        service={{ service: "sprinkler-repair-and-installation" }}
+        cityName={name}
+        phoneTel={settings.phoneTel}
+        phoneDisplay={settings.phoneDisplay}
+      />
 
       <section className="spr-landing-section" aria-label={t.ariaHighlights}>
         <div className="spr-landing">
@@ -687,7 +691,7 @@ export default async function CityTemplate({ city, locale }: { city: City; local
 
           <p className="spr-landing-cta">
             {t.ctaPrefix}
-            <Link href={t.serviceHref}>{t.ctaLink1}</Link>
+            <Link href="#quick-lead">{t.ctaLink1}</Link>
             {t.ctaMid}
             <Link href={detailsHref}>{t.ctaLink2}</Link>
             {t.ctaSuffix}

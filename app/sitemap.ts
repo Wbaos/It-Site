@@ -231,13 +231,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.9,
         },
         {
-            url: `${baseUrl}/es/contacto`,
+            url: `${baseUrl}/es/riego-comercial-y-para-hoa`,
             lastModified: now,
             changeFrequency: 'weekly',
             priority: 0.9,
         },
         {
-            url: `${baseUrl}/es/solicita-una-cotizacion`,
+            url: `${baseUrl}/es/instalacion-de-pozos-nuevos-de-irrigacion`,
+            lastModified: now,
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/es/contacto`,
             lastModified: now,
             changeFrequency: 'weekly',
             priority: 0.9,
@@ -304,12 +310,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             changeFrequency: 'monthly',
             priority: 0.8,
         },
-        {
-            url: `${baseUrl}/request-quote`,
-            lastModified: now,
-            changeFrequency: 'monthly',
-            priority: 0.8,
-        },
+        // /request-quote and /es/solicita-una-cotizacion are NOT listed:
+        // they redirect (307) to service pages while the quote flow is
+        // hidden, and a sitemap must not list redirecting URLs.
         {
             url: `${baseUrl}/about`,
             lastModified: now,

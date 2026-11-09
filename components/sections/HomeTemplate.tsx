@@ -25,8 +25,8 @@ export default async function HomeTemplate({ locale = "en" }: { locale?: HomeLoc
     description:
       (isSpanish ? doc?.videoSubtitleEs : doc?.videoSubtitle) ??
       (isSpanish
-        ? "Sistema de sprinklers optimizado para una cobertura del 100% en Fort Lauderdale."
-        : "Optimized sprinkler system for 100% coverage in Fort Lauderdale."),
+        ? "Sistema de sprinklers optimizado para una cobertura completa y uniforme en Fort Lauderdale."
+        : "Optimized sprinkler system for full, even coverage in Fort Lauderdale."),
     thumbnailUrl: HOME_VIDEO_POSTER_URL,
     contentUrl: HOME_VIDEO_URL,
     uploadDate: HOME_VIDEO_UPLOAD_DATE,

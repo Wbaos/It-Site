@@ -20,7 +20,7 @@ const EN_HOME_URL = "https://www.calltechcare.com/";
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await resolveSiteSettings();
   return {
-    title: "Reparación de Sprinklers en Miami y Broward | CallTechCare",
+    title: "CallTechCare | Reparación de Sprinklers, Irrigación y Cámaras de Seguridad en Miami y Broward",
     description: `Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, inspección gratis. Llama al ${settings.phoneDisplay}.`,
   alternates: {
     canonical: ES_HOME_URL,
@@ -31,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   },
   openGraph: {
-    title: "Reparación de Sprinklers en Miami y Broward | CallTechCare",
+    title: "CallTechCare | Reparación de Sprinklers, Irrigación y Cámaras de Seguridad en Miami y Broward",
     description:
       "Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, inspección gratis.",
     url: ES_HOME_URL,
@@ -47,7 +47,7 @@ export async function generateMetadata(): Promise<Metadata> {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Reparación de Sprinklers en Miami y Broward | CallTechCare",
+    title: "CallTechCare | Reparación de Sprinklers, Irrigación y Cámaras de Seguridad en Miami y Broward",
     description:
       "Reparación de sprinklers e irrigación en Miami y Broward. Servicio el mismo día dentro del horario de servicio, inspección gratis.",
     images: ["https://www.calltechcare.com/logo-og.png"],

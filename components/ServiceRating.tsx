@@ -5,10 +5,13 @@ import SvgIcon from "@/components/common/SvgIcons";
 export default function ServiceRating({
   rating,
   reviewsCount,
+  locale = "en",
 }: {
   rating: number;
   reviewsCount?: number;
+  locale?: "en" | "es";
 }) {
+  const isSpanish = locale === "es";
   const handleScroll = () => {
     const section =
       document.querySelector(".site-container-testimonials") ||
@@ -40,9 +43,15 @@ export default function ServiceRating({
       type="button"
       className="service-rating"
       onClick={handleScroll}
-      aria-label={`View customer reviews. Rated ${rating.toFixed(1)} out of 5${
-        reviewsCount !== undefined ? ` based on ${reviewsCount} reviews` : ""
-      }`}
+      aria-label={
+        isSpanish
+          ? `Ver las reseñas de clientes. Calificación ${rating.toFixed(1)} de 5${
+              reviewsCount !== undefined ? ` basada en ${reviewsCount} reseñas` : ""
+            }`
+          : `View customer reviews. Rated ${rating.toFixed(1)} out of 5${
+              reviewsCount !== undefined ? ` based on ${reviewsCount} reviews` : ""
+            }`
+      }
     >
       <div className="star-wrapper" aria-hidden="true">
         {[0, 1, 2, 3, 4].map((i) => {
@@ -82,7 +91,7 @@ export default function ServiceRating({
       <span className="score">{rating.toFixed(1)}</span>
 
       {reviewsCount !== undefined && (
-        <span className="reviews">· {reviewsCount} reviews</span>
+        <span className="reviews">· {reviewsCount} {isSpanish ? "reseñas" : "reviews"}</span>
       )}
     </button>
   );

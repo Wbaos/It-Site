@@ -59,12 +59,13 @@ export default function ServiceReviews({
     // TV-mounting pages show the live Google reviews from the Business
     // Profile Reviews API, served by /api/google-reviews (see
     // lib/google-reviews.ts). Dates are the relative strings converted
-    // from each review's createTime ("a week ago") — passed through
-    // as-is, never converted or invented. Entries with a name but no
-    // text still render (name + stars).
+    // from each review's createTime — in the page locale (see the
+    // ?locale= parameter) — passed through as-is, never converted or
+    // invented. Entries with a name but no text still render (name +
+    // stars).
     async function fetchGoogleReviews() {
       try {
-        const res = await fetch("/api/google-reviews", { cache: "no-store" });
+        const res = await fetch(`/api/google-reviews?locale=${locale}`, { cache: "no-store" });
         const data = await res.json().catch(() => null);
 
         const reviews = Array.isArray(data?.reviews) ? data.reviews : [];
@@ -95,7 +96,7 @@ export default function ServiceReviews({
     } else {
       fetchSanityReviews();
     }
-  }, [slug, initialReviews, isTvMounting]);
+  }, [slug, initialReviews, isTvMounting, locale]);
 
   return (
     <>
@@ -104,6 +105,7 @@ export default function ServiceReviews({
       {!loading && reviews.length > 0 && (
         <TestimonialsList
           items={reviews}
+          locale={locale}
           title={locale === "es" ? "Reseñas de clientes" : "Customer Reviews"}
           afterSubtitle={
             googleReviewsUrl ? (

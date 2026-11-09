@@ -11504,6 +11504,13 @@ object-fit: cover;
   font-size: 0.9rem;
 }
 
+.beforeafter-sideNote {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin: 0.35rem 0 0;
+}
+
 .beforeafter-thumbs {
   display: flex;
   gap: 0.75rem;
@@ -14445,6 +14452,21 @@ box-shadow:
   box-shadow: none;
 }
 
+/* One-line payment note next to the short lead form on /contact:
+   cash, check, card or Zelle, paid in person at the end. */
+.contact-payment-line {
+  margin: 4px 0 0;
+  color: #94a3b8;
+  line-height: 1.55;
+  text-align: center;
+}
+
+/* The shared lead form sits flush inside the contact grid (its own
+   section padding belongs to the full-width pages, not this column). */
+.contact-message-grid .quick-lead {
+  padding: 0;
+}
+
 .contact-message-cardHeader,
 .contact-message-sideHeader {
   margin-bottom: 16px;
@@ -16545,6 +16567,24 @@ details[open] .faq-toggle {
   line-height: 1.5;
   color: #94a3b8;
   text-align: center;
+}
+
+/* Emergency page: the "or text us" link under the big call button —
+   a real sms: link, same muted centered treatment as the trust line. */
+.emergency-cta__sms {
+  margin: 0.9rem 0 0;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.emergency-cta__sms a {
+  color: #7dd3fc;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.emergency-cta__sms a:hover {
+  color: #bae6fd;
 }
 
 .quick-lead__success {

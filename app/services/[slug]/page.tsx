@@ -393,6 +393,7 @@ export default async function ServicePage({
         subheading,
         comparisons[]{
           title,
+          titleEs,
           beforeImage{asset->{url}, alt},
           afterImage{asset->{url}, alt}
         }
@@ -432,8 +433,9 @@ export default async function ServicePage({
 
   // Single-template locale: display values resolve to the Spanish field
   // when locale is "es" and the field is present, otherwise English.
-  // Testimonials, gallery, videos and before/after comparisons have no
-  // Spanish counterpart by design (customer words and media stay verbatim).
+  // Testimonials, gallery and videos have no Spanish counterpart by
+  // design (customer words and media stay verbatim); before/after
+  // comparison TITLES do (titleEs on each comparison, English fallback).
   const displayTitle =
     isSpanish && service?.titleEs ? service.titleEs : service?.title;
   const displayDescription =
@@ -448,17 +450,21 @@ export default async function ServicePage({
       : service?.details;
   const displayFaqs =
     isSpanish && service?.faqsEs?.length ? service.faqsEs : service?.faqs;
-  const displayBeforeAfter =
-    isSpanish && service?.beforeAfterEs
-      ? {
-          ...service.beforeAfter,
-          heading:
-            service.beforeAfterEs.heading || service.beforeAfter?.heading,
-          subheading:
-            service.beforeAfterEs.subheading ||
-            service.beforeAfter?.subheading,
-        }
-      : service?.beforeAfter;
+  const displayBeforeAfter = (() => {
+    const base = service?.beforeAfter;
+    if (!isSpanish || !service?.beforeAfterEs) return base;
+    return {
+      ...base,
+      heading:
+        service.beforeAfterEs.heading || base?.heading,
+      subheading:
+        service.beforeAfterEs.subheading || base?.subheading,
+      comparisons: (base?.comparisons ?? []).map((c: any) => ({
+        ...c,
+        title: c?.titleEs?.trim() ? c.titleEs : c?.title,
+      })),
+    };
+  })();
   // Related sprinkler services: title + short description per service, in
   // both languages, for the related-services cards inside the main content
   // (below) and the Spanish titles of the pills at the bottom. One fetch
@@ -1105,6 +1111,12 @@ export default async function ServicePage({
                       />
                       {isSpanish ? `Llama ahora: ${settings.phoneDisplay}` : `Call Now: ${settings.phoneDisplay}`}
                     </a>
+                    {/* The short form is at the bottom of this page: this
+                        button scrolls to it instead of showing it above
+                        the content. */}
+                    <a href="#quick-lead" className="category-cta-btn category-cta-btn-dark">
+                      {isSpanish ? "Pide tu inspección gratis" : "Get your free inspection"}
+                    </a>
                   </div>
                   <div className="category-cta-trust-row">
                     <div className="category-cta-trust-item">
@@ -1291,6 +1303,7 @@ export default async function ServicePage({
               <ServiceRating
                 rating={googleRatingSummary.rating}
                 reviewsCount={googleRatingSummary.total}
+                locale={locale}
               />
             )}
 
@@ -1323,18 +1336,59 @@ export default async function ServicePage({
                   {isSpanish ? `Llámanos al ${settings.phoneDisplay}` : `Call us at ${settings.phoneDisplay}`}
                 </span>
               </a>
+              {/* Emergency pages have no callback form (see the emergency
+                  block below): the call button above is the action. Every
+                  other service page scrolls to the short form at the
+                  bottom instead of showing it above the content. */}
+              {slug !== "emergency-sprinkler-repair" && (
+                <a href="#quick-lead" className="btn-book btn-book--secondary">
+                  {isSpanish ? "Pide tu inspección gratis" : "Get your free inspection"}
+                </a>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Quick lead form: prominent call button + short form posting to
-            the same /api/quote-request endpoint as the full quote flow. */}
-        <QuickLeadForm
-          locale={locale}
-          service={{ service: slug }}
-          phoneTel={settings.phoneTel}
-          phoneDisplay={settings.phoneDisplay}
-        />
+        {/* Emergency pages: no slow callback form. A big call button, a
+            real text-message link and the shut-off steps dominate
+            instead — the page says "call or text", so both are one tap
+            away. Every other service page shows the short form further
+            down (after the service content, before the reviews). */}
+        {slug === "emergency-sprinkler-repair" && (
+          <section className="quick-lead" aria-labelledby="emergency-cta-title">
+            <div className="quick-lead__card">
+              <h2 className="quick-lead__title" id="emergency-cta-title">
+                {isSpanish ? "¿Emergencia? Llámanos ahora" : "Emergency? Call us now"}
+              </h2>
+              <p className="quick-lead__sub">
+                {isSpanish
+                  ? "Te atendemos hoy dentro del horario."
+                  : "We help you today within business hours."}
+              </p>
+              <a href={`tel:${settings.phoneTel}`} className="quick-lead__call">
+                <SvgIcon name="phone" size={20} color="#fff" />
+                <span>
+                  {isSpanish ? `Llama ahora: ${settings.phoneDisplay}` : `Call now: ${settings.phoneDisplay}`}
+                </span>
+              </a>
+              <p className="emergency-cta__sms">
+                <a href={`sms:${settings.phoneTel}`}>
+                  {isSpanish ? "o escríbenos por mensaje" : "or text us"}
+                </a>
+              </p>
+              <p className="quick-lead__trust">
+                {isSpanish
+                  ? `${settings.hoursWeekdayLabelEs}: ${settings.hoursWeekdayTime} · ${settings.hoursWeekendLabelEs}: ${settings.hoursWeekendTime}`
+                  : `${settings.hoursWeekdayLabel}: ${settings.hoursWeekdayTime} · ${settings.hoursWeekendLabel}: ${settings.hoursWeekendTime}`}
+              </p>
+              <p className="quick-lead__sub">
+                {isSpanish
+                  ? "Mientras tanto: cierra el agua en la llave principal y apaga el controlador."
+                  : "While you wait: shut off the water at the main shutoff and turn off the controller."}
+              </p>
+            </div>
+          </section>
+        )}
 
         <ServiceGalleryClient
           serviceTitle={displayTitle}
@@ -1390,6 +1444,20 @@ export default async function ServicePage({
             </div>
           </div>
         )}
+
+      {/* Quick lead form, AFTER the service content (not above it):
+          prominent call button + short form posting to the same
+          /api/quote-request endpoint as the full quote flow, firing the
+          same Google Ads conversion. Emergency pages have no form (see
+          the emergency block above). */}
+      {slug !== "emergency-sprinkler-repair" && (
+        <QuickLeadForm
+          locale={locale}
+          service={{ service: slug }}
+          phoneTel={settings.phoneTel}
+          phoneDisplay={settings.phoneDisplay}
+        />
+      )}
 
       <ServiceReviewsWrapper slug={slug} locale={locale} />
 
