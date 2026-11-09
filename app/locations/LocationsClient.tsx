@@ -93,8 +93,14 @@ export default function LocationsClient({
 
   const cityQuery = searchTerm.trim().toLowerCase();
   const cityMatches = cityQuery
-    ? CITY_LINKS.filter((city) => city.name.toLowerCase().includes(cityQuery))
+    ? CITY_LINKS.filter((city) => city.name.toLowerCase().includes(cityQuery)).sort((a, b) => {
+        const aExact = a.name.toLowerCase() === cityQuery ? 0 : 1;
+        const bExact = b.name.toLowerCase() === cityQuery ? 0 : 1;
+        return aExact - bExact;
+      })
     : [];
+  const totalResults = filteredLocations.length + cityMatches.length;
+  const hideGrid = !loading && filteredLocations.length === 0 && cityMatches.length > 0;
 
   return (
     <div className="locations-page">
@@ -131,50 +137,41 @@ export default function LocationsClient({
               </div>
             </div>
 
+            {cityMatches.length > 0 && (
+              <ul className="locations-city-results">
+                {cityMatches.map((city) => (
+                  <li key={city.en} className="locations-city-result">
+                    <Link href={isSpanish ? city.es : city.en}>
+                      <span>{city.name}</span>
+                      <ArrowRight />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+
             <p className="locations-count">
-              {isSpanish ? `Mostrando ${filteredLocations.length} área${filteredLocations.length !== 1 ? "s" : ""} de servicio` : <>Showing {filteredLocations.length} service area{filteredLocations.length !== 1 ? "s" : ""}</>}
+              {searchTerm.trim() === ""
+                ? isSpanish
+                  ? `Mostrando ${filteredLocations.length} área${filteredLocations.length !== 1 ? "s" : ""} de servicio`
+                  : <>Showing {filteredLocations.length} service area{filteredLocations.length !== 1 ? "s" : ""}</>
+                : isSpanish
+                  ? `Mostrando ${totalResults} resultado${totalResults !== 1 ? "s" : ""}`
+                  : <>Showing {totalResults} result{totalResults !== 1 ? "s" : ""}</>}
             </p>
           </div>
         </section>
       )}
 
-      {/* Matching Cities */}
-      {cityMatches.length > 0 && (
-        <section className="locations-coverage-section">
-          <div className="locations-coverage-container">
-            <div className="locations-coverage-card">
-              <h2 className="locations-coverage-title">
-                {isSpanish
-                  ? `${cityMatches.length} ${cityMatches.length === 1 ? "ciudad" : "ciudades"} que coinciden con “${searchTerm.trim()}”`
-                  : `${cityMatches.length} ${cityMatches.length === 1 ? "city" : "cities"} matching “${searchTerm.trim()}”`}
-              </h2>
-              <p className="locations-coverage-description">
-                {cityMatches.map((city, i) => (
-                  <span key={city.en}>
-                    {i > 0 && ", "}
-                    <Link href={isSpanish ? city.es : city.en}>{city.name}</Link>
-                  </span>
-                ))}
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Locations Grid */}
+      {!hideGrid && (
       <section className="locations-grid-section">
         <div className="locations-grid">
           {loading ? (
             <div className="locations-loading">{isSpanish ? "Cargando..." : "Loading..."}</div>
           ) : filteredLocations.length === 0 ? (
             <div className="locations-empty">
-              {cityMatches.length > 0
-                ? isSpanish
-                  ? "Ningún área de servicio coincide con tu búsqueda — mira las ciudades que coinciden arriba."
-                  : "No service areas match your search — see the matching cities above."
-                : isSpanish
-                  ? "No se encontraron ubicaciones que coincidan con tu criterio."
-                  : "No locations found matching your criteria."}
+              {isSpanish ? "No se encontraron ubicaciones que coincidan con tu criterio." : "No locations found matching your criteria."}
             </div>
           ) : (
             filteredLocations.map((location) => (
@@ -236,6 +233,7 @@ export default function LocationsClient({
           )}
         </div>
       </section>
+      )}
 
       {/* Coverage Section */}
       <section className="locations-coverage-section">
