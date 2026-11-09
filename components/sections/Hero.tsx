@@ -67,11 +67,9 @@ export default function Hero({
   // was passed) are hidden instead of rendering an empty or stale number.
   const visibleStats = effectiveStats.filter((s) => s.value);
 
-  // The Google rating stat (if present) earns the star row in the quiet
-  // trust line under the CTAs; every stat renders as small text, no cards.
-  const googleStat = visibleStats.find(
-    (s) => s.label === "Google Rating" || s.label === "Calificación en Google"
-  );
+  // The star row renders inside the Google rating item itself (see below),
+  // so on mobile each trust row reads as its own element instead of the
+  // stars floating ahead of the whole line.
 
   return (
     <section id="hero" role="region" aria-labelledby="hero-title">
@@ -135,18 +133,23 @@ export default function Hero({
 
           {visibleStats.length > 0 && (
             <div className="hero-trust" role="list">
-              {googleStat && (
-                <span className="hero-trust-stars" aria-hidden="true">
-                  {[0, 1, 2, 3, 4].map((i) => (
-                    <SvgIcon key={i} name="star" size={16} color="#F59E0B" />
-                  ))}
-                </span>
-              )}
-              {visibleStats.map((s, i) => (
-                <span className="hero-trust-item" role="listitem" key={i}>
-                  <strong>{s.value}</strong> {s.label}
-                </span>
-              ))}
+              {visibleStats.map((s, i) => {
+                const isGoogleRating =
+                  s.label === "Google Rating" ||
+                  s.label === "Calificación en Google";
+                return (
+                  <span className="hero-trust-item" role="listitem" key={i}>
+                    {isGoogleRating && (
+                      <span className="hero-trust-stars" aria-hidden="true">
+                        {[0, 1, 2, 3, 4].map((j) => (
+                          <SvgIcon key={j} name="star" size={16} color="#F59E0B" />
+                        ))}
+                      </span>
+                    )}
+                    <strong>{s.value}</strong> {s.label}
+                  </span>
+                );
+              })}
             </div>
           )}
         </div>

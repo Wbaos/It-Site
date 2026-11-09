@@ -20596,8 +20596,11 @@ body {
 }
 
 @media (max-width: 720px) {
+  /* Mobile top chrome (announcement bar 44px + header) is fixed, and on
+     phones the hero title was sliding half under it. Give the hero a
+     generous top gap so the full title always starts below the header. */
   #hero {
-    padding: 9rem 1rem 4rem;
+    padding: 12rem 1rem 4rem;
   }
 
   #hero .hero-inner {
@@ -20605,8 +20608,69 @@ body {
     gap: 2.5rem;
   }
 
+  /* Slightly smaller title on phones so it reads without crowding. */
+  #hero .hero-title {
+    font-size: clamp(2rem, 8.5vw, 2.75rem);
+    text-wrap: balance;
+  }
+
+  /* Trust line: one clean row per fact on mobile, each with its own
+     marker, instead of a single run-on line with floating separators.
+     The stars live inside the Google rating row (see Hero.tsx), and
+     text-wrap: balance keeps long labels from leaving a lone word
+     ("Hours") on its own line. */
   .hero-trust {
-    gap: 0.4rem 0.9rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .hero-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-wrap: balance;
+  }
+
+  .hero-trust-item::before,
+  .hero-trust-item + .hero-trust-item::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    margin-right: 0;
+    border-radius: 50%;
+    background: #14532D;
+    flex-shrink: 0;
+  }
+
+  /* The Google rating row already has its stars — no extra dot. */
+  .hero-trust-item:has(.hero-trust-stars)::before {
+    display: none;
+  }
+
+  /* Announcement bar: stack the message over the phone, both centered,
+     so neither is squeezed onto one crowded line. Fits the existing
+     44px bar height, so the header and hero spacing stay put. */
+  .announcement-bar-grid {
+    flex-direction: column;
+    justify-content: center;
+    gap: 1px;
+  }
+
+  .announcement-center {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .announcement-right {
+    flex: 0 0 auto;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .announcement-text,
+  .announcement-phone {
+    line-height: 1.25;
   }
 
   .section.services,
