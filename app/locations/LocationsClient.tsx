@@ -145,7 +145,7 @@ export default function LocationsClient({
             <div className="locations-coverage-card">
               <h2 className="locations-coverage-title">
                 {isSpanish
-                  ? `${cityMatches.length} ${cityMatches.length === 1 ? "ciudad" : "ciudades"} que coinciden con “${searchTerm.trim()}”`
+                  ? `${cityMatches.length} ${cityMatches.length === 1 ? "ciudad que coincide" : "ciudades que coinciden"} con “${searchTerm.trim()}”`
                   : `${cityMatches.length} ${cityMatches.length === 1 ? "city" : "cities"} matching “${searchTerm.trim()}”`}
               </h2>
               <p className="locations-coverage-description">
