@@ -129,11 +129,6 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
           return (
           <Link key={s._id} href={serviceHref(s.slug, locale)} className={idx === 0 ? "service-card service-card--featured" : "service-card"}>
 
-            <div className="service-card-head">
-              <span className="service-card-num">{String(idx + 1).padStart(2, "0")}</span>
-              <h3 className="service-card-title">{title}</h3>
-            </div>
-
             {s.image?.asset && (
               <div className="service-card-photo">
                 <Image
@@ -145,6 +140,11 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
                 />
               </div>
             )}
+
+            <div className="service-card-head">
+              <span className="service-card-num">{String(idx + 1).padStart(2, "0")}</span>
+              <h3 className="service-card-title">{title}</h3>
+            </div>
 
             {description && (
               <p className="service-card-desc">{description}</p>

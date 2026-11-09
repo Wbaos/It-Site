@@ -68,7 +68,9 @@ export default function Footer({
               priority
               style={{
                 width: "auto",
-                height: "auto",
+                // Restrained height for the minimal footer (was 250px tall);
+                // the logo renders white via the .footer-logo filter in CSS.
+                height: "80px",
                 objectFit: "contain",
                 objectPosition: "center",
               }}

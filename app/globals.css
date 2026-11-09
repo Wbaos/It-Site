@@ -19291,8 +19291,11 @@ body {
 
 /* --- Announcement bar: one quiet line ------------------------------------ */
 .announcement-bar {
-  background-color: rgba(255, 255, 255, 0.92);
+  background-color: #ffffff;
   border-bottom: 1px solid #F3F4F6;
+  /* Solid, no blur: the frosted bar let page content bleed through. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .announcement-text {
@@ -19304,9 +19307,13 @@ body {
   color: #111827;
 }
 
-/* --- Header: slim translucent white, hairline bottom border ------------- */
+/* --- Header: slim solid white, hairline bottom border ------------------ */
 .site-header {
-  background: rgba(255, 255, 255, 0.85);
+  /* Solid white, no translucency or blur: the frosted header smeared
+     over the hero image (lawn-green bleeding through the nav). */
+  background: #ffffff;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border-bottom: 1px solid #E5E7EB;
 }
 
@@ -19710,13 +19717,25 @@ body {
   box-shadow: 0 20px 40px rgba(17, 24, 39, 0.08);
 }
 
+/* The photo box is sized by aspect ratio, never by its content: the
+   old fixed-height box let one card's photo collapse to a thin strip
+   overlapping the description. The image fills the box exactly. */
 .services-grid .service-card-photo {
-  height: 180px;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  min-height: 180px;
   margin-bottom: 0;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+  flex-shrink: 0;
 }
 
 .services-grid .service-card-photo img {
-  border-radius: 20px 20px 0 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
 }
 
 .services-grid .service-card-title {
@@ -19784,7 +19803,9 @@ body {
 
 .why-intro {
   position: sticky;
-  top: 9rem;
+  /* Clears the fixed top bars (announcement 44px + header ~70px) with
+     room to spare: at 9rem the pinned heading could slide under them. */
+  top: 11rem;
 }
 
 .why-header {
@@ -20498,4 +20519,63 @@ body {
 .svc-badge {
   background: #EFF6FF;
   color: #2563EB;
+}
+
+/* ===== Site redesign v3 — defect fixes (Nov 2026) ======================
+   Fixes for the defects found on the v3 preview: the hero trust-row
+   stars were invisible, the footer logo stayed green, the footer call
+   band had no styling at all (its number rendered as stray text at the
+   left viewport edge), and the header Call pill could crowd the nav at
+   tablet widths. No text, links or content changed here. */
+
+ /* Hero trust-row stars: SvgIcon "star" draws its path with fill="none"
+   and only gets a fill from a .star-outline/.star-filled ancestor,
+   which the trust row does not have — so the five stars were invisible.
+   Fill them amber here. */
+.hero-trust-stars .star-shape {
+  fill: #F59E0B;
+}
+
+/* Footer logo: the artwork is a green fist/hose with mint text on a
+   transparent background. Render it white on the dark footer (the
+   transparent background stays transparent under the filter). Its
+   height is capped in Footer.tsx. */
+.footer-logo {
+  filter: brightness(0) invert(1);
+}
+
+/* Footer call band: this element never had any CSS, so its number
+   rendered as unstyled text at the far left viewport edge. Make it an
+   intentional centered band inside the footer layout. */
+.footer-call {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-call-number {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.footer-call-number:hover {
+  color: #BFDBFE;
+}
+
+/* Tablet widths (901–1100px): the desktop nav is still visible, so the
+   header Call pill shrinks to an icon-only button instead of crowding
+   the nav. The phone number stays visible in the announcement bar and
+   in the floating call pill. At 900px and below the pill is hidden
+   entirely (existing rule). */
+@media (max-width: 1100px) {
+  .nav-call-btn span {
+    display: none;
+  }
+
+  .nav-call-btn {
+    padding: 0.65rem 0.75rem;
+  }
 }
