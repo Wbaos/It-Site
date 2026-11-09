@@ -10497,6 +10497,39 @@ object-fit: cover;
   .section.services{
     padding: 4rem 1rem;
   }
+
+  /* Mobile: the service photo bleeds to the card's side and top edges
+     instead of sitting inside the card padding. Only cards that have a
+     photo are affected; the text and button keep their side spacing. */
+  .service-card:has(.service-card-photo) {
+    padding: 0 0 2rem;
+    overflow: hidden;
+  }
+
+  .service-card:has(.service-card-photo) .service-card-photo {
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+
+  .service-card:has(.service-card-photo) .service-card-photo img {
+    height: 200px;
+  }
+
+  .service-card:has(.service-card-photo) .service-card-title,
+  .service-card:has(.service-card-photo) .service-card-desc,
+  .service-card:has(.service-card-photo) .service-card-bottom,
+  .service-card:has(.service-card-photo) .service-card-btn {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+  }
+
+  .service-card:has(.service-card-photo) .service-card-desc {
+    max-width: none;
+  }
+
+  .service-card:has(.service-card-photo) .service-card-btn {
+    width: auto;
+  }
 }
 /* ========== Service Detail ========== */
 .service-detail {
