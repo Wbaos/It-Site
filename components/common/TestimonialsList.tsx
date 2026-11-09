@@ -267,10 +267,10 @@ export default function TestimonialsList({
           {canSlide && (
             <div className="owl-nav">
               <button className="owl-prev" onClick={goPrev} aria-label={isSpanish ? "Reseña anterior" : "Previous testimonial"}>
-                <SvgIcon name="chevron-left" size={28} color="#0B1F3A" />
+                <SvgIcon name="chevron-left" size={28} color="#6B7280" />
               </button>
               <button className="owl-next" onClick={goNext} aria-label={isSpanish ? "Reseña siguiente" : "Next testimonial"}>
-                <SvgIcon name="chevron-right" size={28} color="#0B1F3A" />
+                <SvgIcon name="chevron-right" size={28} color="#6B7280" />
               </button>
             </div>
           )}

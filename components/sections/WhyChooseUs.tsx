@@ -155,33 +155,35 @@ export default async function WhyChooseUs({
       aria-labelledby="why-title"
     >
       <div className="site-container">
+
         <div className="why-split">
           <div className="why-intro">
-        <div className="why-header">
-          <h2 id="why-title">
-            {whyTitleParts.length > 1 ? (
-              <>
-                {whyTitleParts[0]}
-                <span className="brand">CallTechCare</span>
-                {whyTitleParts[1]}
-              </>
-            ) : (
-              whyTitle
-            )}
-          </h2>
-          <p>{whySubtitle}</p>
-        </div>
+            <div className="why-header">
+              <h2 id="why-title">
+                {whyTitleParts.length > 1 ? (
+                  <>
+                    {whyTitleParts[0]}
+                    <span className="brand">CallTechCare</span>
+                    {whyTitleParts[1]}
+                  </>
+                ) : (
+                  whyTitle
+                )}
+              </h2>
+              <p>{whySubtitle}</p>
+            </div>
 
-        <div className="why-photo">
-          <img
-            src="https://cdn.sanity.io/images/celkrwoq/production/3d495269e52ed93bb03e5191f5fd5c2082be1bcd-1024x768.jpg?w=800&auto=format&q=80"
-            alt={whyPhotoAlt}
-            width={1100}
-            height={420}
-            loading="lazy"
-          />
+            <div className="why-photo">
+              <img
+                src="https://cdn.sanity.io/images/celkrwoq/production/3d495269e52ed93bb03e5191f5fd5c2082be1bcd-1024x768.jpg?w=800&auto=format&q=80"
+                alt={whyPhotoAlt}
+                width={1100}
+                height={420}
+                loading="lazy"
+              />
+            </div>
           </div>
-          </div>
+
           <div className="why-list">
             {liveFeatures.map((f, i) => (
               <div key={i} className="why-row">
@@ -194,6 +196,7 @@ export default async function WhyChooseUs({
             ))}
           </div>
         </div>
+
       </div>
     </section>
   );

@@ -31,27 +31,24 @@ export default async function HowItWorks({ locale = "en" }: { locale?: "en" | "e
             : "Simple steps to get the sprinkler or camera help you need."}
         </p>
 
-        <div className="how-split">
-          <div className="how-timeline">
-            {steps.map((s: any, i: number) => (
-              <div key={s._id} className="how-step">
-                <div className="step-number">{i + 1}</div>
-                <div className="how-step-body">
-                  <h3 className="step-title">{s.title}</h3>
-                  <p className="step-desc">{s.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="how-photo">
-            <img
-              src="https://cdn.sanity.io/images/celkrwoq/production/456b56708953810835decb8cf25689fe8aa3677f-800x600.webp?w=800&auto=format&q=80"
-              alt={isSpanish ? "Camión de CallTechCare en el trabajo" : "CallTechCare truck on site"}
-              width={1100}
-              height={420}
-              loading="lazy"
-            />
-          </div>
+        <div className="how-grid">
+          {steps.map((s: any, i: number) => (
+            <div key={s._id} className="how-step">
+              <div className="step-number">{i + 1}</div>
+              <h3 className="step-title">{s.title}</h3>
+              <p className="step-desc">{s.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="how-photo">
+          <img
+            src="https://cdn.sanity.io/images/celkrwoq/production/456b56708953810835decb8cf25689fe8aa3677f-800x600.webp?w=800&auto=format&q=80"
+            alt={isSpanish ? "Camión de CallTechCare en el trabajo" : "CallTechCare truck on site"}
+            width={1100}
+            height={420}
+            loading="lazy"
+          />
         </div>
       </div>
     </section>

@@ -1,5 +1,12 @@
 
 import "./globals.css";
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -279,7 +286,7 @@ export default async function RootLayout({
   // above), so Spanish pages serve <html lang="es"> from the server —
   // no client-side fix-up, no hydration change.
   return (
-    <html lang={locale === "es" ? "es" : "en"} data-scroll-behavior="smooth">
+    <html lang={locale === "es" ? "es" : "en"} data-scroll-behavior="smooth" className={inter.variable}>
       <head>
         {/* Preconnect before the GTM loader below, so the tag manager
             connection is already warm when its script is injected. */}
@@ -315,7 +322,7 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-title" content="CallTechCare" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#0B1F3A" />
+        <meta name="theme-color" content="#FAFAF8" />
 
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
@@ -369,16 +376,7 @@ export default async function RootLayout({
             <LoadingProvider>
               <GoogleAnalytics />
               <div id="top" />
-              <Navbar
-                phoneDisplay={settings.phoneDisplay}
-                phoneTel={settings.phoneTel}
-                hoursWeekdayLabel={settings.hoursWeekdayLabel}
-                hoursWeekdayLabelEs={settings.hoursWeekdayLabelEs}
-                hoursWeekdayTime={settings.hoursWeekdayTime}
-                hoursWeekendLabel={settings.hoursWeekendLabel}
-                hoursWeekendLabelEs={settings.hoursWeekendLabelEs}
-                hoursWeekendTime={settings.hoursWeekendTime}
-              />
+              <Navbar phoneDisplay={settings.phoneDisplay} phoneTel={settings.phoneTel} />
               <main className="main-content">{children}</main>
               <Footer
                 areas={footerCities}

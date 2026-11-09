@@ -166,14 +166,25 @@ export async function getHomeSections(
       Component: Hero,
       props: heroProps,
     },
+
     { key: "highlights", Component: HighlightsServer, props: { locale } },
+
     { key: "services", Component: Services, props: { locale } },
-    // Quick lead form right after services: same shared component as the
-    // service/city pages (same POST /api/quote-request + same Google Ads
-    // conversion). No service/cityName on the home — there is no specific
-    // service or city here, and both props are optional; the API stores
-    // the lead with no service instead of attributing it to one the
-    // visitor never chose. Phone comes from site-settings, as elsewhere.
+
+    { key: "why", Component: WhyChooseUs, props: { locale, doc, ratingSummary } },
+
+    { key: "how", Component: HowItWorks, props: { locale } },
+
+    { key: "home-video", Component: HomeVideo, props: { locale, doc } },
+
+    { key: "seo-intro", Component: SEOIntro, props: { locale, doc } },
+
+    // Quick lead form after the video and SEO intro: same shared component
+    // as the service/city pages (same POST /api/quote-request + same
+    // Google Ads conversion). No service/cityName on the home — there is
+    // no specific service or city here, and both props are optional; the
+    // API stores the lead with no service instead of attributing it to one
+    // the visitor never chose. Phone comes from site-settings, as elsewhere.
     {
       key: "quick-lead",
       Component: QuickLeadForm,
@@ -183,15 +194,13 @@ export async function getHomeSections(
         phoneDisplay: settings.phoneDisplay,
       },
     },
-    { key: "how", Component: HowItWorks, props: { locale } },
-    { key: "why", Component: WhyChooseUs, props: { locale, doc, ratingSummary } },
-    { key: "home-video", Component: HomeVideo, props: { locale, doc } },
-    { key: "seo-intro", Component: SEOIntro, props: { locale, doc } },
+
     {
       key: "testimonials",
       Component: GoogleReviewsCTA,
       props: { locale, ratingSummary },
     },
+
     {
       key: "contact",
       Component: Contact,

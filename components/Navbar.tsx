@@ -31,21 +31,9 @@ const NAV_ES = [
 export default function Navbar({
   phoneTel = FALLBACK_SETTINGS.phoneTel,
   phoneDisplay = FALLBACK_SETTINGS.phoneDisplay,
-  hoursWeekdayLabel = FALLBACK_SETTINGS.hoursWeekdayLabel,
-  hoursWeekdayLabelEs = FALLBACK_SETTINGS.hoursWeekdayLabelEs,
-  hoursWeekdayTime = FALLBACK_SETTINGS.hoursWeekdayTime,
-  hoursWeekendLabel = FALLBACK_SETTINGS.hoursWeekendLabel,
-  hoursWeekendLabelEs = FALLBACK_SETTINGS.hoursWeekendLabelEs,
-  hoursWeekendTime = FALLBACK_SETTINGS.hoursWeekendTime,
 }: {
   phoneTel?: string;
   phoneDisplay?: string;
-  hoursWeekdayLabel?: string;
-  hoursWeekdayLabelEs?: string;
-  hoursWeekdayTime?: string;
-  hoursWeekendLabel?: string;
-  hoursWeekendLabelEs?: string;
-  hoursWeekendTime?: string;
 }) {
   const { open, setOpen, dropdownOpen, setDropdownOpen, searchOpen, setSearchOpen, closeAll } = useNav();
   const router = useRouter();
@@ -266,7 +254,7 @@ export default function Navbar({
 
   // Segmented language switcher: two separate, directly tappable buttons
   // ("EN" and "ES") instead of one pill to toggle — tap the language you
-  // want to go to. The active language is highlighted in brand orange with
+  // want to go to. The active language is highlighted in brand blue with
   // white text; the inactive one stays visible but dimmed. Hrefs and
   // mappings above are untouched.
   // Rendered in the desktop nav (NavLinks) and, separately, in the header
@@ -280,9 +268,9 @@ export default function Navbar({
         display: "inline-flex",
         alignItems: "center",
         padding: "2px",
-        background: "#FFFFFF",
-        border: "2px solid #0B1F3A",
-        borderRadius: "6px",
+        background: "#F3F4F6",
+        border: "1px solid #E5E7EB",
+        borderRadius: "999px",
         fontSize: "12px",
         fontWeight: 700,
         lineHeight: "1",
@@ -297,10 +285,10 @@ export default function Navbar({
             aria-label="View this page in English"
             style={{
               textDecoration: "none",
-              color: "#475569",
+              color: "#6B7280",
               opacity: 0.7,
               padding: "5px 9px",
-              borderRadius: "6px",
+              borderRadius: "999px",
             }}
           >
             EN
@@ -308,10 +296,10 @@ export default function Navbar({
           <span
             aria-current="true"
             style={{
-              background: "#F97316",
-              color: "#FFFFFF",
+              background: "#2563EB",
+              color: "#ffffff",
               padding: "5px 9px",
-              borderRadius: "6px",
+              borderRadius: "999px",
             }}
           >
             ES
@@ -322,10 +310,10 @@ export default function Navbar({
           <span
             aria-current="true"
             style={{
-              background: "#F97316",
-              color: "#FFFFFF",
+              background: "#2563EB",
+              color: "#ffffff",
               padding: "5px 9px",
-              borderRadius: "6px",
+              borderRadius: "999px",
             }}
           >
             EN
@@ -336,10 +324,10 @@ export default function Navbar({
             aria-label="Ver esta página en español"
             style={{
               textDecoration: "none",
-              color: "#475569",
+              color: "#6B7280",
               opacity: 0.7,
               padding: "5px 9px",
-              borderRadius: "6px",
+              borderRadius: "999px",
             }}
           >
             ES
@@ -638,23 +626,14 @@ export default function Navbar({
 
   return (
     <>
-      <AnnouncementBar
-        phoneTel={phoneTel}
-        phoneDisplay={phoneDisplay}
-        hoursWeekdayLabel={hoursWeekdayLabel}
-        hoursWeekdayLabelEs={hoursWeekdayLabelEs}
-        hoursWeekdayTime={hoursWeekdayTime}
-        hoursWeekendLabel={hoursWeekendLabel}
-        hoursWeekendLabelEs={hoursWeekendLabelEs}
-        hoursWeekendTime={hoursWeekendTime}
-      />
+      <AnnouncementBar phoneTel={phoneTel} phoneDisplay={phoneDisplay} />
       <header className="site-header">
         <div className="site-container-var nav-grid">
           {/* BRAND: stays in the current language (Spanish home when in Spanish mode) */}
           <Link href={isSpanishPage ? "/es/" : "/"} className="brand" onClick={closeAllMenus}>
             <div className="logo-wrapper">
-              <SvgIcon name="calltechcare-logoName" color="#0B1F3A" size={180} className="logo-desktop" />
-              <SvgIcon name="calltechcare-logoMobile" color="#0B1F3A" size={100} className="logo-mobile" />
+              <SvgIcon name="calltechcare-logoName" color="#111827" size={180} className="logo-desktop" />
+              <SvgIcon name="calltechcare-logoMobile" color="#111827" size={100} className="logo-mobile" />
             </div>
           </Link>
           <div className="left-slot">
@@ -701,10 +680,10 @@ export default function Navbar({
             </button>
             <a
               href={`tel:${phoneTel}`}
-              className="nav-phone-btn"
+              className="nav-call-btn"
               aria-label={`Call CallTechCare at ${phoneDisplay}`}
             >
-              <Phone size={18} aria-hidden="true" />
+              <Phone size={16} aria-hidden="true" />
               <span>{phoneDisplay}</span>
             </a>
 

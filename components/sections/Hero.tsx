@@ -67,77 +67,97 @@ export default function Hero({
   // was passed) are hidden instead of rendering an empty or stale number.
   const visibleStats = effectiveStats.filter((s) => s.value);
 
+  // The Google rating stat (if present) earns the star row in the quiet
+  // trust line under the CTAs; every stat renders as small text, no cards.
+  const googleStat = visibleStats.find(
+    (s) => s.label === "Google Rating" || s.label === "Calificación en Google"
+  );
+
   return (
     <section id="hero" role="region" aria-labelledby="hero-title">
-      <div className="hero-grid">
-        <div className="hero-copy">
-          {/* Badge */}
-          {badgeText && <div className="hero-badge">{badgeText}</div>}
+      <div className="hero-inner">
+        {/* Badge */}
+        {badgeText && <div className="hero-badge">{badgeText}</div>}
 
-          {/* Title */}
-          <h1 id="hero-title" className="hero-title">
-            <span className="hero-title-line1">{titleLine1}</span>
-            <span className="hero-title-line2">{titleLine2}</span>
-          </h1>
+        {/* Title */}
+        <h1 id="hero-title" className="hero-title">
+          <span className="hero-title-line1">{titleLine1}</span>
+          <span className="hero-title-line2">{titleLine2}</span>
+        </h1>
 
-          {/* Subtitle */}
-          {subtitle && <p className="hero-sub">{subtitle}</p>}
+        {/* Subtitle */}
+        {subtitle && <p className="hero-sub">{subtitle}</p>}
 
-          {/* CTAs */}
-          <div className="hero-ctas">
-            {primaryCtaText && primaryCtaHref && (
-              isPrimaryPhoneLink ? (
-                <a
-                  href={primaryCtaHref}
-                  className="btn-cta btn-primary"
-                  aria-label="Call CallTechCare for sprinkler repair in Miami and Broward"
-                >
-                  {primaryCtaText}
-                </a>
-              ) : (
-                <Link
-                  href={primaryCtaHref}
-                  className="btn-cta btn-primary"
-                  aria-label="Get sprinkler repair and irrigation service in Miami and Broward"
-                >
-                  {primaryCtaText}
-                </Link>
-              )
-            )}
-
-            {secondaryCtaText && secondaryCtaHref && (
-              <Link
-                href={secondaryCtaHref}
-                className="btn-cta btn-secondary flex items-center gap-2"
-                aria-label="Send us a quick message for sprinkler repair in Miami and Broward"
-              >
-                <SvgIcon name="document" size={20} />
-                {secondaryCtaText}
-              </Link>
-            )}
-            {showCallButton && !isPrimaryPhoneLink && (
+        {/* CTAs */}
+        <div className="hero-ctas">
+          {primaryCtaText && primaryCtaHref && (
+            isPrimaryPhoneLink ? (
               <a
-                href={`tel:${phoneNumber}`}
-                className="btn-cta btn-cta btn-primary flex items-center gap-2"
+                href={primaryCtaHref}
+                className="btn-cta btn-primary"
                 aria-label="Call CallTechCare for sprinkler repair in Miami and Broward"
               >
-                <SvgIcon name="phone" size={20} />
-                Call Now
+                {primaryCtaText}
               </a>
-            )}
-          </div>
+            ) : (
+              <Link
+                href={primaryCtaHref}
+                className="btn-cta btn-primary"
+                aria-label="Get sprinkler repair and irrigation service in Miami and Broward"
+              >
+                {primaryCtaText}
+              </Link>
+            )
+          )}
+
+          {secondaryCtaText && secondaryCtaHref && (
+            <Link
+              href={secondaryCtaHref}
+              className="btn-cta btn-secondary flex items-center gap-2"
+              aria-label="Send us a quick message for sprinkler repair in Miami and Broward"
+            >
+              <SvgIcon name="document" size={20} />
+              {secondaryCtaText}
+            </Link>
+          )}
+          {showCallButton && !isPrimaryPhoneLink && (
+            <a
+              href={`tel:${phoneNumber}`}
+              className="btn-cta btn-cta btn-primary flex items-center gap-2"
+              aria-label="Call CallTechCare for sprinkler repair in Miami and Broward"
+            >
+              <SvgIcon name="phone" size={20} />
+              Call Now
+            </a>
+          )}
         </div>
 
+        {visibleStats.length > 0 && (
+          <div className="hero-trust" role="list">
+            {googleStat && (
+              <span className="hero-trust-stars" aria-hidden="true">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <SvgIcon key={i} name="star" size={16} color="#F59E0B" />
+                ))}
+              </span>
+            )}
+            {visibleStats.map((s, i) => (
+              <span className="hero-trust-item" role="listitem" key={i}>
+                <strong>{s.value}</strong> {s.label}
+              </span>
+            ))}
+          </div>
+        )}
+
         {imageSrc && (
-          <div className="hero-media">
+          <figure className="hero-media">
             <picture className="hero-bg">
               {mobileImageSrc && (
                 <source media="(max-width: 760px)" srcSet={mobileImageSrc} />
               )}
               <img
                 src={imageSrc}
-                alt=""
-                aria-hidden="true"
+                alt={imageAlt || ""}
                 className="hero-bg-img"
                 width={1600}
                 height={1200}
@@ -145,17 +165,8 @@ export default function Hero({
                 fetchPriority="high"
               />
             </picture>
-          </div>
+          </figure>
         )}
-      </div>
-
-      <div className="hero-stats">
-        {visibleStats.map((s, i) => (
-          <div className="hero-stat-card" key={i}>
-            <div className="stat-value">{s.value}</div>
-            <div className="stat-label">{s.label}</div>
-          </div>
-        ))}
       </div>
     </section>
   );
