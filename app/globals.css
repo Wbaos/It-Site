@@ -13638,6 +13638,10 @@ box-shadow:
   .footer-brand {
     justify-content: center;
     align-items: center;
+    /* Mobile: a little breathing room above the footer logo so it does
+       not sit tight against the section above it. Desktop keeps the
+       flush top alignment. */
+    margin-top: 1.5rem;
   }
 
   .footer-middle {
