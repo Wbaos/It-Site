@@ -4,7 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Search, Menu, X } from "lucide-react";
+import { Search, Menu, X, Home, LayoutGrid, Droplet, Camera, Layers, Mail, FileText, MapPin, Phone, ChevronRight } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { useNav } from "@/lib/NavContext";
 import { useLoading } from "@/lib/LoadingContext";
 import SearchModal from "@/components/SearchModal";
@@ -45,6 +46,12 @@ export default function Navbar({
   const { setLoading } = useLoading();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [mobileServicesPanel, setMobileServicesPanel] = useState(false);
+
+  // Style 9 "Con buscador" mobile menu: live search over the menu links.
+  const [menuQuery, setMenuQuery] = useState("");
+  useEffect(() => {
+    if (!open) setMenuQuery("");
+  }, [open]);
 
   // Language switcher: pages with a Spanish twin link to it; every other page
   // falls back to the Spanish home (never a broken page, and never a
@@ -625,6 +632,115 @@ export default function Navbar({
     fetchServices();
   }, []);
 
+  // Mobile menu, style 9 "Con buscador": a search box at the top that
+  // live-filters the links (accent-insensitive, so "cam" finds "Cámaras"),
+  // icon rows for each destination, and the green call button at the
+  // bottom. The "Servicios" row opens the services panel, like the old
+  // mobile menu did. Desktop nav is untouched.
+  const normMenuLabel = (v: string) =>
+    v
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  const mobileMenuItems: {
+    href?: string;
+    action?: "services";
+    icon: LucideIcon;
+    label: string;
+  }[] = [
+    { href: isSpanishPage ? "/es/" : "/", icon: Home, label: isSpanishPage ? "Inicio" : "Home" },
+    { action: "services", icon: LayoutGrid, label: isSpanishPage ? "Servicios" : "Services" },
+    { href: serviceHref("sprinkler-repair-and-installation", isSpanishPage ? "es" : "en"), icon: Droplet, label: isSpanishPage ? "Reparación de sprinklers" : "Sprinkler Repair" },
+    { href: serviceHref("wireless-camera-installation", isSpanishPage ? "es" : "en"), icon: Camera, label: isSpanishPage ? "Cámaras inalámbricas" : "Wireless Cameras" },
+    { href: isSpanishPage ? "/es/servicios" : "/services", icon: Layers, label: isSpanishPage ? "Todos los servicios" : "All Services" },
+    { href: isSpanishPage ? "/es/contacto" : "/contact", icon: Mail, label: isSpanishPage ? "Contacto" : "Contact" },
+    { href: isSpanishPage ? "/es/blog" : "/blog", icon: FileText, label: "Blog" },
+    { href: isSpanishPage ? "/es/areas-de-servicio" : "/locations", icon: MapPin, label: isSpanishPage ? "Áreas de servicio" : "Service Areas" },
+  ];
+  const mobileMenuFiltered = (() => {
+    const q = normMenuLabel(menuQuery.trim());
+    return q ? mobileMenuItems.filter((i) => normMenuLabel(i.label).includes(q)) : mobileMenuItems;
+  })();
+  const openServicesPanel = () => {
+    closeAllMenus();
+    setOpen(true);
+    setMobileServicesPanel(true);
+  };
+  const goMobileMenuItem = (item: (typeof mobileMenuItems)[number]) => {
+    if (item.action === "services") {
+      openServicesPanel();
+      return;
+    }
+    if (item.href) {
+      closeAllMenus();
+      router.push(item.href);
+    }
+  };
+  const renderMobileSearchMenu = () => (
+    <>
+      <label className="mobile-menu-search">
+        <Search size={20} />
+        <input
+          type="text"
+          value={menuQuery}
+          onChange={(e) => setMenuQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && mobileMenuFiltered.length === 1) {
+              e.preventDefault();
+              goMobileMenuItem(mobileMenuFiltered[0]);
+            }
+          }}
+          placeholder={isSpanishPage ? "Buscar en el menú…" : "Search the menu…"}
+          aria-label={isSpanishPage ? "Buscar en el menú" : "Search the menu"}
+          autoComplete="off"
+        />
+      </label>
+      <div className="mobile-menu-list">
+        {mobileMenuFiltered.length === 0 && (
+          <span className="mobile-menu-empty">
+            {isSpanishPage ? "Sin resultados" : "No results"}
+          </span>
+        )}
+        {mobileMenuFiltered.map((item) => {
+          const ItemIcon = item.icon;
+          const row = (
+            <>
+              <ItemIcon size={20} />
+              <span>{item.label}</span>
+              <ChevronRight size={18} />
+            </>
+          );
+          return item.href ? (
+            <Link
+              key={item.href + item.label}
+              href={item.href}
+              className="mobile-menu-link"
+              onClick={closeAllMenus}
+            >
+              {row}
+            </Link>
+          ) : (
+            <button
+              key={item.label}
+              type="button"
+              className="mobile-menu-link"
+              onClick={openServicesPanel}
+            >
+              {row}
+            </button>
+          );
+        })}
+      </div>
+      <a href={phoneTel} className="mobile-menu-call">
+        <Phone size={20} />
+        <span>
+          <strong>{isSpanishPage ? "Llamar ahora" : "Call now"}</strong>
+          <small>{phoneDisplay}</small>
+        </span>
+      </a>
+    </>
+  );
+
   return (
     <>
       <AnnouncementBar phoneTel={phoneTel} phoneDisplay={phoneDisplay} />
@@ -710,10 +826,12 @@ export default function Navbar({
         </div>
       </header>
 
-      {/* Mobile nav must be outside the blurred fixed header (iOS/WebKit fix) */}
+      {/* Mobile nav must be outside the blurred fixed header (iOS/WebKit fix).
+          Style 9 "Con buscador": search box that live-filters the links,
+          icon rows, and the call button at the bottom. */}
       {open && (
-        <nav className={`primary-nav primary-nav--mobile ${open ? "open" : ""}`}>
-          <NavLinks attachDropdownRef={false} />
+        <nav className={`primary-nav primary-nav--mobile ${open ? "open" : ""}`} aria-label={isSpanishPage ? "Menú" : "Menu"}>
+          {renderMobileSearchMenu()}
         </nav>
       )}
 
