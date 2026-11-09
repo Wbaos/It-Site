@@ -638,21 +638,23 @@ export default function Navbar({
             <div className="logo-wrapper">
               <span className="logo-lockup logo-desktop">
                 <Image
-                  src="/logo-mark-v3.svg"
+                  src="/logo-mark-v4.svg"
                   alt=""
                   width={38}
                   height={32}
                   className="logo-mark"
+                  priority
                 />
                 <span className="logo-name">CallTechCare</span>
               </span>
               <span className="logo-lockup logo-mobile">
                 <Image
-                  src="/logo-mark-v3.svg"
+                  src="/logo-mark-v4.svg"
                   alt=""
                   width={34}
                   height={29}
                   className="logo-mark"
+                  priority
                 />
                 <span className="logo-name-stacked">
                   <span>Call</span>
