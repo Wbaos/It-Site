@@ -151,6 +151,8 @@ export default function QuickLeadForm({
   return (
     <section className="quick-lead" id="quick-lead" aria-labelledby="quick-lead-title">
       <div className="quick-lead__card">
+        <div className="quick-lead__grid">
+          <div className="quick-lead__intro">
         <h2 className="quick-lead__title" id="quick-lead-title">{t.title}</h2>
         <p className="quick-lead__sub">{t.sub}</p>
 
@@ -161,6 +163,9 @@ export default function QuickLeadForm({
           </span>
         </a>
 
+        <p className="quick-lead__trust">{t.trust}</p>
+          </div>
+          <div className="quick-lead__formcol">
         {referenceNumber ? (
           <div className="quick-lead__success" role="status">
             <p className="quick-lead__success-title">
@@ -173,6 +178,7 @@ export default function QuickLeadForm({
           </div>
         ) : (
           <form className="quick-lead__form" onSubmit={handleSubmit} noValidate>
+            <div className="quick-lead__row">
             <div className="quick-lead__field">
               <label className="quick-lead__label" htmlFor="quick-lead-name">
                 {t.nameLabel}
@@ -203,6 +209,7 @@ export default function QuickLeadForm({
                 required
               />
             </div>
+            </div>
             <div className="quick-lead__field">
               <label className="quick-lead__label" htmlFor="quick-lead-message">
                 {t.messageLabel}
@@ -231,7 +238,8 @@ export default function QuickLeadForm({
           </form>
         )}
 
-        <p className="quick-lead__trust">{t.trust}</p>
+          </div>
+        </div>
       </div>
     </section>
   );

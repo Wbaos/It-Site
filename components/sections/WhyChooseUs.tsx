@@ -155,7 +155,8 @@ export default async function WhyChooseUs({
       aria-labelledby="why-title"
     >
       <div className="site-container">
-
+        <div className="why-split">
+          <div className="why-intro">
         <div className="why-header">
           <h2 id="why-title">
             {whyTitleParts.length > 1 ? (
@@ -179,18 +180,20 @@ export default async function WhyChooseUs({
             height={420}
             loading="lazy"
           />
+          </div>
+          </div>
+          <div className="why-list">
+            {liveFeatures.map((f, i) => (
+              <div key={i} className="why-row">
+                <div className="why-row-icon">{f.icon}</div>
+                <div className="why-row-body">
+                  <h3>{f.title}</h3>
+                  <p>{f.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-
-        <div className="why-grid">
-          {liveFeatures.map((f, i) => (
-            <div key={i} className="why-card">
-              <div className="why-icon">{f.icon}</div>
-              <h3>{f.title}</h3>
-              <p>{f.text}</p>
-            </div>
-          ))}
-        </div>
-
       </div>
     </section>
   );

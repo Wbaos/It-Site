@@ -71,7 +71,6 @@ export default function Hero({
     <section id="hero" role="region" aria-labelledby="hero-title">
       <div className="hero-grid">
         <div className="hero-copy">
-
           {/* Badge */}
           {badgeText && <div className="hero-badge">{badgeText}</div>}
 
@@ -117,27 +116,18 @@ export default function Hero({
               </Link>
             )}
             {showCallButton && !isPrimaryPhoneLink && (
-            <a
-              href={`tel:${phoneNumber}`}
-              className="btn-cta btn-cta btn-primary flex items-center gap-2"
-              aria-label="Call CallTechCare for sprinkler repair in Miami and Broward"
-            >
-              <SvgIcon name="phone" size={20} />
-              Call Now
-            </a>
-          )}
+              <a
+                href={`tel:${phoneNumber}`}
+                className="btn-cta btn-cta btn-primary flex items-center gap-2"
+                aria-label="Call CallTechCare for sprinkler repair in Miami and Broward"
+              >
+                <SvgIcon name="phone" size={20} />
+                Call Now
+              </a>
+            )}
           </div>
-
-          <div className="hero-stats">
-            {visibleStats.map((s, i) => (
-              <div className="hero-stat-card" key={i}>
-                <div className="stat-value">{s.value}</div>
-                <div className="stat-label">{s.label}</div>
-              </div>
-            ))}
-          </div>
-
         </div>
+
         {imageSrc && (
           <div className="hero-media">
             <picture className="hero-bg">
@@ -157,6 +147,15 @@ export default function Hero({
             </picture>
           </div>
         )}
+      </div>
+
+      <div className="hero-stats">
+        {visibleStats.map((s, i) => (
+          <div className="hero-stat-card" key={i}>
+            <div className="stat-value">{s.value}</div>
+            <div className="stat-label">{s.label}</div>
+          </div>
+        ))}
       </div>
     </section>
   );

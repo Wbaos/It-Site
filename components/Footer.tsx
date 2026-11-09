@@ -114,6 +114,17 @@ export default function Footer({
         </div>
       </div>
 
+      {/* ===== Giant call band ===== */}
+      <div className="footer-call">
+        <a
+          href={`tel:${phoneTel}`}
+          className="footer-call-number"
+          aria-label={`Call CallTechCare at ${phoneDisplay}`}
+        >
+          {phoneDisplay}
+        </a>
+      </div>
+
       {/* ===== Social + Legal ===== */}
       <div className="site-container footer-middle">
         <div className="footer-social">

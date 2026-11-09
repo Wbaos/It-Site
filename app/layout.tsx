@@ -315,7 +315,7 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-title" content="CallTechCare" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#067A46" />
+        <meta name="theme-color" content="#0B1F3A" />
 
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
@@ -369,7 +369,16 @@ export default async function RootLayout({
             <LoadingProvider>
               <GoogleAnalytics />
               <div id="top" />
-              <Navbar phoneDisplay={settings.phoneDisplay} phoneTel={settings.phoneTel} />
+              <Navbar
+                phoneDisplay={settings.phoneDisplay}
+                phoneTel={settings.phoneTel}
+                hoursWeekdayLabel={settings.hoursWeekdayLabel}
+                hoursWeekdayLabelEs={settings.hoursWeekdayLabelEs}
+                hoursWeekdayTime={settings.hoursWeekdayTime}
+                hoursWeekendLabel={settings.hoursWeekendLabel}
+                hoursWeekendLabelEs={settings.hoursWeekendLabelEs}
+                hoursWeekendTime={settings.hoursWeekendTime}
+              />
               <main className="main-content">{children}</main>
               <Footer
                 areas={footerCities}

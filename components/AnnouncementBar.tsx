@@ -10,6 +10,12 @@ type AnnouncementBarProps = {
   fadeMs?: number;
   phoneTel?: string;
   phoneDisplay?: string;
+  hoursWeekdayLabel?: string;
+  hoursWeekdayLabelEs?: string;
+  hoursWeekdayTime?: string;
+  hoursWeekendLabel?: string;
+  hoursWeekendLabelEs?: string;
+  hoursWeekendTime?: string;
 };
 
 export default function AnnouncementBar({
@@ -18,6 +24,12 @@ export default function AnnouncementBar({
   fadeMs = 300,
   phoneTel = FALLBACK_SETTINGS.phoneTel,
   phoneDisplay = FALLBACK_SETTINGS.phoneDisplay,
+  hoursWeekdayLabel = FALLBACK_SETTINGS.hoursWeekdayLabel,
+  hoursWeekdayLabelEs = FALLBACK_SETTINGS.hoursWeekdayLabelEs,
+  hoursWeekdayTime = FALLBACK_SETTINGS.hoursWeekdayTime,
+  hoursWeekendLabel = FALLBACK_SETTINGS.hoursWeekendLabel,
+  hoursWeekendLabelEs = FALLBACK_SETTINGS.hoursWeekendLabelEs,
+  hoursWeekendTime = FALLBACK_SETTINGS.hoursWeekendTime,
 }: AnnouncementBarProps) {
   const pathname = usePathname();
   const isSpanishPage =
@@ -87,6 +99,12 @@ export default function AnnouncementBar({
     <div className="announcement-bar" role="status" aria-live="polite">
       <div className="announcement-bar-inner">
         <div className="announcement-bar-grid">
+
+          <div className="announcement-hours">
+            {isSpanishPage
+              ? `${hoursWeekdayLabelEs}: ${hoursWeekdayTime} \u00b7 ${hoursWeekendLabelEs}: ${hoursWeekendTime}`
+              : `${hoursWeekdayLabel}: ${hoursWeekdayTime} \u00b7 ${hoursWeekendLabel}: ${hoursWeekendTime}`}
+          </div>
 
           <div className="announcement-center">
             <span

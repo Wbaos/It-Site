@@ -31,9 +31,21 @@ const NAV_ES = [
 export default function Navbar({
   phoneTel = FALLBACK_SETTINGS.phoneTel,
   phoneDisplay = FALLBACK_SETTINGS.phoneDisplay,
+  hoursWeekdayLabel = FALLBACK_SETTINGS.hoursWeekdayLabel,
+  hoursWeekdayLabelEs = FALLBACK_SETTINGS.hoursWeekdayLabelEs,
+  hoursWeekdayTime = FALLBACK_SETTINGS.hoursWeekdayTime,
+  hoursWeekendLabel = FALLBACK_SETTINGS.hoursWeekendLabel,
+  hoursWeekendLabelEs = FALLBACK_SETTINGS.hoursWeekendLabelEs,
+  hoursWeekendTime = FALLBACK_SETTINGS.hoursWeekendTime,
 }: {
   phoneTel?: string;
   phoneDisplay?: string;
+  hoursWeekdayLabel?: string;
+  hoursWeekdayLabelEs?: string;
+  hoursWeekdayTime?: string;
+  hoursWeekendLabel?: string;
+  hoursWeekendLabelEs?: string;
+  hoursWeekendTime?: string;
 }) {
   const { open, setOpen, dropdownOpen, setDropdownOpen, searchOpen, setSearchOpen, closeAll } = useNav();
   const router = useRouter();
@@ -254,8 +266,8 @@ export default function Navbar({
 
   // Segmented language switcher: two separate, directly tappable buttons
   // ("EN" and "ES") instead of one pill to toggle — tap the language you
-  // want to go to. The active language is highlighted in brand green with
-  // dark text; the inactive one stays visible but dimmed. Hrefs and
+  // want to go to. The active language is highlighted in brand orange with
+  // white text; the inactive one stays visible but dimmed. Hrefs and
   // mappings above are untouched.
   // Rendered in the desktop nav (NavLinks) and, separately, in the header
   // actions for mobile, where it is visible without opening the menu.
@@ -268,9 +280,9 @@ export default function Navbar({
         display: "inline-flex",
         alignItems: "center",
         padding: "2px",
-        background: "#EEF4EF",
-        border: "1px solid #DCE8DF",
-        borderRadius: "999px",
+        background: "#FFFFFF",
+        border: "2px solid #0B1F3A",
+        borderRadius: "6px",
         fontSize: "12px",
         fontWeight: 700,
         lineHeight: "1",
@@ -285,10 +297,10 @@ export default function Navbar({
             aria-label="View this page in English"
             style={{
               textDecoration: "none",
-              color: "#47564E",
+              color: "#475569",
               opacity: 0.7,
               padding: "5px 9px",
-              borderRadius: "999px",
+              borderRadius: "6px",
             }}
           >
             EN
@@ -296,10 +308,10 @@ export default function Navbar({
           <span
             aria-current="true"
             style={{
-              background: "#067A46",
-              color: "#ffffff",
+              background: "#F97316",
+              color: "#FFFFFF",
               padding: "5px 9px",
-              borderRadius: "999px",
+              borderRadius: "6px",
             }}
           >
             ES
@@ -310,10 +322,10 @@ export default function Navbar({
           <span
             aria-current="true"
             style={{
-              background: "#067A46",
-              color: "#ffffff",
+              background: "#F97316",
+              color: "#FFFFFF",
               padding: "5px 9px",
-              borderRadius: "999px",
+              borderRadius: "6px",
             }}
           >
             EN
@@ -324,10 +336,10 @@ export default function Navbar({
             aria-label="Ver esta página en español"
             style={{
               textDecoration: "none",
-              color: "#47564E",
+              color: "#475569",
               opacity: 0.7,
               padding: "5px 9px",
-              borderRadius: "999px",
+              borderRadius: "6px",
             }}
           >
             ES
@@ -626,14 +638,23 @@ export default function Navbar({
 
   return (
     <>
-      <AnnouncementBar phoneTel={phoneTel} phoneDisplay={phoneDisplay} />
+      <AnnouncementBar
+        phoneTel={phoneTel}
+        phoneDisplay={phoneDisplay}
+        hoursWeekdayLabel={hoursWeekdayLabel}
+        hoursWeekdayLabelEs={hoursWeekdayLabelEs}
+        hoursWeekdayTime={hoursWeekdayTime}
+        hoursWeekendLabel={hoursWeekendLabel}
+        hoursWeekendLabelEs={hoursWeekendLabelEs}
+        hoursWeekendTime={hoursWeekendTime}
+      />
       <header className="site-header">
         <div className="site-container-var nav-grid">
           {/* BRAND: stays in the current language (Spanish home when in Spanish mode) */}
           <Link href={isSpanishPage ? "/es/" : "/"} className="brand" onClick={closeAllMenus}>
             <div className="logo-wrapper">
-              <SvgIcon name="calltechcare-logoName" color="#067A46" size={180} className="logo-desktop" />
-              <SvgIcon name="calltechcare-logoMobile" color="#067A46" size={100} className="logo-mobile" />
+              <SvgIcon name="calltechcare-logoName" color="#0B1F3A" size={180} className="logo-desktop" />
+              <SvgIcon name="calltechcare-logoMobile" color="#0B1F3A" size={100} className="logo-mobile" />
             </div>
           </Link>
           <div className="left-slot">
@@ -662,14 +683,6 @@ export default function Navbar({
             {/* LANGUAGE SWITCHER, mobile only (see .mobile-only): visible
                 without opening the menu. */}
             {langSwitcher("mobile-only lang-switcher--header-actions")}
-            <a
-              href={`tel:${phoneTel}`}
-              className="nav-phone-btn"
-              aria-label={`Call CallTechCare at ${phoneDisplay}`}
-            >
-              <Phone size={18} aria-hidden="true" />
-              <span>{phoneDisplay}</span>
-            </a>
             <button
               className="icon-btn"
               aria-label={isSpanishPage ? "Buscar" : "Search"}
@@ -686,6 +699,14 @@ export default function Navbar({
             >
               <Search size={18} />
             </button>
+            <a
+              href={`tel:${phoneTel}`}
+              className="nav-phone-btn"
+              aria-label={`Call CallTechCare at ${phoneDisplay}`}
+            >
+              <Phone size={18} aria-hidden="true" />
+              <span>{phoneDisplay}</span>
+            </a>
 
           </div>
         </div>

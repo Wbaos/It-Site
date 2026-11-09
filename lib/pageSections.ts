@@ -166,13 +166,8 @@ export async function getHomeSections(
       Component: Hero,
       props: heroProps,
     },
-
     { key: "highlights", Component: HighlightsServer, props: { locale } },
-
-    { key: "home-video", Component: HomeVideo, props: { locale, doc } },
-
     { key: "services", Component: Services, props: { locale } },
-
     // Quick lead form right after services: same shared component as the
     // service/city pages (same POST /api/quote-request + same Google Ads
     // conversion). No service/cityName on the home — there is no specific
@@ -188,18 +183,15 @@ export async function getHomeSections(
         phoneDisplay: settings.phoneDisplay,
       },
     },
-
-    { key: "seo-intro", Component: SEOIntro, props: { locale, doc } },
-    { key: "why", Component: WhyChooseUs, props: { locale, doc, ratingSummary } },
-
     { key: "how", Component: HowItWorks, props: { locale } },
-
+    { key: "why", Component: WhyChooseUs, props: { locale, doc, ratingSummary } },
+    { key: "home-video", Component: HomeVideo, props: { locale, doc } },
+    { key: "seo-intro", Component: SEOIntro, props: { locale, doc } },
     {
       key: "testimonials",
       Component: GoogleReviewsCTA,
       props: { locale, ratingSummary },
     },
-
     {
       key: "contact",
       Component: Contact,
