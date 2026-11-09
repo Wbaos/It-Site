@@ -67,7 +67,7 @@ export default function Footer({
               className="footer-logo"
               priority
               style={{
-                width: "auto",
+                width: "150px",
                 height: "auto",
                 objectFit: "contain",
                 objectPosition: "center",
