@@ -10988,8 +10988,14 @@ object-fit: cover;
 .service-image {
   flex: 1 1 600px;
   max-width: 700px;
-  height: 520px;
-  max-height: 520px;
+  /* No fixed height: the image stretches to the height of the text card
+     next to it (9 Nov 2026 — the old fixed 520px left the photo shorter
+     than the card, which grows with its content). The inner img already
+     has height: 100% + object-fit: cover, so it fills the stretched box.
+     Mobile keeps its own fixed 340px banner below. */
+  height: auto;
+  max-height: none;
+  align-self: stretch;
   border-radius: 1rem;
   overflow: hidden;
   display: block;
