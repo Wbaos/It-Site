@@ -7756,7 +7756,9 @@ main {
   font-size: 22px;
 }
 
-.logo-mobile {
+/* Higher specificity than .logo-lockup below, so the mobile variant stays
+   hidden on desktop even though .logo-lockup sets display: inline-flex. */
+.logo-lockup.logo-mobile {
   display: none;
 }
 
@@ -7838,8 +7840,8 @@ main {
     .logo-desktop {
     display: none !important;
   }
-   .logo-mobile {
-    display: block;     
+   .logo-lockup.logo-mobile {
+    display: inline-flex;
   }
    .ctc-logo {
     width: 150px !important;     
