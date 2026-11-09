@@ -30,6 +30,11 @@ export default function HomeVideo({ locale = "en", doc }: { locale?: "en" | "es"
   // as before — no quality change — it is set 600px before the section
   // enters the viewport, so it is already in place when the visitor
   // reaches it. The VideoObject schema keeps using the constant directly.
+  // The video download starts at the same moment (9 Nov 2026): with
+  // preload="none" the 5 MB file only started downloading once playback
+  // was requested, so on a normal connection it stalled while catching
+  // up and looked slow/choppy. Starting it 600px early keeps the
+  // no-download-on-initial-load behaviour and lets playback be smooth.
   const [poster, setPoster] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -39,6 +44,8 @@ export default function HomeVideo({ locale = "en", doc }: { locale?: "en" | "es"
       (entries) => {
         if (entries[0]?.isIntersecting) {
           setPoster(HOME_VIDEO_POSTER_URL);
+          video.preload = "auto";
+          video.load();
           observer.disconnect();
         }
       },

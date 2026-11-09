@@ -511,22 +511,14 @@ export default async function ServicePage({
     };
   });
 
-  // Related-services pills for the camera service page, mirroring the
-  // "Related sprinkler services" section below: the camera service is the
-  // only service without one, so it links to its parent group. The group
-  // label is the ES twin page title in Spanish mode; in English it is the
-  // category title from Sanity.
-  const cameraRelatedLinks =
-    slug === "wireless-camera-installation"
-      ? [
-          {
-            href: serviceHref("home-security", locale),
-            label: isSpanish
-              ? "Seguridad del Hogar"
-              : ((service as any)?.category?.title ?? "Home Security"),
-          },
-        ]
-      : [];
+  // No related-services pills on the camera service page (9 Nov 2026):
+  // the camera is the only service in the "Home Security" category, so
+  // the only possible link was its own parent group — the section just
+  // pointed back at the same thing. RelatedLinksSection renders nothing
+  // for an empty list, so this removes the section from this page only;
+  // the sprinkler pages keep their "More sprinkler services" cards and
+  // the home-security group page keeps its own pills.
+  const cameraRelatedLinks: { href: string; label: string }[] = [];
 
   // Shared related-pills section (same markup as the sprinkler related
   // section). Renders nothing when there are no links.

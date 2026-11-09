@@ -94,7 +94,9 @@ export default function Hero({
       {/* Title */}
       <h1 id="hero-title" className="hero-title">
         <span className="hero-title-line1">{titleLine1}</span>
-        <span className="hero-title-line2">{titleLine2}</span>
+        {titleLine2 && (
+          <span className="hero-title-line2">{titleLine2}</span>
+        )}
       </h1>
 
       {/* Subtitle */}

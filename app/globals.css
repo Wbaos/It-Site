@@ -7756,8 +7756,45 @@ main {
   font-size: 22px;
 }
 
-.logo-mobile {
+/* Higher specificity than .logo-lockup below, so the mobile variant stays
+   hidden on desktop even though .logo-lockup sets display: inline-flex. */
+.logo-lockup.logo-mobile {
   display: none;
+}
+
+/* Brand lockup (9 Nov 2026): the owner's logo mark (fist + hose, from
+   the footer logo file) next to the CallTechCare wordmark, replacing the
+   old headphone glyph. The .logo-desktop / .logo-mobile toggle below
+   (max-width: 600px) still switches between the two variants. */
+.logo-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.logo-lockup .logo-mark {
+  display: block;
+  flex: none;
+}
+
+.logo-lockup .logo-name {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.2px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.logo-lockup .logo-name-stacked {
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.08;
 }
 
 /* --------- Responsive --------- */
@@ -7803,8 +7840,8 @@ main {
     .logo-desktop {
     display: none !important;
   }
-   .logo-mobile {
-    display: block;     
+   .logo-lockup.logo-mobile {
+    display: inline-flex;
   }
    .ctc-logo {
     width: 150px !important;     
@@ -10380,6 +10417,44 @@ object-fit: cover;
   transform: scale(1.04);
 }
 
+/* Service photo bleeds to the card's side and top edges on every screen
+   (desktop and mobile) instead of sitting inside the card padding, and
+   every photo keeps the same 16:9 dimensions so none looks smaller than
+   the others. Only cards that have a photo are affected; the text and
+   button keep their side spacing. max-height: none so the taller photo
+   never clips the button on a long description. */
+.service-card:has(.service-card-photo) {
+  padding: 0 0 2rem;
+  overflow: hidden;
+  max-height: none;
+}
+
+.service-card:has(.service-card-photo) .service-card-photo {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+.service-card:has(.service-card-photo) .service-card-photo img {
+  aspect-ratio: 16 / 9;
+  height: auto;
+}
+
+.service-card:has(.service-card-photo) .service-card-title,
+.service-card:has(.service-card-photo) .service-card-desc,
+.service-card:has(.service-card-photo) .service-card-bottom,
+.service-card:has(.service-card-photo) .service-card-btn {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+.service-card:has(.service-card-photo) .service-card-desc {
+  max-width: none;
+}
+
+.service-card:has(.service-card-photo) .service-card-btn {
+  width: auto;
+}
+
 .service-card-icon {
   transition: transform 0.25s ease;
   margin-bottom: 0.25rem;
@@ -10950,8 +11025,14 @@ object-fit: cover;
 .service-image {
   flex: 1 1 600px;
   max-width: 700px;
-  height: 520px;
-  max-height: 520px;
+  /* No fixed height: the image stretches to the height of the text card
+     next to it (9 Nov 2026 — the old fixed 520px left the photo shorter
+     than the card, which grows with its content). The inner img already
+     has height: 100% + object-fit: cover, so it fills the stretched box.
+     Mobile keeps its own fixed 340px banner below. */
+  height: auto;
+  max-height: none;
+  align-self: stretch;
   border-radius: 1rem;
   overflow: hidden;
   display: block;

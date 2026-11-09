@@ -48,7 +48,12 @@ const heroPropsEn = {
   // imageSrc: "/helping2.jpg",
 
   titleLine1: "Sprinkler Repair Miami & Broward",
-  titleLine2: "Irrigation • Repairs • New Systems",
+  // Second title line removed at the owner's request (9 Nov 2026): the
+  // green "Irrigation • Repairs • New Systems" line with the big dots
+  // made the hero look loaded; line 1 + the subtitle already say it.
+  // The matching Sanity fields (heroTitleLine2 / heroTitleLine2Es) were
+  // also cleared, so nothing overrides this empty value.
+  titleLine2: "",
 
   subtitle:
     "Professional sprinkler repair and irrigation services in Miami and Broward. We also install security cameras.",
@@ -76,7 +81,9 @@ const heroPropsEn = {
 
 const heroPropsEs = {
   titleLine1: "Reparación de Sprinklers en Miami y Broward",
-  titleLine2: "Irrigación • Reparaciones • Sistemas Nuevos",
+  // Segunda línea del título quitada por pedido del dueño (9 nov 2026):
+  // ver el comentario en la versión en inglés.
+  titleLine2: "",
   subtitle:
     "Servicios profesionales de reparación de sprinklers e irrigación en Miami y Broward. También instalamos cámaras de seguridad.",
   badgeText: "Reparación de Sprinklers e Irrigación en Miami y Broward",
