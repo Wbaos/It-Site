@@ -14,10 +14,12 @@ export const dynamic = "force-dynamic";
 // callers hide the review sections instead of showing a stale number.
 // It never exposes credentials — the OAuth tokens live only in env vars
 // read server-side by lib/google-reviews.
-export async function GET() {
+export async function GET(request: Request) {
+  const locale =
+    new URL(request.url).searchParams.get("locale") === "es" ? "es" : "en";
   const [summary, reviews] = await Promise.all([
     getGoogleRatingSummary(),
-    getGoogleReviews(),
+    getGoogleReviews(locale),
   ]);
   return NextResponse.json({
     rating: summary?.rating ?? null,

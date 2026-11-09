@@ -16,7 +16,7 @@ import { serviceHref } from "@/lib/serviceTwins";
 import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 
 const NAV = [
-  { href: "/#contact", label: "Contact" },
+  { href: "/contact", label: "Contact" },
   { href: "/blog", label: "Blog" },
 ];
 
@@ -51,7 +51,8 @@ export default function Navbar({
   // back to their English twin, or to the English home when there is none.
   // Twin pairs: "/" <-> "/es/", the thirty city page pairs
   // ("/sprinkler-repair-{city}" <-> "/es/reparacion-de-sprinklers-{city}",
-  // hub Miami included), the eleven service page pairs (plus the two
+  // hub Miami included), the services hub pair ("/services" <->
+  // "/es/servicios"), the eleven service page pairs (plus the two
   // group pages), the ten blog pairs ("/blog" <-> "/es/blog" and nine posts),
   // "/contact" <-> "/es/contacto".
   const ES_HUB_HREF = "/es/";
@@ -139,6 +140,7 @@ export default function Navbar({
     "/blog/smart-sprinkler-controllers-miami-wifi-timers":
       "/es/blog/controladores-inteligentes-de-sprinklers-en-miami-timers-wifi",
     "/contact": "/es/contacto",
+    "/services": "/es/servicios",
     "/about": "/es/sobre-nosotros",
     "/locations": "/es/areas-de-servicio",
     "/locations/miami": "/es/areas-de-servicio/miami",
@@ -233,6 +235,7 @@ export default function Navbar({
     "/es/blog/controladores-inteligentes-de-sprinklers-en-miami-timers-wifi":
       "/blog/smart-sprinkler-controllers-miami-wifi-timers",
     "/es/contacto": "/contact",
+    "/es/servicios": "/services",
     "/es/sobre-nosotros": "/about",
     "/es/areas-de-servicio": "/locations",
     "/es/areas-de-servicio/miami": "/locations/miami",
@@ -535,9 +538,11 @@ export default function Navbar({
         );
       })}
 
-      {/* GET SUPPORT */}
+      {/* GET HELP — plain contact page link. Never "Support": the
+          business does no tech support, and the label must not sound
+          like it. */}
       <Link href={isSpanishPage ? "/es/contacto" : "/contact"} className="support-btn" onClick={closeAllMenus}>
-        {isSpanishPage ? "Obtener Soporte" : "Get Support"}
+        {isSpanishPage ? "Obtener ayuda" : "Get Help"}
       </Link>
 
       {/* LANGUAGE SWITCHER (desktop nav only: attachDropdownRef is true for

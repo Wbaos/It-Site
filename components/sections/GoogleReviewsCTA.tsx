@@ -35,7 +35,7 @@ export default async function GoogleReviewsCTA({
   if (!summary) return null;
   const rating = formatGoogleRating(summary.rating);
   const total = summary.total;
-  const reviews = await getGoogleReviews();
+  const reviews = await getGoogleReviews(locale);
 
   return (
     <section className="section testimonials">

@@ -12,6 +12,40 @@ export type Testimonial = {
   date?: string;
 };
 
+// Relative review dates arrive as English strings ("a week ago",
+// "10 weeks ago") from lib/google-reviews. On Spanish pages they read
+// in Spanish instead — a direct translation of the same relative span,
+// never a new date. Unknown strings pass through unchanged.
+export function localizeRelativeReviewDate(
+  date: string,
+  locale: "en" | "es",
+): string {
+  if (locale !== "es") return date;
+  const lower = date.trim().toLowerCase();
+  if (lower === "today") return "hoy";
+  const match =
+    lower.match(/^a (day|week|month|year) ago$/) ||
+    lower.match(/^(\d+) (days|weeks|months|years) ago$/);
+  if (!match) return date;
+  const singular: Record<string, string> = {
+    day: "día",
+    week: "semana",
+    month: "mes",
+    year: "año",
+  };
+  const plural: Record<string, string> = {
+    days: "días",
+    weeks: "semanas",
+    months: "meses",
+    years: "años",
+  };
+  if (match[2]) {
+    const n = Number(match[1]);
+    return `hace ${n} ${plural[match[2]] ?? match[2]}`;
+  }
+  return `hace 1 ${singular[match[1]] ?? match[1]}`;
+}
+
 type Props = {
   items: Testimonial[];
   title?: string;
@@ -133,7 +167,7 @@ export default function TestimonialsList({
     </div>
   );
 
-  /** Trim words */
+    /** Trim words */
   function truncateWords(text: string = "", limit = 15) {
     const words = text.split(" ");
     if (words.length <= limit) return text;
@@ -160,20 +194,22 @@ export default function TestimonialsList({
               onTransitionEnd={handleTransitionEnd}
             >
               {visible.map((t, i) => {
-                // Dates from the Sanity Google-reviews bridge are relative
-                // strings ("a week ago", "10 weeks ago") — show the raw
-                // string when it cannot be parsed as a calendar date,
-                // never invent a date.
+                // Dates arrive two ways: calendar dates (ISO, e.g. Sanity
+                // reviews) render in the page locale, and relative
+                // strings ("a week ago", "10 weeks ago") from the Google
+                // reviews API are translated to Spanish on ES pages.
+                // Nothing is ever invented: an unparsable, unknown string
+                // shows as-is.
                 const parsedDate = t.date ? new Date(t.date) : null;
                 const date =
                   parsedDate && !isNaN(parsedDate.getTime())
-                    ? parsedDate.toLocaleDateString("en-US", {
+                    ? parsedDate.toLocaleDateString(isSpanish ? "es-ES" : "en-US", {
                         year: "numeric",
                         month: "short",
                         day: "numeric",
                         timeZone: "UTC",
                       })
-                    : (t.date ?? "");
+                    : localizeRelativeReviewDate(t.date ?? "", locale);
 
                 const fullText = t.text ?? "";
                 const isLong = fullText.split(" ").length > 15;

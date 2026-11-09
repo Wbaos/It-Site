@@ -142,7 +142,11 @@ export default async function RootLayout({
       .filter((c) => c.name && c.slug);
   }
 
-  /* ITService schema (service-area business) */
+  // R13: the home address and its coordinates are NOT published in the
+  // schema any more — the business is service-area only (no location
+  // stored on the Google profile). Only the service area (Miami, FL)
+  // is described; the street address, postal code and geo fields stay
+  // in site-settings as data but are never rendered here.
   const orgJsonLd = {
     "@context": "https://schema.org",
     "@type": ["LocalBusiness", "ProfessionalService"],
@@ -159,19 +163,6 @@ export default async function RootLayout({
     description: schemaDescription,
     telephone: settings.phoneIntl,
     areaServed: footerCities.map((c) => ({ "@type": "City", name: c.name })),
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: settings.streetAddress,
-      addressLocality: settings.city,
-      addressRegion: settings.region,
-      postalCode: settings.postalCode,
-      addressCountry: settings.country,
-    },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: settings.geoLat,
-      longitude: settings.geoLng
-    },
     contactPoint: {
       "@type": "ContactPoint",
       telephone: settings.phoneIntl,
@@ -284,8 +275,11 @@ export default async function RootLayout({
     ],
   };
 
+  // R7: the locale comes from the middleware (x-locale header, read
+  // above), so Spanish pages serve <html lang="es"> from the server —
+  // no client-side fix-up, no hydration change.
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang={locale === "es" ? "es" : "en"} data-scroll-behavior="smooth">
       <head>
         {/* Preconnect before the GTM loader below, so the tag manager
             connection is already warm when its script is injected. */}

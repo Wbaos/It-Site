@@ -265,16 +265,31 @@ export function applyGoogleRatingSummaryToText(
 /**
  * The API's createTime is an RFC3339 timestamp; the UI shows relative
  * strings ("a week ago", "3 weeks ago", "2 months ago"), the same style
- * the Business Profile dashboard uses. Only the timestamp's own date is
- * used — no calendar date is ever invented. Returns undefined when the
- * timestamp is missing or unparsable, so the review renders without a
- * date instead of with a wrong one.
+ * the Business Profile dashboard uses — in Spanish ("hace 1 semana",
+ * "hace 3 semanas", "hace 2 meses") when locale is "es". Only the
+ * timestamp's own date is used — no calendar date is ever invented.
+ * Returns undefined when the timestamp is missing or unparsable, so the
+ * review renders without a date instead of with a wrong one.
  */
-export function formatRelativeReviewDate(createTime: string | undefined): string | undefined {
+export function formatRelativeReviewDate(
+  createTime: string | undefined,
+  locale: "en" | "es" = "en",
+): string | undefined {
   if (!createTime) return undefined;
   const then = new Date(createTime).getTime();
   if (Number.isNaN(then)) return undefined;
   const days = Math.floor((Date.now() - then) / 86_400_000);
+  if (locale === "es") {
+    if (days < 1) return "hoy";
+    if (days === 1) return "hace 1 día";
+    if (days < 7) return `hace ${days} días`;
+    const weeks = Math.floor(days / 7);
+    if (weeks < 5) return weeks === 1 ? "hace 1 semana" : `hace ${weeks} semanas`;
+    const months = Math.floor(days / 30);
+    if (months < 12) return months === 1 ? "hace 1 mes" : `hace ${months} meses`;
+    const years = Math.floor(days / 365);
+    return years <= 1 ? "hace 1 año" : `hace ${years} años`;
+  }
   if (days < 1) return "today";
   if (days === 1) return "a day ago";
   if (days < 7) return `${days} days ago`;
@@ -294,11 +309,13 @@ export function formatRelativeReviewDate(createTime: string | undefined): string
  * stars, and name/rating/date pass through only when present. Returns
  * [] when Google cannot be read or the list is empty — callers hide the
  * section in that case. Dates are the relative strings converted from
- * each review's createTime (see above) — never calendar dates, and
- * never invented; TestimonialsList shows the raw string when it cannot
- * be parsed as a date.
+ * each review's createTime (see above) in the caller's locale, and
+ * TestimonialsList translates any English relative string it still
+ * receives on Spanish pages — never calendar dates, and never invented.
  */
-export async function getGoogleReviews(): Promise<Testimonial[]> {
+export async function getGoogleReviews(
+  locale: "en" | "es" = "en",
+): Promise<Testimonial[]> {
   const data = await fetchGoogleReviewsData();
   const reviews = data?.reviews;
   if (!Array.isArray(reviews)) return [];
@@ -318,6 +335,6 @@ export async function getGoogleReviews(): Promise<Testimonial[]> {
       text: r.comment ?? "",
       rating: r.starRating ? STAR_RATINGS[r.starRating] : undefined,
       verified: true,
-      date: formatRelativeReviewDate(r.createTime),
+      date: formatRelativeReviewDate(r.createTime, locale),
     }));
 }

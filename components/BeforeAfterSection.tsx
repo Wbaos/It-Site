@@ -6,6 +6,11 @@ import SvgIcon from "@/components/common/SvgIcons";
 
 export type BeforeAfterComparison = {
   title: string;
+  // Spanish caption (Sanity titleEs on the comparison). The service
+  // template resolves it before rendering, so `title` is already the
+  // display title in the page locale; the field stays on the type so
+  // the GROQ shape typechecks.
+  titleEs?: string;
   beforeImage?: { asset?: { url?: string }; alt?: string };
   afterImage?: { asset?: { url?: string }; alt?: string };
 };
@@ -69,14 +74,18 @@ export default function BeforeAfterSection({ data, locale = "en" }: Props) {
           </div>
 
           <div className="beforeafter-sliderWrap">
+            {/* DOM order is before-then-after (the old order had the
+                after layer first, so a text reading met "after" before
+                "before"). Visually nothing changes: the two layers are
+                clipped to complementary halves. */}
             <div className="beforeafter-slider" role="group" aria-label={active.title}>
               <div
-                className="beforeafter-layer after-layer"
-                style={{ clipPath: afterClip, WebkitClipPath: afterClip as any }}
+                className="beforeafter-layer before-layer"
+                style={{ clipPath: beforeClip, WebkitClipPath: beforeClip as any }}
               >
                 <Image
-                  src={afterUrl}
-                  alt={active?.afterImage?.alt || (isSpanish ? "Después" : "After")}
+                  src={beforeUrl}
+                  alt={active?.beforeImage?.alt || (isSpanish ? "Antes" : "Before")}
                   fill
                   sizes="(max-width: 768px) 100vw, 1000px"
                   className="beforeafter-img"
@@ -85,12 +94,12 @@ export default function BeforeAfterSection({ data, locale = "en" }: Props) {
               </div>
 
               <div
-                className="beforeafter-layer before-layer"
-                style={{ clipPath: beforeClip, WebkitClipPath: beforeClip as any }}
+                className="beforeafter-layer after-layer"
+                style={{ clipPath: afterClip, WebkitClipPath: afterClip as any }}
               >
                 <Image
-                  src={beforeUrl}
-                  alt={active?.beforeImage?.alt || (isSpanish ? "Antes" : "Before")}
+                  src={afterUrl}
+                  alt={active?.afterImage?.alt || (isSpanish ? "Después" : "After")}
                   fill
                   sizes="(max-width: 768px) 100vw, 1000px"
                   className="beforeafter-img"
@@ -135,6 +144,14 @@ export default function BeforeAfterSection({ data, locale = "en" }: Props) {
             </div>
 
             <div className="beforeafter-caption">{active.title}</div>
+
+            {/* No dragging needed to understand it: the left side is
+                the before, the right side the after. */}
+            <p className="beforeafter-sideNote">
+              {isSpanish
+                ? "A la izquierda, el antes; a la derecha, el después."
+                : "On the left, the before; on the right, the after."}
+            </p>
 
             {comparisons.length > 1 && (
               <div className="beforeafter-thumbs" role="tablist" aria-label={isSpanish ? "Seleccionar comparación" : "Select comparison"}>

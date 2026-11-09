@@ -144,10 +144,14 @@ export default function QuickLeadForm({
     }
   };
 
+  // id="quick-lead": the scroll target for the "Get your free
+  // inspection" buttons at the top of service and city pages. The
+  // section is labelled by its own heading (aria-labelledby), not by a
+  // duplicated aria-label, so the title is announced once.
   return (
-    <section className="quick-lead" aria-label={t.title}>
+    <section className="quick-lead" id="quick-lead" aria-labelledby="quick-lead-title">
       <div className="quick-lead__card">
-        <h2 className="quick-lead__title">{t.title}</h2>
+        <h2 className="quick-lead__title" id="quick-lead-title">{t.title}</h2>
         <p className="quick-lead__sub">{t.sub}</p>
 
         <a href={`tel:${phoneTel}`} className="quick-lead__call">

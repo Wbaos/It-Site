@@ -15,7 +15,7 @@ export default async function ServiceReviewsWrapper({
   slug: string;
   locale?: "en" | "es";
 }) {
-  const reviews = await getGoogleReviews();
+  const reviews = await getGoogleReviews(locale);
   const initialReviews = (reviews ?? []).slice(0, MAX_SERVICE_REVIEWS);
   if (initialReviews.length === 0) return null;
   const googleReviewsUrl = getGoogleReviewsUrl();

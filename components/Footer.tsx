@@ -126,7 +126,7 @@ export default function Footer({
           <a href={isSpanishPage ? "/es/#how" : "/#how"}>{isSpanishPage ? "Cómo Funciona" : "How It Works"}</a>
           <Link href={isSpanishPage ? "/es/blog" : "/blog"}>Blog</Link>
           <Link href={isSpanishPage ? "/es/areas-de-servicio" : "/locations"}>{isSpanishPage ? "Áreas de Servicio" : "Service Areas"}</Link>
-          <a href={isSpanishPage ? "/es/contacto" : "/#contact"}>{isSpanishPage ? "Contacto" : "Contact"}</a>
+          <a href={isSpanishPage ? "/es/contacto" : "/contact"}>{isSpanishPage ? "Contacto" : "Contact"}</a>
           <Link href={isSpanishPage ? "/es/sobre-nosotros" : "/about"}>{isSpanishPage ? "Sobre Nosotros" : "About Us"}</Link>
           <Link href={isSpanishPage ? "/es/preguntas-frecuentes" : "/faq"}>{isSpanishPage ? "Preguntas Frecuentes" : "FAQ"}</Link>
           <Link href={isSpanishPage ? "/es/servicios" : "/services"}>{isSpanishPage ? "Todos los Servicios" : "All Services"}</Link>
@@ -147,6 +147,11 @@ export default function Footer({
             <li>
               <Link href={serviceHref("sprinkler-repair-and-installation", locale)}>
                 {isSpanishPage ? "Reparación de Sprinklers" : "Sprinkler Repair & Irrigation"}
+              </Link>
+            </li>
+            <li>
+              <Link href={serviceHref("emergency-sprinkler-repair", locale)}>
+                {isSpanishPage ? "Reparación de Emergencia de Sprinklers" : "Emergency Sprinkler Repair"}
               </Link>
             </li>
             <li>
@@ -187,6 +192,11 @@ export default function Footer({
             <li>
               <Link href={serviceHref("new-irrigation-installation", locale)}>
                 {isSpanishPage ? "Instalación Nueva de Irrigación" : "New Irrigation Installation"}
+              </Link>
+            </li>
+            <li>
+              <Link href={serviceHref("sprinkler-maintenance-plan", locale)}>
+                {isSpanishPage ? "Plan de Mantenimiento de Sprinklers" : "Sprinkler Maintenance Plan"}
               </Link>
             </li>
             <li>

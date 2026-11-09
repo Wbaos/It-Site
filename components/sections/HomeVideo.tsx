@@ -21,8 +21,8 @@ export default function HomeVideo({ locale = "en", doc }: { locale?: "en" | "es"
   const subtitle =
     (isSpanish ? doc?.videoSubtitleEs : doc?.videoSubtitle) ??
     (isSpanish
-      ? "Sistema de sprinklers optimizado para una cobertura del 100% en Fort Lauderdale."
-      : "Optimized sprinkler system for 100% coverage in Fort Lauderdale.");
+      ? "Sistema de sprinklers optimizado para una cobertura completa y uniforme en Fort Lauderdale."
+      : "Optimized sprinkler system for full, even coverage in Fort Lauderdale.");
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   // The poster (65 KB) is deferred until the video is about to scroll
