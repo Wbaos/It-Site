@@ -20502,12 +20502,57 @@ body {
   outline-offset: 2px;
 }
 
+/* --- Mobile (640px and below): icon-only round button ---------------------- */
+/* The full text pill is ~180px wide and covers card titles, descriptions
+   and footer lines while scrolling on phones. On mobile it becomes a
+   compact 56px circle with the phone icon only — same link, same number,
+   same aria-label; only the visible label is hidden. Desktop and tablet
+   keep the full white pill above. */
+@media (max-width: 640px) {
+  .quick-call-button {
+    width: 56px;
+    height: 56px;
+    min-height: 56px;
+    padding: 0;
+    border-radius: 50%;
+    background: #14532D;
+    border-color: #14532D;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(17, 24, 39, 0.25);
+  }
+
+  .quick-call-button:hover {
+    background: #052E16;
+    border-color: #052E16;
+    transform: none;
+  }
+
+  .quick-call-button span {
+    display: none;
+  }
+
+  .quick-call-button svg {
+    width: 24px;
+    height: 24px;
+    color: #fff;
+  }
+
+  .quick-call-button:hover svg {
+    color: #fff;
+  }
+
+  .quick-call-button:focus-visible {
+    outline-color: #fff;
+  }
+}
+
 /* --- Responsive ------------------------------------------------------------ */
 /* Tablet widths (901–1100px): the desktop nav is still visible, so the
    header Call pill shrinks to an icon-only button instead of crowding
    the nav. The phone number stays visible in the announcement bar and
-   in the floating call pill. At 900px and below the pill is hidden
-   entirely (existing rule). */
+   in the floating call pill. At 900px and below the header pill is
+   hidden entirely (existing rule); the floating call pill stays, and
+   becomes an icon-only round button at 640px and below (see above). */
 @media (max-width: 1100px) {
   .nav-call-btn span {
     display: none;
