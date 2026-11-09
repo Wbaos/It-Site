@@ -682,7 +682,7 @@ export default function Navbar({
           );
         })}
       </div>
-      <a href={phoneTel} className="mobile-menu-call">
+      <a href={`tel:${phoneTel}`} className="mobile-menu-call">
         <Phone size={20} />
         <span>
           <strong>{isSpanishPage ? "Llamar ahora" : "Call now"}</strong>
