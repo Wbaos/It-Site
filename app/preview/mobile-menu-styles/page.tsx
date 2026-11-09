@@ -15,7 +15,13 @@ type MenuKind =
   | "left"
   | "sheet"
   | "dropdown"
-  | "icons";
+  | "icons"
+  | "green"
+  | "accordion"
+  | "search"
+  | "center"
+  | "contact"
+  | "emergency";
 
 const PHONE_DISPLAY = "(786) 366-2729";
 const PHONE_TEL = "tel:+17863662729";
@@ -39,6 +45,14 @@ const L: Record<Lang, Record<string, string>> = {
     helpTitle: "Ayuda",
     menu: "Menú",
     quickAccess: "Accesos rápidos",
+    descRepair: "Reparación e instalación",
+    descCameras: "Videovigilancia para tu casa",
+    descAll: "Ver todos los servicios",
+    searchPh: "Buscar en el menú…",
+    noResults: "Sin resultados",
+    emergencyTitle: "¿Emergencia?",
+    emergencyText: "Atendemos el mismo día en horario.",
+    followUs: "Síguenos",
   },
   en: {
     home: "Home",
@@ -58,6 +72,14 @@ const L: Record<Lang, Record<string, string>> = {
     helpTitle: "Help",
     menu: "Menu",
     quickAccess: "Quick access",
+    descRepair: "Repair & installation",
+    descCameras: "Home video security",
+    descAll: "See all services",
+    searchPh: "Search the menu…",
+    noResults: "No results",
+    emergencyTitle: "Emergency?",
+    emergencyText: "Same-day service during business hours.",
+    followUs: "Follow us",
   },
 };
 
@@ -124,6 +146,12 @@ function Icon({ name, size = 20 }: { name: string; size?: number }) {
       <>
         <circle cx="12" cy="12" r="8.5" />
         <path d="M3.5 12h17M12 3.5c2.6 2.3 3.9 5.2 3.9 8.5s-1.3 6.2-3.9 8.5c-2.6-2.3-3.9-5.2-3.9-8.5s1.3-6.2 3.9-8.5z" />
+      </>
+    ),
+    search: (
+      <>
+        <circle cx="11" cy="11" r="7" />
+        <path d="M20 20l-3.5-3.5" />
       </>
     ),
   };
@@ -207,6 +235,8 @@ function VariantFrame({
   const [open, setOpen] = useState(false);
   const [lang, setLang] = useState<Lang>("es");
   const [toast, setToast] = useState<string | null>(null);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const [query, setQuery] = useState("");
   const t = L[lang];
 
   useEffect(() => {
@@ -257,7 +287,6 @@ function VariantFrame({
 
   const plainLinks = (cls?: string) => (
     <>
-      {link("/", "home", t.home, cls, true)}
       {link("/contact", "mail", t.contact, cls, true)}
       {link("/blog", "doc", t.blog, cls, true)}
       {link("/locations", "pin", t.areas, cls, true)}
@@ -456,6 +485,378 @@ function VariantFrame({
         </nav>
       );
     }
+    if (kind === "green") {
+      return (
+        <nav className={menuCls(styles.menuGreen)} aria-hidden={!open}>
+          <img src="/logo-mark-v4.svg" alt="" className={styles.greenMark} />
+          <div className={styles.fsTop}>
+            <span className={styles.fsBrand}>
+              <img src="/logo-mark-v4.svg" alt="" width={34} height={29} />
+              <span>CallTechCare</span>
+            </span>
+            <button
+              type="button"
+              className={styles.closeBtn}
+              aria-label={t.close}
+              onClick={() => setOpen(false)}
+            >
+              <Icon name="x" size={26} />
+            </button>
+          </div>
+          <div className={styles.fsLinks}>
+            {[
+              { href: "/", label: t.home },
+              { href: "/services", label: t.services },
+              { href: "/contact", label: t.contact },
+              { href: "/blog", label: t.blog },
+              { href: "/locations", label: t.areas },
+            ].map((l, i) => (
+              <a
+                key={l.href + l.label}
+                href={l.href}
+                onClick={pick(l.href)}
+                style={{ transitionDelay: open ? `${90 + i * 70}ms` : "0ms" }}
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+          <div className={styles.fsFoot}>
+            <a
+              href={PHONE_TEL}
+              className={`${styles.callBtn} ${styles.callBtnDark}`}
+            >
+              <Icon name="phone" size={20} />
+              <span>
+                <strong>{t.callNow}</strong>
+                <small>{PHONE_DISPLAY}</small>
+              </span>
+            </a>
+            <small>{t.hours}</small>
+          </div>
+        </nav>
+      );
+    }
+    if (kind === "accordion") {
+      return (
+        <>
+          <div
+            className={`${styles.dim} ${open ? styles.open : ""}`}
+            onClick={() => setOpen(false)}
+            aria-hidden="true"
+          />
+          <nav className={menuCls(styles.menuRight)} aria-hidden={!open}>
+            <div className={styles.drawerTop}>
+              <span>{t.menu}</span>
+              <button
+                type="button"
+                className={styles.closeBtn}
+                aria-label={t.close}
+                onClick={() => setOpen(false)}
+              >
+                <Icon name="x" size={22} />
+              </button>
+            </div>
+            <div className={styles.drawerLinks}>
+              {link("/", "home", t.home, styles.drawerLink, true)}
+              <button
+                type="button"
+                className={styles.accHead}
+                onClick={() => setServicesOpen((v) => !v)}
+                aria-expanded={servicesOpen}
+              >
+                <span className={styles.accHeadLeft}>
+                  <Icon name="wrench" size={20} />
+                  <span>{t.services}</span>
+                </span>
+                <span
+                  className={`${styles.accChevron} ${
+                    servicesOpen ? styles.accChevronOpen : ""
+                  }`}
+                >
+                  <Icon name="chevron" size={18} />
+                </span>
+              </button>
+              {servicesOpen && (
+                <div className={styles.accSub}>
+                  {[
+                    {
+                      href: "/services/sprinkler-repair-and-installation",
+                      icon: "droplet",
+                      label: t.sprinklerRepair,
+                      desc: t.descRepair,
+                    },
+                    {
+                      href: "/services/wireless-camera-installation",
+                      icon: "camera",
+                      label: t.cameras,
+                      desc: t.descCameras,
+                    },
+                    {
+                      href: "/services",
+                      icon: "grid",
+                      label: t.allServices,
+                      desc: t.descAll,
+                    },
+                  ].map((a) => (
+                    <a
+                      key={a.href}
+                      href={a.href}
+                      onClick={pick(a.href)}
+                      className={styles.accRow}
+                    >
+                      <Icon name={a.icon} size={20} />
+                      <span>
+                        <strong>{a.label}</strong>
+                        <small>{a.desc}</small>
+                      </span>
+                      <Icon name="chevron" size={18} />
+                    </a>
+                  ))}
+                </div>
+              )}
+              {link("/contact", "mail", t.contact, styles.drawerLink, true)}
+              {link("/blog", "doc", t.blog, styles.drawerLink, true)}
+              {link("/locations", "pin", t.areas, styles.drawerLink, true)}
+            </div>
+            <div className={styles.drawerFoot}>
+              <CallButton t={t} />
+              <small>{t.hours}</small>
+            </div>
+          </nav>
+        </>
+      );
+    }
+    if (kind === "search") {
+      const all = [
+        { href: "/", label: t.home, icon: "home" },
+        {
+          href: "/services/sprinkler-repair-and-installation",
+          label: t.sprinklerRepair,
+          icon: "droplet",
+        },
+        {
+          href: "/services/wireless-camera-installation",
+          label: t.cameras,
+          icon: "camera",
+        },
+        { href: "/services", label: t.allServices, icon: "grid" },
+        { href: "/contact", label: t.contact, icon: "mail" },
+        { href: "/blog", label: t.blog, icon: "doc" },
+        { href: "/locations", label: t.areas, icon: "pin" },
+      ];
+      const q = query.trim().toLowerCase();
+      const filtered = q
+        ? all.filter((a) => a.label.toLowerCase().includes(q))
+        : all;
+      return (
+        <nav className={menuCls(styles.menuSearch)} aria-hidden={!open}>
+          <div className={styles.fsTop}>
+            <span className={styles.fsBrand}>
+              <img src="/logo-mark-v4.svg" alt="" width={34} height={29} />
+              <span>CallTechCare</span>
+            </span>
+            <button
+              type="button"
+              className={styles.closeBtn}
+              aria-label={t.close}
+              onClick={() => setOpen(false)}
+            >
+              <Icon name="x" size={26} />
+            </button>
+          </div>
+          <label className={styles.searchBox}>
+            <Icon name="search" size={20} />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t.searchPh}
+              aria-label={t.searchPh}
+            />
+          </label>
+          <div className={styles.searchList}>
+            {filtered.length === 0 && (
+              <span className={styles.searchEmpty}>{t.noResults}</span>
+            )}
+            {filtered.map((a) => (
+              <a
+                key={a.href + a.label}
+                href={a.href}
+                onClick={pick(a.href)}
+                className={styles.searchLink}
+              >
+                <Icon name={a.icon} size={20} />
+                <span>{a.label}</span>
+                <Icon name="chevron" size={18} />
+              </a>
+            ))}
+          </div>
+          <div className={styles.fsFoot}>
+            <CallButton t={t} />
+          </div>
+        </nav>
+      );
+    }
+    if (kind === "center") {
+      return (
+        <nav className={menuCls(styles.menuCenter)} aria-hidden={!open}>
+          <button
+            type="button"
+            className={`${styles.closeBtn} ${styles.centerClose}`}
+            aria-label={t.close}
+            onClick={() => setOpen(false)}
+          >
+            <Icon name="x" size={22} />
+          </button>
+          <img
+            src="/logo-mark-v4.svg"
+            alt=""
+            width={76}
+            height={64}
+            className={styles.centerLogo}
+          />
+          <span className={styles.centerName}>CallTechCare</span>
+          <div className={styles.centerLinks}>
+            {[
+              { href: "/", label: t.home },
+              { href: "/services", label: t.services },
+              { href: "/contact", label: t.contact },
+              { href: "/blog", label: t.blog },
+              { href: "/locations", label: t.areas },
+            ].map((l) => (
+              <a key={l.href + l.label} href={l.href} onClick={pick(l.href)}>
+                {l.label}
+              </a>
+            ))}
+          </div>
+          <a href={PHONE_TEL} className={styles.centerCall}>
+            <Icon name="phone" size={18} /> {PHONE_DISPLAY}
+          </a>
+        </nav>
+      );
+    }
+    if (kind === "contact") {
+      return (
+        <>
+          <div
+            className={`${styles.dim} ${open ? styles.open : ""}`}
+            onClick={() => setOpen(false)}
+            aria-hidden="true"
+          />
+          <nav className={menuCls(styles.menuLeft)} aria-hidden={!open}>
+            <div className={styles.drawerTop}>
+              <span>{t.menu}</span>
+              <button
+                type="button"
+                className={styles.closeBtn}
+                aria-label={t.close}
+                onClick={() => setOpen(false)}
+              >
+                <Icon name="x" size={22} />
+              </button>
+            </div>
+            <div className={styles.drawerLinks}>
+              {link("/", "home", t.home, styles.drawerLink, true)}
+              {servicesGroup(styles.drawerLink)}
+              {link("/contact", "mail", t.contact, styles.drawerLink, true)}
+              {link("/blog", "doc", t.blog, styles.drawerLink, true)}
+              {link("/locations", "pin", t.areas, styles.drawerLink, true)}
+            </div>
+            <div className={styles.contactCard}>
+              <a href={PHONE_TEL} className={styles.contactRow}>
+                <Icon name="phone" size={18} />
+                <span>
+                  <small>{t.callNow}</small>
+                  <strong>{PHONE_DISPLAY}</strong>
+                </span>
+              </a>
+              <a
+                href="mailto:support@calltechcare.com"
+                onClick={pick("mailto:support@calltechcare.com")}
+                className={styles.contactRow}
+              >
+                <Icon name="mail" size={18} />
+                <span>
+                  <small>Email</small>
+                  <strong>support@calltechcare.com</strong>
+                </span>
+              </a>
+              <span className={styles.contactRow}>
+                <Icon name="clock" size={18} />
+                <span>
+                  <small>{t.hours}</small>
+                  <strong>Miami &amp; Broward</strong>
+                </span>
+              </span>
+            </div>
+            <div className={styles.socialBlock}>
+              <span className={styles.groupLabel}>{t.followUs}</span>
+              <div className={styles.socialRows}>
+                <a
+                  href="https://www.facebook.com/CallTechCare"
+                  onClick={pick("https://www.facebook.com/CallTechCare")}
+                  className={styles.socialRow}
+                >
+                  <Icon name="globe" size={18} />
+                  <span>Facebook</span>
+                  <Icon name="chevron" size={16} />
+                </a>
+                <a
+                  href="https://instagram.com/calltechcare"
+                  onClick={pick("https://instagram.com/calltechcare")}
+                  className={styles.socialRow}
+                >
+                  <Icon name="camera" size={18} />
+                  <span>Instagram</span>
+                  <Icon name="chevron" size={16} />
+                </a>
+              </div>
+            </div>
+          </nav>
+        </>
+      );
+    }
+    if (kind === "emergency") {
+      return (
+        <>
+          <div
+            className={`${styles.dim} ${open ? styles.open : ""}`}
+            onClick={() => setOpen(false)}
+            aria-hidden="true"
+          />
+          <nav className={menuCls(styles.menuRight)} aria-hidden={!open}>
+            <div className={styles.emBanner}>
+              <strong>{t.emergencyTitle}</strong>
+              <span>{t.emergencyText}</span>
+              <a href={PHONE_TEL} className={styles.emCall}>
+                <Icon name="phone" size={18} /> {PHONE_DISPLAY}
+              </a>
+            </div>
+            <div className={styles.drawerTop}>
+              <span>{t.menu}</span>
+              <button
+                type="button"
+                className={styles.closeBtn}
+                aria-label={t.close}
+                onClick={() => setOpen(false)}
+              >
+                <Icon name="x" size={22} />
+              </button>
+            </div>
+            <div className={styles.drawerLinks}>
+              {link("/", "home", t.home, styles.drawerLink, true)}
+              {servicesGroup(styles.drawerLink)}
+              {link("/contact", "mail", t.contact, styles.drawerLink, true)}
+              {link("/blog", "doc", t.blog, styles.drawerLink, true)}
+              {link("/locations", "pin", t.areas, styles.drawerLink, true)}
+            </div>
+            <div className={styles.drawerFoot}>
+              <small>{t.hours}</small>
+            </div>
+          </nav>
+        </>
+      );
+    }
     // icons
     const iconRows: Array<{
       href: string;
@@ -634,6 +1035,42 @@ const VARIANTS: Array<{
     blurb:
       "Cada sección con su icono y el botón de llamar siempre abajo.",
   },
+  {
+    kind: "green",
+    num: "7",
+    name: "Verde a pantalla completa",
+    blurb: "El mismo menú grande, pero todo en verde con el logo de fondo.",
+  },
+  {
+    kind: "accordion",
+    num: "8",
+    name: "Acordeón de servicios",
+    blurb: "Servicios se abre y muestra cada servicio con su descripción.",
+  },
+  {
+    kind: "search",
+    num: "9",
+    name: "Con buscador",
+    blurb: "Escribe y el menú filtra los enlaces al instante.",
+  },
+  {
+    kind: "center",
+    num: "10",
+    name: "Centrado minimalista",
+    blurb: "Logo grande al centro, enlaces con aire, nada de ruido.",
+  },
+  {
+    kind: "contact",
+    num: "11",
+    name: "Contacto y redes",
+    blurb: "El menú trae la tarjeta de contacto y las redes sociales.",
+  },
+  {
+    kind: "emergency",
+    num: "12",
+    name: "Con aviso de emergencia",
+    blurb: "Arriba un aviso de emergencia el mismo día, luego los enlaces.",
+  },
 ];
 
 export default function MobileMenuStylesPage() {
@@ -644,7 +1081,7 @@ export default function MobileMenuStylesPage() {
     <main className={styles.page}>
       <header className={styles.pageHead}>
         <span className={styles.eyebrow}>Vista previa · No está en vivo</span>
-        <h1>El menú del teléfono: 6 estilos para elegir</h1>
+        <h1>El menú del teléfono: 12 estilos para elegir</h1>
         <p>
           Toca la hamburguesa dentro de cada teléfono para abrir el menú y
           probarlo de verdad: enlaces, idioma y botón de llamar. Cuando te
