@@ -15906,6 +15906,14 @@ details[open] .faq-toggle {
   font-size: 0.875rem;
   margin-bottom: 2rem;
 }
+/* City search results: plain list attached under the search box (no card, no heading).
+   The -1.25rem top margin collapses with the search wrapper's 2rem bottom
+   margin, leaving a 0.75rem gap between the input and the list. */
+.locations-city-results { list-style: none; margin: -1.25rem 0 1rem; padding: 0; background: #0d1729; border: 1px solid #1e293b; border-radius: 0.5rem; overflow: hidden; }
+.locations-city-result a { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.75rem 1rem; color: #e5e7eb; text-decoration: none; }
+.locations-city-result + .locations-city-result a { border-top: 1px solid #1e293b; }
+.locations-city-result a:hover { background: #101a2b; color: white; }
+.locations-city-result svg { width: 1.25rem; height: 1.25rem; color: var(--brand-teal); flex-shrink: 0; }
 
 .locations-grid-section {
   padding-bottom: 4rem;
