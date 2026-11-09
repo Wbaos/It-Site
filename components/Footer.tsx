@@ -62,8 +62,8 @@ export default function Footer({
             <Image
               src="/footer-logo.svg"
               alt="CallTechCare – Sprinkler Repair & Irrigation Services in Miami and Broward"
-              width={280}
-              height={171}
+              width={150}
+              height={91}
               className="footer-logo"
               priority
               style={{

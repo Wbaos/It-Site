@@ -13474,10 +13474,10 @@ box-shadow:
 }
 
 /* Footer logo: tightly cropped mark + wordmark (no dead space), fixed
-   width so it renders at the same size as before and lines up flush
+   width so it renders small (about 150px) and lines up flush
    left with the nav and contact columns. */
 .footer-logo {
-  width: 280px;
+  width: 150px;
   height: auto;
 }
 

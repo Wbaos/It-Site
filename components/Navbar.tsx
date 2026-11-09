@@ -643,6 +643,7 @@ export default function Navbar({
                   width={38}
                   height={32}
                   className="logo-mark"
+                  priority
                 />
                 <span className="logo-name">CallTechCare</span>
               </span>
@@ -653,6 +654,7 @@ export default function Navbar({
                   width={34}
                   height={29}
                   className="logo-mark"
+                  priority
                 />
                 <span className="logo-name-stacked">
                   <span>Call</span>
