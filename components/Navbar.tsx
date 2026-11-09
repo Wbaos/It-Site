@@ -254,7 +254,7 @@ export default function Navbar({
 
   // Segmented language switcher: two separate, directly tappable buttons
   // ("EN" and "ES") instead of one pill to toggle — tap the language you
-  // want to go to. The active language is highlighted in brand blue with
+  // want to go to. The active language is highlighted in deep green with
   // white text; the inactive one stays visible but dimmed. Hrefs and
   // mappings above are untouched.
   // Rendered in the desktop nav (NavLinks) and, separately, in the header
@@ -296,7 +296,7 @@ export default function Navbar({
           <span
             aria-current="true"
             style={{
-              background: "#2563EB",
+              background: "#14532D",
               color: "#ffffff",
               padding: "5px 9px",
               borderRadius: "999px",
@@ -310,7 +310,7 @@ export default function Navbar({
           <span
             aria-current="true"
             style={{
-              background: "#2563EB",
+              background: "#14532D",
               color: "#ffffff",
               padding: "5px 9px",
               borderRadius: "999px",

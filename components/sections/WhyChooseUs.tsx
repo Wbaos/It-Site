@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { ShieldCheck, Users, Clock, Cpu, Star, Smile } from "lucide-react";
 import type { HomePage } from "@/lib/sanityHome";
 import {
   getGoogleRatingSummary,
@@ -11,7 +11,7 @@ function pick(en: string | undefined, es: string | undefined, isSpanish: boolean
   return en;
 }
 
-const WHY_ICONS = [Check, Check, Check, Check, Check, Check];
+const WHY_ICONS = [ShieldCheck, Star, Users, Smile, Clock, Cpu];
 
 export default async function WhyChooseUs({
   locale = "en",
@@ -32,64 +32,64 @@ export default async function WhyChooseUs({
   const fallbackFeatures = isSpanish
     ? [
         {
-          icon: <Check size={32} strokeWidth={1.5} />,
+          icon: <ShieldCheck size={32} strokeWidth={1.5} />,
           title: "Garantía de 1 Año",
           text: "Garantía de 1 año cuando CallTechCare hace el trabajo y provee los materiales.",
         },
         {
-          icon: <Check size={32} strokeWidth={1.5} />,
+          icon: <Star size={32} strokeWidth={1.5} />,
           title: "Mejor Calificados en Google",
           text: "Calificados por clientes reales en Google.",
         },
         {
-          icon: <Check size={32} strokeWidth={1.5} />,
+          icon: <Users size={32} strokeWidth={1.5} />,
           title: "Más de 1500 Clientes Ayudados",
           text: "Más de 1500 clientes felices en Miami y Broward.",
         },
         {
-          icon: <Check size={32} strokeWidth={1.5} />,
+          icon: <Smile size={32} strokeWidth={1.5} />,
           title: "Inspección Gratis, Estimado Claro",
           text: "Inspección gratis. Estimado claro después de inspeccionar. Sin cargos ocultos. Sin ventas adicionales. Sin presión.",
         },
         {
-          icon: <Check size={32} strokeWidth={1.5} />,
+          icon: <Clock size={32} strokeWidth={1.5} />,
           title: "Respuesta en Menos de Dos Horas",
           text: "Respondemos en menos de dos horas, con servicio el mismo día dentro del horario.",
         },
         {
-          icon: <Check size={32} strokeWidth={1.5} />,
+          icon: <Cpu size={32} strokeWidth={1.5} />,
           title: "Servicio en Persona, en Tu Casa",
           text: "Trabajo a domicilio, en persona, en tu casa o negocio. Nada remoto.",
         },
       ]
     : [
         {
-          icon: <Check size={32} strokeWidth={1.5} />,
+          icon: <ShieldCheck size={32} strokeWidth={1.5} />,
           title: "1-Year Warranty",
           text: "1-year warranty when CallTechCare performs the work and provides the materials.",
         },
         {
-          icon: <Check size={32} strokeWidth={1.5} />,
+          icon: <Star size={32} strokeWidth={1.5} />,
           title: "Top Rated on Google",
           text: "Rated by real customers on Google.",
         },
         {
-          icon: <Check size={32} strokeWidth={1.5} />,
+          icon: <Users size={32} strokeWidth={1.5} />,
           title: "1500+ Customers Helped",
           text: "More than 1500 happy customers across Miami and Broward.",
         },
         {
-          icon: <Check size={32} strokeWidth={1.5} />,
+          icon: <Smile size={32} strokeWidth={1.5} />,
           title: "Free Inspection, Clear Estimate",
           text: "Free inspection. Clear estimates after inspection. No hidden fees. No upselling. No pressure.",
         },
         {
-          icon: <Check size={32} strokeWidth={1.5} />,
+          icon: <Clock size={32} strokeWidth={1.5} />,
           title: "Response in Less Than Two Hours",
           text: "We respond in less than two hours, with same-day service within business hours.",
         },
         {
-          icon: <Check size={32} strokeWidth={1.5} />,
+          icon: <Cpu size={32} strokeWidth={1.5} />,
           title: "In-Person Service, At Your Home",
           text: "On-site work, in person, at your home or business. Nothing remote.",
         },

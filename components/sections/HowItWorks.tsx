@@ -37,6 +37,7 @@ export default async function HowItWorks({ locale = "en" }: { locale?: "en" | "e
               <div className="step-number">{i + 1}</div>
               <h3 className="step-title">{s.title}</h3>
               <p className="step-desc">{s.desc}</p>
+
             </div>
           ))}
         </div>

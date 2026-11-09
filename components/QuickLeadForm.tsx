@@ -173,37 +173,35 @@ export default function QuickLeadForm({
           </div>
         ) : (
           <form className="quick-lead__form" onSubmit={handleSubmit} noValidate>
-            <div className="quick-lead__row">
-              <div className="quick-lead__field">
-                <label className="quick-lead__label" htmlFor="quick-lead-name">
-                  {t.nameLabel}
-                </label>
-                <input
-                  id="quick-lead-name"
-                  className="quick-lead__input"
-                  type="text"
-                  autoComplete="name"
-                  placeholder={t.namePlaceholder}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="quick-lead__field">
-                <label className="quick-lead__label" htmlFor="quick-lead-phone">
-                  {t.phoneLabel}
-                </label>
-                <input
-                  id="quick-lead-phone"
-                  className="quick-lead__input"
-                  type="tel"
-                  autoComplete="tel"
-                  placeholder={t.phonePlaceholder}
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                />
-              </div>
+            <div className="quick-lead__field">
+              <label className="quick-lead__label" htmlFor="quick-lead-name">
+                {t.nameLabel}
+              </label>
+              <input
+                id="quick-lead-name"
+                className="quick-lead__input"
+                type="text"
+                autoComplete="name"
+                placeholder={t.namePlaceholder}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="quick-lead__field">
+              <label className="quick-lead__label" htmlFor="quick-lead-phone">
+                {t.phoneLabel}
+              </label>
+              <input
+                id="quick-lead-phone"
+                className="quick-lead__input"
+                type="tel"
+                autoComplete="tel"
+                placeholder={t.phonePlaceholder}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+              />
             </div>
             <div className="quick-lead__field">
               <label className="quick-lead__label" htmlFor="quick-lead-message">

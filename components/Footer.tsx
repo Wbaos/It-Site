@@ -68,7 +68,7 @@ export default function Footer({
               priority
               style={{
                 width: "auto",
-                // Restrained height for the minimal footer (was 250px tall);
+                // Restrained height for the clean footer (was 250px tall);
                 // the logo renders white via the .footer-logo filter in CSS.
                 height: "80px",
                 objectFit: "contain",
@@ -116,7 +116,7 @@ export default function Footer({
         </div>
       </div>
 
-      {/* ===== Giant call band ===== */}
+      {/* ===== Call band ===== */}
       <div className="footer-call">
         <a
           href={`tel:${phoneTel}`}

@@ -322,7 +322,7 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-title" content="CallTechCare" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#FAFAF8" />
+        <meta name="theme-color" content="#FFFFFF" />
 
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />

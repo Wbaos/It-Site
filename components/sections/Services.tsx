@@ -122,12 +122,12 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
         </p>
 
        <div className="services-grid">
-        {sortedServices.map((s: any, idx: number) => {
+        {sortedServices.map((s: any) => {
           const es = isSpanish ? SERVICES_ES[s.slug] : undefined;
           const title = es?.title ?? s.title;
           const description = es?.description ?? s.description;
           return (
-          <Link key={s._id} href={serviceHref(s.slug, locale)} className={idx === 0 ? "service-card service-card--featured" : "service-card"}>
+          <Link key={s._id} href={serviceHref(s.slug, locale)} className="service-card">
 
             {s.image?.asset && (
               <div className="service-card-photo">
@@ -141,10 +141,8 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
               </div>
             )}
 
-            <div className="service-card-head">
-              <span className="service-card-num">{String(idx + 1).padStart(2, "0")}</span>
-              <h3 className="service-card-title">{title}</h3>
-            </div>
+
+            <h3 className="service-card-title">{title}</h3>
 
             {description && (
               <p className="service-card-desc">{description}</p>

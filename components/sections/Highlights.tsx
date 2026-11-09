@@ -12,9 +12,9 @@ type Highlight = {
 // The three highlight icons live in Sanity as SVGs, but each file is a
 // solid colored rounded square (yellow / blue / green) with a white
 // stroked glyph on top — so the <img> always showed the Sanity color,
-// breaking the one-cobalt-accent rule. The glyph paths below are copied
+// breaking the one-deep-green-accent rule. The glyph paths below are copied
 // verbatim from those SVG files (background rect dropped); they render
-// in cobalt on the pale-blue tile. Keyed by the stable Sanity document
+// in deep green on the pale-green tile. Keyed by the stable Sanity document
 // id; any highlight not in the map keeps the original <img> fallback.
 const HIGHLIGHT_GLYPHS: Record<string, React.ReactNode> = {
   // Fast Service — lightning
@@ -82,7 +82,7 @@ export default function HighlightsClient({
                       width={28}
                       height={28}
                       fill="none"
-                      stroke="#2563EB"
+                      stroke="#14532D"
                       strokeWidth={2}
                       strokeLinecap="round"
                       strokeLinejoin="round"

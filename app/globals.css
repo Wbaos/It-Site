@@ -4657,7 +4657,7 @@ body.no-scroll {
   border-radius: 9999px;
   height: 4rem;
   width: 4rem;
-  border-bottom: 2px solid #2563eb;
+  border-bottom: 2px solid #14532D;
   margin: 0 auto 1rem;
 }
 
@@ -4701,7 +4701,7 @@ body.no-scroll {
 }
 
 .stats-period-button.active {
-  background: #2563eb;
+  background: #14532D;
   color: white;
 }
 
@@ -4809,7 +4809,7 @@ body.no-scroll {
 .stats-score-bar {
   height: 0.75rem;
   border-radius: 9999px;
-  background: #2563eb;
+  background: #14532D;
   transition: width 0.3s ease;
 }
 
@@ -4870,12 +4870,12 @@ body.no-scroll {
 }
 
 .stats-table-link {
-  color: #2563eb;
+  color: #14532D;
   transition: color 0.2s;
 }
 
 .stats-table-link:hover {
-  color: #1e3a8a;
+  color: #052E16;
 }
 
 /* ===== RESULTS CLIENT PAGE ===== */
@@ -4898,7 +4898,7 @@ body.no-scroll {
   border-radius: 9999px;
   height: 4rem;
   width: 4rem;
-  border-bottom: 2px solid #2563eb;
+  border-bottom: 2px solid #14532D;
   margin: 0 auto 1rem;
 }
 
@@ -4941,7 +4941,7 @@ body.no-scroll {
 
 .results-client-error-button {
   padding: 0.75rem 1.5rem;
-  background: #2563eb;
+  background: #14532D;
   color: white;
   border-radius: 0.5rem;
   border: none;
@@ -4951,7 +4951,7 @@ body.no-scroll {
 }
 
 .results-client-error-button:hover {
-  background: #1d4ed8;
+  background: #052E16;
 }
 
 /* Page Layout */
@@ -5013,8 +5013,8 @@ body.no-scroll {
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  border: 2px solid #2563eb;
-  color: #2563eb;
+  border: 2px solid #14532D;
+  color: #14532D;
   border-radius: 0.5rem;
   background: transparent;
   cursor: pointer;
@@ -5023,7 +5023,7 @@ body.no-scroll {
 }
 
 .results-client-action-button:hover {
-  background: #eff6ff;
+  background: #DCFCE7;
 }
 
 .results-client-action-icon {
@@ -7740,7 +7740,7 @@ main {
   color: var(--primary);
 }
 .mobile-link:hover {
-  color: #2563eb;
+  color: #14532D;
 }
 
 
@@ -7892,12 +7892,12 @@ main {
 }
 
 .account-tabs button.active {
-  color: #2563eb;
-  border-color: #2563eb;
+  color: #14532D;
+  border-color: #14532D;
 }
 
 .account-tabs button:hover:not(.active) {
-  color: #1e3a8a;
+  color: #052E16;
 }
 
 /* -------------------------------
@@ -14919,7 +14919,7 @@ details[open] .faq-toggle {
 }
 
 .forgot-link {
-  color: #3b82f6;
+  color: #14532D;
 }
 
 .signup-wrapper {
@@ -15215,8 +15215,8 @@ details[open] .faq-toggle {
 }
 
 .upload-icon {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
-  color: #3b82f6;
+  background: linear-gradient(135deg, rgba(20, 83, 45, 0.2), rgba(20, 83, 45, 0.1));
+  color: #14532D;
 }
 
 .ping-icon {
@@ -19250,9 +19250,11 @@ details[open] .faq-toggle {
 }
 
 /* ==========================================================================
-   Site redesign v3 — modern clean minimal (Nov 2026)
-   Light warm-white theme, one cobalt accent (#2563EB), hairline borders,
-   soft diffused shadows, pill buttons, generous spacing.
+   Site redesign v5 — clean green (Nov 2026)
+   White background, generous white space, charcoal text, ONE deep-green
+   accent (#14532D). No blue, no yellow, no orange, no purple in the theme.
+   Built FRESH on main: this block replaces the earlier redesign entirely — no
+   earlier colors, no earlier hero structure, nothing layered on top of it.
    These overrides sit at the end of the file on purpose: they re-skin the
    shared chrome and the home page without deleting the old rules, so the
    whole redesign reverts by removing this block.
@@ -19260,28 +19262,29 @@ details[open] .faq-toggle {
    assessment / account pages still set their own dark section backgrounds
    and are intentionally left dark (only shared chrome, buttons and the
    lead-form band change there).
+   NOTE on --brand-teal: it is deliberately NOT redefined here. Deep green
+   (#14532D) is unreadable on the dark inner pages that use var(--brand-teal)
+   for prices, back links and category pills, so this block sets its green
+   explicitly on every selector it overrides instead of flipping the var.
    ========================================================================== */
 
 :root {
-  --v3-paper: #FAFAF8;
-  --v3-ink: #111827;
-  --v3-muted: #6B7280;
-  --v3-line: #E5E7EB;
-  --v3-blue: #2563EB;
-  --v3-blue-dark: #1D4ED8;
-  --v3-blue-tint: #EFF6FF;
-  --v3-gray-band: #F3F4F6;
-  /* Accent kill-switch: every remaining var(--brand-teal) use (nav active
-     link, focus rings, status text, mobile support button) renders in the
-     new cobalt accent. */
-  --brand-teal: #2563EB;
+  --u-paper: #FFFFFF;
+  --u-ink: #111827;
+  --u-muted: #6B7280;
+  --u-line: #E5E7EB;
+  --u-green: #14532D;
+  --u-green-dark: #052E16;
+  --u-green-tint: #DCFCE7;
+  --u-green-tint-border: #86EFAC;
+  --u-gray-band: #F3F4F6;
   --font-family-main: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* --- Base: light page, ink text ----------------------------------------- */
+/* --- Base: white page, charcoal text -------------------------------------- */
 html,
 body {
-  background-color: #FAFAF8;
+  background-color: #FFFFFF;
   color-scheme: light;
 }
 
@@ -19309,8 +19312,8 @@ body {
 
 /* --- Header: slim solid white, hairline bottom border ------------------ */
 .site-header {
-  /* Solid white, no translucency or blur: the frosted header smeared
-     over the hero image (lawn-green bleeding through the nav). */
+  /* Solid white, no translucency or blur: a frosted header smears over
+     the hero photo. */
   background: #ffffff;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -19354,7 +19357,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: #2563EB;
+  background: #14532D;
   color: #fff;
   font-weight: 600;
   font-size: 0.95rem;
@@ -19362,12 +19365,12 @@ body {
   border-radius: 999px;
   text-decoration: none;
   white-space: nowrap;
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 8px 20px rgba(20, 83, 45, 0.25);
   transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .nav-call-btn:hover {
-  background: #1D4ED8;
+  background: #052E16;
   transform: translateY(-1px);
 }
 
@@ -19396,7 +19399,7 @@ body {
 }
 
 .dropdown-link:hover {
-  color: #2563EB;
+  color: #14532D;
 }
 
 .promo-card {
@@ -19438,7 +19441,7 @@ body {
 }
 
 .support-btn:hover {
-  background: #1D4ED8;
+  background: #052E16;
 }
 
 /* --- Mobile nav (outside the header element) ----------------------------- */
@@ -19452,7 +19455,7 @@ body {
 }
 
 .primary-nav--mobile .nav-link:hover {
-  color: #2563EB;
+  color: #14532D;
 }
 
 /* --- Search modal (light) ------------------------------------------------ */
@@ -19487,23 +19490,30 @@ body {
   background: #F3F4F6;
 }
 
-/* --- Hero: light, centered, wide rounded image below --------------------- */
+/* --- Hero: two columns — text left, large rounded photo right ------------ */
 #hero {
-  background: #FAFAF8;
+  background: #FFFFFF;
   background-image: none;
   padding: 10rem 1rem 6rem;
   display: block;
+  text-align: left;
 }
 
 #hero .hero-inner {
-  max-width: 1080px;
+  max-width: 1200px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 3.5rem;
   align-items: center;
 }
 
+#hero .hero-copy {
+  min-width: 0;
+}
+
 #hero .hero-badge {
+  display: inline-block;
   background: #fff;
   color: #4B5563;
   border: 1px solid #E5E7EB;
@@ -19513,7 +19523,7 @@ body {
 
 #hero .hero-title {
   color: #111827;
-  font-size: clamp(2.75rem, 6vw, 4.25rem);
+  font-size: clamp(2.75rem, 5vw, 4rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.05;
@@ -19525,19 +19535,19 @@ body {
 }
 
 #hero .hero-title-line2 {
-  color: #2563EB;
+  color: #14532D;
 }
 
 #hero .hero-sub {
   color: #6B7280;
   font-size: 1.25rem;
   line-height: 1.7;
-  max-width: 640px;
+  max-width: 560px;
   margin: 0;
 }
 
 #hero .hero-ctas {
-  justify-content: center;
+  justify-content: flex-start;
   margin-top: 2.25rem;
 }
 
@@ -19548,13 +19558,14 @@ body {
 }
 
 #hero .btn-primary {
-  background: #2563EB;
+  background: #14532D;
   color: #fff;
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.28);
+  box-shadow: 0 12px 28px rgba(20, 83, 45, 0.28);
 }
 
 #hero .btn-primary:hover {
-  background: #1D4ED8;
+  background: #052E16;
+  transform: translateY(-1px);
 }
 
 #hero .btn-secondary {
@@ -19573,7 +19584,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.5rem 1.25rem;
   margin-top: 2.5rem;
   color: #6B7280;
@@ -19584,6 +19595,15 @@ body {
   display: inline-flex;
   gap: 2px;
   align-items: center;
+}
+
+/* Trust-row stars: SvgIcon "star" draws its path with fill="none" and
+   only gets a fill from a .star-outline/.star-filled ancestor, which the
+   trust row does not have — so the five stars would be invisible.
+   Fill them amber here. Amber is the conventional star color, not a
+   theme accent; it appears nowhere else in this block. */
+.hero-trust-stars .star-shape {
+  fill: #F59E0B;
 }
 
 .hero-trust-item strong {
@@ -19598,8 +19618,8 @@ body {
 }
 
 #hero .hero-media {
-  width: min(1080px, 100%);
-  margin: 3.5rem auto 0;
+  width: 100%;
+  margin: 0;
   border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 24px 60px rgba(17, 24, 39, 0.12);
@@ -19618,9 +19638,9 @@ body {
   display: block;
 }
 
-/* --- Highlights: horizontal white tiles, pale blue icon tint ------------- */
+/* --- Highlights: horizontal white tiles, pale green icon disc ------------ */
 .highlights {
-  background: #FAFAF8;
+  background: #FFFFFF;
   padding: 2rem 0 5rem;
 }
 
@@ -19652,7 +19672,8 @@ body {
   height: 56px;
   min-width: 56px;
   margin: 0;
-  background-color: #EFF6FF;
+  background-color: #DCFCE7;
+  border-radius: 50%;
   box-shadow: none;
 }
 
@@ -19677,7 +19698,7 @@ body {
   line-height: 1.6;
 }
 
-/* --- Services: minimal white cards, quiet text link ---------------------- */
+/* --- Services: white cards, photo on top, content contained by design --- */
 .section.services {
   background: #FFFFFF;
   padding: 6rem 1rem;
@@ -19688,6 +19709,7 @@ body {
   font-weight: 700;
   letter-spacing: -0.02em;
   font-size: clamp(2rem, 3.5vw, 2.75rem);
+  text-align: center;
 }
 
 .services-sub {
@@ -19696,13 +19718,24 @@ body {
   line-height: 1.7;
   max-width: 640px;
   margin: 0 auto 3.5rem;
+  text-align: center;
 }
 
 .services-grid {
   padding: 0;
 }
 
+/* Cards contain their content by construction: height is auto, the card
+   is a flex column, and the button takes margin-top:auto — so a long
+   description or a long Spanish title can only make the card taller,
+   never spill past its border. No fixed height, no text-clipping
+   overflow anywhere on the card. */
 .services-grid .service-card {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 0;
+  overflow: visible;
   background: #fff;
   border: 1px solid #E5E7EB;
   border-radius: 20px;
@@ -19751,6 +19784,10 @@ body {
   padding: 0 1.5rem;
 }
 
+.services-grid .service-card-bottom {
+  padding: 1rem 1.5rem 0;
+}
+
 .services-grid .service-card-price {
   color: #111827;
   padding: 0 1.5rem;
@@ -19766,11 +19803,11 @@ body {
 .services-grid .service-card-btn {
   background: none;
   box-shadow: none;
-  color: #2563EB;
+  color: #14532D;
   justify-content: flex-start;
   align-self: flex-start;
-  padding: 0;
-  margin: 1.25rem 1.5rem 0;
+  padding: 1.25rem 0 0;
+  margin: auto 1.5rem 0;
   width: auto;
   font-weight: 600;
   border-radius: 0;
@@ -19781,7 +19818,7 @@ body {
 }
 
 .services-grid .service-card-btn:hover {
-  color: #1D4ED8;
+  color: #052E16;
   opacity: 1;
   box-shadow: none;
 }
@@ -19801,14 +19838,25 @@ body {
   align-items: start;
 }
 
+/* The intro column itself does NOT stick: it is nearly as tall as the
+   list column, so sticking it gives almost no travel and the heading
+   slides under the fixed header mid-section. Only the heading sticks
+   (see .why-header below); the photo scrolls normally underneath it. */
 .why-intro {
-  position: sticky;
-  /* Clears the fixed top bars (announcement 44px + header ~70px) with
-     room to spare: at 9rem the pinned heading could slide under them. */
-  top: 11rem;
+  position: static;
 }
 
 .why-header {
+  position: sticky;
+  /* Measured fixed chrome: announcement bar 44px (--topbar-h) + header
+     ~64px (desktop logo 180px wide x 240:55 viewBox = 41.25px tall, plus
+     .nav-grid padding 0.7rem top + bottom) = ~108px, plus 1rem of air.
+     The heading stops 124px below the viewport top, clear of the bars,
+     in both languages. */
+  top: calc(var(--topbar-h) + 64px + 1rem);
+  background: #FFFFFF;
+  z-index: 5;
+  padding-bottom: 1.5rem;
   text-align: left;
   max-width: none;
   margin: 0 0 2rem;
@@ -19823,7 +19871,7 @@ body {
 }
 
 .why-header .brand {
-  color: #2563EB;
+  color: #14532D;
 }
 
 .why-header p {
@@ -19836,11 +19884,15 @@ body {
   margin: 0;
   max-width: none;
   border-radius: 20px;
+  overflow: hidden;
   box-shadow: 0 20px 40px rgba(17, 24, 39, 0.08);
 }
 
 .why-photo img {
   height: clamp(220px, 30vw, 360px);
+  width: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .why-list {
@@ -19869,8 +19921,8 @@ body {
   height: 44px;
   min-width: 44px;
   border-radius: 50%;
-  background: #EFF6FF;
-  color: #2563EB;
+  background: #DCFCE7;
+  color: #14532D;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19897,7 +19949,7 @@ body {
 
 /* --- How It Works: quiet steps, large thin numerals ---------------------- */
 .section.how {
-  background: #FAFAF8;
+  background: #F9FAFB;
   padding: 6rem 1rem;
 }
 
@@ -19936,7 +19988,7 @@ body {
   height: auto;
   border-radius: 0;
   background: none;
-  color: #2563EB;
+  color: #14532D;
   font-size: 3.5rem;
   font-weight: 300;
   line-height: 1;
@@ -19967,9 +20019,15 @@ body {
   margin: 3.5rem auto 0;
 }
 
+/* Safety: the step connector SVG is blue and was removed from the
+   component; if it ever renders again, keep it out of the design. */
+.connector {
+  display: none;
+}
+
 /* --- Home video ----------------------------------------------------------- */
 .home-video {
-  background: #FAFAF8;
+  background: #FFFFFF;
   padding: 6rem 1rem;
 }
 
@@ -19990,11 +20048,11 @@ body {
 }
 
 .home-video-play-icon {
-  background: #2563EB;
+  background: #14532D;
 }
 
 .home-video-play:hover .home-video-play-icon {
-  background: #1D4ED8;
+  background: #052E16;
 }
 
 /* --- SEO intro: white card, quiet area pills ----------------------------- */
@@ -20024,7 +20082,7 @@ body {
 }
 
 .seo-intro a {
-  color: #2563EB;
+  color: #14532D;
   text-decoration: none;
   font-weight: 600;
 }
@@ -20046,9 +20104,9 @@ body {
 }
 
 .seo-area-list a:hover {
-  background: #EFF6FF;
-  border-color: #BFDBFE;
-  color: #2563EB;
+  background: #DCFCE7;
+  border-color: #86EFAC;
+  color: #14532D;
 }
 
 /* --- Reviews: white container, light cards -------------------------------- */
@@ -20087,15 +20145,15 @@ body {
 }
 
 .btn-write-review {
-  background: #2563EB;
-  border-color: #2563EB;
+  background: #14532D;
+  border-color: #14532D;
   color: #fff;
   border-radius: 999px;
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 12px 28px rgba(20, 83, 45, 0.25);
 }
 
 .btn-write-review:hover {
-  background: #1D4ED8;
+  background: #052E16;
 }
 
 .testimonial-card {
@@ -20125,15 +20183,15 @@ body {
 }
 
 .read-more-btn {
-  color: #2563EB;
+  color: #14532D;
 }
 
 .read-more-btn:hover {
-  color: #1D4ED8;
+  color: #052E16;
 }
 
 .verified-pill.below {
-  background: #2563EB;
+  background: #14532D;
 }
 
 .owl-prev,
@@ -20168,7 +20226,7 @@ body {
 }
 
 .quick-lead__title::after {
-  background: #2563EB;
+  background: #14532D;
 }
 
 .quick-lead__sub {
@@ -20176,27 +20234,21 @@ body {
 }
 
 .quick-lead__call {
-  background: #2563EB;
+  background: #14532D;
   color: #fff;
   border-radius: 999px;
   text-transform: none;
   letter-spacing: 0;
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 12px 28px rgba(20, 83, 45, 0.25);
 }
 
 .quick-lead__call:hover {
-  background: #1D4ED8;
+  background: #052E16;
   opacity: 1;
 }
 
 .quick-lead__form {
   border-top-color: #E5E7EB;
-}
-
-.quick-lead__row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
 }
 
 .quick-lead__label {
@@ -20216,25 +20268,25 @@ body {
 }
 
 .quick-lead__input:focus {
-  border-color: #2563EB;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  border-color: #14532D;
+  box-shadow: 0 0 0 3px rgba(20, 83, 45, 0.15);
   background: #fff;
 }
 
 .quick-lead__submit {
-  background: #2563EB;
+  background: #14532D;
   color: #fff;
   border-radius: 999px;
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 12px 28px rgba(20, 83, 45, 0.25);
 }
 
 .quick-lead__submit:hover:not(:disabled) {
-  background: #1D4ED8;
+  background: #052E16;
 }
 
 .quick-lead__submit:disabled {
-  background: #93C5FD;
-  color: #fff;
+  background: #D1D5DB;
+  color: #6B7280;
 }
 
 .quick-lead__trust {
@@ -20243,9 +20295,9 @@ body {
 }
 
 .quick-lead__success {
-  background: #EFF6FF;
-  border-color: #BFDBFE;
-  color: #1E40AF;
+  background: #DCFCE7;
+  border-color: #86EFAC;
+  color: #14532D;
 }
 
 .quick-lead__error {
@@ -20302,20 +20354,20 @@ body {
 
 .contact .input:focus,
 .contact .textarea:focus {
-  border-color: #2563EB;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  border-color: #14532D;
+  box-shadow: 0 0 0 3px rgba(20, 83, 45, 0.15);
 }
 
 .contact .btn-submit {
-  background: #2563EB;
+  background: #14532D;
   color: #fff;
   border-radius: 999px;
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 12px 28px rgba(20, 83, 45, 0.25);
 }
 
 .contact .btn-submit:hover {
   opacity: 1;
-  background: #1D4ED8;
+  background: #052E16;
 }
 
 /* --- Footer: dark charcoal, quiet text, elegant phone --------------------- */
@@ -20395,7 +20447,35 @@ body {
   color: #6B7280;
 }
 
-/* --- Floating quick-call button: white pill, blue icon -------------------- */
+/* Footer logo: the artwork is a green fist/hose with mint text on a
+   transparent background. Render it white on the dark footer (the
+   transparent background stays transparent under the filter). Its
+   height is capped at 80px in Footer.tsx. */
+.footer-logo {
+  filter: brightness(0) invert(1);
+}
+
+/* Footer call band: an intentional centered band inside the footer
+   layout, carrying the phone number. */
+.footer-call {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-call-number {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.footer-call-number:hover {
+  color: #BBF7D0;
+}
+
+/* --- Floating quick-call button: white pill, green icon ------------------- */
 .quick-call-button {
   background: #fff;
   border: 1px solid #E5E7EB;
@@ -20404,25 +20484,40 @@ body {
 }
 
 .quick-call-button:hover {
-  border-color: #BFDBFE;
-  background: #EFF6FF;
+  border-color: #86EFAC;
+  background: #DCFCE7;
   transform: translateY(-2px);
 }
 
 .quick-call-button svg {
-  color: #2563EB;
+  color: #14532D;
 }
 
 .quick-call-button:hover svg {
-  color: #2563EB;
+  color: #14532D;
 }
 
 .quick-call-button:focus-visible {
-  outline: 2px solid #2563EB;
+  outline: 2px solid #14532D;
   outline-offset: 2px;
 }
 
 /* --- Responsive ------------------------------------------------------------ */
+/* Tablet widths (901–1100px): the desktop nav is still visible, so the
+   header Call pill shrinks to an icon-only button instead of crowding
+   the nav. The phone number stays visible in the announcement bar and
+   in the floating call pill. At 900px and below the pill is hidden
+   entirely (existing rule). */
+@media (max-width: 1100px) {
+  .nav-call-btn span {
+    display: none;
+  }
+
+  .nav-call-btn {
+    padding: 0.65rem 0.75rem;
+  }
+}
+
 @media (max-width: 900px) {
   .nav-call-btn {
     display: none;
@@ -20433,7 +20528,7 @@ body {
     gap: 2.5rem;
   }
 
-  .why-intro {
+  .why-header {
     position: static;
   }
 
@@ -20460,8 +20555,9 @@ body {
     padding: 9rem 1rem 4rem;
   }
 
-  #hero .hero-media {
-    margin-top: 2.5rem;
+  #hero .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
   }
 
   .hero-trust {
@@ -20479,10 +20575,6 @@ body {
     padding: 4rem 1rem;
   }
 
-  .quick-lead__row {
-    grid-template-columns: 1fr;
-  }
-
   .quick-lead__card,
   .contact .contact-form-card {
     padding: 2rem 1.5rem;
@@ -20496,86 +20588,5 @@ body {
 @media (max-width: 600px) {
   .site-footer {
     padding: 3rem 0 6rem;
-  }
-}
-
-/* --- v3 follow-up: hover + search-modal accents --------------------------- */
-.custom-service-box:hover {
-  border-color: #BFDBFE;
-}
-
-.custom-service-btn-grey:hover {
-  background: #1F2937;
-}
-
-.popular-service .svc-check svg {
-  stroke: #2563EB;
-}
-
-.svc-price {
-  color: #2563EB;
-}
-
-.svc-badge {
-  background: #EFF6FF;
-  color: #2563EB;
-}
-
-/* ===== Site redesign v3 — defect fixes (Nov 2026) ======================
-   Fixes for the defects found on the v3 preview: the hero trust-row
-   stars were invisible, the footer logo stayed green, the footer call
-   band had no styling at all (its number rendered as stray text at the
-   left viewport edge), and the header Call pill could crowd the nav at
-   tablet widths. No text, links or content changed here. */
-
- /* Hero trust-row stars: SvgIcon "star" draws its path with fill="none"
-   and only gets a fill from a .star-outline/.star-filled ancestor,
-   which the trust row does not have — so the five stars were invisible.
-   Fill them amber here. */
-.hero-trust-stars .star-shape {
-  fill: #F59E0B;
-}
-
-/* Footer logo: the artwork is a green fist/hose with mint text on a
-   transparent background. Render it white on the dark footer (the
-   transparent background stays transparent under the filter). Its
-   height is capped in Footer.tsx. */
-.footer-logo {
-  filter: brightness(0) invert(1);
-}
-
-/* Footer call band: this element never had any CSS, so its number
-   rendered as unstyled text at the far left viewport edge. Make it an
-   intentional centered band inside the footer layout. */
-.footer-call {
-  text-align: center;
-  padding: 2.5rem 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.footer-call-number {
-  color: #fff;
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  text-decoration: none;
-}
-
-.footer-call-number:hover {
-  color: #BFDBFE;
-}
-
-/* Tablet widths (901–1100px): the desktop nav is still visible, so the
-   header Call pill shrinks to an icon-only button instead of crowding
-   the nav. The phone number stays visible in the announcement bar and
-   in the floating call pill. At 900px and below the pill is hidden
-   entirely (existing rule). */
-@media (max-width: 1100px) {
-  .nav-call-btn span {
-    display: none;
-  }
-
-  .nav-call-btn {
-    padding: 0.65rem 0.75rem;
   }
 }

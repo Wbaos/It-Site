@@ -76,78 +76,80 @@ export default function Hero({
   return (
     <section id="hero" role="region" aria-labelledby="hero-title">
       <div className="hero-inner">
-        {/* Badge */}
-        {badgeText && <div className="hero-badge">{badgeText}</div>}
+        <div className="hero-copy">
+          {/* Badge */}
+          {badgeText && <div className="hero-badge">{badgeText}</div>}
 
-        {/* Title */}
-        <h1 id="hero-title" className="hero-title">
-          <span className="hero-title-line1">{titleLine1}</span>
-          <span className="hero-title-line2">{titleLine2}</span>
-        </h1>
+          {/* Title */}
+          <h1 id="hero-title" className="hero-title">
+            <span className="hero-title-line1">{titleLine1}</span>
+            <span className="hero-title-line2">{titleLine2}</span>
+          </h1>
 
-        {/* Subtitle */}
-        {subtitle && <p className="hero-sub">{subtitle}</p>}
+          {/* Subtitle */}
+          {subtitle && <p className="hero-sub">{subtitle}</p>}
 
-        {/* CTAs */}
-        <div className="hero-ctas">
-          {primaryCtaText && primaryCtaHref && (
-            isPrimaryPhoneLink ? (
+          {/* CTAs */}
+          <div className="hero-ctas">
+            {primaryCtaText && primaryCtaHref && (
+              isPrimaryPhoneLink ? (
+                <a
+                  href={primaryCtaHref}
+                  className="btn-cta btn-primary"
+                  aria-label="Call CallTechCare for sprinkler repair in Miami and Broward"
+                >
+                  {primaryCtaText}
+                </a>
+              ) : (
+                <Link
+                  href={primaryCtaHref}
+                  className="btn-cta btn-primary"
+                  aria-label="Get sprinkler repair and irrigation service in Miami and Broward"
+                >
+                  {primaryCtaText}
+                </Link>
+              )
+            )}
+
+            {secondaryCtaText && secondaryCtaHref && (
+              <Link
+                href={secondaryCtaHref}
+                className="btn-cta btn-secondary flex items-center gap-2"
+                aria-label="Send us a quick message for sprinkler repair in Miami and Broward"
+              >
+                <SvgIcon name="document" size={20} />
+                {secondaryCtaText}
+              </Link>
+            )}
+            {showCallButton && !isPrimaryPhoneLink && (
               <a
-                href={primaryCtaHref}
-                className="btn-cta btn-primary"
+                href={`tel:${phoneNumber}`}
+                className="btn-cta btn-cta btn-primary flex items-center gap-2"
                 aria-label="Call CallTechCare for sprinkler repair in Miami and Broward"
               >
-                {primaryCtaText}
+                <SvgIcon name="phone" size={20} />
+                Call Now
               </a>
-            ) : (
-              <Link
-                href={primaryCtaHref}
-                className="btn-cta btn-primary"
-                aria-label="Get sprinkler repair and irrigation service in Miami and Broward"
-              >
-                {primaryCtaText}
-              </Link>
-            )
-          )}
+            )}
+          </div>
 
-          {secondaryCtaText && secondaryCtaHref && (
-            <Link
-              href={secondaryCtaHref}
-              className="btn-cta btn-secondary flex items-center gap-2"
-              aria-label="Send us a quick message for sprinkler repair in Miami and Broward"
-            >
-              <SvgIcon name="document" size={20} />
-              {secondaryCtaText}
-            </Link>
-          )}
-          {showCallButton && !isPrimaryPhoneLink && (
-            <a
-              href={`tel:${phoneNumber}`}
-              className="btn-cta btn-cta btn-primary flex items-center gap-2"
-              aria-label="Call CallTechCare for sprinkler repair in Miami and Broward"
-            >
-              <SvgIcon name="phone" size={20} />
-              Call Now
-            </a>
+          {visibleStats.length > 0 && (
+            <div className="hero-trust" role="list">
+              {googleStat && (
+                <span className="hero-trust-stars" aria-hidden="true">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <SvgIcon key={i} name="star" size={16} color="#F59E0B" />
+                  ))}
+                </span>
+              )}
+              {visibleStats.map((s, i) => (
+                <span className="hero-trust-item" role="listitem" key={i}>
+                  <strong>{s.value}</strong> {s.label}
+                </span>
+              ))}
+            </div>
           )}
         </div>
-
-        {visibleStats.length > 0 && (
-          <div className="hero-trust" role="list">
-            {googleStat && (
-              <span className="hero-trust-stars" aria-hidden="true">
-                {[0, 1, 2, 3, 4].map((i) => (
-                  <SvgIcon key={i} name="star" size={16} color="#F59E0B" />
-                ))}
-              </span>
-            )}
-            {visibleStats.map((s, i) => (
-              <span className="hero-trust-item" role="listitem" key={i}>
-                <strong>{s.value}</strong> {s.label}
-              </span>
-            ))}
-          </div>
-        )}
 
         {imageSrc && (
           <figure className="hero-media">
