@@ -1177,8 +1177,8 @@
 /* ---------- 12 · emergency banner drawer ---------- */
 
 .emBanner {
-  background: #f59e0b;
-  color: #451a03;
+  background: #10b981;
+  color: #052e16;
   padding: 1rem 1.1rem;
   display: flex;
   flex-direction: column;
@@ -1200,7 +1200,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: #451a03;
+  background: #052e16;
   color: #fff;
   font-weight: 800;
   text-decoration: none;
