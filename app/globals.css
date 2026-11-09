@@ -10380,6 +10380,44 @@ object-fit: cover;
   transform: scale(1.04);
 }
 
+/* Service photo bleeds to the card's side and top edges on every screen
+   (desktop and mobile) instead of sitting inside the card padding, and
+   every photo keeps the same 16:9 dimensions so none looks smaller than
+   the others. Only cards that have a photo are affected; the text and
+   button keep their side spacing. max-height: none so the taller photo
+   never clips the button on a long description. */
+.service-card:has(.service-card-photo) {
+  padding: 0 0 2rem;
+  overflow: hidden;
+  max-height: none;
+}
+
+.service-card:has(.service-card-photo) .service-card-photo {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+.service-card:has(.service-card-photo) .service-card-photo img {
+  aspect-ratio: 16 / 9;
+  height: auto;
+}
+
+.service-card:has(.service-card-photo) .service-card-title,
+.service-card:has(.service-card-photo) .service-card-desc,
+.service-card:has(.service-card-photo) .service-card-bottom,
+.service-card:has(.service-card-photo) .service-card-btn {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+.service-card:has(.service-card-photo) .service-card-desc {
+  max-width: none;
+}
+
+.service-card:has(.service-card-photo) .service-card-btn {
+  width: auto;
+}
+
 .service-card-icon {
   transition: transform 0.25s ease;
   margin-bottom: 0.25rem;
@@ -10496,39 +10534,6 @@ object-fit: cover;
 @media (max-width: 600px) {
   .section.services{
     padding: 4rem 1rem;
-  }
-
-  /* Mobile: the service photo bleeds to the card's side and top edges
-     instead of sitting inside the card padding. Only cards that have a
-     photo are affected; the text and button keep their side spacing. */
-  .service-card:has(.service-card-photo) {
-    padding: 0 0 2rem;
-    overflow: hidden;
-  }
-
-  .service-card:has(.service-card-photo) .service-card-photo {
-    margin-bottom: 0;
-    border-radius: 0;
-  }
-
-  .service-card:has(.service-card-photo) .service-card-photo img {
-    height: 200px;
-  }
-
-  .service-card:has(.service-card-photo) .service-card-title,
-  .service-card:has(.service-card-photo) .service-card-desc,
-  .service-card:has(.service-card-photo) .service-card-bottom,
-  .service-card:has(.service-card-photo) .service-card-btn {
-    margin-left: 1.5rem;
-    margin-right: 1.5rem;
-  }
-
-  .service-card:has(.service-card-photo) .service-card-desc {
-    max-width: none;
-  }
-
-  .service-card:has(.service-card-photo) .service-card-btn {
-    width: auto;
   }
 }
 /* ========== Service Detail ========== */
