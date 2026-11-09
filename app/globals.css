@@ -5631,7 +5631,7 @@ main {
   position: relative;
   overflow: hidden;
   padding: clamp(4rem, 10vh, 4rem) 1rem;
-  padding-top: 9rem;
+  padding-top: 12rem;
   background: linear-gradient(180deg, #061020 0%, #03050a 100%);
   text-align: center;
   display: flex;
@@ -5828,7 +5828,7 @@ main {
       grid-template-columns: 1fr;
     }
     #hero {
-      padding-top: 9rem;
+      padding-top: 12rem;
     }
   }
 
@@ -9077,7 +9077,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: start;
-  padding-top: 65px;
+  padding-top: 132px;
 }
 
 .search-box {
