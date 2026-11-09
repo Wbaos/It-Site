@@ -6703,6 +6703,7 @@ main {
   width: 100%;
   top: var(--topbar-h);
   z-index: 1000;
+  background-color: #0f172acc;
   backdrop-filter: saturate(180%) blur(12px);
   border-bottom: 1px solid #1e293b;
 }
@@ -6781,12 +6782,13 @@ main {
   display: flex;
   padding: .7rem ;
   width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
   flex-direction: row;
   align-content: center;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  background-color: #0f172acc;
    white-space: nowrap;
 
 }
