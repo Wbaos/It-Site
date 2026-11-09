@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Search, Menu, X } from "lucide-react";
@@ -631,9 +632,33 @@ export default function Navbar({
         <div className="site-container-var nav-grid">
           {/* BRAND: stays in the current language (Spanish home when in Spanish mode) */}
           <Link href={isSpanishPage ? "/es/" : "/"} className="brand" onClick={closeAllMenus}>
+            {/* Brand mark: the owner's logo mark (fist + hose) from the
+                footer logo file, in place of the old headphone glyph
+                (9 Nov 2026). The wordmark stays as text next to it. */}
             <div className="logo-wrapper">
-              <SvgIcon name="calltechcare-logoName" color="#fff" size={180} className="logo-desktop" />
-              <SvgIcon name="calltechcare-logoMobile" color="#fff" size={100} className="logo-mobile" />
+              <span className="logo-lockup logo-desktop">
+                <Image
+                  src="/logo-mark.svg"
+                  alt=""
+                  width={38}
+                  height={32}
+                  className="logo-mark"
+                />
+                <span className="logo-name">CallTechCare</span>
+              </span>
+              <span className="logo-lockup logo-mobile">
+                <Image
+                  src="/logo-mark.svg"
+                  alt=""
+                  width={34}
+                  height={29}
+                  className="logo-mark"
+                />
+                <span className="logo-name-stacked">
+                  <span>Call</span>
+                  <span>TechCare</span>
+                </span>
+              </span>
             </div>
           </Link>
           <div className="left-slot">

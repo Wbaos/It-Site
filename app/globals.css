@@ -7760,6 +7760,41 @@ main {
   display: none;
 }
 
+/* Brand lockup (9 Nov 2026): the owner's logo mark (fist + hose, from
+   the footer logo file) next to the CallTechCare wordmark, replacing the
+   old headphone glyph. The .logo-desktop / .logo-mobile toggle below
+   (max-width: 600px) still switches between the two variants. */
+.logo-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.logo-lockup .logo-mark {
+  display: block;
+  flex: none;
+}
+
+.logo-lockup .logo-name {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.2px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.logo-lockup .logo-name-stacked {
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.08;
+}
+
 /* --------- Responsive --------- */
 @media (max-width: 900px) {
   
