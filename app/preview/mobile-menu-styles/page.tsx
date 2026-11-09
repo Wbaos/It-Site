@@ -645,10 +645,13 @@ function VariantFrame({
         { href: "/blog", label: t.blog, icon: "doc" },
         { href: "/locations", label: t.areas, icon: "pin" },
       ];
-      const q = query.trim().toLowerCase();
-      const filtered = q
-        ? all.filter((a) => a.label.toLowerCase().includes(q))
-        : all;
+      const norm = (v: string) =>
+        v
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase();
+      const q = norm(query.trim());
+      const filtered = q ? all.filter((a) => norm(a.label).includes(q)) : all;
       return (
         <nav className={menuCls(styles.menuSearch)} aria-hidden={!open}>
           <div className={styles.fsTop}>
