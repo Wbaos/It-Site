@@ -13,37 +13,37 @@ const DESCRIPTION_ES: Record<string, string> = {
   "fort-lauderdale": "CallTechCare ofrece reparación profesional de sprinklers e instalación de irrigación en Fort Lauderdale para propiedades residenciales y comerciales. También ofrecemos instalación de cámaras de seguridad en todo el condado de Broward con servicio rápido y confiable.",
 };
 
-const CITY_LINKS_ES: Array<[string, string]> = [
-  ["Sunrise", "/es/reparacion-de-sprinklers-sunrise"],
-  ["Fort Lauderdale", "/es/areas-de-servicio/fort-lauderdale"],
-  ["Dania Beach", "/es/reparacion-de-sprinklers-dania-beach"],
-  ["Weston", "/es/reparacion-de-sprinklers-weston"],
-  ["Davie", "/es/reparacion-de-sprinklers-davie"],
-  ["Southwest Ranches", "/es/reparacion-de-sprinklers-southwest-ranches"],
-  ["Hollywood", "/es/reparacion-de-sprinklers-hollywood"],
-  ["West Park", "/es/reparacion-de-sprinklers-west-park"],
-  ["Pembroke Pines", "/es/reparacion-de-sprinklers-pembroke-pines"],
-  ["Miramar", "/es/reparacion-de-sprinklers-miramar"],
-  ["Miami Gardens", "/es/reparacion-de-sprinklers-miami-gardens"],
-  ["Miami Lakes", "/es/reparacion-de-sprinklers-miami-lakes"],
-  ["Country Club", "/es/reparacion-de-sprinklers-country-club"],
-  ["Aventura", "/es/reparacion-de-sprinklers-aventura"],
-  ["Sunny Isles Beach", "/es/reparacion-de-sprinklers-sunny-isles-beach"],
-  ["North Miami", "/es/reparacion-de-sprinklers-north-miami"],
-  ["Surfside", "/es/reparacion-de-sprinklers-surfside"],
-  ["North Bay Village", "/es/reparacion-de-sprinklers-north-bay-village"],
-  ["Miami Beach", "/es/reparacion-de-sprinklers-miami-beach"],
-  ["Hialeah", "/es/reparacion-de-sprinklers-hialeah"],
-  ["Doral", "/es/reparacion-de-sprinklers-doral"],
-  ["Fontainebleau", "/es/reparacion-de-sprinklers-fontainebleau"],
-  ["Tamiami", "/es/reparacion-de-sprinklers-tamiami"],
-  ["Miami", "/es/areas-de-servicio/miami"],
-  ["Coral Gables", "/es/reparacion-de-sprinklers-coral-gables"],
-  ["Key Biscayne", "/es/reparacion-de-sprinklers-key-biscayne"],
-  ["Kendall", "/es/reparacion-de-sprinklers-kendall"],
-  ["Kendale Lakes", "/es/reparacion-de-sprinklers-kendale-lakes"],
-  ["Country Walk", "/es/reparacion-de-sprinklers-country-walk"],
-  ["Cutler Bay", "/es/reparacion-de-sprinklers-cutler-bay"],
+const CITY_LINKS: Array<{ name: string; en: string; es: string }> = [
+  { name: "Sunrise", en: "/sprinkler-repair-sunrise", es: "/es/reparacion-de-sprinklers-sunrise" },
+  { name: "Fort Lauderdale", en: "/sprinkler-repair-fort-lauderdale", es: "/es/areas-de-servicio/fort-lauderdale" },
+  { name: "Dania Beach", en: "/sprinkler-repair-dania-beach", es: "/es/reparacion-de-sprinklers-dania-beach" },
+  { name: "Weston", en: "/sprinkler-repair-weston", es: "/es/reparacion-de-sprinklers-weston" },
+  { name: "Davie", en: "/sprinkler-repair-davie", es: "/es/reparacion-de-sprinklers-davie" },
+  { name: "Southwest Ranches", en: "/sprinkler-repair-southwest-ranches", es: "/es/reparacion-de-sprinklers-southwest-ranches" },
+  { name: "Hollywood", en: "/sprinkler-repair-hollywood", es: "/es/reparacion-de-sprinklers-hollywood" },
+  { name: "West Park", en: "/sprinkler-repair-west-park", es: "/es/reparacion-de-sprinklers-west-park" },
+  { name: "Pembroke Pines", en: "/sprinkler-repair-pembroke-pines", es: "/es/reparacion-de-sprinklers-pembroke-pines" },
+  { name: "Miramar", en: "/sprinkler-repair-miramar", es: "/es/reparacion-de-sprinklers-miramar" },
+  { name: "Miami Gardens", en: "/sprinkler-repair-miami-gardens", es: "/es/reparacion-de-sprinklers-miami-gardens" },
+  { name: "Miami Lakes", en: "/sprinkler-repair-miami-lakes", es: "/es/reparacion-de-sprinklers-miami-lakes" },
+  { name: "Country Club", en: "/sprinkler-repair-country-club", es: "/es/reparacion-de-sprinklers-country-club" },
+  { name: "Aventura", en: "/sprinkler-repair-aventura", es: "/es/reparacion-de-sprinklers-aventura" },
+  { name: "Sunny Isles Beach", en: "/sprinkler-repair-sunny-isles-beach", es: "/es/reparacion-de-sprinklers-sunny-isles-beach" },
+  { name: "North Miami", en: "/sprinkler-repair-north-miami", es: "/es/reparacion-de-sprinklers-north-miami" },
+  { name: "Surfside", en: "/sprinkler-repair-surfside", es: "/es/reparacion-de-sprinklers-surfside" },
+  { name: "North Bay Village", en: "/sprinkler-repair-north-bay-village", es: "/es/reparacion-de-sprinklers-north-bay-village" },
+  { name: "Miami Beach", en: "/sprinkler-repair-miami-beach", es: "/es/reparacion-de-sprinklers-miami-beach" },
+  { name: "Hialeah", en: "/sprinkler-repair-hialeah", es: "/es/reparacion-de-sprinklers-hialeah" },
+  { name: "Doral", en: "/sprinkler-repair-doral", es: "/es/reparacion-de-sprinklers-doral" },
+  { name: "Fontainebleau", en: "/sprinkler-repair-fontainebleau", es: "/es/reparacion-de-sprinklers-fontainebleau" },
+  { name: "Tamiami", en: "/sprinkler-repair-tamiami", es: "/es/reparacion-de-sprinklers-tamiami" },
+  { name: "Miami", en: "/sprinkler-repair-miami", es: "/es/areas-de-servicio/miami" },
+  { name: "Coral Gables", en: "/sprinkler-repair-coral-gables", es: "/es/reparacion-de-sprinklers-coral-gables" },
+  { name: "Key Biscayne", en: "/sprinkler-repair-key-biscayne", es: "/es/reparacion-de-sprinklers-key-biscayne" },
+  { name: "Kendall", en: "/sprinkler-repair-kendall", es: "/es/reparacion-de-sprinklers-kendall" },
+  { name: "Kendale Lakes", en: "/sprinkler-repair-kendale-lakes", es: "/es/reparacion-de-sprinklers-kendale-lakes" },
+  { name: "Country Walk", en: "/sprinkler-repair-country-walk", es: "/es/reparacion-de-sprinklers-country-walk" },
+  { name: "Cutler Bay", en: "/sprinkler-repair-cutler-bay", es: "/es/reparacion-de-sprinklers-cutler-bay" },
 ];
 
 const COUNTY_LABEL: Record<string, { en: string; es: string }> = {
@@ -68,11 +68,13 @@ export default function LocationsClient({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getAllActiveLocations().then((data) => {
-      setLocations(data);
-      setFilteredLocations(data);
-      setLoading(false);
-    });
+    getAllActiveLocations()
+      .then((data) => {
+        setLocations(data);
+        setFilteredLocations(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -88,6 +90,11 @@ export default function LocationsClient({
 
     setFilteredLocations(filtered);
   }, [searchTerm, locations]);
+
+  const cityQuery = searchTerm.trim().toLowerCase();
+  const cityMatches = cityQuery
+    ? CITY_LINKS.filter((city) => city.name.toLowerCase().includes(cityQuery))
+    : [];
 
   return (
     <div className="locations-page">
@@ -131,6 +138,29 @@ export default function LocationsClient({
         </section>
       )}
 
+      {/* Matching Cities */}
+      {cityMatches.length > 0 && (
+        <section className="locations-coverage-section">
+          <div className="locations-coverage-container">
+            <div className="locations-coverage-card">
+              <h2 className="locations-coverage-title">
+                {isSpanish
+                  ? `${cityMatches.length} ${cityMatches.length === 1 ? "ciudad" : "ciudades"} que coinciden con “${searchTerm.trim()}”`
+                  : `${cityMatches.length} ${cityMatches.length === 1 ? "city" : "cities"} matching “${searchTerm.trim()}”`}
+              </h2>
+              <p className="locations-coverage-description">
+                {cityMatches.map((city, i) => (
+                  <span key={city.en}>
+                    {i > 0 && ", "}
+                    <Link href={isSpanish ? city.es : city.en}>{city.name}</Link>
+                  </span>
+                ))}
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Locations Grid */}
       <section className="locations-grid-section">
         <div className="locations-grid">
@@ -138,7 +168,13 @@ export default function LocationsClient({
             <div className="locations-loading">{isSpanish ? "Cargando..." : "Loading..."}</div>
           ) : filteredLocations.length === 0 ? (
             <div className="locations-empty">
-              {isSpanish ? "No se encontraron ubicaciones que coincidan con tu criterio." : "No locations found matching your criteria."}
+              {cityMatches.length > 0
+                ? isSpanish
+                  ? "Ningún área de servicio coincide con tu búsqueda — mira las ciudades que coinciden arriba."
+                  : "No service areas match your search — see the matching cities above."
+                : isSpanish
+                  ? "No se encontraron ubicaciones que coincidan con tu criterio."
+                  : "No locations found matching your criteria."}
             </div>
           ) : (
             filteredLocations.map((location) => (
@@ -252,20 +288,16 @@ export default function LocationsClient({
         <div className="locations-coverage-container">
           <div className="locations-coverage-card">
             <h2 className="locations-coverage-title">{isSpanish ? "Las 30 Ciudades que Atendemos" : "All 30 Cities We Serve"}</h2>
-{isSpanish ? (
             <p className="locations-coverage-description">
-              Reparación de sprinklers e irrigación en Miami-Dade y Broward: {CITY_LINKS_ES.map(([label, href], i) => (
-                <span key={href}>
-                  {i > 0 && (i === CITY_LINKS_ES.length - 1 ? " y " : ", ")}
-                  <Link href={href}>{label}</Link>
+              {isSpanish ? "Reparación de sprinklers e irrigación en Miami-Dade y Broward: " : "Sprinkler repair and irrigation across Miami-Dade and Broward: "}
+              {CITY_LINKS.map((city, i) => (
+                <span key={city.en}>
+                  {i > 0 && (i === CITY_LINKS.length - 1 ? (isSpanish ? " y " : " and ") : ", ")}
+                  <Link href={isSpanish ? city.es : city.en}>{city.name}</Link>
                 </span>
-              ))}.
+              ))}
+              .
             </p>
-            ) : (
-            <p className="locations-coverage-description">
-              Sprinkler repair and irrigation across Miami-Dade and Broward: <Link href="/sprinkler-repair-sunrise">Sunrise</Link>, <Link href="/sprinkler-repair-fort-lauderdale">Fort Lauderdale</Link>, <Link href="/sprinkler-repair-dania-beach">Dania Beach</Link>, <Link href="/sprinkler-repair-weston">Weston</Link>, <Link href="/sprinkler-repair-davie">Davie</Link>, <Link href="/sprinkler-repair-southwest-ranches">Southwest Ranches</Link>, <Link href="/sprinkler-repair-hollywood">Hollywood</Link>, <Link href="/sprinkler-repair-west-park">West Park</Link>, <Link href="/sprinkler-repair-pembroke-pines">Pembroke Pines</Link>, <Link href="/sprinkler-repair-miramar">Miramar</Link>, <Link href="/sprinkler-repair-miami-gardens">Miami Gardens</Link>, <Link href="/sprinkler-repair-miami-lakes">Miami Lakes</Link>, <Link href="/sprinkler-repair-country-club">Country Club</Link>, <Link href="/sprinkler-repair-aventura">Aventura</Link>, <Link href="/sprinkler-repair-sunny-isles-beach">Sunny Isles Beach</Link>, <Link href="/sprinkler-repair-north-miami">North Miami</Link>, <Link href="/sprinkler-repair-surfside">Surfside</Link>, <Link href="/sprinkler-repair-north-bay-village">North Bay Village</Link>, <Link href="/sprinkler-repair-miami-beach">Miami Beach</Link>, <Link href="/sprinkler-repair-hialeah">Hialeah</Link>, <Link href="/sprinkler-repair-doral">Doral</Link>, <Link href="/sprinkler-repair-fontainebleau">Fontainebleau</Link>, <Link href="/sprinkler-repair-tamiami">Tamiami</Link>, <Link href="/sprinkler-repair-miami">Miami</Link>, <Link href="/sprinkler-repair-coral-gables">Coral Gables</Link>, <Link href="/sprinkler-repair-key-biscayne">Key Biscayne</Link>, <Link href="/sprinkler-repair-kendall">Kendall</Link>, <Link href="/sprinkler-repair-kendale-lakes">Kendale Lakes</Link>, <Link href="/sprinkler-repair-country-walk">Country Walk</Link> and <Link href="/sprinkler-repair-cutler-bay">Cutler Bay</Link>.
-            </p>
-            )}
           </div>
         </div>
       </section>
