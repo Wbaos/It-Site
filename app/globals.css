@@ -3064,7 +3064,7 @@ color: #fff;
   background: #020617;
   color: #e2e8f0;
   min-height: 100vh;
-  padding: 7.5rem 0 4rem 0;
+  padding: 12rem 0 4rem 0;
   font-family: var(--font-family-main);
 }
 
@@ -3304,7 +3304,7 @@ color: #fff;
 }
 @media (max-width: 600px) {
   .category-detail {
-    padding: 4.5rem 0 2rem 0;
+    padding: 12rem 0 2rem 0;
   }
 
   .category-services {
@@ -3676,7 +3676,7 @@ color: #fff;
     grid-template-columns: 1fr;
   }
   .category-detail {
-    padding: 6.7rem 0;
+    padding: 12rem 0;
   }
   .category-top {
     margin-bottom: 2rem;
@@ -5543,7 +5543,7 @@ main {
   flex: 1;
 }
 .about-page, .faq-page, .legal-section{
-  padding-top: 9rem;;
+  padding-top: 12rem;;
 }
 .faq-page-container{
   background-color:#020617 ;
@@ -5551,7 +5551,7 @@ main {
 .faq-page{
   max-width: 64rem;
   margin: 0 auto;
-  padding: 9rem 1rem;
+  padding: 12rem 1rem;
 }
 .faq-intro{
   color: white;
@@ -5836,7 +5836,7 @@ main {
 /* ========== BLOG LIST PAGE ========== */
 .blog-page {
   background: #060b19;
-  padding: 9rem 0;
+  padding: 12rem 0;
   min-height: 100vh;
 }
 
@@ -6190,7 +6190,7 @@ main {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
   .blog-page {
-    padding: 8rem 0;
+    padding: 12rem 0;
   }
 }
 
@@ -6199,7 +6199,7 @@ main {
 
 .single-blog-page {
   background: #060b19;
-  padding: 9rem 0;
+  padding: 12rem 0;
   min-height: 100vh;
 }
 
@@ -7080,7 +7080,7 @@ main {
 .cart {
   display: flex;
   justify-content: center;
-  padding: 9rem 1rem;
+  padding: 12rem 1rem;
 }
 .cart-grid {
   display: grid;
@@ -7103,7 +7103,7 @@ main {
 .cart-page {
   background: #0f172a;
   min-height: 100vh;
-  padding: 8rem 20px;
+  padding: 12rem 20px;
   color: #e2e8f0;
 }
 
@@ -7871,7 +7871,7 @@ main {
 .account-page {
   background-color: #b0c4de;
   min-height: 80vh;
-  padding: 9rem 0;
+  padding: 12rem 0;
 }
 
 .account-page .site-container {
@@ -10022,7 +10022,7 @@ object-fit: cover;
    WRITE REVIEW PAGE (FORM PAGE)
    ========================================================= */
 .review-write-page {
-    padding: 9rem 0;
+    padding: 12rem 0;
     display: flex;
     justify-content: center;
 }
@@ -10206,7 +10206,7 @@ object-fit: cover;
   }
 
   .review-write-page {
-    padding: 5rem 1rem;
+    padding: 12rem 1rem;
   }
 
   .btn-primary {
@@ -10577,7 +10577,7 @@ object-fit: cover;
 .service-detail {
   background: #020617;
   color: #e2e8f0;
-  padding: 9rem 0;
+  padding: 12rem 0;
   font-family: "Inter", sans-serif;
 }
 
@@ -11380,7 +11380,7 @@ object-fit: cover;
     font-size: 1.5rem;
   }
   .service-detail {
-    padding: 8rem 0;
+    padding: 12rem 0;
   }
   .service-top{
     margin-bottom: 2rem;
@@ -12221,7 +12221,7 @@ object-fit: cover;
 .legal-wrapper {
   /* width: 100%; */
   min-height: 100vh;
-  padding: 9rem 1rem 4rem;
+  padding: 12rem 1rem 4rem;
   background: #020617; 
   display: flex;
   flex-direction: column;
@@ -12243,7 +12243,7 @@ object-fit: cover;
 
 .terms-hero {
   width: 100%;
-  padding-top: 9rem;
+  padding-top: 0;
   padding-bottom: 2.25rem;
   background:
     radial-gradient(1200px 380px at 50% -120px, rgba(20, 184, 166, 0.18), transparent 60%),
@@ -14129,7 +14129,7 @@ box-shadow:
     radial-gradient(70% 80% at 50% 0%, rgba(20, 184, 166, 0.14), transparent 60%),
     radial-gradient(50% 55% at 80% 30%, rgba(59, 130, 246, 0.12), transparent 60%),
     linear-gradient(180deg, #0b1220 0%, #020617 100%);
-  padding: 50px 0 0;
+  padding: 6rem 0 0;
   color: #e5e7eb;
 }
 
@@ -14380,7 +14380,7 @@ box-shadow:
   }
 
   .contact-page {
-  padding: 5rem 0 0;
+  padding: 6rem 0 0;
   color: #e5e7eb;
 }
 
@@ -14932,7 +14932,7 @@ details[open] .faq-toggle {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 9rem 0;
+  padding: 12rem 0;
 }
 
 .login-back-container {
@@ -15091,7 +15091,7 @@ details[open] .faq-toggle {
 
   .login-wrapper {
     padding: 30px 12px;
-    padding-top: 6rem;
+    padding-top: 12rem;
   }
 }
 
@@ -15763,7 +15763,7 @@ details[open] .faq-toggle {
 }
 
 .locations-hero {
-  padding-top: 9rem;
+  padding-top: 12rem;
   padding-bottom: 4rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -16123,7 +16123,7 @@ details[open] .faq-toggle {
 .location-detail-page {
   min-height: 100vh;
   background: linear-gradient(180deg, #061020 0%, #03050a 100%);
-  padding-top: 6.7rem;
+  padding-top: 12rem;
 }
 
 .location-hero-section {
@@ -17047,7 +17047,7 @@ details[open] .faq-toggle {
    ======================================== */
 
 .services-list-hero {
-  padding-top: 9rem;
+  padding-top: 12rem;
   padding-bottom: 2rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -17254,7 +17254,7 @@ details[open] .faq-toggle {
 
 @media (max-width: 639px) {
   .services-list-hero {
-    padding-top: 6rem;
+    padding-top: 12rem;
   }
   
   .services-list-hero h1 {
@@ -18235,7 +18235,7 @@ details[open] .faq-toggle {
 .checkoutClient .page {
   background: #020617;
   min-height: 100vh;
-  padding: 8.5rem 20px;
+  padding: 12rem 20px;
   color: #e2e8f0;
 }
 
@@ -18781,7 +18781,7 @@ details[open] .faq-toggle {
 .bookingCustomize .page {
   background-color: #060b19;
   min-height: 100vh;
-  padding: 9.5rem 0 5rem;
+  padding: 12rem 0 5rem;
   color: #e2e8f0;
 }
 
