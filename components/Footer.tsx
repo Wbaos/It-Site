@@ -144,7 +144,6 @@ export default function Footer({
           <a href={isSpanishPage ? "/es/#services" : "/#services"}>{isSpanishPage ? "Servicios" : "Services"}</a>
           <a href={isSpanishPage ? "/es/#how" : "/#how"}>{isSpanishPage ? "Cómo Funciona" : "How It Works"}</a>
           <Link href={isSpanishPage ? "/es/blog" : "/blog"}>Blog</Link>
-          <Link href={isSpanishPage ? "/es/areas-de-servicio" : "/locations"}>{isSpanishPage ? "Áreas de Servicio" : "Service Areas"}</Link>
           <a href={isSpanishPage ? "/es/contacto" : "/contact"}>{isSpanishPage ? "Contacto" : "Contact"}</a>
           <Link href={isSpanishPage ? "/es/sobre-nosotros" : "/about"}>{isSpanishPage ? "Sobre Nosotros" : "About Us"}</Link>
           <Link href={isSpanishPage ? "/es/preguntas-frecuentes" : "/faq"}>{isSpanishPage ? "Preguntas Frecuentes" : "FAQ"}</Link>
@@ -159,53 +158,8 @@ export default function Footer({
 
           <ul className="footer-services-list">
             <li>
-              <Link href={cityHref("miami", locale)}>
-                {isSpanishPage ? "Reparación de Sprinklers en Miami" : "Sprinkler Repair Miami"}
-              </Link>
-            </li>
-            <li>
               <Link href={serviceHref("sprinkler-repair-and-installation", locale)}>
                 {isSpanishPage ? "Reparación de Sprinklers" : "Sprinkler Repair & Irrigation"}
-              </Link>
-            </li>
-            <li>
-              <Link href={serviceHref("emergency-sprinkler-repair", locale)}>
-                {isSpanishPage ? "Reparación de Emergencia de Sprinklers" : "Emergency Sprinkler Repair"}
-              </Link>
-            </li>
-            <li>
-              <Link href={serviceHref("sprinkler-leak-repair", locale)}>
-                {isSpanishPage ? "Reparación de Fugas de Sprinklers" : "Sprinkler Leak Repair"}
-              </Link>
-            </li>
-            <li>
-              <Link href={serviceHref("sprinkler-valve-repair", locale)}>
-                {isSpanishPage ? "Reparación de Válvulas de Sprinklers" : "Sprinkler Valve Repair"}
-              </Link>
-            </li>
-            <li>
-              <Link href={serviceHref("sprinkler-pump-replacement", locale)}>
-                {isSpanishPage ? "Reemplazo de Bombas de Sprinklers" : "Sprinkler Pump Replacement"}
-              </Link>
-            </li>
-            <li>
-              <Link href={serviceHref("new-irrigation-well-installation", locale)}>
-                {isSpanishPage ? "Pozos Nuevos de Irrigación" : "New Irrigation Wells"}
-              </Link>
-            </li>
-            <li>
-              <Link href={serviceHref("sprinkler-timer-installation", locale)}>
-                {isSpanishPage ? "Instalación de Temporizadores de Sprinklers" : "Sprinkler Timer Installation"}
-              </Link>
-            </li>
-            <li>
-              <Link href={serviceHref("wifi-sprinkler-controller-upgrade", locale)}>
-                {isSpanishPage ? "Actualización a Controlador WiFi de Sprinklers" : "WiFi Sprinkler Controller Upgrade"}
-              </Link>
-            </li>
-            <li>
-              <Link href={serviceHref("rain-sensor-installation", locale)}>
-                {isSpanishPage ? "Instalación de Sensores de Lluvia" : "Rain Sensor Installation"}
               </Link>
             </li>
             <li>
@@ -214,13 +168,8 @@ export default function Footer({
               </Link>
             </li>
             <li>
-              <Link href={serviceHref("sprinkler-maintenance-plan", locale)}>
-                {isSpanishPage ? "Plan de Mantenimiento de Sprinklers" : "Sprinkler Maintenance Plan"}
-              </Link>
-            </li>
-            <li>
-              <Link href={serviceHref("commercial-irrigation-hoa-services", locale)}>
-                {isSpanishPage ? "Riego Comercial y para HOA" : "Commercial Irrigation & HOA"}
+              <Link href={serviceHref("wifi-sprinkler-controller-upgrade", locale)}>
+                {isSpanishPage ? "Actualización a Controlador WiFi de Sprinklers" : "WiFi Sprinkler Controller Upgrade"}
               </Link>
             </li>
             <li>
@@ -229,8 +178,13 @@ export default function Footer({
               </Link>
             </li>
             <li>
-              <Link href={serviceHref("landscaping", locale)}>
-                {isSpanishPage ? "Jardinería" : "Landscaping"}
+              <Link href={serviceHref("sprinkler-maintenance-plan", locale)}>
+                {isSpanishPage ? "Plan de Mantenimiento de Sprinklers" : "Sprinkler Maintenance Plan"}
+              </Link>
+            </li>
+            <li>
+              <Link href={serviceHref("emergency-sprinkler-repair", locale)}>
+                {isSpanishPage ? "Reparación de Emergencia de Sprinklers" : "Emergency Sprinkler Repair"}
               </Link>
             </li>
           </ul>
