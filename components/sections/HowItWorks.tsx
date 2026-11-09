@@ -47,7 +47,7 @@ export default async function HowItWorks({ locale = "en" }: { locale?: "en" | "e
                   >
                     <path
                       d="M0,30 C70,10 130,10 200,30"
-                      stroke="#93c5fd"
+                      stroke="#9CCFB8"
                       strokeWidth="2"
                       fill="transparent"
                     />

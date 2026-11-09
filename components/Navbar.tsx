@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Search, Menu, X } from "lucide-react";
+import { Search, Menu, X, Phone } from "lucide-react";
 import { useNav } from "@/lib/NavContext";
 import { useLoading } from "@/lib/LoadingContext";
 import SearchModal from "@/components/SearchModal";
@@ -268,8 +268,8 @@ export default function Navbar({
         display: "inline-flex",
         alignItems: "center",
         padding: "2px",
-        background: "rgba(15, 23, 42, 0.55)",
-        border: "1px solid rgba(255, 255, 255, 0.18)",
+        background: "#EEF4EF",
+        border: "1px solid #DCE8DF",
         borderRadius: "999px",
         fontSize: "12px",
         fontWeight: 700,
@@ -285,7 +285,7 @@ export default function Navbar({
             aria-label="View this page in English"
             style={{
               textDecoration: "none",
-              color: "#e2e8f0",
+              color: "#47564E",
               opacity: 0.7,
               padding: "5px 9px",
               borderRadius: "999px",
@@ -296,8 +296,8 @@ export default function Navbar({
           <span
             aria-current="true"
             style={{
-              background: "#00E793",
-              color: "#0f172a",
+              background: "#067A46",
+              color: "#ffffff",
               padding: "5px 9px",
               borderRadius: "999px",
             }}
@@ -310,8 +310,8 @@ export default function Navbar({
           <span
             aria-current="true"
             style={{
-              background: "#00E793",
-              color: "#0f172a",
+              background: "#067A46",
+              color: "#ffffff",
               padding: "5px 9px",
               borderRadius: "999px",
             }}
@@ -324,7 +324,7 @@ export default function Navbar({
             aria-label="Ver esta página en español"
             style={{
               textDecoration: "none",
-              color: "#e2e8f0",
+              color: "#47564E",
               opacity: 0.7,
               padding: "5px 9px",
               borderRadius: "999px",
@@ -632,8 +632,8 @@ export default function Navbar({
           {/* BRAND: stays in the current language (Spanish home when in Spanish mode) */}
           <Link href={isSpanishPage ? "/es/" : "/"} className="brand" onClick={closeAllMenus}>
             <div className="logo-wrapper">
-              <SvgIcon name="calltechcare-logoName" color="#fff" size={180} className="logo-desktop" />
-              <SvgIcon name="calltechcare-logoMobile" color="#fff" size={100} className="logo-mobile" />
+              <SvgIcon name="calltechcare-logoName" color="#067A46" size={180} className="logo-desktop" />
+              <SvgIcon name="calltechcare-logoMobile" color="#067A46" size={100} className="logo-mobile" />
             </div>
           </Link>
           <div className="left-slot">
@@ -662,6 +662,14 @@ export default function Navbar({
             {/* LANGUAGE SWITCHER, mobile only (see .mobile-only): visible
                 without opening the menu. */}
             {langSwitcher("mobile-only lang-switcher--header-actions")}
+            <a
+              href={`tel:${phoneTel}`}
+              className="nav-phone-btn"
+              aria-label={`Call CallTechCare at ${phoneDisplay}`}
+            >
+              <Phone size={18} aria-hidden="true" />
+              <span>{phoneDisplay}</span>
+            </a>
             <button
               className="icon-btn"
               aria-label={isSpanishPage ? "Buscar" : "Search"}
