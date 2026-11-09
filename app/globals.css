@@ -9693,6 +9693,109 @@ main {
     color: var(--brand-teal);
   }
 
+  /* Style 9 "Con buscador" mobile menu: search box, icon link rows, call button. */
+  .primary-nav--mobile .mobile-menu-search {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid #334155;
+    border-radius: 0.9rem;
+    padding: 0.75rem 0.9rem;
+    color: #cbd5e1;
+    margin-bottom: 0.9rem;
+    box-sizing: border-box;
+  }
+
+  .primary-nav--mobile .mobile-menu-search input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: 0;
+    outline: none;
+    color: #f8fafc;
+    font-size: 1rem;
+    font-family: inherit;
+  }
+
+  .primary-nav--mobile .mobile-menu-search input::placeholder {
+    color: #64748b;
+  }
+
+  .primary-nav--mobile .mobile-menu-list {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .primary-nav--mobile .mobile-menu-link {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    width: 100%;
+    padding: 0.75rem 0.25rem;
+    color: #e2e8f0;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    font-family: inherit;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #1e293b;
+    cursor: pointer;
+    text-align: left;
+    box-sizing: border-box;
+  }
+
+  .primary-nav--mobile .mobile-menu-link svg:last-child {
+    margin-left: auto;
+    color: #64748b;
+    flex: none;
+  }
+
+  .primary-nav--mobile .mobile-menu-link > span {
+    flex: 1;
+  }
+
+  .primary-nav--mobile .mobile-menu-empty {
+    padding: 2rem 0;
+    text-align: center;
+    color: #94a3b8;
+    width: 100%;
+  }
+
+  .primary-nav--mobile .mobile-menu-call {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    width: 100%;
+    background: #10b981;
+    color: #052e16;
+    font-weight: 800;
+    text-decoration: none;
+    padding: 0.85rem 1rem;
+    border-radius: 0.8rem;
+    box-sizing: border-box;
+  }
+
+  .primary-nav--mobile .mobile-menu-call span {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.25;
+  }
+
+  .primary-nav--mobile .mobile-menu-call small {
+    font-weight: 700;
+    opacity: 0.85;
+  }
+
 
 
   .desktop-only {
