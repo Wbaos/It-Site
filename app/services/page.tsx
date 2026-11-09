@@ -212,10 +212,6 @@ export default async function ServicesPage() {
             Sprinkler repair & irrigation services in Miami and Broward, plus security camera installation.
           </p>
 
-          <p className="services-list-hero-subtitle">
-            Looking for <Link href="/sprinkler-repair-miami">Sprinkler Repair Miami</Link>?
-          </p>
-
           <p className="services-list-hero-badge">
             {services.length} Services Available
           </p>
