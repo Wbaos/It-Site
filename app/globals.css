@@ -13453,7 +13453,9 @@ box-shadow:
     align-items: center;
   }
   .site-footer {
-    padding: 0 0 1rem;
+    /* Clear the fixed quick-call button so it never covers the
+       footer contact lines on mobile. */
+    padding: 0 0 6rem;
   }
 }
 
