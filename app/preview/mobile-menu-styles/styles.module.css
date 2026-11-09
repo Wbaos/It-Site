@@ -836,11 +836,26 @@
   color: #0f172a;
   padding: 0.8rem 1rem;
   border-radius: 1rem;
+  border: 2px solid #10b981;
   display: flex;
   gap: 1rem;
   align-items: center;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   max-width: calc(100% - 2rem);
+}
+
+.choiceNum {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.4rem;
+  height: 2.4rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  background: #10b981;
+  color: #052e16;
+  font-weight: 800;
+  font-size: 1.35rem;
+  vertical-align: middle;
 }
 
 .choiceBar button {

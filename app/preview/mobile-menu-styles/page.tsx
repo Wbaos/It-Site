@@ -1108,10 +1108,10 @@ export default function MobileMenuStylesPage() {
       {chosen && (
         <div className={styles.choiceBar}>
           <span>
-            <strong>
-              Tu elección: {chosen.num}. {chosen.name}
-            </strong>{" "}
-            — dímelo en el chat y lo pongo en vivo.
+            Tu elección:{" "}
+            <span className={styles.choiceNum}>{chosen.num}</span>{" "}
+            <strong>{chosen.name}</strong> — dímelo en el chat y lo pongo
+            en vivo.
           </span>
           <button type="button" onClick={() => setSelected(null)}>
             Quitar
