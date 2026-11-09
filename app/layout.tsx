@@ -382,8 +382,6 @@ export default async function RootLayout({
                 hoursWeekendLabel={settings.hoursWeekendLabel}
                 hoursWeekendLabelEs={settings.hoursWeekendLabelEs}
                 hoursWeekendTime={settings.hoursWeekendTime}
-                serviceAreaLine={settings.serviceAreaLine}
-                serviceAreaLineEs={settings.serviceAreaLineEs}
               />
               <QuickCallButton phoneDisplay={settings.phoneDisplay} phoneTel={settings.phoneTel} />
               <CookieConsent />

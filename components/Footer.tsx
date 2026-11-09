@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { ArrowUp } from "lucide-react";
 import SvgIcon from "./common/SvgIcons";
 
-import { serviceHref } from "@/lib/serviceTwins";
 import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 
 type FooterArea = { name: string; slug: string; esSlug: string };
@@ -24,8 +23,6 @@ export default function Footer({
   hoursWeekendLabel = "Sun",
   hoursWeekendLabelEs = "Dom",
   hoursWeekendTime = "9 AM – 6 PM",
-  serviceAreaLine = "Serving South Florida — from Sunrise to Cutler Bay",
-  serviceAreaLineEs = "Sirviendo al sur de Florida — desde Sunrise hasta Cutler Bay",
 }: {
   areas?: FooterArea[];
   phoneTel?: string;
@@ -37,15 +34,12 @@ export default function Footer({
   hoursWeekendLabel?: string;
   hoursWeekendLabelEs?: string;
   hoursWeekendTime?: string;
-  serviceAreaLine?: string;
-  serviceAreaLineEs?: string;
 }) {
   const year = new Date().getFullYear();
   const pathname = usePathname();
   // Same locale check as the Navbar: "/es" itself plus any "/es/*" route.
   const isSpanishPage =
     pathname === "/es" || (pathname ?? "").startsWith("/es/");
-  const locale = isSpanishPage ? "es" : "en";
 
   // The footer no longer lists cities: the home page "Service Areas"
   // section and the /locations page carry all 30 cities, so the footer
@@ -80,19 +74,13 @@ export default function Footer({
               }}
             />
           </a>
-          <p className="footer-tagline">
-              {isSpanishPage
-                ? "Servicios de Reparación de Sprinklers e Irrigación en Miami y Broward"
-                : "Sprinkler Repair & Irrigation Services in Miami & Broward"}
-          </p>
         </div>
 
         {/* Navigation: in Spanish mode, links point only to pages that exist
-            in this branch: the Spanish home anchors (#services, #how,
+            in this branch: the Spanish home anchors (#how,
             #contact), the Spanish blog page, and the existing English pages
             (locations, about, faq). No /es/* page that does not exist is linked. */}
         <nav className="footer-nav" aria-label={isSpanishPage ? "Navegación del pie de página" : "Footer Navigation"}>
-          <a href={isSpanishPage ? "/es/#services" : "/#services"}>{isSpanishPage ? "Servicios" : "Services"}</a>
           <a href={isSpanishPage ? "/es/#how" : "/#how"}>{isSpanishPage ? "Cómo Funciona" : "How It Works"}</a>
           <Link href={isSpanishPage ? "/es/blog" : "/blog"}>Blog</Link>
           <a href={isSpanishPage ? "/es/contacto" : "/contact"}>{isSpanishPage ? "Contacto" : "Contact"}</a>
@@ -101,54 +89,8 @@ export default function Footer({
           <Link href={isSpanishPage ? "/es/servicios" : "/services"}>{isSpanishPage ? "Todos los Servicios" : "All Services"}</Link>
         </nav>
 
-        {/* Services List (SEO) */}
-        <div className="footer-services">
-          <p className="footer-services-title">
-            {isSpanishPage ? "Servicios Populares en Miami y Broward" : "Popular Services in Miami & Broward"}
-          </p>
-
-          <ul className="footer-services-list">
-            <li>
-              <Link href={serviceHref("sprinkler-repair-and-installation", locale)}>
-                {isSpanishPage ? "Reparación de Sprinklers" : "Sprinkler Repair & Irrigation"}
-              </Link>
-            </li>
-            <li>
-              <Link href={serviceHref("new-irrigation-installation", locale)}>
-                {isSpanishPage ? "Instalación Nueva de Irrigación" : "New Irrigation Installation"}
-              </Link>
-            </li>
-            <li>
-              <Link href={serviceHref("wifi-sprinkler-controller-upgrade", locale)}>
-                {isSpanishPage ? "Actualización a Controlador WiFi de Sprinklers" : "WiFi Sprinkler Controller Upgrade"}
-              </Link>
-            </li>
-            <li>
-              <Link href={serviceHref("home-security", locale)}>
-                {isSpanishPage ? "Instalación de Cámaras de Seguridad" : "Security Camera Installation"}
-              </Link>
-            </li>
-            <li>
-              <Link href={serviceHref("sprinkler-maintenance-plan", locale)}>
-                {isSpanishPage ? "Plan de Mantenimiento de Sprinklers" : "Sprinkler Maintenance Plan"}
-              </Link>
-            </li>
-            <li>
-              <Link href={serviceHref("emergency-sprinkler-repair", locale)}>
-                {isSpanishPage ? "Reparación de Emergencia de Sprinklers" : "Emergency Sprinkler Repair"}
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-
         {/* Contact Info */}
         <div className="footer-contact">
-          <p>
-            <strong>CallTechCare</strong>
-            <br />
-            {isSpanishPage ? serviceAreaLineEs : serviceAreaLine}
-          </p>
           <p>
             📞 <a href={`tel:${phoneTel}`} title="Call CallTechCare">{phoneDisplay}</a>
             <br />
@@ -163,7 +105,6 @@ export default function Footer({
             {isSpanishPage ? `${hoursWeekendLabelEs}: ${hoursWeekendTime}` : `${hoursWeekendLabel}: ${hoursWeekendTime}`}
           </p>
           <div className="footer-areas">
-            <p className="areas-title">{isSpanishPage ? "📍 Áreas de Servicio" : "📍 Service Areas"}</p>
             <p className="areas-list">
               <Link href={isSpanishPage ? "/es/areas-de-servicio" : "/locations"}>
                 {isSpanishPage ? "Ver todas las áreas" : "View all service areas"}
