@@ -157,7 +157,7 @@ const TEXT: Record<Locale, LocaleText> = {
     detailsAria: "View full sprinkler repair and irrigation service details",
     commonH3: "Common sprinkler problems we fix",
     areaH3: "Service area",
-    cameraPrefix: "After sprinkler repair and irrigation service, we also provide ",
+    cameraPrefix: "We also provide ",
     cameraLinkText: "wireless camera installation",
     cameraSuffix: " for homes and small businesses.",
     finalCtaPrefix: "Ready to get started? Call now or ",
@@ -219,7 +219,7 @@ const TEXT: Record<Locale, LocaleText> = {
     detailsAria: "Ver detalles completos del servicio de reparación de sprinklers e irrigación",
     commonH3: "Problemas comunes de sprinklers que reparamos",
     areaH3: "Área de servicio",
-    cameraPrefix: "Después del servicio de reparación de sprinklers e irrigación, también ofrecemos ",
+    cameraPrefix: "También ofrecemos ",
     cameraLinkText: "instalación de cámaras inalámbricas",
     cameraSuffix: " para hogares y pequeños negocios.",
     finalCtaPrefix: "¿Listo para empezar? Llama ahora o ",
@@ -440,9 +440,9 @@ function renderAreaSegments(segments: CityAreaSegment[], locale: Locale) {
 export default async function CityTemplate({ city, locale }: { city: City; locale: Locale }) {
   // Live Google rating summary, from the single shared source in
   // lib/google-reviews (Sanity site-settings). Used for the hero stat (via
-  // the googleRating prop) and the trust chip below, so the numbers change
-  // everywhere at once. When there is no summary the Google stat and the
-  // trust chip hide instead of showing a stale number.
+  // the googleRating prop), so the number changes everywhere at once. When
+  // there is no summary the Google stat hides instead of showing a stale
+  // number.
   const ratingSummary = await getGoogleRatingSummary();
   const googleRating = ratingSummary
     ? formatGoogleRating(ratingSummary.rating)
@@ -584,10 +584,6 @@ export default async function CityTemplate({ city, locale }: { city: City; local
           <div className="seo-trust-chips">
             <span>{isEs ? "Inspección gratis" : "Free inspection"}</span>
             <span>{isEs ? "Mismo día dentro del horario" : "Same-day within business hours"}</span>
-            {ratingSummary && (
-              <span>{isEs ? `${googleRating} en Google · ${ratingSummary.total} reseñas` : `${googleRating} on Google · ${ratingSummary.total} reviews`}</span>
-            )}
-            <span>{isEs ? "Más de 1500 clientes ayudados" : "1500+ customers helped"}</span>
           </div>
           <h2 className="seo-intro-title">{seoIntroTitle}</h2>
           {introP1.split("\n\n").map((para, idx) => (
