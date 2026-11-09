@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { ArrowUp } from "lucide-react";
 import SvgIcon from "./common/SvgIcons";
 
-import { cityHref } from "@/lib/cityTwins";
 import { serviceHref } from "@/lib/serviceTwins";
 import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 
@@ -48,59 +47,11 @@ export default function Footer({
     pathname === "/es" || (pathname ?? "").startsWith("/es/");
   const locale = isSpanishPage ? "es" : "en";
 
-  // Areas from Sanity (via layout); falls back to the fixed canonical list
-  // when the layout renders without them.
-  const footerAreas = (areas?.length ? areas : [
-    { name: "Sunrise", slug: "sunrise", esSlug: "reparacion-de-sprinklers-sunrise" },
-    { name: "Fort Lauderdale", slug: "fort-lauderdale", esSlug: "reparacion-de-sprinklers-fort-lauderdale" },
-    { name: "Dania Beach", slug: "dania-beach", esSlug: "reparacion-de-sprinklers-dania-beach" },
-    { name: "Weston", slug: "weston", esSlug: "reparacion-de-sprinklers-weston" },
-    { name: "Davie", slug: "davie", esSlug: "reparacion-de-sprinklers-davie" },
-    { name: "Southwest Ranches", slug: "southwest-ranches", esSlug: "reparacion-de-sprinklers-southwest-ranches" },
-    { name: "Hollywood", slug: "hollywood", esSlug: "reparacion-de-sprinklers-hollywood" },
-    { name: "West Park", slug: "west-park", esSlug: "reparacion-de-sprinklers-west-park" },
-    { name: "Pembroke Pines", slug: "pembroke-pines", esSlug: "reparacion-de-sprinklers-pembroke-pines" },
-    { name: "Miramar", slug: "miramar", esSlug: "reparacion-de-sprinklers-miramar" },
-    { name: "Miami Gardens", slug: "miami-gardens", esSlug: "reparacion-de-sprinklers-miami-gardens" },
-    { name: "Miami Lakes", slug: "miami-lakes", esSlug: "reparacion-de-sprinklers-miami-lakes" },
-    { name: "Country Club", slug: "country-club", esSlug: "reparacion-de-sprinklers-country-club" },
-    { name: "Aventura", slug: "aventura", esSlug: "reparacion-de-sprinklers-aventura" },
-    { name: "Sunny Isles Beach", slug: "sunny-isles-beach", esSlug: "reparacion-de-sprinklers-sunny-isles-beach" },
-    { name: "North Miami", slug: "north-miami", esSlug: "reparacion-de-sprinklers-north-miami" },
-    { name: "Surfside", slug: "surfside", esSlug: "reparacion-de-sprinklers-surfside" },
-    { name: "North Bay Village", slug: "north-bay-village", esSlug: "reparacion-de-sprinklers-north-bay-village" },
-    { name: "Miami Beach", slug: "miami-beach", esSlug: "reparacion-de-sprinklers-miami-beach" },
-    { name: "Hialeah", slug: "hialeah", esSlug: "reparacion-de-sprinklers-hialeah" },
-    { name: "Doral", slug: "doral", esSlug: "reparacion-de-sprinklers-doral" },
-    { name: "Fontainebleau", slug: "fontainebleau", esSlug: "reparacion-de-sprinklers-fontainebleau" },
-    { name: "Tamiami", slug: "tamiami", esSlug: "reparacion-de-sprinklers-tamiami" },
-    { name: "Miami", slug: "miami", esSlug: "reparacion-de-sprinklers-miami" },
-    { name: "Coral Gables", slug: "coral-gables", esSlug: "reparacion-de-sprinklers-coral-gables" },
-    { name: "Key Biscayne", slug: "key-biscayne", esSlug: "reparacion-de-sprinklers-key-biscayne" },
-    { name: "Kendall", slug: "kendall", esSlug: "reparacion-de-sprinklers-kendall" },
-    { name: "Kendale Lakes", slug: "kendale-lakes", esSlug: "reparacion-de-sprinklers-kendale-lakes" },
-    { name: "Country Walk", slug: "country-walk", esSlug: "reparacion-de-sprinklers-country-walk" },
-    { name: "Cutler Bay", slug: "cutler-bay", esSlug: "reparacion-de-sprinklers-cutler-bay" },
-  ]).map((area) => ({ ...area, href: cityHref(area.slug, locale) }));
-
-  // The footer shows only the main service areas; every other city stays
-  // one click away on the /locations page ("View all service areas").
-  const FEATURED_AREA_SLUGS = [
-    "miami",
-    "fort-lauderdale",
-    "weston",
-    "miramar",
-    "sunrise",
-    "pembroke-pines",
-    "coral-gables",
-    "key-biscayne",
-    "southwest-ranches",
-  ];
-  const featuredFooterAreas = FEATURED_AREA_SLUGS.map((slug) =>
-    footerAreas.find((area) => area.slug === slug),
-  ).filter(
-    (area): area is (typeof footerAreas)[number] => Boolean(area),
-  );
+  // The footer no longer lists cities: the home page "Service Areas"
+  // section and the /locations page carry all 30 cities, so the footer
+  // keeps only the single "View all service areas" link below.
+  // The `areas` prop is kept in the signature because the layout passes
+  // it; it is intentionally not rendered here anymore.
 
   return (
     <footer className="site-footer">
@@ -214,18 +165,9 @@ export default function Footer({
           <div className="footer-areas">
             <p className="areas-title">{isSpanishPage ? "📍 Áreas de Servicio" : "📍 Service Areas"}</p>
             <p className="areas-list">
-              {featuredFooterAreas.map((area, i) => (
-                <span key={area.href}>
-                  {i > 0 && " • "}
-                  <Link href={area.href}>{area.name}</Link>
-                </span>
-              ))}
-              <span>
-                {" • "}
-                <Link href={isSpanishPage ? "/es/areas-de-servicio" : "/locations"}>
-                  {isSpanishPage ? "Ver todas las áreas" : "View all service areas"}
-                </Link>
-              </span>
+              <Link href={isSpanishPage ? "/es/areas-de-servicio" : "/locations"}>
+                {isSpanishPage ? "Ver todas las áreas" : "View all service areas"}
+              </Link>
             </p>
           </div>
         </div>
