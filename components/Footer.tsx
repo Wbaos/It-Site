@@ -83,6 +83,25 @@ export default function Footer({
     { name: "Cutler Bay", slug: "cutler-bay", esSlug: "reparacion-de-sprinklers-cutler-bay" },
   ]).map((area) => ({ ...area, href: cityHref(area.slug, locale) }));
 
+  // The footer shows only the main service areas; every other city stays
+  // one click away on the /locations page ("View all service areas").
+  const FEATURED_AREA_SLUGS = [
+    "miami",
+    "fort-lauderdale",
+    "weston",
+    "miramar",
+    "sunrise",
+    "pembroke-pines",
+    "coral-gables",
+    "key-biscayne",
+    "southwest-ranches",
+  ];
+  const featuredFooterAreas = FEATURED_AREA_SLUGS.map((slug) =>
+    footerAreas.find((area) => area.slug === slug),
+  ).filter(
+    (area): area is (typeof footerAreas)[number] => Boolean(area),
+  );
+
   return (
     <footer className="site-footer">
       {/* ===== Top Section ===== */}
@@ -241,12 +260,18 @@ export default function Footer({
           <div className="footer-areas">
             <p className="areas-title">{isSpanishPage ? "📍 Áreas de Servicio" : "📍 Service Areas"}</p>
             <p className="areas-list">
-              {footerAreas.map((area, i) => (
+              {featuredFooterAreas.map((area, i) => (
                 <span key={area.href}>
                   {i > 0 && " • "}
                   <Link href={area.href}>{area.name}</Link>
                 </span>
               ))}
+              <span>
+                {" • "}
+                <Link href={isSpanishPage ? "/es/areas-de-servicio" : "/locations"}>
+                  {isSpanishPage ? "Ver todas las áreas" : "View all service areas"}
+                </Link>
+              </span>
             </p>
           </div>
         </div>
