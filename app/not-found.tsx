@@ -5,7 +5,7 @@ import Link from "next/link";
 // it shows both languages side by side instead of English only.
 export default function NotFound() {
   return (
-    <main style={{ textAlign: "center", padding: "4rem 1rem" }}>
+    <main style={{ textAlign: "center", padding: "12rem 1rem 4rem" }}>
       <h1>404</h1>
       <p>This page could not be found.</p>
       <p>Esta página no se pudo encontrar.</p>
