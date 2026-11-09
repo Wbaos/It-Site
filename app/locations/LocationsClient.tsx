@@ -46,6 +46,11 @@ const CITY_LINKS_ES: Array<[string, string]> = [
   ["Cutler Bay", "/es/reparacion-de-sprinklers-cutler-bay"],
 ];
 
+const COUNTY_LABEL: Record<string, { en: string; es: string }> = {
+  miami: { en: "Miami-Dade County, Florida", es: "Condado de Miami-Dade, Florida" },
+  "fort-lauderdale": { en: "Broward County, Florida", es: "Condado de Broward, Florida" },
+};
+
 export default function LocationsClient({
   locale = "en",
   phoneDisplay = FALLBACK_SETTINGS.phoneDisplay,
@@ -60,7 +65,6 @@ export default function LocationsClient({
   const [locations, setLocations] = useState<Location[]>([]);
   const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedState, setSelectedState] = useState("All States");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -74,10 +78,6 @@ export default function LocationsClient({
   useEffect(() => {
     let filtered = locations;
 
-    if (selectedState !== "All States") {
-      filtered = filtered.filter((loc) => loc.state === selectedState);
-    }
-
     if (searchTerm) {
       filtered = filtered.filter(
         (loc) =>
@@ -87,9 +87,7 @@ export default function LocationsClient({
     }
 
     setFilteredLocations(filtered);
-  }, [searchTerm, selectedState, locations]);
-
-  const states = Array.from(new Set(locations.map((loc) => loc.state)));
+  }, [searchTerm, locations]);
 
   return (
     <div className="locations-page">
@@ -118,29 +116,16 @@ export default function LocationsClient({
                 <Search className="locations-search-icon" />
                 <input
                   type="text"
-                  placeholder={isSpanish ? "Buscar por ciudad o estado..." : "Search by city or state..."}
+                  placeholder={isSpanish ? "Buscar por ciudad..." : "Search by city..."}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="locations-search-input"
                 />
               </div>
-
-              <select
-                value={selectedState}
-                onChange={(e) => setSelectedState(e.target.value)}
-                className="locations-select"
-              >
-                <option value="All States">{isSpanish ? "Todos los Estados" : "All States"}</option>
-                {states.map((state) => (
-                  <option key={state} value={state}>
-                    {state}
-                  </option>
-                ))}
-              </select>
             </div>
 
             <p className="locations-count">
-              {isSpanish ? `Mostrando ${filteredLocations.length} ubicación${filteredLocations.length !== 1 ? "es" : ""}` : <>Showing {filteredLocations.length} location{filteredLocations.length !== 1 ? "s" : ""}</>}
+              {isSpanish ? `Mostrando ${filteredLocations.length} área${filteredLocations.length !== 1 ? "s" : ""} de servicio` : <>Showing {filteredLocations.length} service area{filteredLocations.length !== 1 ? "s" : ""}</>}
             </p>
           </div>
         </section>
@@ -181,7 +166,11 @@ export default function LocationsClient({
                 <div className="location-card-content">
                   <div>
                     <h3 className="location-card-title">{location.city}</h3>
-                    <p className="location-card-state">{location.state}</p>
+                    <p className="location-card-state">
+                      {isSpanish
+                        ? COUNTY_LABEL[location.slug.current]?.es ?? location.state
+                        : COUNTY_LABEL[location.slug.current]?.en ?? location.state}
+                    </p>
                   </div>
 
                   <p className="location-card-description">
