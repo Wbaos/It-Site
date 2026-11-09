@@ -13465,12 +13465,20 @@ box-shadow:
 .footer-brand {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
   font-weight: 600;
   font-size: 1.2rem;
   color: #fff;
   text-decoration: none;
+}
+
+/* Footer logo: tightly cropped mark + wordmark (no dead space), fixed
+   width so it renders at the same size as before and lines up flush
+   left with the nav and contact columns. */
+.footer-logo {
+  width: 280px;
+  height: auto;
 }
 
 .footer-tagline {
@@ -13629,6 +13637,7 @@ box-shadow:
   }
   .footer-brand {
     justify-content: center;
+    align-items: center;
   }
 
   .footer-middle {

@@ -57,7 +57,11 @@ const heroPropsEn = {
 
   subtitle:
     "Professional sprinkler repair and irrigation services in Miami and Broward. We also install security cameras.",
-  badgeText: "Sprinkler Repair & Irrigation in Miami & Broward",
+  // Hero badge removed at the owner's request (9 Nov 2026): the pill
+  // repeated the title, so it was extra. The matching Sanity fields
+  // (heroBadgeText / heroBadgeTextEs) were also cleared, so nothing
+  // overrides this empty value.
+  badgeText: "",
 
   primaryCtaText: "Call Now",
   primaryCtaHref: `tel:${FALLBACK_SETTINGS.phoneTel}`,
@@ -86,7 +90,9 @@ const heroPropsEs = {
   titleLine2: "",
   subtitle:
     "Servicios profesionales de reparación de sprinklers e irrigación en Miami y Broward. También instalamos cámaras de seguridad.",
-  badgeText: "Reparación de Sprinklers e Irrigación en Miami y Broward",
+  // Pastilla del hero quitada por pedido del dueño (9 nov 2026):
+  // ver el comentario en la versión en inglés.
+  badgeText: "",
   primaryCtaText: "Llama Ahora",
   primaryCtaHref: `tel:${FALLBACK_SETTINGS.phoneTel}`,
   // Sin CTA secundario: la cotización está escondida por ahora; el hero
