@@ -638,7 +638,7 @@ export default function Navbar({
             <div className="logo-wrapper">
               <span className="logo-lockup logo-desktop">
                 <Image
-                  src="/logo-mark.svg"
+                  src="/logo-mark-v2.svg"
                   alt=""
                   width={38}
                   height={32}
@@ -648,7 +648,7 @@ export default function Navbar({
               </span>
               <span className="logo-lockup logo-mobile">
                 <Image
-                  src="/logo-mark.svg"
+                  src="/logo-mark-v2.svg"
                   alt=""
                   width={34}
                   height={29}
