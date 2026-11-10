@@ -433,6 +433,28 @@ export default async function BlogPost({
             </section>
           ) : null}
 
+          {/* Related services (audit fix 2026-11-10): every post ends with
+              links to the main sprinkler service and the service-areas
+              page, in the post's language. The carousel above links other
+              posts only, so this does not duplicate it. */}
+          <section className="single-blog-related-links" aria-label={isSpanish ? "Servicios relacionados" : "Related services"}>
+            <h2 className="single-blog-related-links-title">
+              {isSpanish ? "Servicios relacionados" : "Related Services"}
+            </h2>
+            <ul className="single-blog-related-links-list">
+              <li>
+                <Link href={isSpanish ? "/es/reparacion-e-instalacion-de-sprinklers" : "/services/sprinkler-repair-and-installation"}>
+                  {isSpanish ? "Reparación e instalación de sprinklers" : "Sprinkler repair and installation"}
+                </Link>
+              </li>
+              <li>
+                <Link href={isSpanish ? "/es/areas-de-servicio" : "/locations"}>
+                  {isSpanish ? "Ver todas las áreas de servicio" : "View all service areas"}
+                </Link>
+              </li>
+            </ul>
+          </section>
+
           <div className="single-blog-cta-box">
             <h2 className="single-blog-cta-title">
               {isSpanish ? "¿Necesitas Ayuda Experta?" : "Need Expert Help?"}

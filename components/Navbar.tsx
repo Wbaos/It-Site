@@ -162,8 +162,6 @@ export default function Navbar({
       "/es/riego-comercial-y-para-hoa",
     "/services/new-irrigation-well-installation":
       "/es/instalacion-de-pozos-nuevos-de-irrigacion",
-    "/services/landscaping":
-      "/es/reparacion-de-sprinklers-e-irrigacion",
     "/services/home-security":
       "/es/seguridad-del-hogar",
     "/blog": "/es/blog",
@@ -257,8 +255,6 @@ export default function Navbar({
       "/services/commercial-irrigation-hoa-services",
     "/es/instalacion-de-pozos-nuevos-de-irrigacion":
       "/services/new-irrigation-well-installation",
-    "/es/reparacion-de-sprinklers-e-irrigacion":
-      "/services/landscaping",
     "/es/seguridad-del-hogar":
       "/services/home-security",
     "/es/blog": "/blog",
@@ -491,7 +487,7 @@ export default function Navbar({
                       <div className="dropdown-header">
                         {cat.categorySlug ? (
                           <Link
-                            href={`/services/${cat.categorySlug}`}
+                            href={serviceHref(cat.categorySlug, isSpanishPage ? "es" : "en")}
                             className="dropdown-title"
                             onClick={closeAllMenus}
                             style={{

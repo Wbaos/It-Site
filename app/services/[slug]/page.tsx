@@ -174,9 +174,9 @@ export async function generateMetadata({
       category.description ||
       `Professional ${category.title} services in Miami, Fort Lauderdale, and Broward County.`;
 
-    // Spanish twin exists for the home-security and landscaping groups
-    // (their ES pages already emit hreflang back to this URL); other
-    // categories keep canonical only so no false hreflang is emitted.
+    // Spanish twin exists for the home-security group (its ES page
+    // already emits hreflang back to this URL); other categories keep
+    // canonical only so no false hreflang is emitted.
     const esTwinPath = SERVICE_ES_PATHS[slug];
     return {
       title,
@@ -894,6 +894,13 @@ export default async function ServicePage({
                   {catTagline && (
                     <p className="category-desc">{catTagline}</p>
                   )}
+                  {/* 1-year warranty with the exact condition (audit fix
+                      2026-11-10): the category page had no warranty mention. */}
+                  <p className="category-warranty">
+                    {isSpanish
+                      ? "Garantía de 1 año cuando realizamos el trabajo y proveemos los materiales."
+                      : "1-year warranty when we perform the work and provide the materials."}
+                  </p>
                 </div>
               </div>
             </div>

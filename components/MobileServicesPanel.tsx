@@ -6,6 +6,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import MobileServiceListPanel from "./MobileServiceListPanel";
 import { groupTitleEs } from "@/lib/groupTitlesEs";
+import { serviceHref } from "@/lib/serviceTwins";
 
 export default function MobileServicesPanel({
   categories,
@@ -51,13 +52,13 @@ export default function MobileServicesPanel({
                   <div className="dropdown-header">
                     {cat.categorySlug ? (
                       <a
-                        href={`/services/${cat.categorySlug}`}
+                        href={serviceHref(cat.categorySlug, isSpanishPage ? "es" : "en")}
                         className="dropdown-title"
                         onClick={e => {
                           e.preventDefault();
                           onClose();
                           if (typeof window !== 'undefined') {
-                            window.location.href = `/services/${cat.categorySlug}`;
+                            window.location.href = serviceHref(cat.categorySlug, isSpanishPage ? "es" : "en");
                           }
                         }}
                         style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', cursor: 'pointer' }}

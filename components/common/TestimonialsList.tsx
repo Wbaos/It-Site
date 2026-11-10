@@ -59,12 +59,20 @@ type Props = {
 export default function TestimonialsList({
   items,
   title = "What Clients Say",
-  subtitle = "Real experiences from satisfied homeowners and businesses.",
+  subtitle,
   afterSubtitle,
   variant = "card", // NEW default
   locale = "en",
 }: Props) {
   const isSpanish = locale === "es";
+  // Default subtitle follows the page locale (audit fix 2026-11-10):
+  // Spanish service pages showed the English default. An explicit
+  // subtitle from the caller always wins (GoogleReviewsCTA passes its own).
+  const effectiveSubtitle =
+    subtitle ??
+    (isSpanish
+      ? "Experiencias reales de propietarios y negocios satisfechos."
+      : "Real experiences from satisfied homeowners and businesses.");
   const n = items.length;
   const [cols, setCols] = useState(3);
   // With fewer reviews than visible columns, the infinite-loop padding
@@ -178,7 +186,7 @@ export default function TestimonialsList({
     <section id="testimonials" className="section testimonials">
       <div className={`site-container-testimonials ${variant === "plain" ? "no-container-border" : ""}`}>
         {title && <h2 className="testimonials-heading">{title}</h2>}
-        {subtitle && <p className="testimonials-sub">{subtitle}</p>}
+        {effectiveSubtitle && <p className="testimonials-sub">{effectiveSubtitle}</p>}
         {afterSubtitle}
 
         <div className="carousel-wrapper">

@@ -269,19 +269,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.8,
         },
         {
-            url: `${baseUrl}/services/landscaping`,
-            lastModified: now,
-            changeFrequency: 'weekly',
-            priority: 0.8,
-        },
-        {
             url: `${baseUrl}/es/seguridad-del-hogar`,
-            lastModified: now,
-            changeFrequency: 'weekly',
-            priority: 0.8,
-        },
-        {
-            url: `${baseUrl}/es/reparacion-de-sprinklers-e-irrigacion`,
             lastModified: now,
             changeFrequency: 'weekly',
             priority: 0.8,

@@ -21,11 +21,17 @@ export const SERVICE_ES_PATHS: Record<string, string> = {
   "commercial-irrigation-hoa-services": "/es/riego-comercial-y-para-hoa",
   "new-irrigation-well-installation":
     "/es/instalacion-de-pozos-nuevos-de-irrigacion",
-  "landscaping": "/es/reparacion-de-sprinklers-e-irrigacion",
   "home-security": "/es/seguridad-del-hogar",
 };
 
 export function serviceHref(slug: string, locale: "en" | "es"): string {
+  // Removed 2026-11-10: the "landscaping" category page no longer exists
+  // (its content was sprinkler repair), so any link to it lands on the
+  // main sprinkler service page instead, in the current locale.
+  if (slug === "landscaping")
+    return locale === "es"
+      ? "/es/reparacion-e-instalacion-de-sprinklers"
+      : "/services/sprinkler-repair-and-installation";
   if (locale === "es") return SERVICE_ES_PATHS[slug] ?? `/services/${slug}`;
   return `/services/${slug}`;
 }

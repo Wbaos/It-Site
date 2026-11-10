@@ -2764,6 +2764,14 @@ color: #fff;
   line-height: 1.75rem;
 }
 
+.category-warranty {
+  color: #a7f3d0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0.5rem 0 0 0.1rem;
+  line-height: 1.6rem;
+}
+
 
 .category-services {
   background: #10182a;
@@ -6366,6 +6374,40 @@ main {
 
 .single-blog-related {
   margin-bottom: 3rem;
+}
+
+.single-blog-related-links {
+  margin-bottom: 3rem;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid rgba(20, 184, 166, 0.18);
+  border-radius: 14px;
+  background: rgba(20, 184, 166, 0.06);
+}
+
+.single-blog-related-links-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #e5f3ff;
+  margin: 0 0 0.75rem;
+}
+
+.single-blog-related-links-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.single-blog-related-links-list a {
+  color: #34d399;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.single-blog-related-links-list a:hover {
+  text-decoration: underline;
 }
 
 .single-blog-related-wrap {
@@ -13386,6 +13428,13 @@ html.ctc-chat-open body {
   font-size: 1.15rem;
 }
 
+.contact .contact-referral {
+  color: #a7f3d0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+}
+
 .contact .contact-form-card {
   max-width: 900px;
   margin: 0 auto;
@@ -15878,6 +15927,13 @@ details[open] .faq-toggle {
 .locations-hero-badge {
   font-size: 0.875rem;
   color: var(--brand-teal);
+}
+
+.locations-hero-warranty {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #a7f3d0;
+  margin-top: 0.75rem;
 }
 
 .locations-search-section {

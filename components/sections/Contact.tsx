@@ -106,6 +106,14 @@ export default function Contact({
       <div className="contact-header">
         <h2 className="contact-title">{headline}</h2>
         <p className="contact-desc">{subtitle}</p>
+        {/* Referral discount (confirmed 2026-11-10): same offer as the FAQ
+            ("Do you offer a referral discount?") — one short line so the
+            offer is visible on the home page instead of buried in the FAQ. */}
+        <p className="contact-referral">
+          {isSpanish
+            ? "Refiere a un vecino o amigo: cuando reserve un trabajo con nosotros, recibe $50 de descuento en su próxima visita."
+            : "Refer a neighbor or friend — when they book a job with us, you get $50 off your next visit."}
+        </p>
       </div>
 
       <div className="contact-form-card">

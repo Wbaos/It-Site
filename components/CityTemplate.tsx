@@ -574,6 +574,11 @@ export default async function CityTemplate({ city, locale }: { city: City; local
         primaryCtaHref={`tel:${settings.phoneTel}`}
         secondaryCtaText={isEs ? "Pide tu inspección gratis" : "Get your free inspection"}
         secondaryCtaHref="#quick-lead"
+        secondaryCtaAriaLabel={
+          isEs
+            ? `Envíanos un mensaje rápido para reparación de sprinklers en ${name}`
+            : `Send us a quick message for sprinkler repair in ${name}`
+        }
         showCallButton={false}
         googleRating={googleRating}
         {...(isEs ? { stats: ES_STATS } : {})}
