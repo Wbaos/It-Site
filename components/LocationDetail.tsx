@@ -217,12 +217,14 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
         <div className="location-hero-content">
           <div className="location-hero-city-badge">
             <MapPin />
-            <span>
-              {location.city}, {location.state}
-            </span>
+            {/* Single expression on purpose (audit fix 2026-11-10): the
+                split {city}, {state} made React emit "Miami<!-- -->, <!--
+                -->Florida", which text extractors read as "Miami ,
+                Florida". One string renders exactly "Miami, Florida". */}
+            <span>{`${location.city}, ${location.state}`}</span>
           </div>
           <h1 className="location-hero-title">
-            {location.city}, {location.state}
+            {`${location.city}, ${location.state}`}
           </h1>
           <p className="location-hero-subtitle">
             {isSpanish ? `Reparación Profesional de Sprinklers, Irrigación y Cámaras de Seguridad en ${location.city}` : `Professional Sprinkler Repair, Irrigation & Security Cameras in ${location.city}`}
