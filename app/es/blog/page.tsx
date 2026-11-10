@@ -17,6 +17,29 @@ export const metadata: Metadata = {
       "x-default": "https://www.calltechcare.com/blog",
     },
   },
+  // Spanish Open Graph / Twitter (audit fix 2026-11-10): without these
+  // the page inherited the English layout defaults in WhatsApp/Facebook
+  // previews.
+  openGraph: {
+    title: "Guías de Reparación de Sprinklers y Cámaras | Blog CallTechCare",
+    description: "Guías útiles sobre reparación de sprinklers, riego, cámaras de seguridad y mantenimiento para propietarios en Miami y el sur de Florida.",
+    url: "https://www.calltechcare.com/es/blog",
+    siteName: "CallTechCare",
+    locale: "es_ES",
+    type: "website",
+    images: [
+      {
+        url: "https://www.calltechcare.com/logo-schema.png",
+        width: 512,
+        height: 512,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Guías de Reparación de Sprinklers y Cámaras | Blog CallTechCare",
+    description: "Guías útiles sobre reparación de sprinklers, riego, cámaras de seguridad y mantenimiento para propietarios en Miami y el sur de Florida.",
+  },
 };
 
 // Thin Spanish route: renders the SAME blog index template as the English

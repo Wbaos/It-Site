@@ -181,7 +181,7 @@ export default async function BlogPage({
               <Link href="/services/home-security">
                 instalación de cámaras de seguridad
               </Link> y{" "}
-              <Link href="/services/landscaping">
+              <Link href="/services/sprinkler-repair-and-installation">
                 servicios de sprinklers y riego
               </Link>{" "}
               en Miami y el sur de Florida.
@@ -192,7 +192,7 @@ export default async function BlogPage({
               <Link href="/services/home-security">
                 security camera installation
               </Link> and{" "}
-              <Link href="/services/landscaping">
+              <Link href="/services/sprinkler-repair-and-installation">
                 sprinkler and irrigation services
               </Link>{" "}
               across Miami and South Florida.

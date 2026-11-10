@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Briefcase } from "lucide-react";
 import type { Metadata } from "next";
+import { serviceHref } from "@/lib/serviceTwins";
 
 // Fixed display order for the services list: the main repair service first,
 // then repairs, then installs/controls, then the maintenance plan, cameras
@@ -241,7 +242,7 @@ export default async function ServicesPage() {
                   <h2 className="services-list-category-title">
                     {categorySlug ? (
                       <Link
-                        href={`/services/${categorySlug}`}
+                        href={serviceHref(categorySlug, "en")}
                         style={{ color: "inherit", textDecoration: "none" }}
                       >
                         {category}

@@ -6,13 +6,15 @@ import { getFaqPage } from "@/lib/sanityFaq";
 // English route, with locale="es". No duplicated page copy lives here.
 export async function generateMetadata(): Promise<Metadata> {
   const doc = await getFaqPage();
+  const title =
+    doc?.metaTitleEs ??
+    "Preguntas Frecuentes | Reparación de Sprinklers en Miami y Broward | CallTechCare";
+  const description =
+    doc?.metaDescriptionEs ??
+    "Encuentra respuestas a preguntas comunes sobre la reparación de sprinklers e irrigación de CallTechCare en Miami y Broward: costos, servicio el mismo día, fugas, válvulas y temporizadores.";
   return {
-    title:
-      doc?.metaTitleEs ??
-      "Preguntas Frecuentes | Reparación de Sprinklers en Miami y Broward | CallTechCare",
-    description:
-      doc?.metaDescriptionEs ??
-      "Encuentra respuestas a preguntas comunes sobre la reparación de sprinklers e irrigación de CallTechCare en Miami y Broward: costos, servicio el mismo día, fugas, válvulas y temporizadores.",
+    title,
+    description,
     alternates: {
       canonical: "https://www.calltechcare.com/es/preguntas-frecuentes",
       languages: {
@@ -20,6 +22,29 @@ export async function generateMetadata(): Promise<Metadata> {
         en: "https://www.calltechcare.com/faq",
         "x-default": "https://www.calltechcare.com/faq",
       },
+    },
+    // Spanish Open Graph / Twitter (audit fix 2026-11-10): without these
+    // the page inherited the English layout defaults in WhatsApp/Facebook
+    // previews.
+    openGraph: {
+      title,
+      description,
+      url: "https://www.calltechcare.com/es/preguntas-frecuentes",
+      siteName: "CallTechCare",
+      locale: "es_ES",
+      type: "website",
+      images: [
+        {
+          url: "https://www.calltechcare.com/logo-schema.png",
+          width: 512,
+          height: 512,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
     },
   };
 }

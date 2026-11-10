@@ -117,6 +117,11 @@ export default function LocationsClient({
           <p className="locations-hero-badge">
             {isSpanish ? "✦ Atendemos 30 ciudades en Miami-Dade y Broward" : "✦ Serving 30 cities across Miami-Dade & Broward"}
           </p>
+          {/* 1-year warranty with the exact condition (audit fix 2026-11-10):
+              the locations page had no warranty mention. */}
+          <p className="locations-hero-warranty">
+            {isSpanish ? "Garantía de 1 año cuando realizamos el trabajo y proveemos los materiales." : "1-year warranty when we perform the work and provide the materials."}
+          </p>
         </div>
       </section>
 

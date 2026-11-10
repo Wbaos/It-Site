@@ -74,6 +74,19 @@ const nextConfig: NextConfig = {
         destination: "/services",
         permanent: true,
       },
+      // Removed 2026-11-10: the "landscaping" category page no longer
+      // exists — its content was sprinkler repair, so it 301s to the
+      // sprinkler service page (and its Spanish twin to the Spanish one).
+      {
+        source: "/services/landscaping",
+        destination: "/services/sprinkler-repair-and-installation",
+        permanent: true,
+      },
+      {
+        source: "/es/reparacion-de-sprinklers-e-irrigacion",
+        destination: "/es/reparacion-e-instalacion-de-sprinklers",
+        permanent: true,
+      },
       {
         source: "/services/tv-mounting",
         destination: "/services",

@@ -14,6 +14,12 @@ type Props = {
   primaryCtaHref?: string;
   secondaryCtaText?: string;
   secondaryCtaHref?: string;
+  /**
+   * Accessible label for the secondary CTA. City pages pass their own
+   * label naming the city (audit fix 2026-11-10); the home hero keeps
+   * the generic label below.
+   */
+  secondaryCtaAriaLabel?: string;
   phoneNumber?: string;
   showCallButton?: boolean;
   imageSrc?: string;
@@ -40,6 +46,7 @@ export default function Hero({
   // Callers must pass secondaryCtaText + secondaryCtaHref explicitly.
   secondaryCtaText,
   secondaryCtaHref,
+  secondaryCtaAriaLabel = "Send us a quick message for sprinkler repair in Miami and Broward",
   phoneNumber = FALLBACK_SETTINGS.phoneTel,
   showCallButton = true,
   imageSrc = "https://cdn.sanity.io/images/celkrwoq/production/5deeea70b525963987af93601f412cebdbede547-5712x4284.webp",
@@ -128,7 +135,7 @@ export default function Hero({
           <Link
             href={secondaryCtaHref}
             className="btn-cta btn-secondary flex items-center gap-2"
-            aria-label="Send us a quick message for sprinkler repair in Miami and Broward"
+            aria-label={secondaryCtaAriaLabel}
           >
             <SvgIcon name="document" size={20} />
             {secondaryCtaText}
