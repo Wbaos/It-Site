@@ -7,7 +7,7 @@ import { Suspense } from "react";
 import BlogPageClient from "@/app/blog/BlogPageClient";
 import { blogHref } from "@/lib/blogTwins";
 
-export const revalidate = 0;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Sprinkler Repair & Security Camera Tips | CallTechCare Blog",

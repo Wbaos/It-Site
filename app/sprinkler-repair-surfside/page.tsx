@@ -6,7 +6,7 @@ import { getCityBySlug } from "@/lib/sanityCities";
 const PAGE_URL = "https://www.calltechcare.com/sprinkler-repair-surfside";
 const ES_PAGE_URL = "https://www.calltechcare.com/es/reparacion-de-sprinklers-surfside";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   const city = await getCityBySlug("surfside");

@@ -65,7 +65,7 @@ export default function ServiceReviews({
     // stars).
     async function fetchGoogleReviews() {
       try {
-        const res = await fetch(`/api/google-reviews?locale=${locale}`, { cache: "no-store" });
+        const res = await fetch(`/api/google-reviews?locale=${locale}`);
         const data = await res.json().catch(() => null);
 
         const reviews = Array.isArray(data?.reviews) ? data.reviews : [];

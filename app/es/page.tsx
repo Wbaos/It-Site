@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import HomeTemplate from "@/components/sections/HomeTemplate";
 import { resolveSiteSettings } from "@/lib/sanitySettings";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 const ES_HOME_URL = "https://www.calltechcare.com/es/";
 const EN_HOME_URL = "https://www.calltechcare.com/";

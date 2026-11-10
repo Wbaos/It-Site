@@ -30,6 +30,52 @@ const NAV_ES = [
   { href: "/es/blog", label: "Blog" },
 ];
 
+// Services list cache: the navbar used to fetch /api/services on every
+// full page load. The list barely changes, so cache it in memory for the
+// session and in localStorage for an hour — the "Services ▾" dropdown and
+// the mobile services panel keep working exactly as before, they just stop
+// asking the server on every load. A stale cache simply shows the list as
+// it was up to an hour ago; a failed read falls back to a fresh fetch.
+const SERVICES_CACHE_KEY = "ctc-services-cache";
+const SERVICES_CACHE_TTL_MS = 3_600_000; // 1 hour
+let servicesMemoryCache: { at: number; data: any } | null = null;
+
+function readCachedServices(): any | null {
+  if (
+    servicesMemoryCache &&
+    Date.now() - servicesMemoryCache.at < SERVICES_CACHE_TTL_MS
+  ) {
+    return servicesMemoryCache.data;
+  }
+  try {
+    const raw = window.localStorage.getItem(SERVICES_CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as { at?: number; data?: any };
+    if (
+      typeof parsed?.at !== "number" ||
+      Date.now() - parsed.at >= SERVICES_CACHE_TTL_MS
+    ) {
+      return null;
+    }
+    servicesMemoryCache = { at: parsed.at, data: parsed.data ?? null };
+    return parsed.data ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function storeCachedServices(data: any) {
+  servicesMemoryCache = { at: Date.now(), data };
+  try {
+    window.localStorage.setItem(
+      SERVICES_CACHE_KEY,
+      JSON.stringify({ at: Date.now(), data })
+    );
+  } catch {
+    // Private mode / full storage: the menu still works, it just refetches.
+  }
+}
+
 export default function Navbar({
   phoneTel = FALLBACK_SETTINGS.phoneTel,
   phoneDisplay = FALLBACK_SETTINGS.phoneDisplay,
@@ -612,10 +658,17 @@ export default function Navbar({
 
   useEffect(() => setLoading(false), [pathname, setLoading]);
   useEffect(() => {
+    const cached = readCachedServices();
+    if (cached) {
+      setCategories(cached);
+      setLoadingServices(false);
+      return;
+    }
     async function fetchServices() {
       try {
         const res = await fetch("/api/services");
         const data = await res.json();
+        storeCachedServices(data);
         setCategories(data);
       } catch {
         console.error("SERVICES FETCH ERROR");

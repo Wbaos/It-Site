@@ -30,10 +30,14 @@ import type { Testimonial } from "@/components/common/TestimonialsList";
  * values or tokens — so a failing token exchange can be seen in the
  * Vercel function logs. Remove them once the failure is diagnosed.
  *
- * One short in-memory cache (60 s) lets the rating summary and the
- * review list share a single Google call per render. Only successful
+ * One in-memory cache (1 hour) lets the rating summary and the
+ * review list share a single Google call per render, and keeps Google
+ * from being asked again on every page render. Only successful
  * responses are cached — a failed call is never cached, so a transient
- * error does not keep the sections hidden.
+ * error does not keep the sections hidden. New reviews can take up to
+ * an hour to appear; the on-demand revalidation webhook refreshes the
+ * pages when Sanity content changes, but Google data refreshes on this
+ * hourly cache.
  */
 
 /** Verified public Maps listing for CallTechCare (from the live profile). */
@@ -95,7 +99,7 @@ const STAR_RATINGS: Record<string, number> = {
   FIVE: 5,
 };
 
-const CACHE_TTL_MS = 60_000;
+const CACHE_TTL_MS = 3_600_000; // 1 hour
 let cachedAt = 0;
 let cachedResponse: GbpReviewsResponse | null = null;
 

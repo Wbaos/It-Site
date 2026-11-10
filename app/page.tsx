@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 import HomeTemplate from "@/components/sections/HomeTemplate";
 import { resolveSiteSettings } from "@/lib/sanitySettings";

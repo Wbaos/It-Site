@@ -6,7 +6,7 @@ const ES_PAGE_URL =
   "https://www.calltechcare.com/es/seguridad-del-hogar";
 const EN_CATEGORY_URL = "https://www.calltechcare.com/services/home-security";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   const category = await sanity.fetch(

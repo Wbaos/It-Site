@@ -2,6 +2,10 @@
 import { NextResponse } from "next/server";
 import { getServiceCategories } from "@/lib/request-quote-data";
 
+// The service list barely changes: cache the response for an hour so
+// the navbar (and any other caller) stops hitting Sanity on every load.
+export const revalidate = 3600;
+
 
 export async function GET() {
   try {
