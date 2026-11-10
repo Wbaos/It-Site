@@ -7,7 +7,7 @@ const ES_PAGE_URL =
 const EN_SERVICE_URL =
   "https://www.calltechcare.com/services/wireless-camera-installation";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   const service = await sanity.fetch(

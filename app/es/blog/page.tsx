@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import BlogPage from "@/app/blog/page";
 
-export const revalidate = 0;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Guías de Reparación de Sprinklers y Cámaras | Blog CallTechCare",

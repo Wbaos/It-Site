@@ -6,7 +6,7 @@ const ES_PAGE_URL =
   "https://www.calltechcare.com/es/reparacion-de-sprinklers-e-irrigacion";
 const EN_CATEGORY_URL = "https://www.calltechcare.com/services/landscaping";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   const category = await sanity.fetch(

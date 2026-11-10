@@ -1,6 +1,6 @@
 import { sanity } from "@/lib/sanity";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export default async function HowItWorks({ locale = "en" }: { locale?: "en" | "es" }) {
   const isSpanish = locale === "es";

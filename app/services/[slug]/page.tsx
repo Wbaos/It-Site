@@ -39,7 +39,7 @@ type SubService = {
   description?: string;
 };
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 const SPRINKLER_CITY_LINKS = [
   { name: "Sunrise", href: "/sprinkler-repair-sunrise" },

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getGoogleRatingSummary, getGoogleReviews } from "@/lib/google-reviews";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 // Live Google reviews from the Google Business Profile Reviews API (v4).
 // This replaced the temporary diagnostic endpoint from PR #382 (which
