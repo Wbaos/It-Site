@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { setAdsUserData } from "@/lib/enhancedConversions";
 
 declare global {
   interface Window {
@@ -83,7 +84,11 @@ export default function Contact({
         form.reset();
 
         // Google Ads conversion tracking
+        // Manual Enhanced Conversions: pass the email the user just typed
+        // (this form has no phone field) before the conversion event.
+        // payload was captured before form.reset(), so it still holds it.
         if (typeof window !== "undefined" && window.gtag) {
+          setAdsUserData({ email: payload.email });
           window.gtag("event", "conversion", {
             send_to: "AW-17496959572/UHy5CJ-MkbEdENTUmZdB",
           });

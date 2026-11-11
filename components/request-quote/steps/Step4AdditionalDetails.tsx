@@ -146,13 +146,6 @@ export default function Step4AdditionalDetails(props: {
         type="button"
         onClick={() => {
           props.onSubmit();
-
-          // Google Ads conversion tracking
-          if (typeof window !== "undefined" && window.gtag) {
-            window.gtag("event", "conversion", {
-              send_to: "AW-17496959572/UHy5CJ-MkbEdENTUmZdB",
-            });
-          }
         }}
         disabled={!props.canSubmit || props.submitting}
         className={
