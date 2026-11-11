@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { setAdsUserData } from "@/lib/enhancedConversions";
 import SvgIcon from "@/components/common/SvgIcons";
 import RequestQuoteSidebar from "@/components/request-quote/RequestQuoteSidebar";
 import RequestQuoteThankYou from "@/components/request-quote/RequestQuoteThankYou";
@@ -521,10 +522,13 @@ export default function RequestQuoteClient(props: {
         | null;
 
       // Google Ads Contact Conversion
+      // Manual Enhanced Conversions: pass the email and phone the user
+      // just typed, before the conversion event.
       if (
         typeof window !== "undefined" &&
         typeof window.gtag === "function"
       ) {
+        setAdsUserData({ email: contactEmail, phone: contactPhone });
         window.gtag("event", "conversion", {
           send_to: "AW-17496959572/UHy5CJ-MkbEdENTUmZdB",
         });
@@ -685,6 +689,8 @@ export default function RequestQuoteClient(props: {
               ) : (
                 <Step4AdditionalDetails
                   locale={locale}
+                  contactEmail={contactEmail}
+                  contactPhone={contactPhone}
                   projectDetails={projectDetails}
                   setProjectDetails={setProjectDetails}
                   wantsTechnicianVisitFirst={wantsTechnicianVisitFirst}

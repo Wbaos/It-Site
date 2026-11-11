@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Phone } from "lucide-react";
+import { setAdsUserData } from "@/lib/enhancedConversions";
 
 type Locale = "en" | "es";
 
@@ -124,11 +125,14 @@ export default function QuickLeadForm({
       } | null;
 
       // Same Google Ads Contact conversion as the full quote flow.
+      // Manual Enhanced Conversions: pass the phone the user just typed
+      // (this form has no email field) before the conversion event.
       if (typeof window !== "undefined") {
         const gtag = (
           window as unknown as { gtag?: (...args: unknown[]) => void }
         ).gtag;
         if (typeof gtag === "function") {
+          setAdsUserData({ phone });
           gtag("event", "conversion", {
             send_to: "AW-17496959572/UHy5CJ-MkbEdENTUmZdB",
           });
