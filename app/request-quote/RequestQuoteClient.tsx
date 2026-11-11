@@ -689,8 +689,6 @@ export default function RequestQuoteClient(props: {
               ) : (
                 <Step4AdditionalDetails
                   locale={locale}
-                  contactEmail={contactEmail}
-                  contactPhone={contactPhone}
                   projectDetails={projectDetails}
                   setProjectDetails={setProjectDetails}
                   wantsTechnicianVisitFirst={wantsTechnicianVisitFirst}

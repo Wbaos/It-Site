@@ -1,7 +1,6 @@
 "use client";
 
 import SvgIcon from "@/components/common/SvgIcons";
-import { setAdsUserData } from "@/lib/enhancedConversions";
 
 declare global {
   interface Window {
@@ -22,11 +21,6 @@ export default function Step4AdditionalDetails(props: {
   onBack: () => void;
   onSubmit: () => void;
   locale?: "en" | "es";
-  // Contact values entered in step 2, passed down only so the manual
-  // Enhanced Conversions user_data can be set before the conversion
-  // event below. This step's own fields have no email or phone.
-  contactEmail?: string;
-  contactPhone?: string;
 }) {
   const locale = props.locale ?? "en";
 
@@ -152,19 +146,6 @@ export default function Step4AdditionalDetails(props: {
         type="button"
         onClick={() => {
           props.onSubmit();
-
-          // Google Ads conversion tracking
-          // Manual Enhanced Conversions: pass the email and phone from
-          // step 2 before the conversion event.
-          if (typeof window !== "undefined" && window.gtag) {
-            setAdsUserData({
-              email: props.contactEmail,
-              phone: props.contactPhone,
-            });
-            window.gtag("event", "conversion", {
-              send_to: "AW-17496959572/UHy5CJ-MkbEdENTUmZdB",
-            });
-          }
         }}
         disabled={!props.canSubmit || props.submitting}
         className={
