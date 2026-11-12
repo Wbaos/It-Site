@@ -25,6 +25,12 @@ type Props = {
   imageSrc?: string;
   mobileImageSrc?: string;
   imageAlt?: string;
+  /**
+   * Optional background video (home hero only). When set, the video plays
+   * muted + looped behind the hero content, with the hero image as
+   * poster/fallback. City heroes never pass it, so they stay image-only.
+   */
+  videoSrc?: string;
   stats?: Stat[];
   /**
    * Live Google rating, already formatted to one decimal, from the single shared
@@ -52,6 +58,7 @@ export default function Hero({
   imageSrc = "https://cdn.sanity.io/images/celkrwoq/production/5deeea70b525963987af93601f412cebdbede547-5712x4284.webp",
   mobileImageSrc,
   imageAlt = "Sprinkler system working",
+  videoSrc,
   stats = [
     { value: "1500+", label: "Local Clients Helped" },
     // Google Rating value comes from the `googleRating` prop (live Sanity
@@ -92,6 +99,24 @@ export default function Hero({
             fetchPriority="high"
           />
         </picture>
+      )}
+      {/* Background video (home hero only): the hero image above stays as
+          poster/fallback, so the hero never shows empty if the video
+          can't play. Same file as the home video section, so the browser
+          downloads it once. */}
+      {videoSrc && (
+        <video
+          className="hero-bg-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster={imageSrc}
+          aria-hidden="true"
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
       )}
       <div className="hero-scrim" aria-hidden="true" />
 

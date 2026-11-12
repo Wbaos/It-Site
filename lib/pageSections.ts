@@ -13,7 +13,7 @@ import GoogleReviewsCTA from "@/components/sections/GoogleReviewsCTA";
 import Contact from "@/components/sections/Contact";
 import HighlightsServer from "@/components/sections/HighLigthsServer";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
-import HomeVideo from "@/components/sections/HomeVideo";
+import HomeVideo, { HOME_VIDEO_URL } from "@/components/sections/HomeVideo";
 import QuickLeadForm from "@/components/QuickLeadForm";
 
 // Single home template, both languages. The section list, order and
@@ -75,6 +75,10 @@ const heroPropsEn = {
   imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/33438c04872f15d5d2aa76f5ede7dcae856fd67a-1600x1200.webp?w=1600&auto=format&q=80",
   mobileImageSrc: "https://cdn.sanity.io/images/celkrwoq/production/66fa6374e721953321827264b014a7ea5c47a930-750x1000.webp?w=750&auto=format&q=50",
   imageAlt: "Sprinklers watering a landscaped front yard in Miami, with the CallTechCare truck",
+  // Background video for the hero (12 Nov 2026): the same Sanity video
+  // file as the home video section below, so the browser downloads it
+  // once. Home only — city heroes never get videoSrc.
+  videoSrc: HOME_VIDEO_URL,
 
   stats: [
     { value: "1500+", label: "Local Clients Helped" },
@@ -102,6 +106,8 @@ const heroPropsEs = {
   imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/33438c04872f15d5d2aa76f5ede7dcae856fd67a-1600x1200.webp?w=1600&auto=format&q=80",
   mobileImageSrc: "https://cdn.sanity.io/images/celkrwoq/production/66fa6374e721953321827264b014a7ea5c47a930-750x1000.webp?w=750&auto=format&q=50",
   imageAlt: "Sprinklers regando un jardín delantero en Miami, con el truck de CallTechCare",
+  // Video de fondo del hero (12 nov 2026): ver el comentario en inglés.
+  videoSrc: HOME_VIDEO_URL,
   stats: [
     { value: "1500+", label: "Clientes Locales Atendidos" },
     { value: "", label: "Calificación en Google" },
