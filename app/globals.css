@@ -116,7 +116,7 @@ color: #fff;
 .about-section {
   width: 100%;
   background: #0f172a80;
-  border: 1.5px solid #232a3d;
+  border: 1px solid #1e293b;
   border-radius: 14px;
   padding: 2rem 2rem 1.5rem 2rem;
   margin-bottom: 1.5rem;
@@ -146,7 +146,7 @@ color: #fff;
 }
 .value-card {
   background: #0f172a80;
-  border: 1.5px solid #232a3d;
+  border: 1px solid #1e293b;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   padding: 1.1rem 1rem 0.8rem 1rem;
@@ -164,7 +164,7 @@ color: #fff;
   width: 100%;
   text-align: center;
   background: #0f172a80;
-  border: 1.5px solid #232a3d;
+  border: 1px solid #1e293b;
   border-radius: 14px;
   padding: 2rem 2rem 1.5rem 2rem;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
@@ -384,7 +384,7 @@ color: #fff;
 
 .styled-stat {
   background: #0f172a80;
-  border: 1.5px solid #1e293b;
+  border: 1px solid #1e293b;
   border-radius: 1.1rem;
   padding: 2.2rem 2.5rem 1.7rem 2.5rem;
   flex: 1 1 0;
@@ -9405,7 +9405,9 @@ main {
   left: 0;
   width: 100%;
   background: #0f172a;
-  border-top: 1px solid rgba(255,255,255,0.05);
+  /* No top border (12 Nov 2026): it sat directly under the header's own
+     bottom border, so it was a redundant second line. The header's
+     border still marks the edge. */
   box-shadow: 0 30px 70px rgba(0,0,0,0.55);
 
   max-height: calc(100vh - 64px);
@@ -9960,13 +9962,17 @@ width: 100px;
 object-fit: cover;
 }
 
+/* Footer box under the service reviews (12 Nov 2026): it held only the
+   "Write a Review" button inside two other frames of the same border,
+   so its own border was redundant — the button keeps its border and the
+   footer stays separated by its margin and the outer padding. */
 .reviews-section {
   background: linear-gradient(180deg, #040a15, #060f1f);
   border-radius: 12px;
   padding: 2rem;
   margin-top: 3rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-  border: 1px solid #1e293b;
+  border: none;
 }
 
 .reviews-header {
@@ -12086,6 +12092,28 @@ object-fit: cover;
   border: none;
   box-shadow: none;
   text-align: left;
+  /* Real space below the CTA card (12 Nov 2026): the reviews list sits
+     directly under it with no gap, so the garden photo ended ~16px above
+     the list's border and the boxes read as stuck together. */
+  margin-bottom: 2.5rem;
+}
+
+/* Home reviews only (12 Nov 2026): the list below the CTA card kept its
+   own bordered box, which read as a double border next to the review
+   cards' own borders — the cards already define the boxes, so the outer
+   one is redundant. Scoped to the list that follows the CTA card, so
+   service pages keep their container border. */
+.google-cta-card + #testimonials .site-container-testimonials {
+  border: none;
+}
+
+/* Service pages (12 Nov 2026): same double-frame pattern as the home
+   reviews — ServiceReviewsWrapper wraps TestimonialsList in its own
+   bordered .site-container-testimonials, and the list renders another
+   one inside. Drop the INNER border only; the outer keeps its border,
+   padding and max-width, so the layout does not change. */
+.site-container-testimonials > #testimonials .site-container-testimonials {
+  border: none;
 }
 
 .google-cta-photo {
@@ -12607,7 +12635,9 @@ object-fit: cover;
   padding: 1.5rem;
   border-radius: 14px;
   margin-bottom: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* Standard site border (12 Nov 2026): the old one was nearly invisible
+     (white at 8% alpha), so the cards barely separated from the page. */
+  border: 1px solid #1e293b;
 
   box-shadow:
     0 4px 10px rgba(0, 0, 0, 0.35),
@@ -14190,7 +14220,9 @@ box-shadow:
 /* === FAQ Section (Dark Theme) === */
 .service-faq {
   background: #0f172a80;
-  border: 1px solid #1e293b;
+  /* No outer border (12 Nov 2026): the FAQ items already define the
+     boxes with the same border, so the frame around them was redundant. */
+  border: none;
   border-radius: 16px;
   padding: 2rem;
   margin: 3rem auto;
@@ -17299,7 +17331,9 @@ details[open] .faq-toggle {
   display: flex;
   flex-direction: column;
   background: #101a2b;
-  border: none;
+  /* Same standard border as the home service cards (12 Nov 2026): the
+     hub cards had none and read inconsistently next to them. */
+  border: 1px solid #1e293b;
   border-radius: 0.75rem;
   overflow: hidden;
   transition: all 0.3s ease;
