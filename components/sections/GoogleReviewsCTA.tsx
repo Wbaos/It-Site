@@ -35,7 +35,15 @@ export default async function GoogleReviewsCTA({
   if (!summary) return null;
   const rating = formatGoogleRating(summary.rating);
   const total = summary.total;
-  const reviews = await getGoogleReviews(locale);
+  // Only reviews with text (12 Nov 2026): Google reviews with stars but
+  // no text rendered as empty cards (name + stars, blank body) — the
+  // first card was Juan Figueroa with no text at all. The 3 visible
+  // cards must be the most recent WITH text (25 of 30 have text, so
+  // nothing is lost). The 5.0/30 header count is untouched: it comes
+  // from the summary above, not from this list.
+  const reviews = (await getGoogleReviews(locale)).filter(
+    (r) => (r.text ?? "").trim().length > 0
+  );
 
   return (
     <section className="section testimonials">
