@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Sprinkler Repair Service Areas | Miami & Broward | CallTechCare",
 
   description:
-    "Explore the 30 cities CallTechCare serves across Miami-Dade and Broward County for sprinkler repair, irrigation installation, valve and timer replacement.",
+    "Explore the 31 cities CallTechCare serves across Miami-Dade and Broward County for sprinkler repair, irrigation installation, valve and timer replacement.",
 
   alternates: {
     canonical: "https://www.calltechcare.com/locations",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Sprinkler Repair Service Areas | Miami & Broward",
     description:
-      "Explore the 30 cities CallTechCare serves across Miami-Dade and Broward County for sprinkler repair, irrigation installation, valve and timer replacement.",
+      "Explore the 31 cities CallTechCare serves across Miami-Dade and Broward County for sprinkler repair, irrigation installation, valve and timer replacement.",
     url: "https://www.calltechcare.com/locations",
     siteName: "CallTechCare",
     images: [

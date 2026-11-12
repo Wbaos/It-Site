@@ -42,7 +42,7 @@ export default function Footer({
     pathname === "/es" || (pathname ?? "").startsWith("/es/");
 
   // The footer no longer lists cities: the home page "Service Areas"
-  // section and the /locations page carry all 30 cities, so the footer
+  // section and the /locations page carry all 31 cities, so the footer
   // keeps only the single "View all service areas" link below.
   // The `areas` prop is kept in the signature because the layout passes
   // it; it is intentionally not rendered here anymore.
