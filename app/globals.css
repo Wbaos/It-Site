@@ -5767,25 +5767,13 @@ main {
     display: block;
   }
 
-  /* Hero background video (home hero only, see Hero.tsx): same placement
-     and treatment as the hero image, so the text stays legible over it. */
-  #hero .hero-bg-video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: brightness(0.5) saturate(1.05);
-  }
-
   #hero .hero-scrim {
     position: absolute;
     inset: 0;
     background: linear-gradient(180deg, rgba(3, 10, 20, 0.65) 0%, rgba(3, 10, 20, 0.45) 55%, rgba(3, 10, 20, 0.7) 100%);
   }
 
-  #hero > *:not(.hero-bg):not(.hero-scrim):not(.hero-bg-video) {
+  #hero > *:not(.hero-bg):not(.hero-scrim) {
     position: relative;
     z-index: 1;
   }
