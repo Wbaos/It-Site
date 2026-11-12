@@ -12155,11 +12155,39 @@ object-fit: cover;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
 }
 
+/* The truck photo is only 800px wide natively: never stretch it to the
+   1100px container (see HowItWorks). */
+.how-photo {
+  max-width: 800px;
+}
+
 .why-photo img, .how-photo img {
   width: 100%;
   height: clamp(220px, 35vw, 420px);
   object-fit: cover;
   display: block;
+}
+
+/* Soft scroll reveal (home sections, via the Reveal component): sections
+   fade/slide in the first time they enter the viewport. Only opacity +
+   transform change, so there is no layout shift. */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 

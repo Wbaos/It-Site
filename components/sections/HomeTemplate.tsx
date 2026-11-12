@@ -1,4 +1,5 @@
 import { getHomeSections, type HomeLocale } from "@/lib/pageSections";
+import Reveal from "@/components/common/Reveal";
 import {
   HOME_VIDEO_URL,
   HOME_VIDEO_POSTER_URL,
@@ -37,9 +38,17 @@ export default async function HomeTemplate({ locale = "en" }: { locale?: HomeLoc
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }}
       />
-      {sections.map(({ key, Component, props }) => (
-        <Component key={key} {...(props ?? {})} />
-      ))}
+      {/* Every section except the hero reveals softly on scroll. The hero
+          stays as-is: it is above the fold and must render immediately. */}
+      {sections.map(({ key, Component, props }) =>
+        key === "hero" ? (
+          <Component key={key} {...(props ?? {})} />
+        ) : (
+          <Reveal key={key}>
+            <Component {...(props ?? {})} />
+          </Reveal>
+        )
+      )}
     </main>
   );
 }
