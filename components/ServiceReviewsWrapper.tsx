@@ -2,10 +2,12 @@ import { getGoogleReviews, getGoogleReviewsUrl, getGoogleWriteReviewUrl } from "
 import ServiceReviews from "./ServiceReviews";
 
 // Live Google reviews on every service page, from the same API source as
-// the home page (lib/google-reviews). Limited to the 3 most recent
-// reviews. When the API fails or returns nothing, renders nothing — the
-// count and the review text are never hardcoded. The "Write a Review"
-// button lives here too, so it only shows when reviews exist.
+// the home page (lib/google-reviews). Limited to the 3 most recent reviews
+// with text (12 Nov 2026, same as the home page — a stars-only review
+// rendered as an empty card). When the API fails or returns nothing,
+// renders nothing — the count and the review text are never hardcoded.
+// The "Write a Review" button lives here too, so it only shows when
+// reviews exist.
 const MAX_SERVICE_REVIEWS = 3;
 
 export default async function ServiceReviewsWrapper({
@@ -16,7 +18,11 @@ export default async function ServiceReviewsWrapper({
   locale?: "en" | "es";
 }) {
   const reviews = await getGoogleReviews(locale);
-  const initialReviews = (reviews ?? []).slice(0, MAX_SERVICE_REVIEWS);
+  // Only reviews with text (12 Nov 2026, same as the home page): a
+  // stars-only review rendered as an empty card (Juan Figueroa first).
+  const initialReviews = (reviews ?? [])
+    .filter((r) => (r.text ?? "").trim().length > 0)
+    .slice(0, MAX_SERVICE_REVIEWS);
   if (initialReviews.length === 0) return null;
   const googleReviewsUrl = getGoogleReviewsUrl();
   const googleWriteReviewUrl = getGoogleWriteReviewUrl();
