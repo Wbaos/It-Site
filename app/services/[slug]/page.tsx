@@ -467,8 +467,8 @@ export default async function ServicePage({
   })();
   // Related sprinkler services: title + short description per service, in
   // both languages, for the related-services cards inside the main content
-  // (below) and the Spanish titles of the pills at the bottom. One fetch
-  // serves both locales; the current service is excluded at render time.
+  // (below). One fetch serves both locales; the current service is
+  // excluded at render time.
   // A service with no Sanity doc yet (the two new ones) falls back to its
   // hardcoded title in SPRINKLER_SERVICE_LINKS until the doc exists.
   const relatedServiceInfo: Record<
@@ -487,12 +487,6 @@ export default async function ServicePage({
     for (const t of (related as any[]) ?? []) {
       if (t?.slug) relatedServiceInfo[t.slug] = t;
     }
-  }
-  // Spanish titles for the related-services pills (only the title text
-  // changes); derived from the same fetch above.
-  const sprinklerTitlesEs: Record<string, string> = {};
-  for (const [s, info] of Object.entries(relatedServiceInfo)) {
-    if (info?.titleEs) sprinklerTitlesEs[s] = info.titleEs;
   }
   // Cards for the related-services section: every sprinkler service except
   // the current one, title + short description in the page locale.
@@ -1412,11 +1406,11 @@ export default async function ServicePage({
 
         {displayFaqs && <FaqAccordion faqs={displayFaqs} locale={locale} />}
 
-        {/* Related sprinkler services, inside the main content (not just
-            the pills at the bottom): the hub and every sprinkler page link
-            visibly to the specific problem pages — leaks, valves, timer,
-            pump — with a one-line description each. Same single template
-            for EN/ES; only the text changes. */}
+        {/* Related sprinkler services, inside the main content: the hub
+            and every sprinkler page link visibly to the specific problem
+            pages — leaks, valves, timer, pump — with a one-line
+            description each. Same single template for EN/ES; only the
+            text changes. */}
         {SPRINKLER_SERVICE_LINKS.some((s) => s.slug === slug) && (
           <div className="related-services-box">
             <h2>
@@ -1463,36 +1457,6 @@ export default async function ServicePage({
       </div>
 
     </section>
-
-    {SPRINKLER_SERVICE_LINKS.some((s) => s.slug === slug) && (
-      <section className="service-areas-section">
-        <div className="site-container">
-          <div className="service-areas-inner">
-            <h2 className="service-areas-title">
-              {isSpanish ? "Servicios relacionados de sprinklers" : "Related sprinkler services"}
-            </h2>
-            <div className="service-areas-pills">
-              {SPRINKLER_SERVICE_LINKS.filter((s) => s.slug !== slug).map((s) => {
-                const pillTitle =
-                  isSpanish && sprinklerTitlesEs[s.slug]
-                    ? sprinklerTitlesEs[s.slug]
-                    : s.title;
-                return (
-                  <Link
-                    key={s.slug}
-                    href={serviceHref(s.slug, locale)}
-                    className="service-area-pill"
-                    aria-label={pillTitle}
-                  >
-                    {pillTitle}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-    )}
 
     <RelatedLinksSection links={cameraRelatedLinks} />
     <ServiceAreasSection />
