@@ -34,6 +34,7 @@ export const CITY_ES_PATHS: Record<string, string> = {
   "kendale-lakes": "/es/reparacion-de-sprinklers-kendale-lakes",
   "country-walk": "/es/reparacion-de-sprinklers-country-walk",
   "cutler-bay": "/es/reparacion-de-sprinklers-cutler-bay",
+  "plantation": "/es/reparacion-de-sprinklers-plantation",
 };
 
 export function cityHref(slug: string, locale: "en" | "es"): string {
