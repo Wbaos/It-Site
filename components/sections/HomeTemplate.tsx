@@ -1,10 +1,11 @@
 import { getHomeSections, type HomeLocale } from "@/lib/pageSections";
 import Reveal from "@/components/common/Reveal";
 import {
-  HOME_VIDEO_URL,
+  HOME_VIDEO_DURATION,
   HOME_VIDEO_POSTER_URL,
   HOME_VIDEO_UPLOAD_DATE,
-} from "@/components/sections/HomeVideo";
+  HOME_VIDEO_URL,
+} from "@/lib/homeVideo";
 
 // Single home template for both languages: the same sections, in the same
 // order, with the same components and icons. Only the text changes, via
@@ -15,8 +16,8 @@ export default async function HomeTemplate({ locale = "en" }: { locale?: HomeLoc
   const isSpanish = locale === "es";
   // VideoObject for the home video (there was no video schema before).
   // Name/description mirror the visible heading/subtitle, including the
-  // Sanity values when set; the URLs come from HomeVideo's constants so
-  // the schema and the <video> element can never drift apart.
+  // Sanity values when set; the URLs come from lib/homeVideo so the
+  // schema and the <video> element can never drift apart.
   const videoJsonLd = {
     "@context": "https://schema.org",
     "@type": "VideoObject",
@@ -31,6 +32,7 @@ export default async function HomeTemplate({ locale = "en" }: { locale?: HomeLoc
     thumbnailUrl: HOME_VIDEO_POSTER_URL,
     contentUrl: HOME_VIDEO_URL,
     uploadDate: HOME_VIDEO_UPLOAD_DATE,
+    duration: HOME_VIDEO_DURATION,
   };
   return (
     <main>
