@@ -3,15 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import type { HomePage } from "@/lib/sanityHome";
-
-// Home video asset (Sanity CDN). Exported so the VideoObject schema in
-// HomeTemplate uses exactly the same URLs as the <video> element below.
-// The file went live 2026-11-06 (lighter re-encode of the same video).
-export const HOME_VIDEO_URL =
-  "https://cdn.sanity.io/files/celkrwoq/production/1fed58166a9d6dcd13bcef55421ef6873c9408ae.mp4";
-export const HOME_VIDEO_POSTER_URL =
-  "https://cdn.sanity.io/images/celkrwoq/production/5839c3116edccd85882b50a97612a27ed68bd9f9-1024x768.jpg?w=640&auto=format&q=50";
-export const HOME_VIDEO_UPLOAD_DATE = "2026-11-06";
+import { HOME_VIDEO_POSTER_URL, HOME_VIDEO_URL } from "@/lib/homeVideo";
 
 export default function HomeVideo({ locale = "en", doc }: { locale?: "en" | "es"; doc?: HomePage | null }) {
   const isSpanish = locale === "es";
