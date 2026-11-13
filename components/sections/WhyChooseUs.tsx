@@ -59,7 +59,7 @@ export default async function WhyChooseUs({
         {
           icon: <Cpu size={32} strokeWidth={1.5} />,
           title: "Servicio en Persona, en Tu Casa",
-          text: "Trabajo a domicilio, en persona, en tu casa o negocio. Nada remoto.",
+          text: "Trabajo a domicilio, en persona, en tu casa o negocio.",
         },
       ]
     : [
@@ -91,7 +91,7 @@ export default async function WhyChooseUs({
         {
           icon: <Cpu size={32} strokeWidth={1.5} />,
           title: "In-Person Service, At Your Home",
-          text: "On-site work, in person, at your home or business. Nothing remote.",
+          text: "On-site work, in person, at your home or business.",
         },
       ];
 

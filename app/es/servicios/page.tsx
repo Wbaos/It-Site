@@ -46,7 +46,7 @@ const compareServiceOrder = (a: any, b: any) => {
 export const metadata: Metadata = {
   title: "Servicios de Sprinklers e Irrigación | CallTechCare",
 
-  description: "Explora los servicios de CallTechCare en Miami y Broward: reparación de sprinklers, instalación de irrigación, reemplazo de válvulas y temporizadores, reparación de fugas y sistemas nuevos.",
+  description: "Servicios de CallTechCare en Miami y Broward: reparación de sprinklers, instalación de irrigación, válvulas, temporizadores, fugas y sistemas.",
 
   alternates: {
     canonical: "https://www.calltechcare.com/es/servicios",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     title: "Servicios de Sprinklers e Irrigación | CallTechCare",
-    description: "Explora los servicios de CallTechCare en Miami y Broward: reparación de sprinklers, instalación de irrigación, reemplazo de válvulas y temporizadores, reparación de fugas y sistemas nuevos.",
+    description: "Servicios de CallTechCare en Miami y Broward: reparación de sprinklers, instalación de irrigación, válvulas, temporizadores, fugas y sistemas.",
     url: "https://www.calltechcare.com/services",
     siteName: "CallTechCare",
     images: [
@@ -299,7 +299,7 @@ export default async function ServicesPageEs() {
                           <div className="services-list-card-footer">
 
                             <span className="services-list-card-price-call">
-                              Llama para cotización
+                              Pide tu inspección gratis
                             </span>
 
                             <span className="services-list-card-link">

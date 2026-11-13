@@ -260,7 +260,7 @@ export default function LocationsClient({
                 <div className="location-stat-label">{isSpanish ? "Condado" : "County"}</div>
               </div>
               <div>
-                <div className="location-stat-value">30</div>
+                <div className="location-stat-value">31</div>
                 <div className="location-stat-label">{isSpanish ? "Ciudades Atendidas" : "Cities Served"}</div>
               </div>
               <div>
@@ -291,7 +291,7 @@ export default function LocationsClient({
       <section className="locations-coverage-section">
         <div className="locations-coverage-container">
           <div className="locations-coverage-card">
-            <h2 className="locations-coverage-title">{isSpanish ? "Las 30 Ciudades que Atendemos" : "All 30 Cities We Serve"}</h2>
+            <h2 className="locations-coverage-title">{isSpanish ? "Las 31 Ciudades que Atendemos" : "All 31 Cities We Serve"}</h2>
             <p className="locations-coverage-description">
               {isSpanish ? "Reparación de sprinklers e irrigación en Miami-Dade y Broward: " : "Sprinkler repair and irrigation across Miami-Dade and Broward: "}
               {CITY_LINKS.map((city, i) => (

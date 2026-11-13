@@ -294,7 +294,7 @@ export default async function ServicesPage() {
                           <div className="services-list-card-footer">
 
                             <span className="services-list-card-price-call">
-                              Call for Quote
+                              Call for a Free Inspection
                             </span>
 
                             <span className="services-list-card-link">
