@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
   /* Fallback title only (pages override this) */
   title: {
-    default: "CallTechCare | Sprinkler Repair Miami, Irrigation & Security Cameras",
+    default: "CallTechCare | Sprinkler Repair Miami & Broward",
     template: "%s",
   },
 
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 
   /* Open Graph fallback */
   openGraph: {
-    title: "CallTechCare | Sprinkler Repair Miami, Irrigation & Security Cameras",  
+    title: "CallTechCare | Sprinkler Repair Miami & Broward",  
     description:
       "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service within business hours, free inspection.", 
     siteName: "CallTechCare",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   /* Twitter fallback */
   twitter: {
     card: "summary_large_image",
-    title: "CallTechCare | Sprinkler Repair Miami, Irrigation & Security Cameras",  
+    title: "CallTechCare | Sprinkler Repair Miami & Broward",  
     description:
         "Professional sprinkler repair and irrigation services in Miami and Broward. Same-day service within business hours, free inspection.",
     images: ["/logo-og.png"],
