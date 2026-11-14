@@ -32,7 +32,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   );
 
   return {
-    title: `${location.city} | Reparación de Sprinklers, Irrigación y Cámaras`,
+    title:
+      location.metaTitleEs ||
+      `${location.city} | Reparación de Sprinklers, Irrigación y Cámaras`,
     description,
     alternates: {
       canonical: `https://www.calltechcare.com/es/areas-de-servicio/${slug}`,
@@ -43,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      title: location.city,
+      title: location.metaTitleEs || location.city,
       description,
       url: `https://www.calltechcare.com/es/areas-de-servicio/${slug}`,
       siteName: "CallTechCare",
