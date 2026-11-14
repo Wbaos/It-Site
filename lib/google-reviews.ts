@@ -1,43 +1,32 @@
 import type { Testimonial } from "@/components/common/TestimonialsList";
+import {
+  getGoogleReviewsCopy,
+  type GoogleReviewsCopy,
+} from "@/lib/sanitySettings";
 
 /**
- * Live Google reviews via the Google Business Profile Reviews API (v4).
+ * Google reviews from the durable Sanity copy.
  *
- * The rating, the review count and the review texts come straight from
- * Google — no Sanity bridge, no Places API (the saved Place ID is dead),
- * and no hardcoded numbers anywhere in this file or in any display path.
- *
- * Auth is the OAuth refresh-token flow, with credentials read only from
- * environment variables (set in Vercel, never committed):
- *   GBP_OAUTH_CLIENT_ID, GBP_OAUTH_CLIENT_SECRET, GBP_REFRESH_TOKEN,
- *   GBP_ACCOUNT_ID, GBP_LOCATION_ID
- * The refresh token is exchanged for a short-lived access token
- * (scope https://www.googleapis.com/auth/business.manage), which is
- * then sent as a Bearer token to:
- *   GET https://mybusiness.googleapis.com/v4/accounts/{accountId}/
- *       locations/{locationId}/reviews
- * The response carries reviews[] (reviewer.displayName, starRating,
- * comment, createTime) plus averageRating and totalReviewCount.
+ * The rating, the review count and the review texts live in the
+ * `site-settings` document (fields googleRating, googleReviewCount,
+ * googleReviews, googleReviewsUpdatedAt), written once a day by the
+ * /api/cron/sync-reviews job from the Google Business Profile Reviews
+ * API. The site NEVER calls Google on a visitor's request — no GBP
+ * OAuth code lives in this file anymore (it moved to lib/gbp-reviews.ts,
+ * used only by the sync job) — so a Google outage or an expired token
+ * never empties the reviews on the site: the last good copy keeps
+ * showing until the next successful sync.
  *
  * There is deliberately NO hardcoded fallback rating/count anywhere.
- * If Google cannot be read (missing env vars, token failure, API
- * error), the getters below return null / [] and every consumer HIDES
- * the rating/count instead of showing a stale number.
+ * If Sanity has no copy yet (fields empty), the getters below return
+ * null / [] and every consumer HIDES the rating/count instead of
+ * showing a stale number.
  *
- * TEMPORARY diagnostic logging: the console.error calls in
- * fetchAccessToken / fetchGoogleReviewsData log only HTTP statuses,
- * Google's error fields and env-var presence booleans — never any
- * values or tokens — so a failing token exchange can be seen in the
- * Vercel function logs. Remove them once the failure is diagnosed.
- *
- * One in-memory cache (1 hour) lets the rating summary and the
- * review list share a single Google call per render, and keeps Google
- * from being asked again on every page render. Only successful
- * responses are cached — a failed call is never cached, so a transient
- * error does not keep the sections hidden. New reviews can take up to
- * an hour to appear; the on-demand revalidation webhook refreshes the
- * pages when Sanity content changes, but Google data refreshes on this
- * hourly cache.
+ * One in-memory cache (1 hour) lets the rating summary and the review
+ * list share a single Sanity read per render. Only successful reads are
+ * cached — a failed read is never cached. The copy changes at most once
+ * a day, and new reviews can take up to a day to appear; the on-demand
+ * revalidation webhook refreshes the pages when Sanity content changes.
  */
 
 /** Verified public Maps listing for CallTechCare (from the live profile). */
@@ -61,12 +50,12 @@ export function getGoogleWriteReviewUrl(): string {
 }
 
 /**
- * Single shared source for the live Google rating summary.
+ * Single shared source for the Google rating summary.
  *
  * Every place on the site that shows the Google rating or the review count
- * reads from here — one Google call, shared with the review list below.
- * No component keeps its own copy of the numbers, so when Google's count
- * changes the rating and the total change everywhere at the same time.
+ * reads from here — one Sanity read, shared with the review list below.
+ * No component keeps its own copy of the numbers, so when the synced
+ * count changes the rating and the total change everywhere at the same time.
  */
 export type GoogleRatingSummary = {
   rating: number;
@@ -78,135 +67,31 @@ export function formatGoogleRating(rating: number): string {
   return rating.toFixed(1);
 }
 
-type GbpReview = {
-  reviewer?: { displayName?: string };
-  starRating?: string;
-  comment?: string;
-  createTime?: string;
-};
-
-type GbpReviewsResponse = {
-  reviews?: GbpReview[];
-  averageRating?: number;
-  totalReviewCount?: number;
-};
-
-const STAR_RATINGS: Record<string, number> = {
-  ONE: 1,
-  TWO: 2,
-  THREE: 3,
-  FOUR: 4,
-  FIVE: 5,
-};
-
 const CACHE_TTL_MS = 3_600_000; // 1 hour
 let cachedAt = 0;
-let cachedResponse: GbpReviewsResponse | null = null;
+let cachedCopy: GoogleReviewsCopy | null = null;
 
-/** Exchanges the refresh token for a short-lived access token. */
-async function fetchAccessToken(): Promise<string | null> {
-  const clientId = process.env.GBP_OAUTH_CLIENT_ID;
-  const clientSecret = process.env.GBP_OAUTH_CLIENT_SECRET;
-  const refreshToken = process.env.GBP_REFRESH_TOKEN;
-  if (!clientId || !clientSecret || !refreshToken) {
-    // TEMPORARY diagnostic logging: booleans only, never any values.
-    console.error("[google-reviews] missing OAuth env vars", {
-      clientId: Boolean(clientId),
-      clientSecret: Boolean(clientSecret),
-      refreshToken: Boolean(refreshToken),
-    });
-    return null;
+/** The Sanity copy, shared by the summary and the review list. */
+async function fetchGoogleReviewsCopy(): Promise<GoogleReviewsCopy | null> {
+  if (cachedCopy && Date.now() - cachedAt < CACHE_TTL_MS) {
+    return cachedCopy;
   }
-  try {
-    const res = await fetch("https://oauth2.googleapis.com/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        grant_type: "refresh_token",
-        client_id: clientId,
-        client_secret: clientSecret,
-        refresh_token: refreshToken,
-      }),
-      cache: "no-store",
-    });
-    if (!res.ok) {
-      // TEMPORARY diagnostic logging: status + Google's error fields.
-      const errBody = await res.json().catch(() => null);
-      console.error(
-        "[google-reviews] token exchange failed",
-        res.status,
-        errBody?.error,
-        errBody?.error_description
-      );
-      return null;
-    }
-    const data = await res.json().catch(() => null);
-    if (typeof data?.access_token !== "string") {
-      // TEMPORARY diagnostic logging.
-      console.error("[google-reviews] token response has no access_token");
-      return null;
-    }
-    return data.access_token;
-  } catch {
-    return null;
-  }
-}
-
-/** One live call to the Business Profile Reviews API (v4). */
-async function fetchGoogleReviewsData(): Promise<GbpReviewsResponse | null> {
-  if (cachedResponse && Date.now() - cachedAt < CACHE_TTL_MS) {
-    return cachedResponse;
-  }
-  const accountId = process.env.GBP_ACCOUNT_ID;
-  const locationId = process.env.GBP_LOCATION_ID;
-  if (!accountId || !locationId) {
-    // TEMPORARY diagnostic logging: booleans only, never any values.
-    console.error("[google-reviews] missing GBP ids", {
-      accountId: Boolean(accountId),
-      locationId: Boolean(locationId),
-    });
-    return null;
-  }
-  const accessToken = await fetchAccessToken();
-  if (!accessToken) return null;
-  try {
-    const res = await fetch(
-      `https://mybusiness.googleapis.com/v4/accounts/${encodeURIComponent(accountId)}/locations/${encodeURIComponent(locationId)}/reviews?pageSize=50`,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-        cache: "no-store",
-      }
-    );
-    if (!res.ok) {
-      // TEMPORARY diagnostic logging: status + Google's error message.
-      const errBody = await res.json().catch(() => null);
-      const message =
-        typeof errBody?.error === "string"
-          ? errBody.error
-          : errBody?.error?.message;
-      console.error("[google-reviews] reviews API failed", res.status, message);
-      return null;
-    }
-    const data = (await res.json().catch(() => null)) as GbpReviewsResponse | null;
-    if (!data || typeof data !== "object") return null;
-    cachedResponse = data;
-    cachedAt = Date.now();
-    return data;
-  } catch {
-    return null;
-  }
+  const copy = await getGoogleReviewsCopy();
+  if (!copy) return null;
+  cachedCopy = copy;
+  cachedAt = Date.now();
+  return copy;
 }
 
 /**
- * Rating summary from the Google Business Profile API. Returns null
- * when Google cannot be read or when either field is missing — callers
- * must hide the count/rating in that case. It NEVER falls back to a
- * hardcoded number.
+ * Rating summary from the Sanity copy. Returns null when there is no
+ * copy yet or when either field is missing — callers must hide the
+ * count/rating in that case. It NEVER falls back to a hardcoded number.
  */
 export async function getGoogleRatingSummary(): Promise<GoogleRatingSummary | null> {
-  const data = await fetchGoogleReviewsData();
-  const rating = data?.averageRating;
-  const total = data?.totalReviewCount;
+  const copy = await fetchGoogleReviewsCopy();
+  const rating = copy?.rating;
+  const total = copy?.total;
   if (typeof rating !== "number" || typeof total !== "number") return null;
   return { rating, total };
 }
@@ -214,7 +99,7 @@ export async function getGoogleRatingSummary(): Promise<GoogleRatingSummary | nu
 // Legacy rating/count phrases that still appear in the Sanity contactPage
 // FAQ copy (written when the count was 26 — e.g. "we hold a 5.0 rating
 // from 26 Google reviews"). They are search patterns only — they are
-// never rendered — and are replaced with the live Google values, or with
+// never rendered — and are replaced with the synced Google values, or with
 // neutral wording when there is no summary (see below). The Sanity
 // sentences already carry their own article ("a " / "una ") before the
 // phrase, so the legacy replacement carries NO article, while the
@@ -222,12 +107,12 @@ export async function getGoogleRatingSummary(): Promise<GoogleRatingSummary | nu
 // {{googleRatingEn}}" needs its "a"). Without that split the render
 // would read "a a 5.0 rating…" — the bridge code had exactly that bug.
 // (The homePage whyCards Google card does NOT need these: WhyChooseUs
-// replaces that card's text with the live values at render.)
+// replaces that card's text with the synced values at render.)
 const LEGACY_RATING_PHRASE_EN = "5.0 rating from 26 Google reviews";
 const LEGACY_RATING_PHRASE_ES = "calificación 5.0 con 26 reseñas en Google";
 
 /**
- * Replaces the rating/count phrases inside a text with the live summary
+ * Replaces the rating/count phrases inside a text with the synced summary
  * values. Handles both the legacy phrases above (Sanity copy written
  * before the count moved past 26) and the {{googleRatingEn}} /
  * {{googleRatingEs}} placeholders used by the code FAQ defaults.
@@ -267,13 +152,15 @@ export function applyGoogleRatingSummaryToText(
 }
 
 /**
- * The API's createTime is an RFC3339 timestamp; the UI shows relative
+ * The stored createTime is an RFC3339 timestamp; the UI shows relative
  * strings ("a week ago", "3 weeks ago", "2 months ago"), the same style
  * the Business Profile dashboard uses — in Spanish ("hace 1 semana",
  * "hace 3 semanas", "hace 2 meses") when locale is "es". Only the
  * timestamp's own date is used — no calendar date is ever invented.
  * Returns undefined when the timestamp is missing or unparsable, so the
- * review renders without a date instead of with a wrong one.
+ * review renders without a date instead of with a wrong one. Because
+ * the timestamp (not a relative string) is what the sync stores, the
+ * shown date stays correct even when the copy is days old.
  */
 export function formatRelativeReviewDate(
   createTime: string | undefined,
@@ -306,22 +193,22 @@ export function formatRelativeReviewDate(
 }
 
 /**
- * Review list from the Google Business Profile API, mapped to
- * Testimonial. Texts are shown as-is, in the language the reviewer
- * wrote them; only the surrounding chrome is translated. Nothing is
- * invented here: entries with a name but no text still render as name +
- * stars, and name/rating/date pass through only when present. Returns
- * [] when Google cannot be read or the list is empty — callers hide the
- * section in that case. Dates are the relative strings converted from
- * each review's createTime (see above) in the caller's locale, and
- * TestimonialsList translates any English relative string it still
- * receives on Spanish pages — never calendar dates, and never invented.
+ * Review list from the Sanity copy, mapped to Testimonial. Texts are
+ * shown as-is, in the language the reviewer wrote them; only the
+ * surrounding chrome is translated. Nothing is invented here: entries
+ * with a name but no text still render as name + stars, and name/rating/
+ * date pass through only when present. Returns [] when there is no copy
+ * yet or the list is empty — callers hide the section in that case.
+ * Dates are the relative strings converted from each review's stored
+ * createTime (see above) in the caller's locale, and TestimonialsList
+ * translates any English relative string it still receives on Spanish
+ * pages — never calendar dates, and never invented.
  */
 export async function getGoogleReviews(
   locale: "en" | "es" = "en",
 ): Promise<Testimonial[]> {
-  const data = await fetchGoogleReviewsData();
-  const reviews = data?.reviews;
+  const copy = await fetchGoogleReviewsCopy();
+  const reviews = copy?.reviews;
   if (!Array.isArray(reviews)) return [];
   // Include every entry that has a name or text — a real Google review
   // can have a 5-star rating and a name but NO text, and it still
@@ -330,14 +217,13 @@ export async function getGoogleReviews(
   return reviews
     .filter(
       (r) =>
-        (typeof r?.reviewer?.displayName === "string" &&
-          r.reviewer.displayName.trim().length > 0) ||
-        (typeof r?.comment === "string" && r.comment.trim().length > 0)
+        (typeof r?.name === "string" && r.name.trim().length > 0) ||
+        (typeof r?.text === "string" && r.text.trim().length > 0)
     )
     .map((r) => ({
-      name: r.reviewer?.displayName,
-      text: r.comment ?? "",
-      rating: r.starRating ? STAR_RATINGS[r.starRating] : undefined,
+      name: r.name,
+      text: r.text ?? "",
+      rating: typeof r.rating === "number" ? r.rating : undefined,
       verified: true,
       date: formatRelativeReviewDate(r.createTime, locale),
     }));
