@@ -8,6 +8,9 @@ export const HOME_VIDEO_URL =
   "https://cdn.sanity.io/files/celkrwoq/production/1fed58166a9d6dcd13bcef55421ef6873c9408ae.mp4";
 export const HOME_VIDEO_POSTER_URL =
   "https://cdn.sanity.io/images/celkrwoq/production/5839c3116edccd85882b50a97612a27ed68bd9f9-1024x768.jpg?w=640&auto=format&q=50";
-export const HOME_VIDEO_UPLOAD_DATE = "2026-11-06";
+// Google requires uploadDate as a full ISO 8601 datetime WITH timezone;
+// a bare date ("2026-11-06") is flagged invalid / missing timezone.
+// 6 Nov is EST (-05:00).
+export const HOME_VIDEO_UPLOAD_DATE = "2026-11-06T09:00:00-05:00";
 // Verified with ffprobe 13 Nov 2026: the file is 14.1 s long.
 export const HOME_VIDEO_DURATION = "PT14S";
