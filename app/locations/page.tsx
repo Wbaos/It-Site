@@ -3,7 +3,7 @@ import LocationsClient from "./LocationsClient";
 import { resolveSiteSettings } from "@/lib/sanitySettings";
 
 export const metadata: Metadata = {
-  title: "Sprinkler Repair Service Areas | Miami & Broward | CallTechCare",
+  title: "Sprinkler Repair Service Areas | CallTechCare",
 
   description:
     "Explore the 31 cities CallTechCare serves across Miami-Dade and Broward County for sprinkler repair, irrigation installation, valve and timer replacement.",
