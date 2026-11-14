@@ -32,6 +32,51 @@ export type SiteSettings = {
   serviceAreaLineEs?: string;
 };
 
+export type SanityGoogleReview = {
+  _key: string;
+  name?: string;
+  rating?: number;
+  text?: string;
+  createTime?: string;
+  verified?: boolean;
+};
+
+// Durable copy of the Google reviews, synced once a day from the
+// Business Profile Reviews API by /api/cron/sync-reviews. The site reads
+// ONLY from here — never from Google on a visitor's request — so a Google
+// outage or an expired token never empties the reviews on the site.
+export type GoogleReviewsCopy = {
+  rating?: number;
+  total?: number;
+  reviews?: SanityGoogleReview[];
+  updatedAt?: string;
+};
+
+const REVIEWS_COPY_FIELDS = `googleRating, googleReviewCount,
+  googleReviews, googleReviewsUpdatedAt`;
+
+export async function getGoogleReviewsCopy(): Promise<GoogleReviewsCopy | null> {
+  try {
+    const doc = await sanity.fetch<{
+      googleRating?: number;
+      googleReviewCount?: number;
+      googleReviews?: SanityGoogleReview[];
+      googleReviewsUpdatedAt?: string;
+    } | null>(
+      `*[_type == "siteSettings" && _id == "site-settings"][0]{${REVIEWS_COPY_FIELDS}}`,
+    );
+    if (!doc) return null;
+    return {
+      rating: doc.googleRating,
+      total: doc.googleReviewCount,
+      reviews: doc.googleReviews,
+      updatedAt: doc.googleReviewsUpdatedAt,
+    };
+  } catch {
+    return null;
+  }
+}
+
 // Exact values shown today; used when the document (or a field) is
 // missing, so a Sanity blip never changes what visitors see.
 export const FALLBACK_SETTINGS: Required<SiteSettings> = {
