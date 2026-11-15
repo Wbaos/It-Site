@@ -240,9 +240,6 @@ export default async function ContactTemplate({
     url: isEs
       ? "https://www.calltechcare.com/es/contacto"
       : "https://www.calltechcare.com/contact",
-    about: {
-      "@id": "https://www.calltechcare.com/#business",
-    },
   };
 
   return (

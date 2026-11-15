@@ -21,6 +21,8 @@ export const SERVICE_ES_PATHS: Record<string, string> = {
   "commercial-irrigation-hoa-services": "/es/riego-comercial-y-para-hoa",
   "new-irrigation-well-installation":
     "/es/instalacion-de-pozos-nuevos-de-irrigacion",
+  "drip-irrigation-installation": "/es/instalacion-de-riego-por-goteo",
+  "backflow-testing": "/es/prueba-de-backflow",
   "home-security": "/es/seguridad-del-hogar",
 };
 

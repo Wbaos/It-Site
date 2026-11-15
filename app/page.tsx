@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: "https://www.calltechcare.com/",
       languages: {
         en: "https://www.calltechcare.com/",
-        es: "https://www.calltechcare.com/es/",
+        es: "https://www.calltechcare.com/es",
         "x-default": "https://www.calltechcare.com/",
       },
     },
