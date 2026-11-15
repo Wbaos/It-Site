@@ -245,7 +245,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
             <span>{`${location.city}, ${location.state}`}</span>
           </div>
           <h1 className="location-hero-title">
-            {`${location.city}, ${location.state}`}
+            {isSpanish ? `Reparación de Sprinklers en ${location.city}` : `Sprinkler Repair in ${location.city}`}
           </h1>
           <p className="location-hero-subtitle">
             {isSpanish ? `Reparación Profesional de Sprinklers, Irrigación y Cámaras de Seguridad en ${location.city}` : `Professional Sprinkler Repair, Irrigation & Security Cameras in ${location.city}`}
