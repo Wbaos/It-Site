@@ -178,6 +178,9 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
     areaServed: {
       "@type": "City",
       name: `${location.city}, ${location.state}`,
+      // ZIPs stay machine-readable only (same shape as the city pages):
+      // the visible "ZIP Codes Served" chips were removed 15 Nov 2026.
+      postalCode: location.zipCodes ?? [],
     },
   };
   const isPrimaryOffice = location.slug?.current === "miami";
@@ -373,20 +376,6 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                     ))}
                   </div>
                 </div>
-                {location.zipCodes && location.zipCodes.length > 0 && (
-                  <div className="location-coverage-wrapper">
-                    <p className="location-zip-codes-label">
-                      {isSpanish ? "Códigos Postales Atendidos:" : "ZIP Codes Served:"}
-                    </p>
-                    <div className="location-zip-codes">
-                      {location.zipCodes.map((zip, index) => (
-                        <span key={index} className="location-zip-code">
-                          {zip}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             )}
 
