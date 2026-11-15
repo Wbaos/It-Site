@@ -24,6 +24,8 @@ export const BLOG_ES_PATHS: Record<string, string> = {
     "/es/blog/prepara-tu-sistema-de-sprinklers-para-la-temporada-seca-en-miami",
   "smart-sprinkler-controllers-miami-wifi-timers":
     "/es/blog/controladores-inteligentes-de-sprinklers-en-miami-timers-wifi",
+  "common-sprinkler-system-problems-how-to-fix-them":
+    "/es/blog/problemas-comunes-de-sprinklers-como-arreglarlos",
 };
 
 export function blogHref(slug: string, locale: "en" | "es"): string {
