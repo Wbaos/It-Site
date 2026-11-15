@@ -94,17 +94,27 @@ const SPRINKLER_SERVICE_LINKS = [
   { slug: "commercial-irrigation-hoa-services", title: "Commercial Irrigation & HOA Services" },
 ];
 
-// Related-services cards show a SHORT excerpt of the service description
-// (first 1–2 sentences, ~150 chars max, ending with an ellipsis) —
-// never the full description. The full text stays in Sanity untouched:
-// it is the page's SEO content. The card only teases it, so all cards
-// stay short and roughly the same height. Works for EN and ES alike.
-function shortExcerpt(text: string | undefined, maxLen = 150): string | undefined {
-  if (!text) return undefined;
-  const clean = text.replace(/\s+/g, " ").trim();
-  if (clean.length <= maxLen) return clean;
+// Splits a service description into a short hero intro and the remainder,
+// from the SAME text, so a sentence is never shown twice and none is lost.
+// The hero shows the first 1–2 sentences (~maxLen, ending with an
+// ellipsis when cut); the "About this service" section shows the rest,
+// keeping its paragraph breaks. When the whole description fits in the
+// intro, the remainder is empty and the About section hides (nothing
+// left to say). Works for EN and ES alike.
+function splitDescription(
+  text: string | undefined,
+  maxLen = 300
+): { excerpt: string | undefined; remainder: string[] } {
+  if (!text) return { excerpt: undefined, remainder: [] };
+  const paragraphs = text
+    .split(/\n\s*\n/)
+    .map((para) => para.replace(/\s+/g, " ").trim())
+    .filter(Boolean);
+  const flat = paragraphs.join(" ");
+  if (!flat) return { excerpt: undefined, remainder: [] };
+  if (flat.length <= maxLen) return { excerpt: flat, remainder: [] };
   // Accumulate whole sentences while they fit within maxLen.
-  const sentences = clean.match(/[^.!?]+[.!?]+["”)]?/g) ?? [clean];
+  const sentences = flat.match(/[^.!?]+[.!?]+["”)]?/g) ?? [flat];
   let out = "";
   for (const s of sentences) {
     const next = out ? `${out} ${s.trim()}` : s.trim();
@@ -113,11 +123,39 @@ function shortExcerpt(text: string | undefined, maxLen = 150): string | undefine
   }
   // First sentence alone is longer than maxLen: cut it at a word boundary.
   if (!out) {
-    const cut = clean.slice(0, maxLen);
+    const cut = flat.slice(0, maxLen);
     const lastSpace = cut.lastIndexOf(" ");
     out = lastSpace > 40 ? cut.slice(0, lastSpace) : cut;
   }
-  return `${out.trimEnd()}…`;
+  const excerpt = `${out.trimEnd()}…`;
+  // Remainder: everything after the excerpt, keeping paragraph breaks.
+  // The excerpt (minus "…") is a prefix of flat, so its length is the
+  // exact split point; walk the paragraphs to find where it lands.
+  const remainder: string[] = [];
+  let offset = 0;
+  for (let i = 0; i < paragraphs.length; i++) {
+    const para = paragraphs[i];
+    const paraEnd = offset + para.length;
+    if (out.length <= paraEnd) {
+      const rest = para.slice(out.length - offset).trim();
+      if (rest) remainder.push(rest);
+      for (let j = i + 1; j < paragraphs.length; j++) {
+        remainder.push(paragraphs[j]);
+      }
+      break;
+    }
+    offset = paraEnd + 1; // +1 for the space joining paragraphs in flat
+  }
+  return { excerpt, remainder };
+}
+
+// Related-services cards show a SHORT excerpt of the service description
+// (first 1–2 sentences, ~150 chars max, ending with an ellipsis) —
+// never the full description. The full text stays in Sanity untouched:
+// it is the page's SEO content. The card only teases it, so all cards
+// stay short and roughly the same height. Works for EN and ES alike.
+function shortExcerpt(text: string | undefined, maxLen = 150): string | undefined {
+  return splitDescription(text, maxLen).excerpt;
 }
 
 export async function generateMetadata({
@@ -467,6 +505,10 @@ export default async function ServicePage({
     isSpanish && service?.descriptionEs
       ? service.descriptionEs
       : service?.description;
+  // Hero/About split, computed once: the hero shows the intro, the About
+  // section shows the rest — same text, split once, so no sentence is
+  // repeated (PR #469 showed the intro verbatim in both places).
+  const descriptionSplit = splitDescription(displayDescription, 300);
   const displayWarranty =
     isSpanish && service?.warrantyEs ? service.warrantyEs : service?.warranty;
   const displayDetails =
@@ -1320,8 +1362,8 @@ export default async function ServicePage({
               </span>
             )}
 
-            {displayDescription && (
-              <p className="service-description">{shortExcerpt(displayDescription, 300)}</p>
+            {descriptionSplit.excerpt && (
+              <p className="service-description">{descriptionSplit.excerpt}</p>
             )}
 
             {displayWarranty && (
@@ -1356,21 +1398,19 @@ export default async function ServicePage({
           </div>
         </div>
 
-        {/* Full description, below the hero: the hero card shows only a
-            short intro (first 1–2 sentences, ~300 chars max) so the wall
-            of text no longer fills the screen. Every word of the
-            description stays on the page here, split into paragraphs —
-            nothing is deleted, only moved out of the narrow hero column. */}
-        {displayDescription && (
+        {/* Remainder of the description, below the hero: the hero card
+            shows only the short intro (first 1–2 sentences) so the wall
+            of text no longer fills the screen. The rest of the text
+            lives here — every word stays on the page exactly once,
+            nothing repeated, nothing deleted. When the whole description
+            fits in the intro, there is no remainder and this section
+            hides. */}
+        {descriptionSplit.remainder.length > 0 && (
           <div className="service-about-box">
             <h2>{isSpanish ? "Sobre este servicio" : "About this service"}</h2>
-            {displayDescription
-              .split(/\n\s*\n/)
-              .map((para: string) => para.replace(/\s+/g, " ").trim())
-              .filter(Boolean)
-              .map((para: string, i: number) => (
-                <p key={i}>{para}</p>
-              ))}
+            {descriptionSplit.remainder.map((para: string, i: number) => (
+              <p key={i}>{para}</p>
+            ))}
           </div>
         )}
 
