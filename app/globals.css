@@ -11455,7 +11455,10 @@ object-fit: cover;
 }
 
 .related-service-desc {
-  display: block;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   color: #cbd5e1;
   font-size: 0.9rem;
   line-height: 1.4;
