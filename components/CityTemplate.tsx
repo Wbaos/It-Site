@@ -462,6 +462,13 @@ export default async function CityTemplate({ city, locale }: { city: City; local
     : `https://www.calltechcare.com/sprinkler-repair-${slug}`;
 
   const heroTitle1 = pick(city.heroTitle1, city.heroTitle1Es, locale);
+  // Hero image alt: the city's own Sanity alt when set, otherwise the
+  // default describing the shared hero photo (sprinklers working),
+  // in the page language. Hero.tsx used to hardcode alt="", so the
+  // alt text never reached the page.
+  const heroImageAlt =
+    pick(city.heroImageAlt, city.heroImageAltEs, locale) ||
+    (isEs ? "Sistema de sprinklers funcionando" : "Sprinkler system working");
   const heroTitle2 = pick(city.heroTitle2, city.heroTitle2Es, locale);
   const heroSubtitle = pick(city.heroSubtitle, city.heroSubtitleEs, locale);
   const heroBadge = pick(city.heroBadge, city.heroBadgeEs, locale);
@@ -586,6 +593,7 @@ export default async function CityTemplate({ city, locale }: { city: City; local
             ? `Envíanos un mensaje rápido para reparación de sprinklers en ${name}`
             : `Send us a quick message for sprinkler repair in ${name}`
         }
+        imageAlt={heroImageAlt}
         showCallButton={false}
         googleRating={googleRating}
         {...(isEs ? { stats: ES_STATS } : {})}
