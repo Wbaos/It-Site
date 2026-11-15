@@ -180,7 +180,14 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
       name: `${location.city}, ${location.state}`,
       // ZIPs stay machine-readable only (same shape as the city pages):
       // the visible "ZIP Codes Served" chips were removed 15 Nov 2026.
-      postalCode: location.zipCodes ?? [],
+      // postalCode is not a property of schema.org City, so the ZIPs
+      // live in a nested PostalAddress (Place.address) instead.
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: location.city,
+        addressRegion: "FL",
+        postalCode: location.zipCodes ?? [],
+      },
     },
   };
   const isPrimaryOffice = location.slug?.current === "miami";

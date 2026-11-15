@@ -537,8 +537,16 @@ export default async function CityTemplate({ city, locale }: { city: City; local
             areaServed: {
               "@type": "City",
               name,
-              addressRegion: "FL",
-              postalCode: city.zipCodes ?? [],
+              // ZIPs stay machine-readable only: postalCode is not a
+              // property of schema.org City, so the ZIPs live in a nested
+              // PostalAddress (Place.address) instead. Visible ZIP text
+              // was removed from city pages 15 Nov 2026.
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: name,
+                addressRegion: "FL",
+                postalCode: city.zipCodes ?? [],
+              },
             },
             url: canonical,
           }),

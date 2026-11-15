@@ -1,25 +1,57 @@
 # CallTechCare
-# Sprinkler repair and installation, irrigation, and wireless cameras in Miami-Dade and Broward County, Florida.
-# Website: https://www.calltechcare.com
-# Phone: (786) 366-2729
-# Free inspection. Same-day service within business hours. 1-year workmanship warranty when CallTechCare performs the work and provides the materials.
+
+> Sprinkler repair and installation, irrigation, and wireless cameras in Miami-Dade and Broward County, Florida. Free inspection. Same-day service within business hours. 1-year workmanship warranty when CallTechCare performs the work and provides the materials. Website: https://www.calltechcare.com — Phone: (786) 366-2729.
 
 ## Services
-- Sprinkler Repair: https://www.calltechcare.com/services/sprinkler-repair-and-installation
-- Emergency Sprinkler Repair: https://www.calltechcare.com/services/emergency-sprinkler-repair
-- Sprinkler Leak Repair: https://www.calltechcare.com/services/sprinkler-leak-repair
-- Sprinkler Valve Repair: https://www.calltechcare.com/services/sprinkler-valve-repair
-- Sprinkler Timer Installation: https://www.calltechcare.com/services/sprinkler-timer-installation
-- Sprinkler Pump Replacement: https://www.calltechcare.com/services/sprinkler-pump-replacement
-- New Irrigation Well Installation: https://www.calltechcare.com/services/new-irrigation-well-installation
-- Rain Sensor Installation: https://www.calltechcare.com/services/rain-sensor-installation
-- WiFi Sprinkler Controller Upgrade: https://www.calltechcare.com/services/wifi-sprinkler-controller-upgrade
-- New Irrigation Installation: https://www.calltechcare.com/services/new-irrigation-installation
-- Sprinkler Maintenance Plan: https://www.calltechcare.com/services/sprinkler-maintenance-plan
-- Drip Irrigation Installation: https://www.calltechcare.com/services/drip-irrigation-installation
-- Backflow Testing: https://www.calltechcare.com/services/backflow-testing
-- Commercial Irrigation & HOA Services: https://www.calltechcare.com/services/commercial-irrigation-hoa-services
-- Wireless Camera Installation: https://www.calltechcare.com/services/wireless-camera-installation
+
+- [Sprinkler Repair](https://www.calltechcare.com/services/sprinkler-repair-and-installation)
+- [Emergency Sprinkler Repair](https://www.calltechcare.com/services/emergency-sprinkler-repair)
+- [Sprinkler Leak Repair](https://www.calltechcare.com/services/sprinkler-leak-repair)
+- [Sprinkler Valve Repair](https://www.calltechcare.com/services/sprinkler-valve-repair)
+- [Sprinkler Timer Installation](https://www.calltechcare.com/services/sprinkler-timer-installation)
+- [Sprinkler Pump Replacement](https://www.calltechcare.com/services/sprinkler-pump-replacement)
+- [New Irrigation Well Installation](https://www.calltechcare.com/services/new-irrigation-well-installation)
+- [Rain Sensor Installation](https://www.calltechcare.com/services/rain-sensor-installation)
+- [WiFi Sprinkler Controller Upgrade](https://www.calltechcare.com/services/wifi-sprinkler-controller-upgrade)
+- [New Irrigation Installation](https://www.calltechcare.com/services/new-irrigation-installation)
+- [Sprinkler Maintenance Plan](https://www.calltechcare.com/services/sprinkler-maintenance-plan)
+- [Sprinkler Head Replacement](https://www.calltechcare.com/services/sprinkler-head-replacement)
+- [Drip Irrigation Installation](https://www.calltechcare.com/services/drip-irrigation-installation)
+- [Backflow Testing](https://www.calltechcare.com/services/backflow-testing)
+- [Commercial Irrigation & HOA Services](https://www.calltechcare.com/services/commercial-irrigation-hoa-services)
+- [Wireless Camera Installation](https://www.calltechcare.com/services/wireless-camera-installation)
 
 ## Service areas
-Aventura, Coral Gables, Coral Springs, Country Club, Country Walk, Cutler Bay, Dania Beach, Davie, Doral, Fontainebleau, Fort Lauderdale, Hialeah, Hollywood, Kendale Lakes, Kendall, Key Biscayne, Miami, Miami Beach, Miami Gardens, Miami Lakes, Miramar, North Bay Village, North Miami, Pembroke Pines, Plantation, Southwest Ranches, Sunny Isles Beach, Sunrise, Surfside, Tamiami, West Park, Weston.
+
+- [Aventura](https://www.calltechcare.com/sprinkler-repair-aventura)
+- [Coral Gables](https://www.calltechcare.com/sprinkler-repair-coral-gables)
+- [Coral Springs](https://www.calltechcare.com/sprinkler-repair-coral-springs)
+- [Country Club](https://www.calltechcare.com/sprinkler-repair-country-club)
+- [Country Walk](https://www.calltechcare.com/sprinkler-repair-country-walk)
+- [Cutler Bay](https://www.calltechcare.com/sprinkler-repair-cutler-bay)
+- [Dania Beach](https://www.calltechcare.com/sprinkler-repair-dania-beach)
+- [Davie](https://www.calltechcare.com/sprinkler-repair-davie)
+- [Doral](https://www.calltechcare.com/sprinkler-repair-doral)
+- [Fontainebleau](https://www.calltechcare.com/sprinkler-repair-fontainebleau)
+- [Fort Lauderdale](https://www.calltechcare.com/sprinkler-repair-fort-lauderdale)
+- [Hialeah](https://www.calltechcare.com/sprinkler-repair-hialeah)
+- [Hollywood](https://www.calltechcare.com/sprinkler-repair-hollywood)
+- [Kendale Lakes](https://www.calltechcare.com/sprinkler-repair-kendale-lakes)
+- [Kendall](https://www.calltechcare.com/sprinkler-repair-kendall)
+- [Key Biscayne](https://www.calltechcare.com/sprinkler-repair-key-biscayne)
+- [Miami](https://www.calltechcare.com/sprinkler-repair-miami)
+- [Miami Beach](https://www.calltechcare.com/sprinkler-repair-miami-beach)
+- [Miami Gardens](https://www.calltechcare.com/sprinkler-repair-miami-gardens)
+- [Miami Lakes](https://www.calltechcare.com/sprinkler-repair-miami-lakes)
+- [Miramar](https://www.calltechcare.com/sprinkler-repair-miramar)
+- [North Bay Village](https://www.calltechcare.com/sprinkler-repair-north-bay-village)
+- [North Miami](https://www.calltechcare.com/sprinkler-repair-north-miami)
+- [Pembroke Pines](https://www.calltechcare.com/sprinkler-repair-pembroke-pines)
+- [Plantation](https://www.calltechcare.com/sprinkler-repair-plantation)
+- [Southwest Ranches](https://www.calltechcare.com/sprinkler-repair-southwest-ranches)
+- [Sunny Isles Beach](https://www.calltechcare.com/sprinkler-repair-sunny-isles-beach)
+- [Sunrise](https://www.calltechcare.com/sprinkler-repair-sunrise)
+- [Surfside](https://www.calltechcare.com/sprinkler-repair-surfside)
+- [Tamiami](https://www.calltechcare.com/sprinkler-repair-tamiami)
+- [West Park](https://www.calltechcare.com/sprinkler-repair-west-park)
+- [Weston](https://www.calltechcare.com/sprinkler-repair-weston)
