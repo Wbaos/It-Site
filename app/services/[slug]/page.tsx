@@ -628,9 +628,6 @@ export default async function ServicePage({
                 "@type": "Place",
                 name: "Miami, Fort Lauderdale, Broward County",
               },
-              provider: {
-                "@id": "https://www.calltechcare.com/#business",
-              },
             }
           : null;
 
@@ -801,10 +798,6 @@ export default async function ServicePage({
         areaServed: {
           "@type": "Place",
           name: "Miami, Fort Lauderdale, Broward County",
-        },
-
-        provider: {
-          "@id": "https://www.calltechcare.com/#business",
         },
       };
 

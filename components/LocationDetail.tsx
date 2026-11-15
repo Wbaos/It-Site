@@ -130,7 +130,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
         "@type": "ListItem",
         position: 1,
         name: isSpanish ? "Página Principal" : "Home",
-        item: isSpanish ? "https://www.calltechcare.com/es/" : "https://www.calltechcare.com",
+        item: isSpanish ? "https://www.calltechcare.com/es" : "https://www.calltechcare.com",
       },
       {
         "@type": "ListItem",
@@ -176,9 +176,6 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
     areaServed: {
       "@type": "City",
       name: `${location.city}, ${location.state}`,
-    },
-    provider: {
-      "@id": "https://www.calltechcare.com/#business",
     },
   };
   const isPrimaryOffice = location.slug?.current === "miami";
@@ -306,7 +303,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                     return (
                       <Link 
                         key={index} 
-                        href={service.slug ? (isSpanish ? `/es/${SERVICE_SLUG_ES[service.slug] || service.slug}` : `/services/${service.slug}`) : (isSpanish ? "/es/" : '/services')}
+                        href={service.slug ? (isSpanish ? `/es/${SERVICE_SLUG_ES[service.slug] || service.slug}` : `/services/${service.slug}`) : (isSpanish ? "/es" : '/services')}
                         className="location-service-item"
                       >
                         <div className="location-service-content">
