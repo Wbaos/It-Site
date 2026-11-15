@@ -17411,6 +17411,60 @@ details[open] .faq-toggle {
   transition: all 0.3s ease;
 }
 
+.services-list-about {
+  padding: 0 1rem 4rem;
+  background: #060b1d;
+}
+
+.services-list-about-container {
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+.services-list-about h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 1.25rem;
+}
+
+.services-list-about h3 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: white;
+  margin: 2rem 0 0.75rem;
+}
+
+.services-list-about h4 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: white;
+  margin: 1.25rem 0 0.25rem;
+}
+
+.services-list-about p {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: #d1d5db;
+  margin: 0 0 1rem;
+}
+
+.services-list-about ol {
+  margin: 0 0 1rem;
+  padding-left: 1.5rem;
+  color: #d1d5db;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.services-list-about ol li {
+  margin-bottom: 0.5rem;
+}
+
+.services-list-about a {
+  color: var(--brand-teal);
+}
+
 
 /* Responsive Design */
 @media (min-width: 640px) {

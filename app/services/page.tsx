@@ -320,6 +320,104 @@ export default async function ServicesPage() {
 
         </div>
       </section>
+
+      {/* About our services */}
+      <section className="services-list-about">
+        <div className="services-list-about-container">
+          <h2>
+            Sprinkler Repair, Irrigation and Security Cameras in Miami and
+            Broward
+          </h2>
+
+          <p>
+            CallTechCare repairs and installs sprinkler systems across
+            Miami-Dade and Broward County. We fix leaks, broken heads, bad
+            coverage, faulty valves and zones that do not turn on. We also
+            install new sprinkler systems, drip irrigation, backflow devices,
+            new irrigation wells, WiFi controllers, timers and rain sensors.
+            We install new pumps. And we install wireless security cameras
+            for homes and businesses. Every job is done on site, at your
+            property.
+          </p>
+
+          <p>
+            A sprinkler system is only good if it waters evenly. A head that
+            sprays the driveway wastes water. A zone that stays dry kills the
+            grass. A leak under the lawn can run for weeks before anyone sees
+            it. That is what we look for on every visit: the heads, the
+            valves, the pipes, the pressure and the controller. We find the
+            problem, we fix it, and we test the system before we leave.
+          </p>
+
+          <h3>How a visit works</h3>
+
+          <ol>
+            <li>
+              Call <a href="tel:+17863662729">(786) 366-2729</a> or send us
+              a message. Tell us your name, your phone number and what you
+              need.
+            </li>
+            <li>
+              We call you back to set up the visit. You do not pick a day or
+              time — we coordinate it with you.
+            </li>
+            <li>
+              We come to your property, inspect the system and give you the
+              price on site. The inspection is free.
+            </li>
+            <li>
+              Most repairs are done the same day, within business hours. The
+              work carries a 1-year warranty when we do the work and provide
+              the materials.
+            </li>
+          </ol>
+
+          <h3>Where we work</h3>
+
+          <p>
+            We serve Miami-Dade and Broward County — 32 cities in all. That
+            includes Miami, Fort Lauderdale, Weston, Coral Springs, Miramar,
+            Pembroke Pines, Sunrise, Davie, Doral, Coral Gables and
+            Plantation. See the full list on our{" "}
+            <Link href="/locations">service areas page</Link>.
+          </p>
+
+          <h3>Common questions</h3>
+
+          <h4>Do you charge for the inspection?</h4>
+          <p>
+            No. The inspection is free. We come to your property, look at
+            the system and tell you what it needs and what it costs. There is
+            no charge for the visit itself.
+          </p>
+
+          <h4>How fast can you come?</h4>
+          <p>
+            Most visits happen the same day, within business hours, when the
+            schedule allows. Call us first and we will tell you the earliest
+            time we can be there.
+          </p>
+
+          <h4>Do you repair pumps and timers?</h4>
+          <p>
+            We install new pumps and timers — replacement and upgrades. We
+            repair sprinkler systems: heads, valves, pipes, leaks and zones.
+          </p>
+
+          <h4>Do you work with HOAs and property managers?</h4>
+          <p>
+            Yes. We work with HOAs, property managers and short-term
+            rentals. We offer a free irrigation audit first, and a recurring
+            maintenance plan with monthly wet checks and a written report.
+          </p>
+
+          <p>
+            Call <a href="tel:+17863662729">(786) 366-2729</a> or send us a
+            quick message. Tell us what you need and we will call you back
+            to set up the visit.
+          </p>
+        </div>
+      </section>
     </>
   );
 }
