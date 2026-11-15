@@ -23,6 +23,7 @@ export const SERVICE_ES_PATHS: Record<string, string> = {
     "/es/instalacion-de-pozos-nuevos-de-irrigacion",
   "drip-irrigation-installation": "/es/instalacion-de-riego-por-goteo",
   "backflow-testing": "/es/prueba-de-backflow",
+  "sprinkler-head-replacement": "/es/reemplazo-de-cabezales-de-sprinklers",
   "home-security": "/es/seguridad-del-hogar",
 };
 
