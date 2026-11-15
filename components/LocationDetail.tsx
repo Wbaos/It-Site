@@ -17,6 +17,8 @@ const SERVICE_SLUG_ES: Record<string, string> = {
   "commercial-irrigation-hoa-services": "riego-comercial-y-para-hoa",
   "new-irrigation-well-installation": "instalacion-de-pozos-nuevos-de-irrigacion",
   "sprinkler-maintenance-plan": "plan-de-mantenimiento-de-sprinklers",
+  "drip-irrigation-installation": "instalacion-de-riego-por-goteo",
+  "backflow-testing": "prueba-de-backflow",
   "emergency-sprinkler-repair": "reparacion-de-emergencia-de-sprinklers",
   "home-security": "seguridad-del-hogar",
 };
