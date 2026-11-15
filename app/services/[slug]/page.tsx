@@ -236,20 +236,14 @@ export default async function ServicePage({
     locale === "es"
       ? `https://www.calltechcare.com${serviceHref(slug, "es")}`
       : `https://www.calltechcare.com/services/${slug}`;
-  const speakableWebPageSchema = {
+  // Plain WebPage block (no speakable): Google only supports the
+  // speakable feature for news content, and these service pages are
+  // not news — the SpeakableSpecification markup was flagged invalid
+  // in the SEMrush Site Audit, so it was removed 15 Nov 2026.
+  const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     url: pageUrl,
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: [
-        ".service-detail h1",
-        ".service-description",
-        ".included-box",
-        ".styled-about-box",
-        ".styled-features-box",
-      ],
-    },
   };
 
   const serviceAreasRaw = await sanity.fetch<
@@ -845,7 +839,7 @@ export default async function ServicePage({
   <script
     type="application/ld+json"
     dangerouslySetInnerHTML={{
-      __html: JSON.stringify(speakableWebPageSchema),
+      __html: JSON.stringify(webPageSchema),
     }}
   />
 
@@ -1257,7 +1251,7 @@ export default async function ServicePage({
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify(speakableWebPageSchema),
+        __html: JSON.stringify(webPageSchema),
       }}
     />
 
