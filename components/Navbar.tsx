@@ -97,15 +97,15 @@ export default function Navbar({
   // falls back to the Spanish home (never a broken page, and never a
   // specific service page that would mislead). Spanish pages link
   // back to their English twin, or to the English home when there is none.
-  // Twin pairs: "/" <-> "/es/", the thirty-one city page pairs
+  // Twin pairs: "/" <-> "/es", the thirty-one city page pairs
   // ("/sprinkler-repair-{city}" <-> "/es/reparacion-de-sprinklers-{city}",
   // hub Miami included), the services hub pair ("/services" <->
   // "/es/servicios"), the eleven service page pairs (plus the two
   // group pages), the ten blog pairs ("/blog" <-> "/es/blog" and nine posts),
   // "/contact" <-> "/es/contacto".
-  const ES_HUB_HREF = "/es/";
+  const ES_HUB_HREF = "/es";
   const EN_TO_ES: Record<string, string> = {
-    "/": "/es/",
+    "/": "/es",
     "/sprinkler-repair-sunrise": "/es/reparacion-de-sprinklers-sunrise",
     "/sprinkler-repair-fort-lauderdale": "/es/reparacion-de-sprinklers-fort-lauderdale",
     "/sprinkler-repair-dania-beach": "/es/reparacion-de-sprinklers-dania-beach",
@@ -688,7 +688,7 @@ export default function Navbar({
     icon: LucideIcon;
     label: string;
   }[] = [
-    { href: isSpanishPage ? "/es/" : "/", icon: Home, label: isSpanishPage ? "Inicio" : "Home" },
+    { href: isSpanishPage ? "/es" : "/", icon: Home, label: isSpanishPage ? "Inicio" : "Home" },
     { action: "services", icon: LayoutGrid, label: isSpanishPage ? "Servicios" : "Services" },
     { href: isSpanishPage ? "/es/servicios" : "/services", icon: Layers, label: isSpanishPage ? "Todos los servicios" : "All Services" },
     { href: isSpanishPage ? "/es/contacto" : "/contact", icon: Mail, label: isSpanishPage ? "Contacto" : "Contact" },
@@ -749,7 +749,7 @@ export default function Navbar({
       <header className="site-header">
         <div className="site-container-var nav-grid">
           {/* BRAND: stays in the current language (Spanish home when in Spanish mode) */}
-          <Link href={isSpanishPage ? "/es/" : "/"} className="brand" onClick={closeAllMenus}>
+          <Link href={isSpanishPage ? "/es" : "/"} className="brand" onClick={closeAllMenus}>
             {/* Brand mark: the owner's logo mark (fist + hose) from the
                 footer logo file, in place of the old headphone glyph
                 (9 Nov 2026). The wordmark stays as text next to it. */}
