@@ -627,10 +627,7 @@ export default async function ServicePage({
                 name: "Miami, Fort Lauderdale, Broward County",
               },
               provider: {
-                "@type": "LocalBusiness",
                 "@id": "https://www.calltechcare.com/#business",
-                name: "CallTechCare",
-                url: "https://www.calltechcare.com",
               },
             }
           : null;
@@ -805,10 +802,7 @@ export default async function ServicePage({
         },
 
         provider: {
-          "@type": "LocalBusiness",
           "@id": "https://www.calltechcare.com/#business",
-          name: "CallTechCare",
-          url: "https://www.calltechcare.com",
         },
       };
 

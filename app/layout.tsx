@@ -153,6 +153,15 @@ export default async function RootLayout({
     "@id": "https://www.calltechcare.com/#business",
     name: "CallTechCare",
     url: "https://www.calltechcare.com",
+    // City-level address only (no street, ZIP or geo): the business is
+    // service-area only (R13). Google requires an address on
+    // LocalBusiness, and Miami, FL is already public everywhere.
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Miami",
+      addressRegion: "FL",
+      addressCountry: "US",
+    },
     image: "https://www.calltechcare.com/logo-og.png",
     logo: {
       "@type": "ImageObject",
@@ -225,38 +234,9 @@ export default async function RootLayout({
     provider: {
       "@id": "https://www.calltechcare.com/#business",
     },
-    areaServed: [
-      { "@type": "City", name: "Sunrise" },
-      { "@type": "City", name: "Fort Lauderdale" },
-      { "@type": "City", name: "Dania Beach" },
-      { "@type": "City", name: "Weston" },
-      { "@type": "City", name: "Davie" },
-      { "@type": "City", name: "Southwest Ranches" },
-      { "@type": "City", name: "Hollywood" },
-      { "@type": "City", name: "West Park" },
-      { "@type": "City", name: "Pembroke Pines" },
-      { "@type": "City", name: "Miramar" },
-      { "@type": "City", name: "Miami Gardens" },
-      { "@type": "City", name: "Miami Lakes" },
-      { "@type": "City", name: "Country Club" },
-      { "@type": "City", name: "Aventura" },
-      { "@type": "City", name: "Sunny Isles Beach" },
-      { "@type": "City", name: "North Miami" },
-      { "@type": "City", name: "Surfside" },
-      { "@type": "City", name: "North Bay Village" },
-      { "@type": "City", name: "Miami Beach" },
-      { "@type": "City", name: "Hialeah" },
-      { "@type": "City", name: "Doral" },
-      { "@type": "City", name: "Fontainebleau" },
-      { "@type": "City", name: "Tamiami" },
-      { "@type": "City", name: "Miami" },
-      { "@type": "City", name: "Coral Gables" },
-      { "@type": "City", name: "Key Biscayne" },
-      { "@type": "City", name: "Kendall" },
-      { "@type": "City", name: "Kendale Lakes" },
-      { "@type": "City", name: "Country Walk" },
-      { "@type": "City", name: "Cutler Bay" }
-    ],
+    // Generated from the same footerCities list as the LocalBusiness
+    // block above (31 cities incl. Plantation), never hardcoded.
+    areaServed: footerCities.map((c) => ({ "@type": "City", name: c.name })),
   };
 
   const organizationJsonLd = {
