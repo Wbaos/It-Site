@@ -87,6 +87,8 @@ const SPRINKLER_SERVICE_LINKS = [
   { slug: "wifi-sprinkler-controller-upgrade", title: "WiFi Sprinkler Controller Upgrade" },
   { slug: "new-irrigation-installation", title: "New Irrigation Installation" },
   { slug: "sprinkler-maintenance-plan", title: "Sprinkler Maintenance Plan" },
+  { slug: "drip-irrigation-installation", title: "Drip Irrigation Installation" },
+  { slug: "backflow-testing", title: "Backflow Testing" },
   { slug: "commercial-irrigation-hoa-services", title: "Commercial Irrigation & HOA Services" },
 ];
 
@@ -483,7 +485,7 @@ export default async function ServicePage({
   > = {};
   if (service) {
     const related = await sanity.fetch(
-      `*[_type == "service" && slug.current in ["sprinkler-repair-and-installation", "emergency-sprinkler-repair", "sprinkler-leak-repair", "sprinkler-valve-repair", "sprinkler-timer-installation", "sprinkler-pump-replacement", "new-irrigation-well-installation", "rain-sensor-installation", "wifi-sprinkler-controller-upgrade", "new-irrigation-installation", "wireless-camera-installation", "sprinkler-maintenance-plan", "commercial-irrigation-hoa-services"]]{ "slug": slug.current, title, titleEs, description, descriptionEs }`
+      `*[_type == "service" && slug.current in ["sprinkler-repair-and-installation", "emergency-sprinkler-repair", "sprinkler-leak-repair", "sprinkler-valve-repair", "sprinkler-timer-installation", "sprinkler-pump-replacement", "new-irrigation-well-installation", "rain-sensor-installation", "wifi-sprinkler-controller-upgrade", "new-irrigation-installation", "wireless-camera-installation", "sprinkler-maintenance-plan", "drip-irrigation-installation", "backflow-testing", "commercial-irrigation-hoa-services"]]{ "slug": slug.current, title, titleEs, description, descriptionEs }`
     );
     for (const t of (related as any[]) ?? []) {
       if (t?.slug) relatedServiceInfo[t.slug] = t;
