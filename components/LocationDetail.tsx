@@ -19,7 +19,6 @@ const SERVICE_SLUG_ES: Record<string, string> = {
   "sprinkler-maintenance-plan": "plan-de-mantenimiento-de-sprinklers",
   "drip-irrigation-installation": "instalacion-de-riego-por-goteo",
   "backflow-testing": "prueba-de-backflow",
-  "sprinkler-head-replacement": "reemplazo-de-cabezales-de-sprinklers",
   "emergency-sprinkler-repair": "reparacion-de-emergencia-de-sprinklers",
   "home-security": "seguridad-del-hogar",
 };
@@ -178,6 +177,9 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
     areaServed: {
       "@type": "City",
       name: `${location.city}, ${location.state}`,
+      // ZIPs stay machine-readable only (same shape as the city pages):
+      // the visible "ZIP Codes Served" chips were removed 15 Nov 2026.
+      postalCode: location.zipCodes ?? [],
     },
   };
   const isPrimaryOffice = location.slug?.current === "miami";
@@ -373,20 +375,6 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                     ))}
                   </div>
                 </div>
-                {location.zipCodes && location.zipCodes.length > 0 && (
-                  <div className="location-coverage-wrapper">
-                    <p className="location-zip-codes-label">
-                      {isSpanish ? "Códigos Postales Atendidos:" : "ZIP Codes Served:"}
-                    </p>
-                    <div className="location-zip-codes">
-                      {location.zipCodes.map((zip, index) => (
-                        <span key={index} className="location-zip-code">
-                          {zip}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             )}
 
