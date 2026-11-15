@@ -538,7 +538,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                   ¿Buscas un servicio confiable en {location.city}? CallTechCare es un proveedor local de confianza para el servicio de sprinklers e irrigación y la instalación de cámaras de seguridad. Nuestro equipo en {location.city} está aquí para ayudarte.
                 </p>
                 <p>
-                  Entendemos las necesidades únicas de los residentes y negocios de {location.city}. Por eso ofrecemos programación flexible y 1 año de garantía cuando CallTechCare hace el trabajo y provee los materiales. Desde reparaciones de sprinklers hasta instalaciones de sistemas nuevos y configuraciones de cámaras de seguridad, tenemos la experiencia para manejar una amplia gama de proyectos.
+                  Entendemos las necesidades únicas de los residentes y negocios de {location.city}. Por eso ofrecemos programación flexible y 1 año de garantía de mano de obra cuando CallTechCare hace el trabajo y provee los materiales. Desde reparaciones de sprinklers hasta instalaciones de sistemas nuevos y configuraciones de cámaras de seguridad, tenemos la experiencia para manejar una amplia gama de proyectos.
                 </p>
                 <p>
                   <strong>
@@ -551,7 +551,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                   Looking for reliable service in {location.city}? CallTechCare is a trusted local provider for sprinkler and irrigation service and security camera installation. Our team in {location.city} is here to help.
                 </p>
                 <p>
-                  We understand the unique needs of {location.city} residents and businesses. That is why we offer flexible scheduling and a 1-year warranty when CallTechCare performs the work and provides the materials. From sprinkler repairs to new system installations and security camera setups, we have the experience to handle a wide range of projects.
+                  We understand the unique needs of {location.city} residents and businesses. That is why we offer flexible scheduling and a 1-year workmanship warranty when CallTechCare performs the work and provides the materials. From sprinkler repairs to new system installations and security camera setups, we have the experience to handle a wide range of projects.
                 </p>
                 <p>
                   <strong>

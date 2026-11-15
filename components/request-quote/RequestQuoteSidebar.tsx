@@ -14,7 +14,7 @@ const BENEFITS: Array<{ title: string; desc: string }> = [
   { title: "Sin obligación", desc: "Inspección gratis sin compromiso" },
   { title: "Respuesta rápida", desc: "Recibe tu cotización en menos de dos horas" },
   { title: "Técnicos expertos", desc: "Técnicos con experiencia, a domicilio en tu casa" },
-  { title: "Garantía de 1 año", desc: "1 año de garantía cuando CallTechCare hace el trabajo y provee los materiales" },
+  { title: "Garantía de Mano de Obra de 1 Año", desc: "1 año de garantía de mano de obra cuando CallTechCare hace el trabajo y provee los materiales" },
     { title: "Horario flexible", desc: "Servicio el mismo día dentro del horario de servicio" },
   { title: "Servicio local", desc: "Atendemos Miami-Dade y Broward" },
 ];

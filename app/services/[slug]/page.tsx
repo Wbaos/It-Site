@@ -893,8 +893,8 @@ export default async function ServicePage({
                       2026-11-10): the category page had no warranty mention. */}
                   <p className="category-warranty">
                     {isSpanish
-                      ? "Garantía de 1 año cuando realizamos el trabajo y proveemos los materiales."
-                      : "1-year warranty when we perform the work and provide the materials."}
+                      ? "Garantía de mano de obra de 1 año cuando realizamos el trabajo y proveemos los materiales."
+                      : "1-year workmanship warranty when we perform the work and provide the materials."}
                   </p>
                 </div>
               </div>
@@ -1314,8 +1314,8 @@ export default async function ServicePage({
             {displayWarranty && (
               <p className="service-warranty">
                 {isSpanish
-                  ? `Garantía: ${displayWarranty} cuando CallTechCare hace el trabajo y provee los materiales.`
-                  : `Warranty: ${displayWarranty} when CallTechCare performs the work and provides the materials.`}
+                  ? `Garantía: ${displayWarranty} de garantía de mano de obra cuando CallTechCare hace el trabajo y provee los materiales.`
+                  : `Warranty: ${displayWarranty} workmanship warranty when CallTechCare performs the work and provides the materials.`}
               </p>
             )}
 

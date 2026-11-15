@@ -38,8 +38,8 @@ export default function SEOIntro({ locale = "en", doc }: { locale?: "en" | "es";
       : "With same-day availability in many Miami and Broward areas, CallTechCare makes scheduling simple and stress-free. Call now for sprinkler repair or send us a quick message—we’ll confirm details and book the next available visit.");
   const p4 = pick(doc?.seoIntroP4, doc?.seoIntroP4Es, isSpanish) ||
     (isSpanish
-      ? "Todos los trabajos tienen 1 año de garantía cuando CallTechCare hace el trabajo y provee los materiales. Y si tienes una emergencia de sprinklers, como una fuga grande o una zona que no apaga, te atendemos el mismo día dentro del horario de servicio (lunes a sábado de 8am a 7pm, domingo de 9am a 6pm)."
-      : "Every job carries a 1-year warranty when CallTechCare performs the work and provides the materials. And if you have a sprinkler emergency, like a major leak or a zone that won’t turn off, we’ll prioritize same-day service during business hours (Monday–Saturday 8am–7pm, Sunday 9am–6pm).");
+      ? "Todos los trabajos tienen 1 año de garantía de mano de obra cuando CallTechCare hace el trabajo y provee los materiales. Y si tienes una emergencia de sprinklers, como una fuga grande o una zona que no apaga, te atendemos el mismo día dentro del horario de servicio (lunes a sábado de 8am a 7pm, domingo de 9am a 6pm)."
+      : "Every job carries a 1-year workmanship warranty when CallTechCare performs the work and provides the materials. And if you have a sprinkler emergency, like a major leak or a zone that won’t turn off, we’ll prioritize same-day service during business hours (Monday–Saturday 8am–7pm, Sunday 9am–6pm).");
   const linkHref = isSpanish ? cityHref("miami", "es") : "/sprinkler-repair-miami";
   return (
     <section className="seo-intro-section">

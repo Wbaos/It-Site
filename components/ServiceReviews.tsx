@@ -56,9 +56,8 @@ export default function ServiceReviews({
       setLoading(false);
     }
 
-    // TV-mounting pages show the live Google reviews from the Business
-    // Profile Reviews API, served by /api/google-reviews (see
-    // lib/google-reviews.ts). Dates are the relative strings converted
+    // TV-mounting pages show the Google reviews from the durable Sanity
+    // copy, served by /api/google-reviews (see lib/google-reviews.ts). Dates are the relative strings converted
     // from each review's createTime — in the page locale (see the
     // ?locale= parameter) — passed through as-is, never converted or
     // invented. Entries with a name but no text still render (name +

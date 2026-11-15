@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: doc?.metaTitle ?? "About CallTechCare | Sprinkler Repair in Miami & Broward",
     description:
       doc?.metaDescription ??
-      "Learn about CallTechCare, Miami and Broward's sprinkler repair and irrigation company. Same-day service within business hours, free inspection, and a 1-year warranty when CallTechCare performs the work and provides the materials.",
+      "Learn about CallTechCare, Miami and Broward's sprinkler repair and irrigation company. Same-day service within business hours, free inspection, and a 1-year workmanship warranty when CallTechCare performs the work and provides the materials.",
     alternates: {
       canonical: "https://www.calltechcare.com/about",
       languages: {

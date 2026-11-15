@@ -121,7 +121,7 @@ export default function LocationsClient({
           {/* 1-year warranty with the exact condition (audit fix 2026-11-10):
               the locations page had no warranty mention. */}
           <p className="locations-hero-warranty">
-            {isSpanish ? "Garantía de 1 año cuando realizamos el trabajo y proveemos los materiales." : "1-year warranty when we perform the work and provide the materials."}
+            {isSpanish ? "Garantía de mano de obra de 1 año cuando realizamos el trabajo y proveemos los materiales." : "1-year workmanship warranty when we perform the work and provide the materials."}
           </p>
         </div>
       </section>
