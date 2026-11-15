@@ -325,6 +325,111 @@ export default async function ServicesPageEs() {
 
         </div>
       </section>
+
+      {/* Sobre nuestros servicios */}
+      <section className="services-list-about">
+        <div className="services-list-about-container">
+          <h2>
+            Reparación de Sprinklers, Irrigación y Cámaras de Seguridad en
+            Miami y Broward
+          </h2>
+
+          <p>
+            CallTechCare repara e instala sistemas de sprinklers en
+            Miami-Dade y Broward. Arreglamos fugas, cabezales rotos, mala
+            cobertura, válvulas que fallan y zonas que no prenden. También
+            instalamos sistemas nuevos de sprinklers, riego por goteo,
+            dispositivos de backflow, pozos nuevos de irrigación,
+            controladores WiFi, temporizadores y sensores de lluvia.
+            Instalamos bombas nuevas. E instalamos cámaras inalámbricas de
+            seguridad para casas y negocios. Todo el trabajo se hace en tu
+            propiedad.
+          </p>
+
+          <p>
+            Un sistema de sprinklers solo sirve si riega parejo. Un cabezal
+            que riega el driveway bota el agua. Una zona que se queda seca
+            mata la grama. Una fuga bajo el césped puede correr semanas antes
+            de que alguien la vea. Eso es lo que revisamos en cada visita:
+            los cabezales, las válvulas, la tubería, la presión y el
+            controlador. Encontramos el problema, lo arreglamos y probamos el
+            sistema antes de irnos.
+          </p>
+
+          <h3>Cómo funciona una visita</h3>
+
+          <ol>
+            <li>
+              Llama al <a href="tel:+17863662729">(786) 366-2729</a> o
+              envíanos un mensaje. Dinos tu nombre, tu teléfono y qué
+              necesitas.
+            </li>
+            <li>
+              Te llamamos para coordinar la visita. Tú no escoges el día ni
+              la hora — lo coordinamos contigo.
+            </li>
+            <li>
+              Vamos a tu propiedad, inspeccionamos el sistema y te damos el
+              precio ahí mismo. La inspección es gratis.
+            </li>
+            <li>
+              La mayoría de las reparaciones se hacen el mismo día, dentro
+              del horario. El trabajo tiene garantía de 1 año cuando hacemos
+              el trabajo y proveemos los materiales.
+            </li>
+          </ol>
+
+          <h3>Dónde trabajamos</h3>
+
+          <p>
+            Atendemos Miami-Dade y Broward — 32 ciudades en total. Eso
+            incluye Miami, Fort Lauderdale, Weston, Coral Springs, Miramar,
+            Pembroke Pines, Sunrise, Davie, Doral, Coral Gables y Plantation.
+            Mira la lista completa en nuestra{" "}
+            <Link href="/es/areas-de-servicio">
+              página de áreas de servicio
+            </Link>
+            .
+          </p>
+
+          <h3>Preguntas frecuentes</h3>
+
+          <h4>¿Cobran por la inspección?</h4>
+          <p>
+            No. La inspección es gratis. Vamos a tu propiedad, miramos el
+            sistema y te decimos qué necesita y cuánto cuesta. La visita en
+            sí no tiene costo.
+          </p>
+
+          <h4>¿Qué tan rápido pueden venir?</h4>
+          <p>
+            La mayoría de las visitas son el mismo día, dentro del horario,
+            cuando la agenda lo permite. Llámanos primero y te decimos a qué
+            hora podemos estar ahí.
+          </p>
+
+          <h4>¿Reparan bombas y temporizadores?</h4>
+          <p>
+            Instalamos bombas y temporizadores nuevos — reemplazo y mejoras.
+            Reparamos sistemas de sprinklers: cabezales, válvulas, tubería,
+            fugas y zonas.
+          </p>
+
+          <h4>¿Trabajan con HOAs y administradores de propiedades?</h4>
+          <p>
+            Sí. Trabajamos con HOAs, administradores de propiedades y
+            alquileres de corto plazo. Ofrecemos una auditoría de irrigación
+            gratis primero, y un plan de mantenimiento recurrente con
+            revisiones mensuales y un reporte escrito.
+          </p>
+
+          <p>
+            Llama al <a href="tel:+17863662729">(786) 366-2729</a> o
+            envíanos un mensaje rápido. Dinos qué necesitas y te llamamos
+            para coordinar la visita.
+          </p>
+        </div>
+      </section>
     </>
   );
 }
