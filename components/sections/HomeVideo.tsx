@@ -16,17 +16,17 @@ export default function HomeVideo({ locale = "en", doc }: { locale?: "en" | "es"
       ? "Sistema de sprinklers optimizado para una cobertura completa y uniforme en Fort Lauderdale."
       : "Optimized sprinkler system for full, even coverage in Fort Lauderdale.");
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
   // The poster (65 KB) is deferred until the video is about to scroll
   // into view, so it never downloads on the initial page load. Same URL
   // as before — no quality change — it is set 600px before the section
   // enters the viewport, so it is already in place when the visitor
   // reaches it. The VideoObject schema keeps using the constant directly.
-  // The video download starts at the same moment (9 Nov 2026): with
+  // The video itself preloads fully on page load (15 Nov 2026): with
   // preload="none" the 5 MB file only started downloading once playback
   // was requested, so on a normal connection it stalled while catching
-  // up and looked slow/choppy. Starting it 600px early keeps the
-  // no-download-on-initial-load behaviour and lets playback be smooth.
+  // up and looked slow/choppy. preload="auto" lets playback start
+  // smoothly. There is no custom play button anymore — the visitor
+  // unmutes with the speaker icon in the native controls.
   const [poster, setPoster] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -36,8 +36,6 @@ export default function HomeVideo({ locale = "en", doc }: { locale?: "en" | "es"
       (entries) => {
         if (entries[0]?.isIntersecting) {
           setPoster(HOME_VIDEO_POSTER_URL);
-          video.preload = "auto";
-          video.load();
           observer.disconnect();
         }
       },
@@ -47,8 +45,7 @@ export default function HomeVideo({ locale = "en", doc }: { locale?: "en" | "es"
     return () => observer.disconnect();
   }, []);
 
-  // Autoplay muted only once the section scrolls into view, so the video
-  // never downloads on the initial page load.
+  // Autoplay muted only once the section scrolls into view.
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -68,13 +65,6 @@ export default function HomeVideo({ locale = "en", doc }: { locale?: "en" | "es"
     return () => observer.disconnect();
   }, []);
 
-  const handlePlayClick = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.muted = false;
-    video.play().catch(() => {});
-  };
-
   return (
     <section className="section home-video" aria-labelledby="home-video-title">
       <div className="site-container">
@@ -93,25 +83,8 @@ export default function HomeVideo({ locale = "en", doc }: { locale?: "en" | "es"
             loop
             playsInline
             controls
-            preload="none"
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
+            preload="auto"
           />
-          {!isPlaying && (
-            <button
-              type="button"
-              className="home-video-play"
-              onClick={handlePlayClick}
-              aria-label={isSpanish ? "Reproducir video" : "Play video"}
-            >
-              <span className="home-video-play-icon" aria-hidden="true">
-                ▶
-              </span>
-              <span className="home-video-play-label">
-                {isSpanish ? "Ver video" : "Watch video"}
-              </span>
-            </button>
-          )}
         </div>
       </div>
     </section>
