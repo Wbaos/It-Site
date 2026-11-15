@@ -204,11 +204,6 @@ export default async function RootLayout({
       "https://www.facebook.com/CallTechCare",
       "https://www.instagram.com/CallTechCare",
     ],
-    serviceType: [
-      "Sprinkler System Repair",
-      "Irrigation System Installation",
-      "Security Camera Installation",
-    ],
     paymentAccepted: ["Cash", "Check", "Credit Card", "Zelle"],
   };
   
