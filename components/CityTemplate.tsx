@@ -466,6 +466,12 @@ export default async function CityTemplate({ city, locale }: { city: City; local
   const heroBadge = pick(city.heroBadge, city.heroBadgeEs, locale);
   const seoIntroTitle = pick(city.seoIntroTitle, city.seoIntroTitleEs, locale);
   const introP1 = substitutePhonePlaceholders(pick(city.introP1, city.introP1Es, locale), settings);
+  // The fixed "Common sprinkler problems we fix" intro block duplicates the
+  // extraSections content on pages that have it (Miami), so hide it there.
+  // Other city pages keep the block unchanged.
+  const hasExtraSections = (city.extraSections ?? []).some(
+    (sec) => sec.heading || sec.intro || sec.items?.length || sec.itemsEs?.length,
+  );
   const areaSegments = isEs && city.areaSegmentsEs?.length ? city.areaSegmentsEs : city.areaSegments ?? [];
   const faqs = composeFaqs(city, locale, settings);
   const variant = city.highlightsVariant ?? "";
@@ -598,9 +604,13 @@ export default async function CityTemplate({ city, locale }: { city: City; local
             {t.detailsText}
           </Link>
           <p>{GOAL_P[locale]}</p>
-          <h3 className="spr-landing-h3">{t.commonH3}</h3>
-          <p>{COMMON_P[locale]}</p>
-          <p>{NOT_SURE_P[locale]}</p>
+          {!hasExtraSections ? (
+            <>
+              <h3 className="spr-landing-h3">{t.commonH3}</h3>
+              <p>{COMMON_P[locale]}</p>
+              <p>{NOT_SURE_P[locale]}</p>
+            </>
+          ) : null}
           <p>
             {t.cameraPrefix}
             <Link href={cameraHref}>{t.cameraLinkText}</Link>
