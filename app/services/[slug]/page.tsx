@@ -73,6 +73,7 @@ const SPRINKLER_CITY_LINKS = [
   { name: "Country Walk", href: "/sprinkler-repair-country-walk" },
   { name: "Cutler Bay", href: "/sprinkler-repair-cutler-bay" },
   { name: "Plantation", href: "/sprinkler-repair-plantation" },
+  { name: "Coral Springs", href: "/sprinkler-repair-coral-springs" },
 ];
 
 const SPRINKLER_SERVICE_LINKS = [

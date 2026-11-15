@@ -102,7 +102,7 @@ export type CityListItem = {
   _updatedAt?: string;
 };
 
-// Canonical order (0 = Sunrise … 29 = Cutler Bay, 30 = Plantation). Used only as a fallback
+// Canonical order (0 = Sunrise … 29 = Cutler Bay, 30 = Plantation, 31 = Coral Springs). Used only as a fallback
 // when the Sanity fetch comes back empty, so pages never 404 on a blip.
 export const FALLBACK_CITIES: { name: string; slug: string; esSlug: string }[] = [
   { name: "Sunrise", slug: "sunrise", esSlug: "reparacion-de-sprinklers-sunrise" },
@@ -136,6 +136,7 @@ export const FALLBACK_CITIES: { name: string; slug: string; esSlug: string }[] =
   { name: "Country Walk", slug: "country-walk", esSlug: "reparacion-de-sprinklers-country-walk" },
   { name: "Cutler Bay", slug: "cutler-bay", esSlug: "reparacion-de-sprinklers-cutler-bay" },
   { name: "Plantation", slug: "plantation", esSlug: "reparacion-de-sprinklers-plantation" },
+  { name: "Coral Springs", slug: "coral-springs", esSlug: "reparacion-de-sprinklers-coral-springs" },
 ];
 
 export async function getAllCities(): Promise<CityListItem[]> {
