@@ -44,7 +44,6 @@ import {
   CheckCircle2,
   ArrowLeft,
   ArrowUpRight,
-  Droplets,
   Clock,
   Monitor,
   Home,
@@ -354,61 +353,58 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
             )}
 
             {/* {isSpanish ? "Área de Cobertura del Servicio" : "Service Coverage Area"} */}
-            {location.neighborhoods && location.neighborhoods.length > 0 && (
+            {((location.neighborhoods && location.neighborhoods.length > 0) || sprinklerCityLinks.length > 0) && (
               <div className="location-section-card">
                 <h2 className="location-section-title">
                   {isSpanish ? "Área de Cobertura del Servicio" : "Service Coverage Area"}
                 </h2>
-                <div className="location-coverage-text">
-                  <MapPin />
-                  <p className="location-section-text">
-                    {isSpanish ? `Servimos con orgullo a ${location.city} y áreas cercanas dentro de un radio de ${location.serviceRadius?.miles || 45} millas.` : `We proudly serve ${location.city} and surrounding areas within a ${location.serviceRadius?.miles || 45}-mile radius.`}
-                    {location.serviceRadius?.population && (
-                      <>
-                        {isSpanish ? ` Atendemos a una población de aproximadamente ${location.serviceRadius.population} residentes con servicios profesionales de sprinklers, irrigación y cámaras de seguridad.` : ` We serve a population of approximately ${location.serviceRadius.population} residents with professional sprinkler, irrigation and security camera services.`}
-                      </>
-                    )}
-                  </p>
-                </div>
+                {location.neighborhoods && location.neighborhoods.length > 0 && (
+                  <>
+                    <div className="location-coverage-text">
+                      <MapPin />
+                      <p className="location-section-text">
+                        {isSpanish ? `Servimos con orgullo a ${location.city} y áreas cercanas dentro de un radio de ${location.serviceRadius?.miles || 45} millas.` : `We proudly serve ${location.city} and surrounding areas within a ${location.serviceRadius?.miles || 45}-mile radius.`}
+                        {location.serviceRadius?.population && (
+                          <>
+                            {isSpanish ? ` Atendemos a una población de aproximadamente ${location.serviceRadius.population} residentes con servicios profesionales de sprinklers, irrigación y cámaras de seguridad.` : ` We serve a population of approximately ${location.serviceRadius.population} residents with professional sprinkler, irrigation and security camera services.`}
+                          </>
+                        )}
+                      </p>
+                    </div>
 
-                <div className="location-coverage-wrapper">
-                  <p className="location-zip-codes-label">
-                    {isSpanish ? "Áreas Atendidas:" : "Areas Served:"}
-                  </p>
-                  <div className="location-zip-codes">
-                    {location.neighborhoods.map((area, index) => (
-                      <span key={index} className="location-zip-code">
-                        {area}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                    <div className="location-coverage-wrapper">
+                      <p className="location-zip-codes-label">
+                        {isSpanish ? "Áreas Atendidas:" : "Areas Served:"}
+                      </p>
+                      <div className="location-zip-codes">
+                        {location.neighborhoods.map((area, index) => (
+                          <span key={index} className="location-zip-code">
+                            {area}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {/* Sprinkler Repair by City */}
+                {sprinklerCityLinks.length > 0 && (
+                  <>
+                    <h3 id="sprinkler-cities-title" className="location-sprinkler-cities-title">
+                      {isSpanish ? "Páginas de reparación por ciudad" : "Sprinkler repair pages by city"}
+                    </h3>
+                    <div className="location-sprinkler-city-grid">
+                      {sprinklerCityLinks.map((city) => (
+                        <Link key={city.href} href={isSpanish ? esCityHref(city.href) : city.href} className="location-sprinkler-city-link">
+                          <MapPin size={18} aria-hidden="true" />
+                          <span>{city.label}</span>
+                          <ArrowUpRight size={18} aria-hidden="true" />
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
-            )}
-
-            {/* Sprinkler Repair by City */}
-            {sprinklerCityLinks.length > 0 && (
-              <section className="location-section-card location-sprinkler-cities" aria-labelledby="sprinkler-cities-title">
-                <div className="location-sprinkler-eyebrow">
-                  <Droplets size={18} aria-hidden="true" />
-                  <span>{isSpanish ? "Servicios locales de irrigación" : "Local irrigation services"}</span>
-                </div>
-                <h2 id="sprinkler-cities-title" className="location-section-title">
-                  {isSpanish ? `Reparación de Sprinklers en Ciudades del Área de ${location.city}` : `Sprinkler Repair in ${location.city} Area Cities`}
-                </h2>
-                <p className="location-section-text">
-                  {isSpanish ? "¿Buscas reparación de sprinklers en una ciudad específica? Mira nuestras páginas dedicadas a la reparación de sprinklers:" : "Looking for sprinkler repair in a specific city? See our dedicated sprinkler repair pages:"}
-                </p>
-                <div className="location-sprinkler-city-grid">
-                  {sprinklerCityLinks.map((city) => (
-                    <Link key={city.href} href={isSpanish ? esCityHref(city.href) : city.href} className="location-sprinkler-city-link">
-                      <MapPin size={18} aria-hidden="true" />
-                      <span>{city.label}</span>
-                      <ArrowUpRight size={18} aria-hidden="true" />
-                    </Link>
-                  ))}
-                </div>
-              </section>
             )}
 
             {/* Google reviews aggregate (real Google data, same card as the home page) */}
