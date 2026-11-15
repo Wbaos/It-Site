@@ -21,6 +21,16 @@ export type CityGalleryImage = {
   captionEs?: string;
 };
 
+export type CityExtraSection = {
+  _key?: string;
+  heading?: string;
+  headingEs?: string;
+  intro?: string;
+  introEs?: string;
+  items?: string[];
+  itemsEs?: string[];
+};
+
 export type City = {
   name?: string;
   slug?: { current?: string };
@@ -42,6 +52,7 @@ export type City = {
   localFaqs?: CityFaq[];
   faqOverrides?: CityFaqOverride[];
   faqsOverride?: CityFaq[];
+  extraSections?: CityExtraSection[];
   highlightsVariant?: string;
   gallery?: CityGalleryImage[];
   metaTitle?: string;
@@ -65,6 +76,7 @@ const CITY_FIELDS = `name, slug, esSlug, isHub, order, county, hubSlug, hubLabel
   zipCodes, sisters[]{name, slug}, heroTitle1, heroTitle2, heroSubtitle,
   heroBadge, seoIntroTitle, introP1, areaSegments[]{text, linkText, linkHref},
   localFaqs[]{q, a}, faqOverrides[]{index, q, a}, faqsOverride[]{q, a},
+  extraSections[]{_key, heading, headingEs, intro, introEs, items, itemsEs},
   highlightsVariant, gallery[]{asset, alt, altEs, caption, captionEs},
   metaTitle, metaDescription, heroTitle1Es, heroTitle2Es, heroSubtitleEs,
   heroBadgeEs, seoIntroTitleEs, introP1Es,
