@@ -16,6 +16,9 @@ const SERVICE_SLUG_ES: Record<string, string> = {
   "wifi-sprinkler-controller-upgrade": "actualizacion-a-controlador-wifi-de-sprinklers",
   "commercial-irrigation-hoa-services": "riego-comercial-y-para-hoa",
   "new-irrigation-well-installation": "instalacion-de-pozos-nuevos-de-irrigacion",
+  "sprinkler-maintenance-plan": "plan-de-mantenimiento-de-sprinklers",
+  "emergency-sprinkler-repair": "reparacion-de-emergencia-de-sprinklers",
+  "home-security": "seguridad-del-hogar",
 };
 
 const esCityHref = (href: string) => {
@@ -148,6 +151,12 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
     "@id": pageUrl + "#localbusiness",
     name: "CallTechCare",
     url: pageUrl,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Miami",
+      addressRegion: "FL",
+      addressCountry: "US",
+    },
     areaServed: {
       "@type": "City",
       name: `${location.city}, ${location.state}`,

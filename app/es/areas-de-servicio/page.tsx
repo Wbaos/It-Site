@@ -41,40 +41,7 @@ export default async function LocationsPageEs() {
     name: "Áreas de Servicio de CallTechCare",
     url: "https://www.calltechcare.com/es/areas-de-servicio",
     about: {
-      "@type": "LocalBusiness",
-      name: "CallTechCare",
-      areaServed: [
-        "Sunrise",
-        "Fort Lauderdale",
-        "Dania Beach",
-        "Weston",
-        "Davie",
-        "Southwest Ranches",
-        "Hollywood",
-        "West Park",
-        "Pembroke Pines",
-        "Miramar",
-        "Miami Gardens",
-        "Miami Lakes",
-        "Country Club",
-        "Aventura",
-        "Sunny Isles Beach",
-        "North Miami",
-        "Surfside",
-        "North Bay Village",
-        "Miami Beach",
-        "Hialeah",
-        "Doral",
-        "Fontainebleau",
-        "Tamiami",
-        "Miami",
-        "Coral Gables",
-        "Key Biscayne",
-        "Kendall",
-        "Kendale Lakes",
-        "Country Walk",
-        "Cutler Bay"
-      ]
+      "@id": "https://www.calltechcare.com/#business",
     }
   };
 

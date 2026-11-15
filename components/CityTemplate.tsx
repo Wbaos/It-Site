@@ -535,10 +535,7 @@ export default async function CityTemplate({ city, locale }: { city: City; local
             "@type": "Service",
             name: serviceName,
             provider: {
-              "@type": "LocalBusiness",
-              name: "CallTechCare",
-              telephone: settings.phoneIntl,
-              url: "https://www.calltechcare.com",
+              "@id": "https://www.calltechcare.com/#business",
             },
             areaServed: {
               "@type": "City",

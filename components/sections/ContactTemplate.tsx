@@ -241,11 +241,7 @@ export default async function ContactTemplate({
       ? "https://www.calltechcare.com/es/contacto"
       : "https://www.calltechcare.com/contact",
     about: {
-      "@type": "LocalBusiness",
-      name: "CallTechCare",
-      telephone: settings.phoneIntl,
-      email: settings.email,
-      areaServed: "South Florida",
+      "@id": "https://www.calltechcare.com/#business",
     },
   };
 
