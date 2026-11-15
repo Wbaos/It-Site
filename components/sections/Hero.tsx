@@ -83,8 +83,7 @@ export default function Hero({
           )}
           <img
             src={imageSrc}
-            alt=""
-            aria-hidden="true"
+            alt={imageAlt}
             className="hero-bg-img"
             width={1600}
             height={1200}

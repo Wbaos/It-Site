@@ -46,6 +46,7 @@ export type City = {
   heroTitle2?: string;
   heroSubtitle?: string;
   heroBadge?: string;
+  heroImageAlt?: string;
   seoIntroTitle?: string;
   introP1?: string;
   areaSegments?: CityAreaSegment[];
@@ -61,6 +62,7 @@ export type City = {
   heroTitle2Es?: string;
   heroSubtitleEs?: string;
   heroBadgeEs?: string;
+  heroImageAltEs?: string;
   seoIntroTitleEs?: string;
   introP1Es?: string;
   areaSegmentsEs?: CityAreaSegment[];
@@ -74,12 +76,12 @@ export type City = {
 
 const CITY_FIELDS = `name, slug, esSlug, isHub, order, county, hubSlug, hubLabel,
   zipCodes, sisters[]{name, slug}, heroTitle1, heroTitle2, heroSubtitle,
-  heroBadge, seoIntroTitle, introP1, areaSegments[]{text, linkText, linkHref},
+  heroBadge, heroImageAlt, seoIntroTitle, introP1, areaSegments[]{text, linkText, linkHref},
   localFaqs[]{q, a}, faqOverrides[]{index, q, a}, faqsOverride[]{q, a},
   extraSections[]{_key, heading, headingEs, intro, introEs, items, itemsEs},
   highlightsVariant, gallery[]{asset, alt, altEs, caption, captionEs},
   metaTitle, metaDescription, heroTitle1Es, heroTitle2Es, heroSubtitleEs,
-  heroBadgeEs, seoIntroTitleEs, introP1Es,
+  heroBadgeEs, heroImageAltEs, seoIntroTitleEs, introP1Es,
   areaSegmentsEs[]{text, linkText, linkHref}, localFaqsEs[]{q, a},
   faqOverridesEs[]{index, q, a}, faqsOverrideEs[]{q, a}, metaTitleEs,
   metaDescriptionEs, _updatedAt`;
