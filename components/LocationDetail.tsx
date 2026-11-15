@@ -79,6 +79,7 @@ const SPRINKLER_CITY_LINKS: Record<string, { label: string; href: string }[]> = 
     { label: "Southwest Ranches", href: "/sprinkler-repair-southwest-ranches" },
     { label: "Fort Lauderdale", href: "/sprinkler-repair-fort-lauderdale" },
     { label: "Plantation", href: "/sprinkler-repair-plantation" },
+    { label: "Coral Springs", href: "/sprinkler-repair-coral-springs" },
   ],
   miami: [
     { label: "Aventura", href: "/sprinkler-repair-aventura" },

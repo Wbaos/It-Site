@@ -97,7 +97,7 @@ export default function Navbar({
   // falls back to the Spanish home (never a broken page, and never a
   // specific service page that would mislead). Spanish pages link
   // back to their English twin, or to the English home when there is none.
-  // Twin pairs: "/" <-> "/es/", the thirty-one city page pairs
+  // Twin pairs: "/" <-> "/es/", the thirty-two city page pairs
   // ("/sprinkler-repair-{city}" <-> "/es/reparacion-de-sprinklers-{city}",
   // hub Miami included), the services hub pair ("/services" <->
   // "/es/servicios"), the eleven service page pairs (plus the two
@@ -137,6 +137,7 @@ export default function Navbar({
     "/sprinkler-repair-country-walk": "/es/reparacion-de-sprinklers-country-walk",
     "/sprinkler-repair-cutler-bay": "/es/reparacion-de-sprinklers-cutler-bay",
     "/sprinkler-repair-plantation": "/es/reparacion-de-sprinklers-plantation",
+    "/sprinkler-repair-coral-springs": "/es/reparacion-de-sprinklers-coral-springs",
     "/services/sprinkler-repair-and-installation":
       "/es/reparacion-e-instalacion-de-sprinklers",
     "/services/sprinkler-leak-repair":
@@ -231,6 +232,7 @@ export default function Navbar({
     "/es/reparacion-de-sprinklers-country-walk": "/sprinkler-repair-country-walk",
     "/es/reparacion-de-sprinklers-cutler-bay": "/sprinkler-repair-cutler-bay",
     "/es/reparacion-de-sprinklers-plantation": "/sprinkler-repair-plantation",
+    "/es/reparacion-de-sprinklers-coral-springs": "/sprinkler-repair-coral-springs",
     "/es/reparacion-e-instalacion-de-sprinklers":
       "/services/sprinkler-repair-and-installation",
     "/es/reparacion-de-fugas-de-sprinklers":

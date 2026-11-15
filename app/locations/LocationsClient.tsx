@@ -45,6 +45,7 @@ const CITY_LINKS: Array<{ name: string; en: string; es: string }> = [
   { name: "Country Walk", en: "/sprinkler-repair-country-walk", es: "/es/reparacion-de-sprinklers-country-walk" },
   { name: "Cutler Bay", en: "/sprinkler-repair-cutler-bay", es: "/es/reparacion-de-sprinklers-cutler-bay" },
   { name: "Plantation", en: "/sprinkler-repair-plantation", es: "/es/reparacion-de-sprinklers-plantation" },
+  { name: "Coral Springs", en: "/sprinkler-repair-coral-springs", es: "/es/reparacion-de-sprinklers-coral-springs" },
 ];
 
 const COUNTY_LABEL: Record<string, { en: string; es: string }> = {
@@ -116,7 +117,7 @@ export default function LocationsClient({
             {isSpanish ? "Explora las ciudades y comunidades que CallTechCare atiende en Miami-Dade, Broward y áreas cercanas del sur de Florida." : "Browse the cities and communities CallTechCare serves across Miami-Dade, Broward County, and surrounding South Florida areas."}
           </p>
           <p className="locations-hero-badge">
-            {isSpanish ? "✦ Atendemos 31 ciudades en Miami-Dade y Broward" : "✦ Serving 31 cities across Miami-Dade & Broward"}
+            {isSpanish ? "✦ Atendemos 32 ciudades en Miami-Dade y Broward" : "✦ Serving 32 cities across Miami-Dade & Broward"}
           </p>
           {/* 1-year warranty with the exact condition (audit fix 2026-11-10):
               the locations page had no warranty mention. */}
