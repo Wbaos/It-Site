@@ -6,6 +6,32 @@ import { serviceHref } from "@/lib/serviceTwins";
 
 export const revalidate = 0;
 
+// Home cards show a SHORT excerpt of the service description (first 1–2
+// sentences, ~150 chars max, ending with an ellipsis) — never the full
+// description. The full text stays in Sanity untouched: it is the service
+// page's SEO content. The card only teases it, so all cards stay short
+// and roughly the same height. Same helper as the Services hub cards.
+function shortExcerpt(text: string | undefined, maxLen = 150): string | undefined {
+  if (!text) return undefined;
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= maxLen) return clean;
+  // Accumulate whole sentences while they fit within maxLen.
+  const sentences = clean.match(/[^.!?]+[.!?]+["”)]?/g) ?? [clean];
+  let out = "";
+  for (const s of sentences) {
+    const next = out ? `${out} ${s.trim()}` : s.trim();
+    if (next.length <= maxLen) out = next;
+    else break;
+  }
+  // First sentence alone is longer than maxLen: cut it at a word boundary.
+  if (!out) {
+    const cut = clean.slice(0, maxLen);
+    const lastSpace = cut.lastIndexOf(" ");
+    out = lastSpace > 40 ? cut.slice(0, lastSpace) : cut;
+  }
+  return `${out.trimEnd()}…`;
+}
+
 // Spanish titles/descriptions reused from the former Spanish home page,
 // keyed by service slug. The service list itself still comes from Sanity
 // (same fetch, same order, same icons); only the displayed text is
@@ -145,7 +171,7 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
             <h3 className="service-card-title">{title}</h3>
 
             {description && (
-              <p className="service-card-desc">{description}</p>
+              <p className="service-card-desc">{shortExcerpt(description)}</p>
             )}
 
             <div className="service-card-bottom">
