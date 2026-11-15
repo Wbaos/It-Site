@@ -19,6 +19,7 @@ const SERVICE_SLUG_ES: Record<string, string> = {
   "sprinkler-maintenance-plan": "plan-de-mantenimiento-de-sprinklers",
   "drip-irrigation-installation": "instalacion-de-riego-por-goteo",
   "backflow-testing": "prueba-de-backflow",
+  "sprinkler-head-replacement": "reemplazo-de-cabezales-de-sprinklers",
   "emergency-sprinkler-repair": "reparacion-de-emergencia-de-sprinklers",
   "home-security": "seguridad-del-hogar",
 };
