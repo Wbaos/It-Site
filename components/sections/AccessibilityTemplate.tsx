@@ -227,7 +227,7 @@ export default async function AccessibilityTemplate({
         }))
       : fb.sections;
 
-  const homeHref = isEs ? "/es/" : "/";
+  const homeHref = isEs ? "/es" : "/";
 
   return (
     <section className="legal-wrapper">

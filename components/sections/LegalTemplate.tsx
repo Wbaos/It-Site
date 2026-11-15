@@ -107,7 +107,7 @@ export default function LegalTemplate({
       : isEs
         ? "https://www.calltechcare.com/es/terminos-y-condiciones"
         : "https://www.calltechcare.com/terms-and-conditions";
-  const homeHref = isEs ? "/es/" : "/";
+  const homeHref = isEs ? "/es" : "/";
   const contactHref = isEs ? "/es/#contact" : "/#contact";
   const title = pick(doc.title, doc.titleEs, locale);
   const card = doc.contactCard;

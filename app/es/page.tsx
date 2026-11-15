@@ -5,7 +5,7 @@ import { resolveSiteSettings } from "@/lib/sanitySettings";
 
 export const revalidate = 3600;
 
-const ES_HOME_URL = "https://www.calltechcare.com/es/";
+const ES_HOME_URL = "https://www.calltechcare.com/es";
 const EN_HOME_URL = "https://www.calltechcare.com/";
 
 // Thin Spanish route: it renders the SAME shared home template as the

@@ -41,9 +41,6 @@ export default async function LocationsPage() {
     "@type": "WebPage",
     name: "CallTechCare Service Areas",
     url: "https://www.calltechcare.com/locations",
-    about: {
-      "@id": "https://www.calltechcare.com/#business",
-    }
   };
 
   return (

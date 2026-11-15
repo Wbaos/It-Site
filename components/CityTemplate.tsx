@@ -534,9 +534,6 @@ export default async function CityTemplate({ city, locale }: { city: City; local
             "@context": "https://schema.org",
             "@type": "Service",
             name: serviceName,
-            provider: {
-              "@id": "https://www.calltechcare.com/#business",
-            },
             areaServed: {
               "@type": "City",
               name,
