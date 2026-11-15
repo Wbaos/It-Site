@@ -16574,6 +16574,13 @@ details[open] .faq-toggle {
   border-color: #1e293b;
 }
 
+.location-sprinkler-cities-title {
+  margin: 1.5rem 0 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: white;
+}
+
 .location-sprinkler-eyebrow {
   display: flex;
   align-items: center;
