@@ -230,7 +230,7 @@ export default async function RootLayout({
       "@id": "https://www.calltechcare.com/#business",
     },
     // Generated from the same footerCities list as the LocalBusiness
-    // block above (31 cities incl. Plantation), never hardcoded.
+    // block above (32 cities incl. Coral Springs), never hardcoded.
     areaServed: footerCities.map((c) => ({ "@type": "City", name: c.name })),
   };
 
