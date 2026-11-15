@@ -94,6 +94,32 @@ const SPRINKLER_SERVICE_LINKS = [
   { slug: "commercial-irrigation-hoa-services", title: "Commercial Irrigation & HOA Services" },
 ];
 
+// Related-services cards show a SHORT excerpt of the service description
+// (first 1–2 sentences, ~150 chars max, ending with an ellipsis) —
+// never the full description. The full text stays in Sanity untouched:
+// it is the page's SEO content. The card only teases it, so all cards
+// stay short and roughly the same height. Works for EN and ES alike.
+function shortExcerpt(text: string | undefined, maxLen = 150): string | undefined {
+  if (!text) return undefined;
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= maxLen) return clean;
+  // Accumulate whole sentences while they fit within maxLen.
+  const sentences = clean.match(/[^.!?]+[.!?]+["”)]?/g) ?? [clean];
+  let out = "";
+  for (const s of sentences) {
+    const next = out ? `${out} ${s.trim()}` : s.trim();
+    if (next.length <= maxLen) out = next;
+    else break;
+  }
+  // First sentence alone is longer than maxLen: cut it at a word boundary.
+  if (!out) {
+    const cut = clean.slice(0, maxLen);
+    const lastSpace = cut.lastIndexOf(" ");
+    out = lastSpace > 40 ? cut.slice(0, lastSpace) : cut;
+  }
+  return `${out.trimEnd()}…`;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -488,7 +514,8 @@ export default async function ServicePage({
     }
   }
   // Cards for the related-services section: every sprinkler service except
-  // the current one, title + short description in the page locale.
+  // the current one, title + short excerpt in the page locale (see
+  // shortExcerpt above — the full description stays on the service page).
   const relatedServices = SPRINKLER_SERVICE_LINKS.filter(
     (s) => s.slug !== slug
   ).map((s) => {
@@ -497,10 +524,11 @@ export default async function ServicePage({
       slug: s.slug,
       title:
         isSpanish && info?.titleEs ? info.titleEs : info?.title ?? s.title,
-      description:
+      description: shortExcerpt(
         isSpanish && info?.descriptionEs
           ? info.descriptionEs
-          : info?.description,
+          : info?.description
+      ),
     };
   });
 
