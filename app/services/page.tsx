@@ -361,6 +361,9 @@ export default async function ServicesPage() {
             coverage, faulty valves and zones that do not turn on. We also
             install new sprinkler systems, drip irrigation, backflow devices,
             new irrigation wells, WiFi controllers, timers and rain sensors.
+          </p>
+
+          <p>
             We install new pumps. And we install wireless security cameras
             for homes and businesses. Every job is done on site, at your
             property.
@@ -369,7 +372,11 @@ export default async function ServicesPage() {
           <p>
             A sprinkler system is only good if it waters evenly. A head that
             sprays the driveway wastes water. A zone that stays dry kills the
-            grass. A leak under the lawn can run for weeks before anyone sees
+            grass.
+          </p>
+
+          <p>
+            A leak under the lawn can run for weeks before anyone sees
             it. That is what we look for on every visit: the heads, the
             valves, the pipes, the pressure and the controller. We find the
             problem, we fix it, and we test the system before we leave.

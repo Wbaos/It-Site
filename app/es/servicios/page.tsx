@@ -367,6 +367,9 @@ export default async function ServicesPageEs() {
             instalamos sistemas nuevos de sprinklers, riego por goteo,
             dispositivos de backflow, pozos nuevos de irrigación,
             controladores WiFi, temporizadores y sensores de lluvia.
+          </p>
+
+          <p>
             Instalamos bombas nuevas. E instalamos cámaras inalámbricas de
             seguridad para casas y negocios. Todo el trabajo se hace en tu
             propiedad.
@@ -375,7 +378,11 @@ export default async function ServicesPageEs() {
           <p>
             Un sistema de sprinklers solo sirve si riega parejo. Un cabezal
             que riega el driveway bota el agua. Una zona que se queda seca
-            mata la grama. Una fuga bajo el césped puede correr semanas antes
+            mata la grama.
+          </p>
+
+          <p>
+            Una fuga bajo el césped puede correr semanas antes
             de que alguien la vea. Eso es lo que revisamos en cada visita:
             los cabezales, las válvulas, la tubería, la presión y el
             controlador. Encontramos el problema, lo arreglamos y probamos el
