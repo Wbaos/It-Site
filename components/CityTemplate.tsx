@@ -10,6 +10,7 @@ import {
   getGoogleRatingSummary,
   formatGoogleRating,
 } from "@/lib/google-reviews";
+import GoogleReviewsCTA from "@/components/sections/GoogleReviewsCTA";
 import type { City, CityAreaSegment } from "@/lib/sanityCities";
 
 // Single template for every city landing page (Lote 2 migration).
@@ -625,8 +626,8 @@ export default async function CityTemplate({ city, locale }: { city: City; local
           </p>
           <p>
             {isEs
-              ? "Garantía: 1 año cuando CallTechCare hace el trabajo y provee los materiales."
-              : "Warranty: 1 year when CallTechCare performs the work and provides the materials."}
+              ? "Garantía: 1 año de garantía de mano de obra cuando CallTechCare hace el trabajo y provee los materiales."
+              : "Warranty: 1-year workmanship warranty when CallTechCare performs the work and provides the materials."}
           </p>
         </div>
       </section>
@@ -653,6 +654,11 @@ export default async function CityTemplate({ city, locale }: { city: City; local
           </section>
         );
       })}
+
+      {/* Google reviews, same section as the home page (same Sanity copy,
+          same text-only filter): city pages had only the 5.0 hero stat and
+          no words from a real customer, while the ads land here. */}
+      <GoogleReviewsCTA locale={locale} />
 
       {/* Quick lead form, AFTER the city's own content: prominent call
           button + short form posting to the same /api/quote-request

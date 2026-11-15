@@ -33,8 +33,8 @@ export default async function WhyChooseUs({
     ? [
         {
           icon: <ShieldCheck size={32} strokeWidth={1.5} />,
-          title: "Garantía de 1 Año",
-          text: "Garantía de 1 año cuando CallTechCare hace el trabajo y provee los materiales.",
+          title: "Garantía de Mano de Obra de 1 Año",
+          text: "Garantía de mano de obra de 1 año cuando CallTechCare hace el trabajo y provee los materiales.",
         },
         {
           icon: <Star size={32} strokeWidth={1.5} />,
@@ -65,8 +65,8 @@ export default async function WhyChooseUs({
     : [
         {
           icon: <ShieldCheck size={32} strokeWidth={1.5} />,
-          title: "1-Year Warranty",
-          text: "1-year warranty when CallTechCare performs the work and provides the materials.",
+          title: "1-Year Workmanship Warranty",
+          text: "1-year workmanship warranty when CallTechCare performs the work and provides the materials.",
         },
         {
           icon: <Star size={32} strokeWidth={1.5} />,

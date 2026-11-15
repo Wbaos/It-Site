@@ -35,7 +35,7 @@ const DEFAULT_FAQS: FaqItem[] = [
   },
   {
     q: "Do you offer warranties on your services?",
-    a: "Yes. CallTechCare offers a 1-year warranty on sprinkler services and security camera installation when CallTechCare performs the work and provides the materials.",
+    a: "Yes. CallTechCare offers a 1-year workmanship warranty on sprinkler services and security camera installation when CallTechCare performs the work and provides the materials.",
   },
   {
     q: "Do you handle sprinkler emergencies?",
@@ -47,7 +47,7 @@ const DEFAULT_FAQS: FaqItem[] = [
   },
   {
     q: "Are your technicians experienced?",
-    a: `Yes. Our technicians work in person at your home, inspect first, then give you a clear estimate before starting. Work is backed by our 1-year warranty when CallTechCare performs the work and provides the materials, and we hold {{googleRatingEn}}.`,
+    a: `Yes. Our technicians work in person at your home, inspect first, then give you a clear estimate before starting. Work is backed by our 1-year workmanship warranty when CallTechCare performs the work and provides the materials, and we hold {{googleRatingEn}}.`,
   },
   {
     q: "What areas do you serve?",
@@ -74,7 +74,7 @@ const DEFAULT_FAQS_ES: FaqItem[] = [
   },
   {
     q: "¿Ofrecen garantía en sus servicios?",
-    a: "Sí. CallTechCare ofrece 1 año de garantía en servicios de sprinklers e instalación de cámaras de seguridad cuando CallTechCare hace el trabajo y provee los materiales.",
+    a: "Sí. CallTechCare ofrece 1 año de garantía de mano de obra en servicios de sprinklers e instalación de cámaras de seguridad cuando CallTechCare hace el trabajo y provee los materiales.",
   },
   {
     q: "¿Atienden emergencias de sprinklers?",
@@ -86,7 +86,7 @@ const DEFAULT_FAQS_ES: FaqItem[] = [
   },
   {
     q: "¿Sus técnicos tienen experiencia?",
-    a: `Sí. Nuestros técnicos trabajan en persona en tu casa, primero inspeccionan y luego te dan un estimado claro antes de empezar. El trabajo tiene nuestra garantía de 1 año cuando CallTechCare hace el trabajo y provee los materiales, y tenemos {{googleRatingEs}}.`,
+    a: `Sí. Nuestros técnicos trabajan en persona en tu casa, primero inspeccionan y luego te dan un estimado claro antes de empezar. El trabajo tiene nuestra garantía de mano de obra de 1 año cuando CallTechCare hace el trabajo y provee los materiales, y tenemos {{googleRatingEs}}.`,
   },
   {
     q: "¿Qué áreas atienden?",
