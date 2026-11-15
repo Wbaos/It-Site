@@ -621,6 +621,29 @@ export default async function CityTemplate({ city, locale }: { city: City; local
         </div>
       </section>
 
+      {/* Extra content sections from Sanity (heading + intro + bullets),
+          shown after the intro and before the lead form. Generic: any city
+          with extraSections renders them. */}
+      {(city.extraSections ?? []).map((sec, i) => {
+        const heading = pick(sec.heading, sec.headingEs, locale);
+        const intro = pick(sec.intro, sec.introEs, locale);
+        const items = isEs && sec.itemsEs?.length ? sec.itemsEs : sec.items ?? [];
+        if (!heading && !intro && !items.length) return null;
+        return (
+          <section key={sec._key ?? i} className="spr-landing-section">
+            <div className="spr-landing">
+              {heading ? <h2 className="spr-landing-title">{heading}</h2> : null}
+              {intro ? <p className="spr-landing-sub">{intro}</p> : null}
+              <ul>
+                {items.map((item, j) => (
+                  <li key={j}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        );
+      })}
+
       {/* Quick lead form, AFTER the city's own content: prominent call
           button + short form posting to the same /api/quote-request
           endpoint as the full quote flow (same Google Ads conversion). */}
