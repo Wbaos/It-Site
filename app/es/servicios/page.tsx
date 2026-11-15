@@ -43,6 +43,32 @@ const compareServiceOrder = (a: any, b: any) => {
   );
 };
 
+// Hub cards show a SHORT excerpt of the service description (first 1–2
+// sentences, ~150 chars max, ending with an ellipsis) — never the full
+// description. The full text stays in Sanity untouched: it is the service
+// page's SEO content. The card only teases it, so all cards stay short
+// and roughly the same height. Same helper as the related-services cards.
+function shortExcerpt(text: string | undefined, maxLen = 150): string | undefined {
+  if (!text) return undefined;
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= maxLen) return clean;
+  // Accumulate whole sentences while they fit within maxLen.
+  const sentences = clean.match(/[^.!?]+[.!?]+["”)]?/g) ?? [clean];
+  let out = "";
+  for (const s of sentences) {
+    const next = out ? `${out} ${s.trim()}` : s.trim();
+    if (next.length <= maxLen) out = next;
+    else break;
+  }
+  // First sentence alone is longer than maxLen: cut it at a word boundary.
+  if (!out) {
+    const cut = clean.slice(0, maxLen);
+    const lastSpace = cut.lastIndexOf(" ");
+    out = lastSpace > 40 ? cut.slice(0, lastSpace) : cut;
+  }
+  return `${out.trimEnd()}…`;
+}
+
 export const metadata: Metadata = {
   title: "Servicios de Sprinklers e Irrigación | CallTechCare",
 
@@ -293,7 +319,7 @@ export default async function ServicesPageEs() {
                           </h3>
 
                           <p className="services-list-card-description">
-                            {service.descriptionEs || service.description}
+                            {shortExcerpt(service.descriptionEs || service.description)}
                           </p>
 
                           <div className="services-list-card-footer">
