@@ -164,6 +164,12 @@ export default function Navbar({
       "/es/riego-comercial-y-para-hoa",
     "/services/new-irrigation-well-installation":
       "/es/instalacion-de-pozos-nuevos-de-irrigacion",
+    "/services/drip-irrigation-installation":
+      "/es/instalacion-de-riego-por-goteo",
+    "/services/backflow-testing":
+      "/es/prueba-de-backflow",
+    "/services/sprinkler-head-replacement":
+      "/es/reemplazo-de-cabezales-de-sprinklers",
     "/services/home-security":
       "/es/seguridad-del-hogar",
     "/blog": "/es/blog",
@@ -259,6 +265,12 @@ export default function Navbar({
       "/services/commercial-irrigation-hoa-services",
     "/es/instalacion-de-pozos-nuevos-de-irrigacion":
       "/services/new-irrigation-well-installation",
+    "/es/instalacion-de-riego-por-goteo":
+      "/services/drip-irrigation-installation",
+    "/es/prueba-de-backflow":
+      "/services/backflow-testing",
+    "/es/reemplazo-de-cabezales-de-sprinklers":
+      "/services/sprinkler-head-replacement",
     "/es/seguridad-del-hogar":
       "/services/home-security",
     "/es/blog": "/blog",
