@@ -11403,6 +11403,39 @@ object-fit: cover;
   text-align: left;
 }
 
+/* About-this-service section on service pages: same dark card treatment
+   as .included-box. It holds the FULL service description (split into
+   paragraphs) so the hero card only needs a short intro. */
+.service-about-box {
+  background: #0f172a80;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+}
+
+.service-about-box h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1.25rem;
+  margin-top: 0;
+  text-align: left;
+}
+
+.service-about-box p {
+  color: #94a3b8;
+  font-size: 0.96rem;
+  line-height: 1.4;
+  margin: 0 0 1rem;
+}
+
+.service-about-box p:last-child {
+  margin-bottom: 0;
+}
+
 /* Related-services cards inside the service detail main content: same dark
    card treatment as .included-box, linking to the specific service pages. */
 .related-services-box {
@@ -11519,6 +11552,9 @@ object-fit: cover;
     gap: 1rem;
   }
   .included-box {
+   margin: 0 auto 2rem;
+  }
+  .service-about-box {
    margin: 0 auto 2rem;
   }
   .related-services-box {

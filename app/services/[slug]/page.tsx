@@ -1321,7 +1321,7 @@ export default async function ServicePage({
             )}
 
             {displayDescription && (
-              <p className="service-description">{displayDescription}</p>
+              <p className="service-description">{shortExcerpt(displayDescription, 300)}</p>
             )}
 
             {displayWarranty && (
@@ -1355,6 +1355,24 @@ export default async function ServicePage({
             </div>
           </div>
         </div>
+
+        {/* Full description, below the hero: the hero card shows only a
+            short intro (first 1–2 sentences, ~300 chars max) so the wall
+            of text no longer fills the screen. Every word of the
+            description stays on the page here, split into paragraphs —
+            nothing is deleted, only moved out of the narrow hero column. */}
+        {displayDescription && (
+          <div className="service-about-box">
+            <h2>{isSpanish ? "Sobre este servicio" : "About this service"}</h2>
+            {displayDescription
+              .split(/\n\s*\n/)
+              .map((para: string) => para.replace(/\s+/g, " ").trim())
+              .filter(Boolean)
+              .map((para: string, i: number) => (
+                <p key={i}>{para}</p>
+              ))}
+          </div>
+        )}
 
         {/* Emergency pages: no slow callback form. A big call button, a
             real text-message link and the shut-off steps dominate
