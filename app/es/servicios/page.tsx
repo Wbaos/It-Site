@@ -371,8 +371,7 @@ export default async function ServicesPageEs() {
 
           <p>
             Instalamos bombas nuevas. E instalamos cámaras inalámbricas de
-            seguridad para casas y negocios. Todo el trabajo se hace en tu
-            propiedad.
+            seguridad para casas y negocios.
           </p>
 
           <p>
@@ -403,7 +402,7 @@ export default async function ServicesPageEs() {
             </li>
             <li>
               Vamos a tu propiedad, inspeccionamos el sistema y te damos el
-              precio ahí mismo. La inspección es gratis.
+              precio. La inspección es gratis.
             </li>
             <li>
               La mayoría de las reparaciones se hacen el mismo día, dentro
