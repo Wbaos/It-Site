@@ -365,8 +365,8 @@ export default async function ServicesPageEs() {
             Miami-Dade y Broward. Arreglamos fugas, cabezales rotos, mala
             cobertura, válvulas que fallan y zonas que no prenden. También
             instalamos sistemas nuevos de sprinklers, riego por goteo,
-            dispositivos de backflow, pozos nuevos de irrigación,
-            controladores WiFi, temporizadores y sensores de lluvia.
+            pozos nuevos de irrigación, controladores WiFi, temporizadores
+            y sensores de lluvia.
           </p>
 
           <p>
