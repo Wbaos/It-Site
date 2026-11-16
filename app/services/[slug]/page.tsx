@@ -428,6 +428,8 @@ export default async function ServicePage({
     `*[_type == "service" && slug.current == $slug][0]{
       title,
       titleEs,
+      h1,
+      h1Es,
       pricingModel,
       hourlyConfig{minimumHours, maximumHours, billingIncrement},
       description,
@@ -501,6 +503,13 @@ export default async function ServicePage({
   // comparison TITLES do (titleEs on each comparison, English fallback).
   const displayTitle =
     isSpanish && service?.titleEs ? service.titleEs : service?.title;
+  // Optional H1 override (Sanity h1/h1Es). When empty, the H1 falls back
+  // to the service title plus the location line.
+  const displayH1 =
+    (isSpanish ? service?.h1Es || service?.h1 : service?.h1) ||
+    (isSpanish
+      ? `${displayTitle} en Miami, Broward y el Sur de Florida`
+      : `${displayTitle} in Miami, Broward & South Florida`);
   const displayDescription =
     isSpanish && service?.descriptionEs
       ? service.descriptionEs
@@ -1259,7 +1268,7 @@ export default async function ServicePage({
             {isSpanish ? "← Volver a Servicios" : "← Back to Services"}
           </Link>
 
-          <h1>{isSpanish ? `${displayTitle} en Miami, Broward y el Sur de Florida` : `${displayTitle} in Miami, Broward & South Florida`}</h1>
+          <h1>{displayH1}</h1>
 
 
           {install.length > 0 && (
@@ -1347,7 +1356,7 @@ export default async function ServicePage({
           )}
 
           <div className="service-card">
-            <h1>{isSpanish ? `${displayTitle} en Miami, Broward y el Sur de Florida` : `${displayTitle} in Miami, Broward & South Florida`}</h1>
+            <h1>{displayH1}</h1>
 
 
             {googleRatingSummary && (
