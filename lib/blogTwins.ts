@@ -26,6 +26,8 @@ export const BLOG_ES_PATHS: Record<string, string> = {
     "/es/blog/controladores-inteligentes-de-sprinklers-en-miami-timers-wifi",
   "common-sprinkler-system-problems-how-to-fix-them":
     "/es/blog/problemas-comunes-de-sprinklers-como-arreglarlos",
+  "how-to-find-sprinkler-leak-in-yard":
+    "/es/blog/como-encontrar-una-fuga-de-sprinklers-en-tu-jardin",
 };
 
 export function blogHref(slug: string, locale: "en" | "es"): string {
