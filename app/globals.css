@@ -11457,16 +11457,39 @@ object-fit: cover;
   text-align: left;
 }
 
+/* Tailwind preflight strips <ol> numerals, so the step numbers are
+   explicit badges — never list markers — guaranteeing 1–4 stay
+   visible in every browser. */
 .service-expect-list {
+  list-style: none;
   color: #94a3b8;
   font-size: 0.96rem;
   line-height: 1.4;
   margin: 0;
-  padding-left: 1.25rem;
+  padding: 0;
 }
 
 .service-expect-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
   margin-bottom: 0.75rem;
+}
+
+.service-expect-num {
+  flex: 0 0 auto;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  background: var(--brand-teal);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.05rem;
 }
 
 .service-expect-list li:last-child {

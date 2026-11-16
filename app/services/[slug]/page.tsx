@@ -1501,7 +1501,10 @@ export default async function ServicePage({
                   "We test everything before we leave. The work carries a 1-year workmanship warranty when CallTechCare performs the work and provides the materials.",
                 ]
             ).map((step: string, i: number) => (
-              <li key={i}>{step}</li>
+              <li key={i}>
+                <span className="service-expect-num" aria-hidden="true">{i + 1}</span>
+                <span>{step}</span>
+              </li>
             ))}
           </ol>
         </div>
