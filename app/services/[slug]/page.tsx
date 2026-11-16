@@ -1221,10 +1221,11 @@ export default async function ServicePage({
   const install = sub.filter((s) => s.serviceType === "installation");
   const support = sub.filter((s) => s.serviceType === "support");
 
+  // No badge for in-home services: every job is done at the customer's
+  // property by definition, so the "In-Home" tag was redundant. The
+  // Online / Online + In-Home labels stay for services that use them.
   const modeLabel =
-    service.mode === "in-home"
-      ? (isSpanish ? "A Domicilio" : "In-Home")
-      : service.mode === "online"
+    service.mode === "online"
       ? (isSpanish ? "En línea" : "Online")
       : service.mode === "both"
       ? (isSpanish ? "En línea + A domicilio" : "Online + In-Home")
@@ -1499,13 +1500,13 @@ export default async function ServicePage({
             {(isSpanish
               ? [
                   "Empezamos con una inspección gratis de tu sistema.",
-                  "Revisamos todo en el lugar y te damos un estimado claro por adelantado, sin presión.",
+                  "Revisamos todo y te damos un estimado claro por adelantado, sin presión.",
                   "Cuando es posible, hacemos el trabajo el mismo día, dentro del horario.",
                   "Probamos todo antes de irnos. El trabajo tiene garantía de mano de obra de 1 año cuando CallTechCare hace el trabajo y provee los materiales.",
                 ]
               : [
                   "We start with a free inspection of your system.",
-                  "We check everything on site and give you a clear upfront estimate — with no pressure.",
+                  "We check everything and give you a clear upfront estimate — with no pressure.",
                   "When possible, we do the work the same day, within business hours.",
                   "We test everything before we leave. The work carries a 1-year workmanship warranty when CallTechCare performs the work and provides the materials.",
                 ]

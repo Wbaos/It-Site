@@ -1,4 +1,4 @@
-import { ShieldCheck, Users, Clock, Cpu, Star, Smile } from "lucide-react";
+import { ShieldCheck, Users, Clock, Star, Smile } from "lucide-react";
 import type { HomePage } from "@/lib/sanityHome";
 import {
   getGoogleRatingSummary,
@@ -11,7 +11,7 @@ function pick(en: string | undefined, es: string | undefined, isSpanish: boolean
   return en;
 }
 
-const WHY_ICONS = [ShieldCheck, Star, Users, Smile, Clock, Cpu];
+const WHY_ICONS = [ShieldCheck, Star, Users, Smile, Clock];
 
 export default async function WhyChooseUs({
   locale = "en",
@@ -26,9 +26,11 @@ export default async function WhyChooseUs({
   // The Google card below carries NO numbers until the live summary is
   // applied: without a summary the card is dropped from the grid (see
   // below) instead of showing a stale rating/count.
-  // Same six cards, same icons, same order in both languages; only the
+  // Same five cards, same icons, same order in both languages; only the
   // text changes. The Spanish wording is a faithful translation of the
-  // English wording.
+  // English wording. (There used to be a sixth card, "In-Person Service,
+  // At Your Home" — removed: every job is done at the customer's property
+  // by definition, so calling it out was redundant.)
   const fallbackFeatures = isSpanish
     ? [
         {
@@ -56,11 +58,6 @@ export default async function WhyChooseUs({
           title: "Respuesta en Menos de Dos Horas",
           text: "Respondemos en menos de dos horas, con servicio el mismo día dentro del horario.",
         },
-        {
-          icon: <Cpu size={32} strokeWidth={1.5} />,
-          title: "Servicio en Persona, en Tu Casa",
-          text: "Trabajo a domicilio, en persona, en tu casa o negocio.",
-        },
       ]
     : [
         {
@@ -87,11 +84,6 @@ export default async function WhyChooseUs({
           icon: <Clock size={32} strokeWidth={1.5} />,
           title: "Response in Less Than Two Hours",
           text: "We respond in less than two hours, with same-day service within business hours.",
-        },
-        {
-          icon: <Cpu size={32} strokeWidth={1.5} />,
-          title: "In-Person Service, At Your Home",
-          text: "On-site work, in person, at your home or business.",
         },
       ];
 
