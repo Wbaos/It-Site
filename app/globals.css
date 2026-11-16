@@ -10714,7 +10714,7 @@ object-fit: cover;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: flex-start;
+  align-items: stretch;
   flex-wrap: wrap;
   gap: 2.5rem;
   margin-bottom: 3rem;
@@ -11137,7 +11137,7 @@ object-fit: cover;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: flex-start;
+  align-items: stretch;
   flex-wrap: wrap;
   gap: 2.5rem;
   margin-bottom: 3rem;
@@ -11146,16 +11146,13 @@ object-fit: cover;
 .service-image {
   flex: 1 1 600px;
   max-width: 700px;
-  /* Capped hero: a portrait asset (e.g. the rain sensor 1200x1600)
-     used to render ~912px tall and stretch the whole row with it.
-     Fixed 4:3 box, max 450px tall, image cropped with object-fit —
-     no portrait photo can dominate the hero again, and the text card
-     beside it sizes to its own content. Mobile keeps its own fixed
-     300px banner below. */
-  aspect-ratio: 4 / 3;
-  height: auto;
-  max-height: 450px;
-  align-self: flex-start;
+  /* Equal-height hero: the image fills the full height of the row so it
+     always matches the text card beside it (a portrait asset is cropped
+     with object-fit, never distorted). The row is capped at ~600px on
+     wide desktop so an unusually long card cannot blow the image up.
+     Mobile keeps its own fixed 300px banner below. */
+  height: 100%;
+  align-self: stretch;
   border-radius: 1rem;
   overflow: hidden;
   display: block;
@@ -11173,6 +11170,15 @@ object-fit: cover;
   object-position: center;
   border-radius: 1rem;
   display: block;
+}
+
+/* Wide desktop only: cap the hero row at ~600px so an unusually long card
+   cannot stretch the image past it. Kept out of the base rule so the row
+   can wrap normally at tablet widths without clipping. */
+@media (min-width: 1100px) {
+  .service-top {
+    max-height: 600px;
+  }
 }
 
 @media (max-width: 700px) {
