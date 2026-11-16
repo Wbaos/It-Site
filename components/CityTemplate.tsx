@@ -293,7 +293,7 @@ const SHARED_FAQS: Record<Locale, { q: string; a: string }[]> = {
     },
     {
       q: "Do you serve areas near {CITY}?",
-      a: "Yes. We serve {CITY} and nearby {COUNTY} cities, including {SISTERS}, as well as all of Miami-Dade and Broward.",
+      a: "Yes. We serve {CITY} and nearby {COUNTY} cities, including {SISTERS}. We also serve all of Miami-Dade and Broward.",
     },
     {
       q: "Why is one sprinkler zone not working?",
@@ -323,7 +323,7 @@ const SHARED_FAQS: Record<Locale, { q: string; a: string }[]> = {
     },
     {
       q: "¿Atienden áreas cerca de {CITY}?",
-      a: "Sí. Atendemos {CITY} y las ciudades cercanas de {COUNTY}, incluyendo {SISTERS}, así como todo Miami-Dade y Broward.",
+      a: "Sí. Atendemos {CITY} y las ciudades cercanas de {COUNTY}, incluyendo {SISTERS}. También atendemos todo Miami-Dade y Broward.",
     },
     {
       q: "¿Por qué una zona de sprinklers no funciona?",
