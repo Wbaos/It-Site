@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import LocationsClient from "@/app/locations/LocationsClient";
 import { resolveSiteSettings } from "@/lib/sanitySettings";
+import { getAllActiveLocations, type Location } from "@/lib/sanityLocations";
 
 export const metadata: Metadata = {
   title: "Áreas de Servicio de Sprinklers | CallTechCare",
@@ -35,6 +36,17 @@ export const metadata: Metadata = {
 
 export default async function LocationsPageEs() {
   const settings = await resolveSiteSettings();
+
+  // CLS fix (16 Nov 2026): fetch the county cards on the server so they
+  // (and the search bar) render in the SSR HTML instead of popping in
+  // after a client-side fetch. On failure the client component falls back
+  // to fetching them itself, exactly as before.
+  let initialLocations: Location[] = [];
+  try {
+    initialLocations = await getAllActiveLocations();
+  } catch {
+    initialLocations = [];
+  }
   const locationsSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -52,7 +64,7 @@ export default async function LocationsPageEs() {
         }}
       />
 
-      <LocationsClient locale="es" phoneDisplay={settings.phoneDisplay} />
+      <LocationsClient locale="es" phoneDisplay={settings.phoneDisplay} initialLocations={initialLocations} />
     </>
   );
 }

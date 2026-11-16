@@ -1,4 +1,8 @@
-"use client";
+// Server Component (no "use client"): Hero is pure presentational markup
+// with no hooks or event handlers, and both importers (CityTemplate,
+// lib/pageSections) are Server Components — so the hero renders on the
+// server and never ships as client JS or hydrates (CWV lot 20, 16 Nov
+// 2026). Keep it that way: do not add hooks/handlers here.
 import SvgIcon from "@/components/common/SvgIcons";
 import Link from "next/link";
 import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
@@ -49,7 +53,15 @@ export default function Hero({
   secondaryCtaAriaLabel = "Send us a quick message for sprinkler repair in Miami and Broward",
   phoneNumber = FALLBACK_SETTINGS.phoneTel,
   showCallButton = true,
-  imageSrc = "https://cdn.sanity.io/images/celkrwoq/production/5deeea70b525963987af93601f412cebdbede547-5712x4284.webp",
+  // Default hero image (city pages: CityTemplate does not pass imageSrc,
+  // so every city page uses this). Served through the Sanity CDN at 1920w
+  // instead of the raw 5712x4284 original: same image, same on-screen
+  // size (the hero never displays wider than a desktop viewport), but
+  // 949 KB instead of 5.6 MB. The raw file was the LCP element on all
+  // 32 city pages (SEMrush CWV: Miami LCP 6.23s, 16 Nov 2026) and decoding
+  // a 24 MP image also cost main-thread time (TBT 420ms). No visible
+  // quality change — CDN resize only, q=80 like the home hero.
+  imageSrc = "https://cdn.sanity.io/images/celkrwoq/production/5deeea70b525963987af93601f412cebdbede547-5712x4284.webp?w=1920&auto=format&q=80",
   mobileImageSrc,
   imageAlt = "Sprinkler system working",
   stats = [

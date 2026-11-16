@@ -56,20 +56,32 @@ const COUNTY_LABEL: Record<string, { en: string; es: string }> = {
 export default function LocationsClient({
   locale = "en",
   phoneDisplay = FALLBACK_SETTINGS.phoneDisplay,
+  // Locations pre-fetched on the server (page.tsx) and passed in, so the
+  // search bar and the county cards render in the SSR HTML instead of
+  // popping in after a client-side fetch — that pop-in was the /locations
+  // CLS 0.312 (SEMrush CWV, 16 Nov 2026): first paint showed only the
+  // hero + "Loading...", then the search section appeared and the grid
+  // swapped to two large cards, pushing everything below down. When no
+  // initial data is passed (e.g. the server fetch failed) the component
+  // falls back to the client-side fetch exactly as before.
+  initialLocations,
 }: {
   locale?: "en" | "es";
   // Business phone from site-settings (passed by the server page). The
   // structured phone field on the Sanity location doc is only a presence
   // flag; the number shown always comes from settings.
   phoneDisplay?: string;
+  initialLocations?: Location[];
 }) {
   const isSpanish = locale === "es";
-  const [locations, setLocations] = useState<Location[]>([]);
-  const [filteredLocations, setFilteredLocations] = useState<Location[]>([]);
+  const hasInitial = !!initialLocations && initialLocations.length > 0;
+  const [locations, setLocations] = useState<Location[]>(initialLocations ?? []);
+  const [filteredLocations, setFilteredLocations] = useState<Location[]>(initialLocations ?? []);
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!hasInitial);
 
   useEffect(() => {
+    if (hasInitial) return;
     getAllActiveLocations()
       .then((data) => {
         setLocations(data);
@@ -77,7 +89,7 @@ export default function LocationsClient({
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, []);
+  }, [hasInitial]);
 
   useEffect(() => {
     let filtered = locations;
