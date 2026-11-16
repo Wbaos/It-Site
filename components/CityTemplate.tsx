@@ -211,7 +211,7 @@ const TEXT: Record<Locale, LocaleText> = {
     ],
     steps: [
       { title: "Tell us what you’re seeing", text: "Low pressure, one zone not working, leaks, or coverage issues—we’ll ask 1–2 quick questions." },
-      { title: "On-site diagnosis", text: "We inspect the system, isolate the issue, and explain the recommended fix clearly." },
+      { title: "Diagnosis", text: "We inspect the system, isolate the issue, and explain the recommended fix clearly." },
       { title: "Repair & test", text: "We complete the repair and test zones so your system runs reliably again." },
     ],
   },
@@ -273,7 +273,7 @@ const TEXT: Record<Locale, LocaleText> = {
     ],
     steps: [
       { title: "Cuéntanos qué estás viendo", text: "Baja presión, una zona que no funciona, fugas o problemas de cobertura: te hacemos 1 o 2 preguntas rápidas." },
-      { title: "Diagnóstico en sitio", text: "Inspeccionamos el sistema, aislamos el problema y te explicamos claramente la solución recomendada." },
+      { title: "Diagnóstico", text: "Inspeccionamos el sistema, aislamos el problema y te explicamos claramente la solución recomendada." },
       { title: "Reparación y prueba", text: "Completamos la reparación y probamos las zonas para que tu sistema funcione de forma confiable otra vez." },
     ],
   },
@@ -490,11 +490,11 @@ export default async function CityTemplate({ city, locale }: { city: City; local
 
   const highlightsSub = isHub
     ? isEs
-      ? "Diagnóstico rápido, comunicación clara y servicio confiable en sitio en Miami-Dade y Broward."
-      : "Quick diagnosis, clear communication, and reliable on-site service across Miami and Broward."
+      ? "Diagnóstico rápido y comunicación clara en Miami-Dade y Broward."
+      : "Quick diagnosis and clear communication across Miami and Broward."
     : isEs
-      ? `Diagnóstico rápido, comunicación clara y servicio confiable en sitio en ${name} y ${county}.`
-      : `Quick diagnosis, clear communication, and reliable on-site service across ${name} and ${county}.`;
+      ? `Diagnóstico rápido y comunicación clara en ${name} y ${county}.`
+      : `Quick diagnosis and clear communication across ${name} and ${county}.`;
   const gallerySub = isHub
     ? isEs
       ? "Trabajos reales de sprinkler de CallTechCare en Miami-Dade y Broward."

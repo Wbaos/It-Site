@@ -41,7 +41,7 @@ const SERVICES_ES: Record<string, { title: string; description: string }> = {
   "sprinkler-repair-and-installation": {
     title: "Reparación de Sprinklers",
     description:
-      "Reparación de sprinklers e irrigación, y sistemas nuevos, a domicilio en Miami y Broward.",
+      "Reparación de sprinklers e irrigación, y sistemas nuevos, en Miami y Broward.",
   },
   "sprinkler-leak-repair": {
     title: "Reparación de Fugas de Sprinklers",
@@ -50,11 +50,11 @@ const SERVICES_ES: Record<string, { title: string; description: string }> = {
   "sprinkler-valve-repair": {
     title: "Reparación de Válvulas de Sprinklers",
     description:
-      "Válvulas que no abren, no cierran o dejan una zona sin regar: las diagnosticamos y reparamos en sitio.",
+      "Válvulas que no abren, no cierran o dejan una zona sin regar: las diagnosticamos y reparamos.",
   },
   "sprinkler-pump-replacement": {
     title: "Reemplazo de Bombas de Sprinklers",
-    description: "Bombas para sistemas de irrigación: reemplazo e instalación a domicilio.",
+    description: "Bombas para sistemas de irrigación: reemplazo e instalación.",
   },
   "sprinkler-timer-installation": {
     title: "Instalación de Temporizadores de Sprinklers",
@@ -84,7 +84,7 @@ const SERVICES_ES: Record<string, { title: string; description: string }> = {
   },
   "home-security": {
     title: "Instalación de Cámaras de Seguridad",
-    description: "Cámaras de seguridad para casas y pequeños negocios, instaladas a domicilio.",
+    description: "Cámaras de seguridad para casas y pequeños negocios, instaladas.",
   },
   // Live popular-services slug for the camera card (verified on the live
   // home page); the duplicate's home-security entry is kept as a fallback.
@@ -143,8 +143,8 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
         <h2 id="services-title" className="services-heading">{isSpanish ? "Servicios Populares en Miami y Broward" : "Popular Services in Miami & Broward"}</h2>
         <p className="services-sub">
           {isSpanish
-            ? "Desde la reparación de sprinklers y la solución de problemas de irrigación hasta la instalación de cámaras de seguridad, ayudamos a casas y pequeños negocios en Miami y Broward con servicio confiable a domicilio."
-            : "From sprinkler repair and irrigation troubleshooting to security camera installation, we help homes and small businesses across Miami and Broward with reliable, on-site service."}
+            ? "Desde la reparación de sprinklers y la solución de problemas de irrigación hasta la instalación de cámaras de seguridad, ayudamos a casas y pequeños negocios en Miami y Broward."
+            : "From sprinkler repair and irrigation troubleshooting to security camera installation, we help homes and small businesses across Miami and Broward."}
         </p>
 
        <div className="services-grid">
@@ -177,13 +177,6 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
             <div className="service-card-bottom">
               {s.showPrice && s.price && (
                 <p className="service-card-price">${s.price}</p>
-              )}
-              {s.mode && (
-                <span className="service-card-mode">
-                  {s.mode === "in-home" && (isSpanish ? "A Domicilio" : "In-Home")}
-                  {s.mode === "online" && (isSpanish ? "En Línea" : "Online")}
-                  {s.mode === "both" && (isSpanish ? "En Línea / A Domicilio" : "Online / In-Home")}
-                </span>
               )}
             </div>
 

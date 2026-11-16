@@ -26,8 +26,8 @@ export default function SEOIntro({ locale = "en", doc }: { locale?: "en" | "es";
     (isSpanish ? "reparación de sprinklers en Miami" : "Sprinkler Repair Miami");
   const p1After = pick(doc?.seoIntroP1After, doc?.seoIntroP1AfterEs, isSpanish) ||
     (isSpanish
-      ? " — y la solución de problemas de irrigación en Miami-Dade y Broward. Ayudamos con fugas, cabezales rotos, mala cobertura, problemas de temporizador o controlador y mantenimiento del sistema, con comunicación clara y servicio confiable a domicilio."
-      : " — and irrigation troubleshooting across Miami-Dade and Broward. We help with leaks, broken sprinkler heads, poor coverage, timer/controller issues, and system tune-ups—with clear communication and reliable on-site service.");
+      ? " — y la solución de problemas de irrigación en Miami-Dade y Broward. Ayudamos con fugas, cabezales rotos, mala cobertura, problemas de temporizador o controlador y mantenimiento del sistema."
+      : " — and irrigation troubleshooting across Miami-Dade and Broward. We help with leaks, broken sprinkler heads, poor coverage, timer/controller issues, and system tune-ups.");
   const p2 = pick(doc?.seoIntroP2, doc?.seoIntroP2Es, isSpanish) ||
     (isSpanish
       ? "Después de la reparación de sprinklers y el servicio de irrigación, también ofrecemos instalación de cámaras de seguridad para casas y pequeños negocios."

@@ -47,11 +47,11 @@ const DEFAULT_FAQS: FaqItem[] = [
   },
   {
     q: "Are your technicians experienced?",
-    a: `Yes. Our technicians work in person at your home, inspect first, then give you a clear estimate before starting. Work is backed by our 1-year workmanship warranty when CallTechCare performs the work and provides the materials, and we hold {{googleRatingEn}}.`,
+    a: `Yes. Our technicians inspect first, then give you a clear estimate before starting. Work is backed by our 1-year workmanship warranty when CallTechCare performs the work and provides the materials, and we hold {{googleRatingEn}}.`,
   },
   {
     q: "What areas do you serve?",
-    a: "CallTechCare provides in-home service across Miami-Dade and Broward County, including Miami, Miramar, Pembroke Pines, Hollywood, Fort Lauderdale, and surrounding South Florida communities.",
+    a: "CallTechCare provides service across Miami-Dade and Broward County, including Miami, Miramar, Pembroke Pines, Hollywood, Fort Lauderdale, and surrounding South Florida communities.",
   },
 ];
 
@@ -86,11 +86,11 @@ const DEFAULT_FAQS_ES: FaqItem[] = [
   },
   {
     q: "¿Sus técnicos tienen experiencia?",
-    a: `Sí. Nuestros técnicos trabajan en persona en tu casa, primero inspeccionan y luego te dan un estimado claro antes de empezar. El trabajo tiene nuestra garantía de mano de obra de 1 año cuando CallTechCare hace el trabajo y provee los materiales, y tenemos {{googleRatingEs}}.`,
+    a: `Sí. Nuestros técnicos primero inspeccionan y luego te dan un estimado claro antes de empezar. El trabajo tiene nuestra garantía de mano de obra de 1 año cuando CallTechCare hace el trabajo y provee los materiales, y tenemos {{googleRatingEs}}.`,
   },
   {
     q: "¿Qué áreas atienden?",
-    a: "CallTechCare presta servicio a domicilio en Miami-Dade y Broward, incluyendo Miami, Miramar, Pembroke Pines, Hollywood, Fort Lauderdale y otras comunidades del sur de Florida.",
+    a: "CallTechCare presta servicio en Miami-Dade y Broward, incluyendo Miami, Miramar, Pembroke Pines, Hollywood, Fort Lauderdale y otras comunidades del sur de Florida.",
   },
 ];
 

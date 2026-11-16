@@ -365,8 +365,7 @@ export default async function ServicesPage() {
 
           <p>
             We install new pumps. And we install wireless security cameras
-            for homes and businesses. Every job is done on site, at your
-            property.
+            for homes and businesses.
           </p>
 
           <p>
@@ -395,8 +394,8 @@ export default async function ServicesPage() {
               time — we coordinate it with you.
             </li>
             <li>
-              We come to your property, inspect the system and give you the
-              price on site. The inspection is free.
+              We inspect the system and give you the price. The inspection
+              is free.
             </li>
             <li>
               Most repairs are done the same day, within business hours. The
@@ -419,7 +418,7 @@ export default async function ServicesPage() {
 
           <h4>Do you charge for the inspection?</h4>
           <p>
-            No. The inspection is free. We come to your property, look at
+            No. The inspection is free. We look at
             the system and tell you what it needs and what it costs. There is
             no charge for the visit itself.
           </p>

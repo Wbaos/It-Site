@@ -32,7 +32,7 @@ const FALLBACK_EN: FaqCopy = {
   faqs: [
     {
       q: "What areas do you serve?",
-      a: "CallTechCare provides on-site services across Miami-Dade and Broward, including Miami, Miramar, Pembroke Pines, Hollywood, and Fort Lauderdale.",
+      a: "CallTechCare provides services across Miami-Dade and Broward, including Miami, Miramar, Pembroke Pines, Hollywood, and Fort Lauderdale.",
     },
     {
       q: "Do you offer sprinkler repair & irrigation services?",
@@ -74,7 +74,7 @@ const FALLBACK_ES: FaqCopy = {
   faqs: [
     {
       q: "¿Qué áreas atienden?",
-      a: "CallTechCare presta servicios a domicilio en Miami-Dade y Broward, incluyendo Miami, Miramar, Pembroke Pines, Hollywood y Fort Lauderdale.",
+      a: "CallTechCare presta servicios en Miami-Dade y Broward, incluyendo Miami, Miramar, Pembroke Pines, Hollywood y Fort Lauderdale.",
     },
     {
       q: "¿Ofrecen servicios de reparación de sprinklers e irrigación?",

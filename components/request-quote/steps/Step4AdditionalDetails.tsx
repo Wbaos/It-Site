@@ -78,7 +78,7 @@ export default function Step4AdditionalDetails(props: {
               <ul className="rq-step4__benefits">
                 <li className="rq-step4__benefit">
                   <span className="rq-step4__benefitCheck">✓</span>
-                  {locale === "es" ? "Inspeccionar y evaluar el trabajo en persona" : "Inspect and assess the job in person"}
+                  {locale === "es" ? "Inspeccionar y evaluar el trabajo" : "Inspect and assess the job"}
                 </li>
 
                 <li className="rq-step4__benefit">
@@ -88,7 +88,7 @@ export default function Step4AdditionalDetails(props: {
 
                 <li className="rq-step4__benefit">
                   <span className="rq-step4__benefitCheck">✓</span>
-                  {locale === "es" ? "Responder tus preguntas en persona" : "Answer any questions face-to-face"}
+                  {locale === "es" ? "Responder tus preguntas" : "Answer any questions"}
                 </li>
               </ul>
 
