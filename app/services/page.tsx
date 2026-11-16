@@ -359,8 +359,8 @@ export default async function ServicesPage() {
             CallTechCare repairs and installs sprinkler systems across
             Miami-Dade and Broward County. We fix leaks, broken heads, bad
             coverage, faulty valves and zones that do not turn on. We also
-            install new sprinkler systems, drip irrigation, backflow devices,
-            new irrigation wells, WiFi controllers, timers and rain sensors.
+            install new sprinkler systems, drip irrigation, new irrigation
+            wells, WiFi controllers, timers and rain sensors.
           </p>
 
           <p>
