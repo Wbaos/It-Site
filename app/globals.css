@@ -11146,13 +11146,19 @@ object-fit: cover;
 .service-image {
   flex: 1 1 600px;
   max-width: 700px;
-  /* Equal-height hero: the image fills the full height of the row so it
-     always matches the text card beside it (a portrait asset is cropped
-     with object-fit, never distorted). The row is capped at ~600px on
-     wide desktop so an unusually long card cannot blow the image up.
-     Mobile keeps its own fixed 300px banner below. */
-  height: 100%;
+  /* Equal-height hero, fixed properly: the photo is absolutely
+     positioned, so its intrinsic portrait/landscape aspect can never
+     set the row height (PR #474's height: 100% did nothing — a
+     percentage of an indefinite flex-row height computes to auto, so
+     the portrait rain-sensor asset dragged the row to ~913px and the
+     landscape camera asset stopped ~72px short of the card). The row
+     height now comes only from the text card's content (~586px), and
+     the photo fills it exactly, cropped with object-fit, never
+     distorted. min-height keeps a usable photo if a card is ever very
+     short. Mobile keeps its own fixed 300px banner below. */
+  position: relative;
   align-self: stretch;
+  min-height: 320px;
   border-radius: 1rem;
   overflow: hidden;
   display: block;
@@ -11164,6 +11170,8 @@ object-fit: cover;
 }
 
 .service-hero {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -11172,14 +11180,12 @@ object-fit: cover;
   display: block;
 }
 
-/* Wide desktop only: cap the hero row at ~600px so an unusually long card
-   cannot stretch the image past it. Kept out of the base rule so the row
-   can wrap normally at tablet widths without clipping. */
-@media (min-width: 1100px) {
-  .service-top {
-    max-height: 600px;
-  }
-}
+/* Wide desktop: NO max-height on the hero row. PR #474 capped it at
+   600px, but the row content was ~913px tall, and a flex container
+   overflows visibly — so the About section was laid out right after
+   the 600px box, on top of the overflowing photo and card. The row
+   height must follow the text card; the photo fills it, so nothing
+   can overflow the row anymore. */
 
 @media (max-width: 700px) {
   .service-top {
