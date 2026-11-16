@@ -394,8 +394,8 @@ export default async function ServicesPage() {
               time — we coordinate it with you.
             </li>
             <li>
-              We come to your property, inspect the system and give you the
-              price. The inspection is free.
+              We inspect the system and give you the price. The inspection
+              is free.
             </li>
             <li>
               Most repairs are done the same day, within business hours. The
@@ -418,7 +418,7 @@ export default async function ServicesPage() {
 
           <h4>Do you charge for the inspection?</h4>
           <p>
-            No. The inspection is free. We come to your property, look at
+            No. The inspection is free. We look at
             the system and tell you what it needs and what it costs. There is
             no charge for the visit itself.
           </p>
