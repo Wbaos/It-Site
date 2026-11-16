@@ -84,7 +84,7 @@ const SERVICES_ES: Record<string, { title: string; description: string }> = {
   },
   "home-security": {
     title: "Instalación de Cámaras de Seguridad",
-    description: "Cámaras de seguridad para casas y pequeños negocios, instaladas.",
+    description: "Cámaras de seguridad para casas y pequeños negocios.",
   },
   // Live popular-services slug for the camera card (verified on the live
   // home page); the duplicate's home-security entry is kept as a fallback.
@@ -177,6 +177,20 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
             <div className="service-card-bottom">
               {s.showPrice && s.price && (
                 <p className="service-card-price">${s.price}</p>
+              )}
+              {/* No badge for in-home services: every job is done at the
+                  customer's property by definition, so the "In-Home" tag
+                  was redundant. The Online / Online + In-Home labels stay
+                  for services that use them. */}
+              {s.mode === "online" && (
+                <span className="service-card-mode">
+                  {isSpanish ? "En Línea" : "Online"}
+                </span>
+              )}
+              {s.mode === "both" && (
+                <span className="service-card-mode">
+                  {isSpanish ? "En Línea / A Domicilio" : "Online / In-Home"}
+                </span>
               )}
             </div>
 

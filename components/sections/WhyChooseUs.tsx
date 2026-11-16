@@ -28,7 +28,9 @@ export default async function WhyChooseUs({
   // below) instead of showing a stale rating/count.
   // Same five cards, same icons, same order in both languages; only the
   // text changes. The Spanish wording is a faithful translation of the
-  // English wording.
+  // English wording. (There used to be a sixth card, "In-Person Service,
+  // At Your Home" — removed: every job is done at the customer's property
+  // by definition, so calling it out was redundant.)
   const fallbackFeatures = isSpanish
     ? [
         {

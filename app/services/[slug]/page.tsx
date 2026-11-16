@@ -1221,6 +1221,16 @@ export default async function ServicePage({
   const install = sub.filter((s) => s.serviceType === "installation");
   const support = sub.filter((s) => s.serviceType === "support");
 
+  // No badge for in-home services: every job is done at the customer's
+  // property by definition, so the "In-Home" tag was redundant. The
+  // Online / Online + In-Home labels stay for services that use them.
+  const modeLabel =
+    service.mode === "online"
+      ? (isSpanish ? "En línea" : "Online")
+      : service.mode === "both"
+      ? (isSpanish ? "En línea + A domicilio" : "Online + In-Home")
+      : null;
+
   if (hasSubServices) {
   return (
     <>
@@ -1356,6 +1366,12 @@ export default async function ServicePage({
                 reviewsCount={googleRatingSummary.total}
                 locale={locale}
               />
+            )}
+
+            {modeLabel && (
+              <span className="service-tag">
+                {modeLabel}
+              </span>
             )}
 
             {descriptionSplit.excerpt && (

@@ -490,11 +490,11 @@ export default async function CityTemplate({ city, locale }: { city: City; local
 
   const highlightsSub = isHub
     ? isEs
-      ? "Diagnóstico rápido y comunicación clara en Miami-Dade y Broward."
-      : "Quick diagnosis and clear communication across Miami and Broward."
+      ? "Diagnóstico rápido, comunicación clara y servicio confiable en Miami-Dade y Broward."
+      : "Quick diagnosis, clear communication, and reliable service across Miami and Broward."
     : isEs
-      ? `Diagnóstico rápido y comunicación clara en ${name} y ${county}.`
-      : `Quick diagnosis and clear communication across ${name} and ${county}.`;
+      ? `Diagnóstico rápido, comunicación clara y servicio confiable en ${name} y ${county}.`
+      : `Quick diagnosis, clear communication, and reliable service across ${name} and ${county}.`;
   const gallerySub = isHub
     ? isEs
       ? "Trabajos reales de sprinkler de CallTechCare en Miami-Dade y Broward."
