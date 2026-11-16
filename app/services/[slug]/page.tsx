@@ -508,7 +508,9 @@ export default async function ServicePage({
   // Hero/About split, computed once: the hero shows the intro, the About
   // section shows the rest — same text, split once, so no sentence is
   // repeated (PR #469 showed the intro verbatim in both places).
-  const descriptionSplit = splitDescription(displayDescription, 300);
+  // Cap 250: competitor heroes run 1–2 sentences (20–100 words), and no
+  // competitor puts the full description in the hero.
+  const descriptionSplit = splitDescription(displayDescription, 250);
   const displayWarranty =
     isSpanish && service?.warrantyEs ? service.warrantyEs : service?.warranty;
   const displayDetails =
@@ -1472,6 +1474,37 @@ export default async function ServicePage({
             </ul>
           </div>
         )}
+
+        {/* What to Expect: 4 numbered steps, same on every service page,
+            built only from already-approved business facts — free
+            inspection, clear upfront estimate with no pressure, same-day
+            work within business hours when possible, testing before
+            leaving + the conditional 1-year workmanship warranty. No
+            prices, no 24/7, no certified/licensed language. Follows the
+            competitor consensus (Conserva / GroundLogic / Pacific all
+            show the visit as numbered steps right after What's
+            Included). */}
+        <div className="service-expect-box">
+          <h2>{isSpanish ? "Qué esperar" : "What to Expect"}</h2>
+          <ol className="service-expect-list">
+            {(isSpanish
+              ? [
+                  "Empezamos con una inspección gratis de tu sistema.",
+                  "Revisamos todo en el lugar y te damos un estimado claro por adelantado, sin presión.",
+                  "Cuando es posible, hacemos el trabajo el mismo día, dentro del horario.",
+                  "Probamos todo antes de irnos. El trabajo tiene garantía de mano de obra de 1 año cuando CallTechCare hace el trabajo y provee los materiales.",
+                ]
+              : [
+                  "We start with a free inspection of your system.",
+                  "We check everything on site and give you a clear upfront estimate — with no pressure.",
+                  "When possible, we do the work the same day, within business hours.",
+                  "We test everything before we leave. The work carries a 1-year workmanship warranty when CallTechCare performs the work and provides the materials.",
+                ]
+            ).map((step: string, i: number) => (
+              <li key={i}>{step}</li>
+            ))}
+          </ol>
+        </div>
 
         <BeforeAfterSection data={displayBeforeAfter} locale={locale} />
 
