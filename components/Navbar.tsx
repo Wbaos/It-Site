@@ -101,8 +101,8 @@ export default function Navbar({
   // ("/sprinkler-repair-{city}" <-> "/es/reparacion-de-sprinklers-{city}",
   // hub Miami included), the services hub pair ("/services" <->
   // "/es/servicios"), the eleven service page pairs (plus the two
-  // group pages), the fourteen blog pairs ("/blog" <-> "/es/blog" and
-  // thirteen posts), "/contact" <-> "/es/contacto".
+  // group pages), the sixteen blog pairs ("/blog" <-> "/es/blog" and
+  // fifteen posts), "/contact" <-> "/es/contacto".
   const ES_HUB_HREF = "/es";
   const EN_TO_ES: Record<string, string> = {
     "/": "/es",
@@ -195,6 +195,10 @@ export default function Navbar({
       "/es/blog/controladores-inteligentes-de-sprinklers-en-miami-timers-wifi",
     "/blog/smart-sprinkler-system-repair-miami":
       "/es/blog/reparacion-de-sistema-de-sprinklers-inteligente-miami",
+    "/blog/common-sprinkler-system-problems-how-to-fix-them":
+      "/es/blog/problemas-comunes-de-sprinklers-como-arreglarlos",
+    "/blog/how-to-find-sprinkler-leak-in-yard":
+      "/es/blog/como-encontrar-una-fuga-de-sprinklers-en-tu-jardin",
     "/blog/sprinkler-repair-miami-fl":
       "/es/blog/reparacion-de-sprinklers-miami-fl",
     "/blog/miami-sprinkler": "/es/blog/sprinklers-en-miami",
@@ -301,6 +305,10 @@ export default function Navbar({
       "/blog/smart-sprinkler-controllers-miami-wifi-timers",
     "/es/blog/reparacion-de-sistema-de-sprinklers-inteligente-miami":
       "/blog/smart-sprinkler-system-repair-miami",
+    "/es/blog/problemas-comunes-de-sprinklers-como-arreglarlos":
+      "/blog/common-sprinkler-system-problems-how-to-fix-them",
+    "/es/blog/como-encontrar-una-fuga-de-sprinklers-en-tu-jardin":
+      "/blog/how-to-find-sprinkler-leak-in-yard",
     "/es/blog/reparacion-de-sprinklers-miami-fl":
       "/blog/sprinkler-repair-miami-fl",
     "/es/blog/sprinklers-en-miami": "/blog/miami-sprinkler",
