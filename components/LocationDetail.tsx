@@ -37,13 +37,8 @@ import { resolveSiteSettings } from "@/lib/sanitySettings";
 import GoogleReviewsCTA from "@/components/sections/GoogleReviewsCTA";
 import { urlFor } from "@/lib/sanityImage";
 import {
-  Phone,
   Mail,
-  MapPin,
-  Star,
-  CheckCircle2,
   ArrowLeft,
-  ArrowUpRight,
   Clock,
   Monitor,
   Home,
@@ -53,6 +48,7 @@ import {
   Wifi,
   type LucideIcon,
 } from "lucide-react";
+import SpriteIcon from "@/components/common/SpriteIcon";
 
 
 // Icon mapping function
@@ -236,7 +232,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
         {/* Hero Content */}
         <div className="location-hero-content">
           <div className="location-hero-city-badge">
-            <MapPin />
+            <SpriteIcon name="map-pin-lucide" />
             {/* Single expression on purpose (audit fix 2026-11-10): the
                 split {city}, {state} made React emit "Miami<!-- -->, <!--
                 -->Florida", which text extractors read as "Miami ,
@@ -293,7 +289,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                 <div className="location-reasons-grid">
                   {(isSpanish && location.whyChooseUsEs ? location.whyChooseUsEs : location.whyChooseUs).map((reason, index) => (
                     <div key={index} className="location-reason-item">
-                      <CheckCircle2 />
+                      <SpriteIcon name="check-circle-2" />
                       <span className="location-reason-text">{reason}</span>
                     </div>
                   ))}
@@ -361,7 +357,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                 {location.neighborhoods && location.neighborhoods.length > 0 && (
                   <>
                     <div className="location-coverage-text">
-                      <MapPin />
+                      <SpriteIcon name="map-pin-lucide" />
                       <p className="location-section-text">
                         {isSpanish ? `Servimos con orgullo a ${location.city} y áreas cercanas dentro de un radio de ${location.serviceRadius?.miles || 45} millas.` : `We proudly serve ${location.city} and surrounding areas within a ${location.serviceRadius?.miles || 45}-mile radius.`}
                         {location.serviceRadius?.population && (
@@ -396,9 +392,9 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                     <div className="location-sprinkler-city-grid">
                       {sprinklerCityLinks.map((city) => (
                         <Link key={city.href} href={isSpanish ? esCityHref(city.href) : city.href} className="location-sprinkler-city-link">
-                          <MapPin size={18} aria-hidden="true" />
+                          <SpriteIcon name="map-pin-lucide" size={18} ariaHidden />
                           <span>{city.label}</span>
-                          <ArrowUpRight size={18} aria-hidden="true" />
+                          <SpriteIcon name="arrow-up-right" size={18} ariaHidden />
                         </Link>
                       ))}
                     </div>
@@ -424,7 +420,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
               <div className="location-sidebar-info">
                {location.address && location.slug?.current === "miami" && (
                   <div className="location-sidebar-info-item">
-                    <MapPin />
+                    <SpriteIcon name="map-pin-lucide" />
                     <div>
                       <p className="location-sidebar-info-label">{isSpanish ? "Dirección" : "Address"}</p>
                       <p className="location-sidebar-info-value">
@@ -437,7 +433,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                 )}
                 {location.phone && (
                   <div className="location-sidebar-info-item">
-                    <Phone />
+                    <SpriteIcon name="phone-lucide" />
                     <div>
                       <p className="location-sidebar-info-label">{isSpanish ? "Teléfono" : "Phone"}</p>
                       <a
@@ -512,9 +508,9 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                     <div key={index} className="location-badge-item">
                       <div className="location-badge-icon">
                         {badge.toLowerCase().includes('star') ? (
-                          <Star />
+                          <SpriteIcon name="star-lucide" />
                         ) : (
-                          <CheckCircle2 />
+                          <SpriteIcon name="check-circle-2" />
                         )}
                       </div>
                       <p className="location-badge-label">{isSpanish ? (BADGE_ES[badge] || badge) : badge}</p>

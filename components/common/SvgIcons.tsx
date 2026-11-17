@@ -65,28 +65,104 @@ export default function SvgIcon({
     color = "currentColor",
     className = "",
 }: SvgIconProps) {
+    // Sprite fast path — the symbols live in IconSprite, rendered once by
+    // the root layout. These icons used to be inlined on every use: the
+    // review stars alone shipped 150+ copies of the same path per page.
+    // The <svg> attributes below are copied verbatim from each icon's
+    // original inline case (fill / stroke / stroke-width / size defaults),
+    // so the rendering is identical; only the repeated path data is gone.
+    // (No viewBox here: the <symbol> carries it. No xmlns: these render
+    // in HTML pages, where it is unnecessary.) Icons not listed here fall
+    // through to the inline rendering below, unchanged.
+    if (name === "star") {
+        return (
+            <svg
+                width={size || 18}
+                height={size || 18}
+                className={className}
+                fill="none"
+                stroke="none"
+            >
+                <use href="#ctc-star" />
+            </svg>
+        );
+    }
+    if (name === "verified-check") {
+        return (
+            <svg
+                width={size || 14}
+                height={size || 14}
+                className={className}
+                fill={color || "currentColor"}
+            >
+                <use href="#ctc-verified-check" />
+            </svg>
+        );
+    }
+    if (name === "checkmark-circle") {
+        return (
+            <svg
+                width={size}
+                height={size}
+                className={className}
+                fill={color || "#34d399"}
+            >
+                <use href="#ctc-checkmark-circle" />
+            </svg>
+        );
+    }
+    const strokeSprite = (id: string, strokeWidth: number | string) => (
+        <svg
+            width={size}
+            height={size}
+            className={className}
+            fill="none"
+            stroke={color}
+            strokeWidth={strokeWidth}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <use href={`#${id}`} />
+        </svg>
+    );
     switch (name) {
-        // ------------------------------------------------------------------------
-        // Map Pin (location)
-        // ------------------------------------------------------------------------
+        case "check":
+            return strokeSprite("ctc-check", 3);
         case "map-pin":
+            return strokeSprite("ctc-map-pin", 2);
+        case "chevron-left":
+            return strokeSprite("ctc-chevron-left", 2);
+        case "chevron-right":
+            return strokeSprite("ctc-chevron-right", 2);
+        case "chevron-down":
+            return strokeSprite("ctc-chevron-down", 2);
+        case "arrow-right-simple":
+            return strokeSprite("ctc-arrow-right-simple", 2);
+        case "phone":
+            return strokeSprite("ctc-phone", 2);
+        case "mail":
+            return strokeSprite("ctc-mail", 2);
+        case "search":
+            return strokeSprite("ctc-search", 2);
+        case "tag":
+            return strokeSprite("ctc-tag", 2);
+        case "calendar":
+            return strokeSprite("ctc-calendar", 2);
+        case "document":
             return (
                 <svg
-                    xmlns="http://www.w3.org/2000/svg"
                     width={size}
                     height={size}
-                    viewBox="0 0 24 24"
+                    className={className}
                     fill="none"
                     stroke={color}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className={className}
+                    strokeWidth="1.5"
                 >
-                    <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z" />
-                    <circle cx="12" cy="10" r="3" />
+                    <use href="#ctc-document" />
                 </svg>
             );
+    }
+    switch (name) {
         // ------------------------------------------------------------------------
         // Alert Circle (exclamation)
         // ------------------------------------------------------------------------
@@ -129,50 +205,6 @@ export default function SvgIcon({
                     <path d="M12 2l7 4v6c0 5-3 9-7 10-4-1-7-5-7-10V6l7-4z" />
                 </svg>
             );
-        // ------------------------------------------------------------------------
-        // Phone
-        // ------------------------------------------------------------------------
-        case "phone":
-            return (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={size}
-                    height={size}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke={color}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className={className}
-                >
-                    <path d="M22 16.92V21a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 5.18 2 2 0 0 1 4.11 3h4.08a2 2 0 0 1 2 1.72c.12.86.31 1.7.57 2.5a2 2 0 0 1-.45 2.11L8.09 11.91a16 16 0 0 0 6 6l2.58-2.22a2 2 0 0 1 2.11-.45c.8.26 1.64.45 2.5.57A2 2 0 0 1 22 16.92z" />
-                </svg>
-            );
-
-        // ------------------------------------------------------------------------
-        // Mail
-        // ------------------------------------------------------------------------
-        case "mail":
-            return (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={size}
-                    height={size}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke={color}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className={className}
-                >
-                    <rect x="3" y="5" width="18" height="14" rx="2" />
-                    <path d="M3 7l9 6 9-6" />
-                </svg>
-            );
-
-        // ------------------------------------------------------------------------
         // Paper plane / Send
         // ------------------------------------------------------------------------
         case "paper-plane":
@@ -193,48 +225,6 @@ export default function SvgIcon({
                     <path d="M22 2L15 22L11 13L2 9L22 2Z" />
                 </svg>
             );
-
-        // ------------------------------------------------------------------------
-        // Search (magnifier)
-        // ------------------------------------------------------------------------
-        case "search":
-            return (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={size}
-                    height={size}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke={color}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className={className}
-                >
-                    <path d="M21 21L16.65 16.65" />
-                    <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" />
-                </svg>
-            );
-
-        // Document icon for Request a Quote
-        case "document":
-            return (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={size}
-                    height={size}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke={color}
-                    strokeWidth={1.5}
-                    className={className}
-                >
-                    <rect x="5" y="3" width="14" height="18" rx="2" stroke={color} strokeWidth="1.5" />
-                    <path d="M9 7h6M9 11h6M9 15h3" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
-            );
-
-        // Close / X
         case "x":
             return (
                 <svg
@@ -253,95 +243,6 @@ export default function SvgIcon({
                     <path d="M6 6l12 12" />
                 </svg>
             );
-    
-        // ------------------------------------------------------------------------
-        // Arrow  Right
-        // ------------------------------------------------------------------------
-        case "chevron-right":
-            return (
-                <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={size}
-                height={size}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke={color}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className={className}
-                >
-                <path d="M5 12h14" />
-                <path d="M13 5l7 7-7 7" />
-                </svg>
-            );
-
-                 // ------------------------------------------------------------------------
-        // Arrow Down (Accordion)
-        // ------------------------------------------------------------------------
-        case "chevron-down":
-            return (
-                <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={size}
-                height={size}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke={color}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className={className}
-                >
-                <polyline points="6 9 12 15 18 9" />
-                </svg>
-            );
-
-            // ------------------------------------------------------------------------
-                // Arrow Right Simple (single chevron)
-                // ------------------------------------------------------------------------
-                case "arrow-right-simple":
-                        return (
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width={size}
-                                    height={size}
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke={color}
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className={className}
-                                >
-                                    <polyline points="8 5 16 12 8 19" />
-                                </svg>
-                        );
-        // ------------------------------------------------------------------------
-        // Arrow  Left
-        // ------------------------------------------------------------------------
-        
-        case "chevron-left":
-            return (
-                <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={size}
-                height={size}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke={color}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className={className}
-                >
-                <path d="M19 12H5" />
-                <path d="M11 19l-7-7 7-7" />
-                </svg>
-            );
-
-
-        // ------------------------------------------------------------------------
         // User Avatar
         // ------------------------------------------------------------------------
         case "user-avatar":
@@ -571,29 +472,6 @@ export default function SvgIcon({
                     <path d="M4.5 20.25a7.5 7.5 0 1115 0v.75H4.5v-.75z" />
                 </svg>
             );
-
-        // ------------------------------------------------------------------------
-        // Calendar Icon
-        // ------------------------------------------------------------------------
-        case "calendar":
-            return (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={size}
-                    height={size}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke={color}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className={className}
-                >
-                    <path d="M8 7V3m8 4V3" />
-                    <rect x="3" y="5" width="18" height="16" rx="2" />
-                    <path d="M3 11h18" />
-                </svg>
-            );
         // ------------------------------------------------------------------------
         // Clock Icon
         // ------------------------------------------------------------------------
@@ -613,26 +491,6 @@ export default function SvgIcon({
                 >
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
-            );
-        // ------------------------------------------------------------------------
-        // Check Icon
-        // ------------------------------------------------------------------------
-        case "check":
-            return (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={size}
-                    height={size}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke={color}
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className={className}
-                >
-                    <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
             );
         // ------------------------------------------------------------------------
@@ -662,27 +520,6 @@ export default function SvgIcon({
                 </g>
                 </svg>
             );
-        // ------------------------------------------------------------------------
-        // Tag
-        // ------------------------------------------------------------------------
-        case "tag":
-            return (
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width={size}
-                        height={size}
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke={color}
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className={className}
-                    >
-                        <path d="M20.59 13.41L11 3H3v8l9.59 9.59c.78.78 2.05.78 2.83 0l5.17-5.17c.78-.78.78-2.05 0-2.83z" />
-                        <circle cx="7.5" cy="7.5" r="1.5" />
-                    </svg>
-                );
         // ------------------------------------------------------------------------
         // privacy-shield
         // ------------------------------------------------------------------------
@@ -961,27 +798,6 @@ export default function SvgIcon({
                 </svg>
             );
         // ------------------------------------------------------------------------
-        // star
-        // ------------------------------------------------------------------------
-        case "star":
-        return (
-            <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width={size || 18}
-            height={size || 18}
-            className={className}
-            fill="none" 
-            stroke="none"
-            >
-            <path
-                d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-                className="star-shape"
-            />
-            </svg>
-        );
-
-        // ------------------------------------------------------------------------
         // star-outline (stroke, color controlled)
         // ------------------------------------------------------------------------
         case "star-outline":
@@ -1001,23 +817,6 @@ export default function SvgIcon({
                     <polygon points="12 2 15 8.5 22 9.3 17 14 18.5 21 12 17.8 5.5 21 7 14 2 9.3 9 8.5 12 2" />
                 </svg>
             );
-        // ------------------------------------------------------------------------
-        // verified-check
-        // ------------------------------------------------------------------------
-        case "verified-check":
-            return (
-                <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill={color || "currentColor"}
-                width={size || 14}
-                height={size || 14}
-                className={className}
-                >
-                <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm-1.2 14.1-4.2-4.2 1.4-1.4 2.8 2.8 5.8-5.8 1.4 1.4Z" />
-                </svg>
-            );
-        
         // ========================================================================
         // ASSESSMENT ICONS
         // ========================================================================
@@ -1147,27 +946,6 @@ export default function SvgIcon({
                 <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
             );
-        
-        // ------------------------------------------------------------------------
-        // checkmark-circle (Benefits)
-        // ------------------------------------------------------------------------
-        case "checkmark-circle":
-            return (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={size}
-                    height={size}
-                    viewBox="0 0 50 50"
-                    fill="none"
-                    className={className}
-                >
-                    <path
-                        d="M 25 2 C 12.317 2 2 12.317 2 25 C 2 37.683 12.317 48 25 48 C 37.683 48 48 37.683 48 25 C 48 20.44 46.660281 16.189328 44.363281 12.611328 L 42.994141 14.228516 C 44.889141 17.382516 46 21.06 46 25 C 46 36.579 36.579 46 25 46 C 13.421 46 4 36.579 4 25 C 4 13.421 13.421 4 25 4 C 30.443 4 35.393906 6.0997656 39.128906 9.5097656 L 40.4375 7.9648438 C 36.3525 4.2598437 30.935 2 25 2 z M 43.236328 7.7539062 L 23.914062 30.554688 L 15.78125 22.96875 L 14.417969 24.431641 L 24.083984 33.447266 L 44.763672 9.046875 L 43.236328 7.7539062 z"
-                        fill={color || "#34d399"}
-                    />
-                </svg>
-            );
-        
         // ------------------------------------------------------------------------
         // dollar-circle (Pricing)
         // ------------------------------------------------------------------------

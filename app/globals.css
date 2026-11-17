@@ -11255,11 +11255,18 @@ object-fit: cover;
   gap: 1px;
 }
 
-.star-outline .star-shape {
-  fill: #475569;
+/* Star fills live on the <svg> itself now (see IconSprite): <use> shadow
+   DOM does not match descendant selectors like ".star-filled .star-shape",
+   but fill/stroke inherit through it. Effective values unchanged — the
+   later ".star-outline .star-shape" rule below used to win over the
+   #475569 fill, so outlines were already transparent with a gold stroke. */
+.star-outline {
+  fill: transparent;
+  stroke: #facc15;
+  stroke-width: 1.6;
 }
 
-.star-filled .star-shape {
+.star-filled {
   fill: #facc15;
 }
 
@@ -12373,11 +12380,6 @@ object-fit: cover;
   margin: 20px 0;
   display: flex;           
 }
-.star-outline .star-shape {
-  fill: transparent;
-  stroke: #facc15;
-  stroke-width: 1.6;
-}     
 
 @media (max-width: 1299px) and (min-width: 760px) {
   .carousel-slide {
