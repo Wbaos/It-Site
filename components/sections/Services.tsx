@@ -3,6 +3,7 @@ import Image from "next/image";
 import { sanity } from "@/lib/sanity";
 import { urlFor } from "@/lib/sanityImage";
 import { serviceHref } from "@/lib/serviceTwins";
+import { serviceCardText } from "@/lib/serviceCardText";
 
 export const revalidate = 0;
 
@@ -171,7 +172,7 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
             <h3 className="service-card-title">{title}</h3>
 
             {description && (
-              <p className="service-card-desc">{shortExcerpt(description)}</p>
+              <p className="service-card-desc">{serviceCardText(s.slug, isSpanish ? "es" : "en") ?? shortExcerpt(description)}</p>
             )}
 
             <div className="service-card-bottom">

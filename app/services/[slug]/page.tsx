@@ -15,6 +15,7 @@ import ServiceRating from "@/components/ServiceRating";
 import FaqAccordion from "@/components/FaqAccordion";
 import ServiceGroupList from "@/components/ServiceGroupList";
 import { SERVICE_ES_PATHS, serviceHref } from "@/lib/serviceTwins";
+import { serviceCardText } from "@/lib/serviceCardText";
 import { cityHref } from "@/lib/cityTwins";
 import BeforeAfterSection from "@/components/BeforeAfterSection";
 import QuickLeadForm from "@/components/QuickLeadForm";
@@ -577,11 +578,13 @@ export default async function ServicePage({
       slug: s.slug,
       title:
         isSpanish && info?.titleEs ? info.titleEs : info?.title ?? s.title,
-      description: shortExcerpt(
-        isSpanish && info?.descriptionEs
-          ? info.descriptionEs
-          : info?.description
-      ),
+      description:
+        serviceCardText(s.slug, isSpanish ? "es" : "en") ??
+        shortExcerpt(
+          isSpanish && info?.descriptionEs
+            ? info.descriptionEs
+            : info?.description
+        ),
     };
   });
 
