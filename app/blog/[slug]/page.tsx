@@ -32,6 +32,13 @@ type BlogCategoryRef = {
 type BlogPostResult = {
   title: string;
   titleEs?: string;
+  // Optional page heading (H1), separate from the title: when set in
+  // Sanity the H1 shows this instead of the title, so the H1 can change
+  // without renaming the post. Falls back to the title when empty.
+  // Only one post carries these today, and its values equal its titles,
+  // so no live H1 changes with this plumbing alone.
+  h1?: string;
+  h1Es?: string;
   metaTitle?: string;
   metaTitleEs?: string;
   metaDescription?: string;
@@ -174,6 +181,8 @@ export default async function BlogPost({
     `*[_type == "post" && slug.current == $slug][0]{
       title,
       titleEs,
+      h1,
+      h1Es,
       metaTitle,
       metaTitleEs,
       metaDescription,
@@ -204,6 +213,12 @@ export default async function BlogPost({
   const settings = await resolveSiteSettings();
 
   const displayTitle = isSpanish ? post.titleEs || post.title : post.title;
+  // H1: the Sanity h1/h1Es when set, otherwise the post title (today's
+  // behaviour). Spanish falls back to the English H1, then the title,
+  // mirroring the titleEs || title pattern above.
+  const displayH1 = isSpanish
+    ? post.h1Es || post.h1 || displayTitle
+    : post.h1 || displayTitle;
   const displayDescription = isSpanish
     ? post.metaDescriptionEs ||
       post.excerptEs ||
@@ -366,7 +381,7 @@ export default async function BlogPost({
             {isSpanish ? "Volver a Blogs" : "Back to Blogs"}
           </Link>
 
-          <h1 className="single-blog-title">{displayTitle}</h1>
+          <h1 className="single-blog-title">{displayH1}</h1>
 
           <p className="post-summary sr-only">{displayDescription}</p>
 
