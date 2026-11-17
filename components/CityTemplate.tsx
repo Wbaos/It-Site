@@ -211,7 +211,7 @@ const TEXT: Record<Locale, LocaleText> = {
     ],
     steps: [
       { title: "Tell us what you’re seeing", text: "Low pressure, one zone not working, leaks, or coverage issues—we’ll ask 1–2 quick questions." },
-      { title: "Diagnosis", text: "We inspect the system, isolate the issue, and explain the recommended fix clearly." },
+      { title: "Inspection", text: "We inspect the system, isolate the issue, and explain the recommended fix clearly." },
       { title: "Repair & test", text: "We complete the repair and test zones so your system runs reliably again." },
     ],
   },
@@ -273,7 +273,7 @@ const TEXT: Record<Locale, LocaleText> = {
     ],
     steps: [
       { title: "Cuéntanos qué estás viendo", text: "Baja presión, una zona que no funciona, fugas o problemas de cobertura: te hacemos 1 o 2 preguntas rápidas." },
-      { title: "Diagnóstico", text: "Inspeccionamos el sistema, aislamos el problema y te explicamos claramente la solución recomendada." },
+      { title: "Inspección", text: "Inspeccionamos el sistema, aislamos el problema y te explicamos claramente la solución recomendada." },
       { title: "Reparación y prueba", text: "Completamos la reparación y probamos las zonas para que tu sistema funcione de forma confiable otra vez." },
     ],
   },
