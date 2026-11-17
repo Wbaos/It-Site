@@ -126,7 +126,7 @@ export async function GET(request: Request) {
   // revalidate failure must not fail the sync itself.
   try {
     revalidatePath("/", "page");
-    revalidatePath("/es/", "page");
+    revalidatePath("/es", "page");
   } catch (err) {
     console.error(
       "[sync-reviews] revalidate failed",

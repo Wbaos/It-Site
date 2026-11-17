@@ -457,8 +457,11 @@ export default async function CityTemplate({ city, locale }: { city: City; local
   const name = city.name ?? "";
   const county = city.county ?? "";
   const isHub = !!city.isHub;
+  // Spanish canonical must never collapse to the bare "/es/" home URL
+  // (it 308-redirects to "/es"): when a city has no esSlug, fall back
+  // to the conventional twin path, same as the sitemap fallback.
   const canonical = isEs
-    ? `https://www.calltechcare.com/es/${city.esSlug ?? ""}`
+    ? `https://www.calltechcare.com/es/${city.esSlug ?? `reparacion-de-sprinklers-${slug}`}`
     : `https://www.calltechcare.com/sprinkler-repair-${slug}`;
 
   const heroTitle1 = pick(city.heroTitle1, city.heroTitle1Es, locale);
