@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Briefcase } from "lucide-react";
 import { serviceHref } from "@/lib/serviceTwins";
+import { serviceCardText } from "@/lib/serviceCardText";
 import type { Metadata } from "next";
 
 // Fixed display order for the services list, shared with /services: the main
@@ -319,7 +320,8 @@ export default async function ServicesPageEs() {
                           </h3>
 
                           <p className="services-list-card-description">
-                            {shortExcerpt(service.descriptionEs || service.description)}
+                            {serviceCardText(service.slug?.current, "es") ??
+                              shortExcerpt(service.descriptionEs || service.description)}
                           </p>
 
                           <div className="services-list-card-footer">

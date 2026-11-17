@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const description =
     service?.metaDescriptionEs ||
     service?.descriptionEs ||
-    "Prueba de backflow e instalación de PVB en Miami y Broward. Instalamos preventores de reflujo y los probamos para proteger tu agua potable. Inspección gratis.";
+    "Prueba de backflow en Miami y Broward: revisamos si tu backflow está malo, reparamos todo después de él y te explicamos qué necesita. Inspección gratis.";
   return {
     title,
     description,

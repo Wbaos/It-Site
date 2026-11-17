@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Briefcase } from "lucide-react";
 import type { Metadata } from "next";
 import { serviceHref } from "@/lib/serviceTwins";
+import { serviceCardText } from "@/lib/serviceCardText";
 
 // Fixed display order for the services list: the main repair service first,
 // then repairs, then installs/controls, then the maintenance plan, cameras
@@ -314,7 +315,8 @@ export default async function ServicesPage() {
                           </h3>
 
                           <p className="services-list-card-description">
-                            {shortExcerpt(service.description)}
+                            {serviceCardText(service.slug?.current, "en") ??
+                              shortExcerpt(service.description)}
                           </p>
 
                           <div className="services-list-card-footer">
