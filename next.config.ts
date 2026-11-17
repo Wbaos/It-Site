@@ -168,6 +168,14 @@ const nextConfig: NextConfig = {
         destination: "/blog",
         permanent: true,
       },
+      // Removed 2026-11-16: the Wi-Fi security post is gone by decision
+      // (Wi-Fi is no longer a service); it 301s to the live wireless
+      // camera installation post instead of 404ing.
+      {
+        source: "/blog/how-to-secure-your-home-wi-fi-network-in-2026",
+        destination: "/blog/wireless-camera-installation-secure-your-home-or-business",
+        permanent: true,
+      },
       {
         source: "/services/internet-setup",
         destination: "/services",
