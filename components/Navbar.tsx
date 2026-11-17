@@ -101,8 +101,8 @@ export default function Navbar({
   // ("/sprinkler-repair-{city}" <-> "/es/reparacion-de-sprinklers-{city}",
   // hub Miami included), the services hub pair ("/services" <->
   // "/es/servicios"), the eleven service page pairs (plus the two
-  // group pages), the ten blog pairs ("/blog" <-> "/es/blog" and nine posts),
-  // "/contact" <-> "/es/contacto".
+  // group pages), the fourteen blog pairs ("/blog" <-> "/es/blog" and
+  // thirteen posts), "/contact" <-> "/es/contacto".
   const ES_HUB_HREF = "/es";
   const EN_TO_ES: Record<string, string> = {
     "/": "/es",
@@ -193,6 +193,11 @@ export default function Navbar({
       "/es/blog/prepara-tu-sistema-de-sprinklers-para-la-temporada-seca-en-miami",
     "/blog/smart-sprinkler-controllers-miami-wifi-timers":
       "/es/blog/controladores-inteligentes-de-sprinklers-en-miami-timers-wifi",
+    "/blog/smart-sprinkler-system-repair-miami":
+      "/es/blog/reparacion-de-sistema-de-sprinklers-inteligente-miami",
+    "/blog/sprinkler-repair-miami-fl":
+      "/es/blog/reparacion-de-sprinklers-miami-fl",
+    "/blog/miami-sprinkler": "/es/blog/sprinklers-en-miami",
     "/contact": "/es/contacto",
     "/services": "/es/servicios",
     "/about": "/es/sobre-nosotros",
@@ -294,6 +299,11 @@ export default function Navbar({
       "/blog/prepare-sprinkler-system-dry-season-miami",
     "/es/blog/controladores-inteligentes-de-sprinklers-en-miami-timers-wifi":
       "/blog/smart-sprinkler-controllers-miami-wifi-timers",
+    "/es/blog/reparacion-de-sistema-de-sprinklers-inteligente-miami":
+      "/blog/smart-sprinkler-system-repair-miami",
+    "/es/blog/reparacion-de-sprinklers-miami-fl":
+      "/blog/sprinkler-repair-miami-fl",
+    "/es/blog/sprinklers-en-miami": "/blog/miami-sprinkler",
     "/es/contacto": "/contact",
     "/es/servicios": "/services",
     "/es/sobre-nosotros": "/about",

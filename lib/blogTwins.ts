@@ -28,6 +28,11 @@ export const BLOG_ES_PATHS: Record<string, string> = {
     "/es/blog/problemas-comunes-de-sprinklers-como-arreglarlos",
   "how-to-find-sprinkler-leak-in-yard":
     "/es/blog/como-encontrar-una-fuga-de-sprinklers-en-tu-jardin",
+  "smart-sprinkler-system-repair-miami":
+    "/es/blog/reparacion-de-sistema-de-sprinklers-inteligente-miami",
+  "sprinkler-repair-miami-fl":
+    "/es/blog/reparacion-de-sprinklers-miami-fl",
+  "miami-sprinkler": "/es/blog/sprinklers-en-miami",
 };
 
 export function blogHref(slug: string, locale: "en" | "es"): string {
