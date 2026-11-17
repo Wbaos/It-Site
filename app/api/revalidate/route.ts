@@ -42,7 +42,7 @@ function pathsForDocument(doc: any): string[] {
   switch (type) {
     case "homePage":
     case "siteSettings":
-      return ["/", "/es/"];
+      return ["/", "/es"];
     case "city": {
       if (!slug) return [];
       const paths = [
