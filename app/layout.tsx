@@ -11,6 +11,7 @@ import QuickCallButton from "@/components/QuickCallButton";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import CookieConsent from "@/components/CookieConsent";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import IconSprite from "@/components/common/IconSprite";
 import { getAllCities, FALLBACK_CITIES } from "@/lib/sanityCities";
 import { resolveSiteSettings } from "@/lib/sanitySettings";
 
@@ -148,7 +149,6 @@ export default async function RootLayout({
   // is described; the street address, postal code and geo fields stay
   // in site-settings as data but are never rendered here.
   const orgJsonLd = {
-    "@context": "https://schema.org",
     "@type": ["LocalBusiness", "ProfessionalService"],
     "@id": "https://www.calltechcare.com/#business",
     name: "CallTechCare",
@@ -203,23 +203,28 @@ export default async function RootLayout({
     sameAs: [
       "https://www.facebook.com/CallTechCare",
       "https://www.instagram.com/CallTechCare",
+      "https://www.yelp.com/biz/call-tech-care-miami?osq=calltechcare",
+      "https://nextdoor.com/page/calltechcare-1/",
     ],
     paymentAccepted: ["Cash", "Check", "Credit Card", "Zelle"],
   };
-  
 
   const webSiteJsonLd = {
-    "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": "https://www.calltechcare.com/#website",
     url: "https://www.calltechcare.com",
     name: "CallTechCare",
-    publisher: { "@id": "https://www.calltechcare.com/#organization" },
+    publisher: { "@id": "https://www.calltechcare.com/#business" },
     inLanguage: locale === "es" ? "es" : "en-US",
   };
 
+  // Generic Service node: serviceType + provider only. The 32-city
+  // areaServed list used to be duplicated here AND on the LocalBusiness
+  // node above (~950 B); the provider reference covers it. And the whole
+  // node is omitted on pages that already emit their own, richer Service
+  // schema (locations, services and city pages EN+ES) — the generic one
+  // added nothing there.
   const serviceJsonLd = {
-    "@context": "https://schema.org",
     "@type": "Service",
     serviceType: [
       "Sprinkler System Repair",
@@ -229,24 +234,36 @@ export default async function RootLayout({
     provider: {
       "@id": "https://www.calltechcare.com/#business",
     },
-    // Generated from the same footerCities list as the LocalBusiness
-    // block above (32 cities incl. Coral Springs), never hardcoded.
-    areaServed: footerCities.map((c) => ({ "@type": "City", name: c.name })),
   };
 
-  const organizationJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": "https://www.calltechcare.com/#organization",
-    name: "CallTechCare",
-    url: "https://www.calltechcare.com",
-    logo: "https://www.calltechcare.com/logo-schema.png",
-    sameAs: [
-      "https://www.facebook.com/CallTechCare",
-      "https://www.instagram.com/CallTechCare",
-      "https://www.yelp.com/biz/call-tech-care-miami?osq=calltechcare",
-      "https://nextdoor.com/page/calltechcare-1/"
+  // Pages whose template already emits its own Service schema, so the
+  // generic Service node above is redundant there. Hubs (/locations,
+  // /es/areas-de-servicio) emit only a WebPage node, so they keep it.
+  // Spanish service + city pages render the same ServicePage /
+  // CityTemplate components as the English ones, hence the /es/ prefix
+  // match (blog posts live under /es/blog/ and do not match).
+  const hasOwnServiceSchema =
+    pathname.startsWith("/locations/") ||
+    pathname.startsWith("/es/areas-de-servicio/") ||
+    pathname === "/services" ||
+    pathname.startsWith("/services/") ||
+    pathname === "/es/servicios" ||
+    pathname.startsWith("/sprinkler-repair-") ||
+    /^\/es\/(instalacion|reparacion|reemplazo|actualizacion|plan-de|prueba-de)-/.test(
+      pathname
+    );
 
+  // One @graph script instead of four separate scripts: the standalone
+  // Organization node is gone (its name/url/logo/sameAs duplicated the
+  // LocalBusiness node; its extra sameAs links moved there, and the
+  // WebSite publisher now points at #business, which is an Organization
+  // subtype). Saves ~1.6 KB per page, HTML and RSC payload alike.
+  const schemaGraph = {
+    "@context": "https://schema.org",
+    "@graph": [
+      orgJsonLd,
+      webSiteJsonLd,
+      ...(hasOwnServiceSchema ? [] : [serviceJsonLd]),
     ],
   };
 
@@ -306,28 +323,12 @@ export default async function RootLayout({
         <script
           type="application/ld+json"
           suppressHydrationWarning
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
-        />
-
-        <script
-          type="application/ld+json"
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
-        />
-
-        <script
-          type="application/ld+json"
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaGraph) }}
         />
       </head>
 
       <body>
+        <IconSprite />
 
         <noscript>
         <iframe

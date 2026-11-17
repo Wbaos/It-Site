@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Phone } from "lucide-react";
+import SpriteIcon from "@/components/common/SpriteIcon";
 import { setAdsUserData } from "@/lib/enhancedConversions";
 
 type Locale = "en" | "es";
@@ -159,7 +159,7 @@ export default function QuickLeadForm({
         <p className="quick-lead__sub">{t.sub}</p>
 
         <a href={`tel:${phoneTel}`} className="quick-lead__call">
-          <Phone size={20} aria-hidden="true" />
+          <SpriteIcon name="phone-lucide" size={20} ariaHidden />
           <span>
             {t.callNow}: {phoneDisplay}
           </span>

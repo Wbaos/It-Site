@@ -1,4 +1,4 @@
-import { Phone } from "lucide-react";
+import SpriteIcon from "@/components/common/SpriteIcon";
 import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 
 // Phone comes from the siteSettings document via the layout; the
@@ -16,7 +16,7 @@ export default function QuickCallButton({
       className="quick-call-button"
       aria-label={`Call CallTechCare at ${phoneDisplay}`}
     >
-      <Phone size={20} aria-hidden="true" />
+      <SpriteIcon name="phone-lucide" size={20} ariaHidden />
       <span>{phoneDisplay}</span>
     </a>
   );

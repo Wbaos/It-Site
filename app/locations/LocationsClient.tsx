@@ -6,7 +6,8 @@ import Link from "next/link";
 import { getAllActiveLocations, Location } from "@/lib/sanityLocations";
 import { urlFor } from "@/lib/sanityImage";
 import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
-import { MapPin, Phone, Search, ArrowRight } from "lucide-react";
+import { Search } from "lucide-react";
+import SpriteIcon from "@/components/common/SpriteIcon";
 
 const DESCRIPTION_ES: Record<string, string> = {
   miami: "CallTechCare ofrece reparación profesional de sprinklers e instalación de irrigación en Miami para propiedades residenciales y comerciales. También ofrecemos instalación de cámaras de seguridad. Atendemos todos los barrios de Miami con servicio rápido y confiable y estimados claros.",
@@ -122,7 +123,7 @@ export default function LocationsClient({
       <section className="locations-hero">
         <div className="locations-hero-container">
           <div className="locations-icon-wrapper">
-            <MapPin />
+            <SpriteIcon name="map-pin-lucide" />
           </div>
           <h1>{isSpanish ? "Áreas de Servicio de Reparación de Sprinklers en Miami y Broward" : "Sprinkler Repair Service Areas in Miami & Broward"}</h1>
           <p className="locations-hero-subtitle">
@@ -162,7 +163,7 @@ export default function LocationsClient({
                   <li key={city.en} className="locations-city-result">
                     <Link href={isSpanish ? city.es : city.en}>
                       <span>{city.name}</span>
-                      <ArrowRight />
+                      <SpriteIcon name="arrow-right-lucide" />
                     </Link>
                   </li>
                 ))}
@@ -232,19 +233,19 @@ export default function LocationsClient({
                   <div className="location-card-info">
                     {location.phone && (
                       <div className="location-card-info-item">
-                        <Phone />
+                        <SpriteIcon name="phone-lucide" />
                         <span>{phoneDisplay}</span>
                       </div>
                     )}
                     <div className="location-card-info-item">
-                      <MapPin />
+                      <SpriteIcon name="map-pin-lucide" />
                       <span>{isSpanish ? "Radio de servicio: 45 millas" : "Service Radius: 45 miles"}</span>
                     </div>
                   </div>
 
                   <div className="location-card-footer">
                     <span className="location-card-link">{isSpanish ? "Ver Detalles" : "View Details"}</span>
-                    <ArrowRight className="location-card-arrow" />
+                    <SpriteIcon name="arrow-right-lucide" className="location-card-arrow" />
                   </div>
                 </div>
               </Link>

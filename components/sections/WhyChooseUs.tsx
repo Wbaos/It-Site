@@ -1,4 +1,5 @@
-import { ShieldCheck, Users, Clock, Star, Smile } from "lucide-react";
+import { ShieldCheck, Users, Clock, Smile } from "lucide-react";
+import SpriteIcon from "@/components/common/SpriteIcon";
 import type { HomePage } from "@/lib/sanityHome";
 import {
   getGoogleRatingSummary,
@@ -11,7 +12,21 @@ function pick(en: string | undefined, es: string | undefined, isSpanish: boolean
   return en;
 }
 
-const WHY_ICONS = [ShieldCheck, Star, Users, Smile, Clock];
+// The star is the sprite-backed SpriteIcon (same size/strokeWidth props
+// as the Lucide icons it sits next to); the rest stay Lucide.
+function StarIcon({
+  size = 24,
+  strokeWidth = 2,
+}: {
+  size?: number;
+  strokeWidth?: number;
+}) {
+  return (
+    <SpriteIcon name="star-lucide" size={size} strokeWidth={strokeWidth} />
+  );
+}
+
+const WHY_ICONS = [ShieldCheck, StarIcon, Users, Smile, Clock];
 
 export default async function WhyChooseUs({
   locale = "en",
@@ -39,7 +54,7 @@ export default async function WhyChooseUs({
           text: "Garantía de mano de obra de 1 año cuando CallTechCare hace el trabajo y provee los materiales.",
         },
         {
-          icon: <Star size={32} strokeWidth={1.5} />,
+          icon: <SpriteIcon name="star-lucide" size={32} strokeWidth={1.5} />,
           title: "Mejor Calificados en Google",
           text: "Calificados por clientes reales en Google.",
         },
@@ -66,7 +81,7 @@ export default async function WhyChooseUs({
           text: "1-year workmanship warranty when CallTechCare performs the work and provides the materials.",
         },
         {
-          icon: <Star size={32} strokeWidth={1.5} />,
+          icon: <SpriteIcon name="star-lucide" size={32} strokeWidth={1.5} />,
           title: "Top Rated on Google",
           text: "Rated by real customers on Google.",
         },
