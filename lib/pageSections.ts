@@ -18,6 +18,7 @@ import GoogleReviewsCTA from "@/components/sections/GoogleReviewsCTA";
 import Contact from "@/components/sections/Contact";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import CoverageMap from "@/components/sections/CoverageMap";
+import BrandMarquee from "@/components/sections/BrandMarquee";
 
 // Single home template, both languages. The section list, order and
 // components are identical for English and Spanish; only the text changes,
@@ -29,6 +30,7 @@ export type HomeLocale = "en" | "es";
 type Section = {
   key:
     | "hero"
+    | "brands"
     | "before-after"
     | "seo-intro"
     | "services"
@@ -223,6 +225,11 @@ export async function getHomeSections(
       Component: HomeHero,
       props: heroProps,
     },
+
+    // Brands marquee (18 Nov 2026): infinite scrolling strip with the
+    // five brands installed, right below the hero. Pauses on hover and
+    // touch, still with reduced motion.
+    { key: "brands", Component: BrandMarquee, props: { locale } },
 
     // Real before/after work, reused from the service docs (see the
     // fetch above). Renders nothing when no comparisons exist.

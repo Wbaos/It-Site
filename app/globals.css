@@ -21629,3 +21629,89 @@ h2,
     padding: 2.5rem 1.25rem;
   }
 }
+
+/* ================================================================
+   BRANDS MARQUEE — 18 Nov 2026
+   Infinite scrolling strip with the five brands installed
+   (Irritrol, Pearl, Goulds, Rain Bird, Hunter). Text only, no
+   logos. The track holds the list twice and scrolls -50% in a
+   loop; it pauses on hover and while touched, and with reduced
+   motion it becomes a single static centered row.
+   ================================================================ */
+.brand-marquee {
+  background: var(--heritage-green);
+  color: var(--heritage-ivory);
+  padding: 1.1rem 1.25rem 1.25rem;
+}
+
+.brand-marquee-label {
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(247, 243, 234, 0.65);
+  margin: 0 0 0.75rem;
+}
+
+.brand-marquee-viewport {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.brand-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: brand-marquee-scroll 28s linear infinite;
+}
+
+.brand-marquee-group {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.brand-marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  padding-right: 2.5rem;
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--heritage-ivory);
+  white-space: nowrap;
+}
+
+.brand-marquee-sep {
+  color: var(--heritage-gold);
+  font-size: 0.8rem;
+}
+
+.brand-marquee-viewport:hover .brand-marquee-track,
+.brand-marquee-viewport.is-paused .brand-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes brand-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-marquee-track {
+    animation: none;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .brand-marquee-group[aria-hidden="true"] {
+    display: none;
+  }
+}
