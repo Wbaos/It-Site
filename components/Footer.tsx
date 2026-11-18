@@ -49,7 +49,7 @@ export default function Footer({
 
   return (
     <footer className="site-footer">
-      {/* ===== Top Section: brand / explore / contact ===== */}
+      {/* ===== Top Section: 4 columns on desktop ===== */}
       <div className="site-container footer-top">
         {/* Brand */}
         <div className="footer-brand-wrapper">
@@ -73,6 +73,11 @@ export default function Footer({
               }}
             />
           </a>
+          <p className="footer-tagline">
+            {isSpanishPage
+              ? "Reparación de sprinklers e irrigación en Miami y Broward."
+              : "Sprinkler repair & irrigation services in Miami and Broward."}
+          </p>
         </div>
 
         {/* Navigation: in Spanish mode, links point only to pages that exist
@@ -113,12 +118,10 @@ export default function Footer({
             </Link>
           </p>
         </div>
-      </div>
 
-      {/* ===== Social + Trust ===== */}
-      <div className="site-container footer-middle">
-        <div className="footer-social">
-          <p>{isSpanishPage ? "Síguenos" : "Follow Us"}</p>
+        {/* Follow Us + back to top */}
+        <div className="footer-follow">
+          <p className="footer-heading">{isSpanishPage ? "Síguenos" : "Follow Us"}</p>
           <div className="social-icons">
             <a
               href="https://www.facebook.com/CallTechCare"
@@ -137,11 +140,10 @@ export default function Footer({
               <SvgIcon name="instagram" size={20} color="#ffffff" />
             </a>
           </div>
+          <a className="to-top" href="#top" aria-label={isSpanishPage ? "Volver arriba" : "Back to top"}>
+            <ArrowUp size={18} />
+          </a>
         </div>
-
-        <a className="to-top" href="#top" aria-label={isSpanishPage ? "Volver arriba" : "Back to top"}>
-          <ArrowUp size={18} />
-        </a>
       </div>
 
       {/* ===== Bottom Row ===== */}
