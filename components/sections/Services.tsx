@@ -148,41 +148,41 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
             : "From sprinkler repair and irrigation troubleshooting to security camera installation, we help homes and small businesses across Miami and Broward."}
         </p>
 
-      {/* Editorial index: each row leads with its photo LARGE and
-          rectangular — full row width, correct proportion, no arch
-          crop (the small arch thumb cropped the 4:3 photos into a
-          near-semicircle and looked bad) — then number, title, short
-          description and "View Details" below it. Same data, same
-          links, same text. The photo is served at 1200px wide from
-          Sanity so it stays sharp at full width instead of stretching
-          the old 320px version. */}
-      <ol className="heritage-service-index">
+      {/* Card grid: photo on top, number + title, short description and
+          "View Details" pinned to the bottom. 3 per row on desktop, 1
+          on mobile. Same data, same links, same text as the old
+          editorial index — only the presentation changed. Cards share
+          one height per row so the link always sits at the bottom.
+          Photos served at 800px wide: a card column is ~400px, so 2x
+          stays sharp without the weight of the old 1200px rows. */}
+      <ol className="heritage-service-grid">
         {sortedServices.map((s: any, i: number) => {
           const es = isSpanish ? SERVICES_ES[s.slug] : undefined;
           const title = es?.title ?? s.title;
           const description = es?.description ?? s.description;
           return (
-          <li key={s._id} className="heritage-service-row">
-            <Link href={serviceHref(s.slug, locale)} className="heritage-service-link">
+          <li key={s._id} className="heritage-service-card">
+            <Link href={serviceHref(s.slug, locale)} className="heritage-service-card-link">
               {s.image?.asset && (
-                <span className="heritage-service-photo">
+                <span className="heritage-service-card-photo">
                   <Image
-                    src={urlFor(s.image).width(1200).url()}
+                    src={urlFor(s.image).width(800).url()}
                     alt=""
-                    width={1200}
-                    height={675}
-                    sizes="(max-width: 760px) 100vw, 1200px"
+                    width={800}
+                    height={450}
+                    sizes="(max-width: 760px) 100vw, (max-width: 1200px) 50vw, 400px"
                   />
                 </span>
               )}
 
-              <span className="heritage-service-row-body">
-              <span className="heritage-service-num" aria-hidden="true">
-                {String(i + 1).padStart(2, "0")}
-              </span>
+              <span className="heritage-service-card-body">
+                <span className="heritage-service-card-head">
+                  <span className="heritage-service-num" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="heritage-service-title">{title}</span>
+                </span>
 
-              <span className="heritage-service-text">
-                <span className="heritage-service-title">{title}</span>
                 {description && (
                   <span className="heritage-service-desc">{serviceCardText(s.slug, isSpanish ? "es" : "en") ?? shortExcerpt(description)}</span>
                 )}
@@ -205,12 +205,11 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
                     </span>
                   )}
                 </span>
-              </span>
 
-              <span className="heritage-service-arrow">
-                <span>{isSpanish ? "Ver Detalles" : "View Details"}</span>
-                <span aria-hidden="true">→</span>
-              </span>
+                <span className="heritage-service-arrow">
+                  <span>{isSpanish ? "Ver Detalles" : "View Details"}</span>
+                  <span aria-hidden="true">→</span>
+                </span>
               </span>
             </Link>
           </li>
