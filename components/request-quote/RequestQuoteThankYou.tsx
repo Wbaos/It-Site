@@ -37,7 +37,7 @@ export default function RequestQuoteThankYou(props: {
       <section className="rq-thankyou__container">
         <div className="rq-thankyou__badgeOuter">
           <div className="rq-thankyou__badgeInner">
-            <SvgIcon name="verified-check" size={30} color="#10b981" />
+            <SvgIcon name="verified-check" size={30} color="#c9a227" />
           </div>
         </div>
 
@@ -123,11 +123,11 @@ export default function RequestQuoteThankYou(props: {
             </div>
             <div className="rq-thankyou__helpRow">
               <div className="rq-thankyou__helpItem">
-                <SvgIcon name="phone" size={16} color="#10b981" />
+                <SvgIcon name="phone" size={16} color="#c9a227" />
                 <span>{phoneCard}</span>
               </div>
               <div className="rq-thankyou__helpItem">
-                <SvgIcon name="mail" size={16} color="#10b981" />
+                <SvgIcon name="mail" size={16} color="#c9a227" />
                 <span>support@calltechcare.com</span>
               </div>
             </div>
@@ -154,7 +154,7 @@ export default function RequestQuoteThankYou(props: {
         {googleRating && (
           <div className="rq-thankyou__trustRow">
             <div className="rq-thankyou__trustItem">
-              <SvgIcon name="star-outline" size={16} color="#64748b" />
+              <SvgIcon name="star-outline" size={16} color="#7d8f7f" />
               {locale === "es" ? `Calificación ${googleRating}` : `${googleRating} Rating`}
             </div>
           </div>

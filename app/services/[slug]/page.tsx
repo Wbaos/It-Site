@@ -1087,7 +1087,7 @@ export default async function ServicePage({
                     <ul className="styled-features-list">
                       {catFeatures.map((f: string, i: number) => (
                         <li key={i} className="styled-feature-item">
-                          <SvgIcon name="checkmark-circle" size={20} color="#10b981" />
+                          <SvgIcon name="checkmark-circle" size={20} color="#c9a227" />
                           {f}
                         </li>
                       ))}

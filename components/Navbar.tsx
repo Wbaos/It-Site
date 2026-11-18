@@ -346,7 +346,7 @@ export default function Navbar({
         display: "inline-flex",
         alignItems: "center",
         padding: "2px",
-        background: "rgba(15, 23, 42, 0.55)",
+        background: "rgba(18, 32, 25, 0.55)",
         border: "1px solid rgba(255, 255, 255, 0.18)",
         borderRadius: "999px",
         fontSize: "12px",
@@ -363,7 +363,7 @@ export default function Navbar({
             aria-label="View this page in English"
             style={{
               textDecoration: "none",
-              color: "#e2e8f0",
+              color: "#eef0e6",
               opacity: 0.7,
               padding: "5px 9px",
               borderRadius: "999px",
@@ -374,8 +374,8 @@ export default function Navbar({
           <span
             aria-current="true"
             style={{
-              background: "#00E793",
-              color: "#0f172a",
+              background: "#c9a227",
+              color: "#122019",
               padding: "5px 9px",
               borderRadius: "999px",
             }}
@@ -388,8 +388,8 @@ export default function Navbar({
           <span
             aria-current="true"
             style={{
-              background: "#00E793",
-              color: "#0f172a",
+              background: "#c9a227",
+              color: "#122019",
               padding: "5px 9px",
               borderRadius: "999px",
             }}
@@ -402,7 +402,7 @@ export default function Navbar({
             aria-label="Ver esta página en español"
             style={{
               textDecoration: "none",
-              color: "#e2e8f0",
+              color: "#eef0e6",
               opacity: 0.7,
               padding: "5px 9px",
               borderRadius: "999px",

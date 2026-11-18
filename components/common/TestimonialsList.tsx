@@ -168,7 +168,7 @@ export default function TestimonialsList({
           key={i}
           name="star"
           size={18}
-          color="#facc15"
+          color="#d4af37"
           className={i < rating ? "star-filled" : "star-outline"}
         />
       ))}
@@ -275,10 +275,10 @@ export default function TestimonialsList({
           {canSlide && (
             <div className="owl-nav">
               <button className="owl-prev" onClick={goPrev} aria-label={isSpanish ? "Reseña anterior" : "Previous testimonial"}>
-                <SvgIcon name="chevron-left" size={28} color="#d6d6ddff" />
+                <SvgIcon name="chevron-left" size={28} color="#ddd8c8ff" />
               </button>
               <button className="owl-next" onClick={goNext} aria-label={isSpanish ? "Reseña siguiente" : "Next testimonial"}>
-                <SvgIcon name="chevron-right" size={28} color="#d6d6ddff" />
+                <SvgIcon name="chevron-right" size={28} color="#ddd8c8ff" />
               </button>
             </div>
           )}

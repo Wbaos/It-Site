@@ -88,7 +88,7 @@ export default function Step1ServiceSelection(props: {
                 loading="lazy"
               />
             ) : (
-              <SvgIcon name="tag" size={18} color="#94a3b8" />
+              <SvgIcon name="tag" size={18} color="#a9bdaa" />
             )}
           </div>
           <div className="rq-step1__serviceText">
@@ -99,7 +99,7 @@ export default function Step1ServiceSelection(props: {
 
           {isSelected && (
             <span className="rq-step1__serviceSelected" aria-hidden="true">
-              <SvgIcon name="checkmark-circle" size={20} color="#34d399" />
+              <SvgIcon name="checkmark-circle" size={20} color="#d4af37" />
             </span>
           )}
         </div>
@@ -183,7 +183,7 @@ export default function Step1ServiceSelection(props: {
         {props.activeServices.length === 0 ? (
           <div className="rq-step1__empty">
             <div className="rq-step1__emptyIcon">
-              <SvgIcon name="search" size={28} color="#64748b" />
+              <SvgIcon name="search" size={28} color="#7d8f7f" />
             </div>
             <div className="rq-step1__emptyText">
               {props.searchQuery.trim()
@@ -223,7 +223,7 @@ export default function Step1ServiceSelection(props: {
       {props.selectedService && (
         <div className="rq-step1__selected">
           <div className="rq-step1__selectedLeft">
-            <SvgIcon name="verified-check" size={18} color="#34d399" />
+            <SvgIcon name="verified-check" size={18} color="#d4af37" />
             <span>
               {locale === "es" ? "Seleccionado:" : "Selected:"} <strong>{props.selectedService.title}</strong>
             </span>

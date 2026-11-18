@@ -88,7 +88,7 @@ export default function RequestQuoteSidebar(props: {
                         className="rq-sidebar__benefitIcon"
                         style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
                       >
-                        <SvgIcon name={BENEFIT_ICONS[idx]} size={21} color="#10b981" />
+                        <SvgIcon name={BENEFIT_ICONS[idx]} size={21} color="#c9a227" />
                       </span>
                     )}
                   </div>
@@ -168,7 +168,7 @@ export default function RequestQuoteSidebar(props: {
                         className="rq-sidebar__actionIconImg"
                       />
                     ) : (
-                      <SvgIcon name="phone" size={20} color="#10b981" />
+                      <SvgIcon name="phone" size={20} color="#c9a227" />
                     )}
                   </span>
 
@@ -198,7 +198,7 @@ export default function RequestQuoteSidebar(props: {
                         className="rq-sidebar__actionIconImg"
                       />
                     ) : (
-                      <SvgIcon name="mail" size={20} color="#10b981" />
+                      <SvgIcon name="mail" size={20} color="#c9a227" />
                     )}
                   </span>
 
@@ -249,7 +249,7 @@ export default function RequestQuoteSidebar(props: {
                           className="rq-sidebar__benefitIcon"
                           style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
                         >
-                          <SvgIcon name={BENEFIT_ICONS[idx]} size={21} color="#10b981" />
+                          <SvgIcon name={BENEFIT_ICONS[idx]} size={21} color="#c9a227" />
                         </span>
                       )}
                     </div>
@@ -350,7 +350,7 @@ export default function RequestQuoteSidebar(props: {
                       className="rq-sidebar__actionIconImg"
                     />
                   ) : (
-                    <SvgIcon name="phone" size={20} color="#10b981" />
+                    <SvgIcon name="phone" size={20} color="#c9a227" />
                   )}
                 </span>
 
@@ -382,7 +382,7 @@ export default function RequestQuoteSidebar(props: {
                       className="rq-sidebar__actionIconImg"
                     />
                   ) : (
-                    <SvgIcon name="mail" size={20} color="#10b981" />
+                    <SvgIcon name="mail" size={20} color="#c9a227" />
                   )}
                 </span>
 
