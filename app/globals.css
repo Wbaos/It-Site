@@ -21052,11 +21052,6 @@ h2,
   border: 1px solid rgba(201, 162, 39, 0.4);
 }
 
-.location-card-image {
-  border-radius: 120px 120px 0 0;
-  overflow: hidden;
-}
-
 .location-card-title {
   font-family: var(--font-display), Georgia, "Times New Roman", serif;
   font-weight: 600;
