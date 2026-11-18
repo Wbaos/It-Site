@@ -70,8 +70,8 @@ export default async function WhyChooseUs({
         },
         {
           icon: <Clock size={32} strokeWidth={1.5} />,
-          title: "Respuesta en Menos de Dos Horas",
-          text: "Respondemos en menos de dos horas, con servicio el mismo día dentro del horario.",
+          title: "Servicio el Mismo Día",
+          text: "Venimos el mismo día en horario, sin esperar días para el arreglo.",
         },
       ]
     : [
@@ -97,8 +97,8 @@ export default async function WhyChooseUs({
         },
         {
           icon: <Clock size={32} strokeWidth={1.5} />,
-          title: "Response in Less Than Two Hours",
-          text: "We respond in less than two hours, with same-day service within business hours.",
+          title: "Same-Day Service",
+          text: "We come the same day during business hours — no waiting days for a fix.",
         },
       ];
 

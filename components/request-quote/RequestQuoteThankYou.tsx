@@ -92,7 +92,7 @@ export default function RequestQuoteThankYou(props: {
                     <span className="rq-thankyou__accent">
                       {props.contactEmail.trim() || (locale === "es" ? "tu correo" : "your email")}
                     </span>{" "}
-                    {locale === "es" ? "en menos de dos horas." : "in less than two hours."}
+                    {locale === "es" ? "el mismo día en horario." : "the same day during business hours."}
                   </div>
                 </div>
               </div>

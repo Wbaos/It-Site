@@ -29,7 +29,7 @@ const STEPS_EN = [
   },
   {
     title: "Receive Your Quote",
-    desc: "We’ll review your request and send a detailed quote in less than two hours.",
+    desc: "We’ll review your request and send a detailed quote the same day during business hours.",
   },
   {
     title: "Confirm Your Visit",
@@ -48,7 +48,7 @@ const STEPS_ES = [
   },
   {
     title: "Recibe tu cotización",
-    desc: "Revisaremos tu solicitud y te enviaremos una cotización detallada en menos de dos horas.",
+    desc: "Revisaremos tu solicitud y te enviaremos una cotización detallada el mismo día en horario.",
   },
   {
     title: "Confirma tu visita",

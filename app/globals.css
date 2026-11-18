@@ -14421,10 +14421,12 @@ box-shadow:
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.5rem;
+  align-items: stretch;
 }
 
 .contact-support-card {
   text-align: left;
+  height: 100%;
   padding: 22px 20px 18px;
   border-radius: 16px;
   background: linear-gradient(135deg, rgba(36, 64, 47, 0.75), rgba(18, 32, 25, 0.75));
@@ -14500,6 +14502,7 @@ box-shadow:
 
 .contact-support-cardLink {
   display: inline-block;
+  margin-top: auto;
   text-decoration: none;
   color: white;
   font-weight: 500;
@@ -14507,6 +14510,7 @@ box-shadow:
 
 .contact-support-cardMeta {
   display: inline-flex;
+  margin-top: 4px;
   align-items: center;
   gap: 8px;
   color: #d4af37;
