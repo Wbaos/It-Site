@@ -18,6 +18,7 @@ import { SERVICE_ES_PATHS, serviceHref } from "@/lib/serviceTwins";
 import { serviceCardText } from "@/lib/serviceCardText";
 import { cityHref } from "@/lib/cityTwins";
 import BeforeAfterSection from "@/components/BeforeAfterSection";
+import CoverageMap from "@/components/sections/CoverageMap";
 import QuickLeadForm from "@/components/QuickLeadForm";
 import { PortableText } from "@portabletext/react";
 import type { Metadata } from "next";
@@ -421,6 +422,14 @@ export default async function ServicePage({
           )}
         </div>
       </div>
+      {/* Interactive map of the 32 cities, same component as the home
+          "Where We Work" section: county filters, search, pins linking
+          to each city page, and the city list collapsed behind "See
+          all cities". No heading here — this section already has its
+          own "Service Areas" title and subtitle. The ivory band reads
+          as its own panel inside the dark section, same rhythm as the
+          home (dark section, ivory map, dark section). */}
+      <CoverageMap locale={locale} showHeading={false} />
     </section>
     ) : null
   );

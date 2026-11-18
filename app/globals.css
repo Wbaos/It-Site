@@ -20337,6 +20337,121 @@ h2,
   }
 }
 
+/* ================= HOME: services card grid ================= */
+/* Grid of cards: photo on top, number + title, short description and
+   "View Details" pinned to the bottom. 3 per row on desktop, 2 on
+   tablet, 1 on mobile. Same Heritage palette as the old editorial
+   index (forest green, brass gold, ivory) and the same number/title/
+   desc/meta/arrow styles — only the layout changed. Cards in a row
+   share one height, so the link always sits at the bottom. */
+.heritage-service-grid {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.heritage-service-card {
+  background: rgba(18, 32, 25, 0.5);
+  border: 1px solid #24402f;
+  border-radius: 1rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(0, 0, 0, 0.25);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.heritage-service-card:hover {
+  border-color: rgba(201, 162, 39, 0.55);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(201, 162, 39, 0.3);
+}
+
+.heritage-service-card-link {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Photo bleeds to the card's top and side edges, 16:9, with a thin
+   gold rule under it — same treatment as the hub cards. */
+.heritage-service-card-photo {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.4);
+}
+
+.heritage-service-card-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.25s ease;
+}
+
+.heritage-service-card:hover .heritage-service-card-photo img {
+  transform: scale(1.04);
+}
+
+.heritage-service-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem 1.5rem 1.5rem;
+  flex: 1;
+}
+
+.heritage-service-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+/* The number/title/desc/meta/arrow keep the editorial-row styles
+   (serif gold number, ivory title, muted desc, gold link); the desc
+   is clamped to 3 lines so cards stay even, and the link is pinned
+   to the bottom of the card. */
+.heritage-service-card .heritage-service-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.heritage-service-card .heritage-service-arrow {
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+@media (max-width: 1020px) {
+  .heritage-service-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .heritage-service-grid {
+    grid-template-columns: 1fr;
+  }
+  /* Unlike the old rows (arrow only on mobile), the card keeps the
+     full "View Details" text: the old rule hides the first span, so
+     this more specific rule restores it. */
+  .heritage-service-card .heritage-service-arrow span:first-child {
+    display: inline;
+  }
+}
+
 /* ================= HOME: why editorial (photo + numbered list) ================= */
 .heritage-why-body {
   display: grid;
