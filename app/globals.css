@@ -20271,51 +20271,26 @@ h2,
   height: auto;
 }
 
-/* Dynamic showcase: one reason featured at a time. Slides stack
-   in one grid cell (container height = tallest slide, no jump) and
-   cross-fade/slide; dots below. Numbers inside the title/text count
-   up in gold while their slide is active. */
-.why-showcase {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
+.heritage-why-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.why-showcase-slides {
+.heritage-why-item {
   display: grid;
-}
-
-.why-showcase-slide {
-  grid-area: 1 / 1;
-  opacity: 0;
-  transform: translateY(14px);
-  visibility: hidden;
-  pointer-events: none;
-  transition:
-    opacity 0.45s ease,
-    transform 0.45s ease,
-    visibility 0s linear 0.45s;
-}
-
-.why-showcase-slide.active {
-  opacity: 1;
-  transform: none;
-  visibility: visible;
-  pointer-events: auto;
-  transition:
-    opacity 0.45s ease,
-    transform 0.45s ease,
-    visibility 0s;
-}
-
-.why-showcase-top {
-  display: flex;
-  align-items: center;
+  grid-template-columns: 2.5rem 3rem 1fr;
   gap: 1rem;
-  margin-bottom: 0.75rem;
+  align-items: start;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.3);
 }
 
-.why-showcase-num {
+.heritage-why-item:first-child {
+  padding-top: 0.25rem;
+}
+
+.heritage-why-num {
   font-family: var(--font-display), Georgia, "Times New Roman", serif;
   font-size: 1.4rem;
   font-weight: 600;
@@ -20323,7 +20298,7 @@ h2,
   line-height: 1.2;
 }
 
-.why-showcase-icon {
+.heritage-why-icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20334,70 +20309,29 @@ h2,
   color: var(--heritage-gold-light);
 }
 
-.why-showcase-icon svg {
+.heritage-why-icon svg {
   width: 24px;
   height: 24px;
 }
 
-.why-showcase-title {
+.heritage-why-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.heritage-why-title {
   font-family: var(--font-display), Georgia, "Times New Roman", serif;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: #faf7ef;
   line-height: 1.25;
-  margin: 0 0 0.5rem;
 }
 
-.why-showcase-desc {
+.heritage-why-desc {
   color: #a9bdaa;
-  line-height: 1.6;
-  margin: 0;
-  font-size: 1.05rem;
-}
-
-/* Numbers inside the reason text count up in gold. */
-.why-showcase-count {
-  color: var(--heritage-gold);
-  font-weight: 700;
-}
-
-.why-showcase-dots {
-  display: flex;
-  gap: 0.25rem;
-  margin-top: 1.5rem;
-}
-
-.why-showcase-dot {
-  width: 44px;
-  height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-.why-showcase-dot span {
-  display: block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(201, 162, 39, 0.35);
-  transition: background 0.25s ease, transform 0.25s ease;
-}
-
-.why-showcase-dot.active span {
-  background: var(--heritage-gold);
-  transform: scale(1.35);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .why-showcase-slide {
-    transition: none;
-    transform: none;
-  }
+  line-height: 1.55;
 }
 
 @media (max-width: 900px) {
