@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import SvgIcon from "./SvgIcons";
 
@@ -113,6 +113,58 @@ export default function TestimonialsList({
   const trackRef = useRef<HTMLDivElement>(null);
   const startXRef = useRef<number | null>(null);
   const deltaXRef = useRef<number>(0);
+  // One ref per rendered slide (position in `visible`), to measure the
+  // visible window's height.
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // The viewport's height follows the tallest VISIBLE slide — not the
+  // tallest slide in the whole track. The track holds every review (plus
+  // loop clones), so its natural height is the tallest review overall;
+  // with no explicit viewport height the prev/next arrows below it sat
+  // at that height even when the card on screen was short. Measuring the
+  // visible window keeps the arrows right under the card being viewed:
+  // expanding a review pushes them down, collapsing pulls them back up.
+  const [viewportHeight, setViewportHeight] = useState<number | undefined>(
+    undefined,
+  );
+  const measureViewportHeight = useCallback(() => {
+    if (!canSlide) return;
+    let max = 0;
+    for (let k = index; k < index + cols; k++) {
+      const el = slideRefs.current[k];
+      if (!el) continue;
+      // offsetHeight excludes the slide's vertical margins, but the
+      // track's height includes them — count them or the card bottom
+      // gets clipped by the margin.
+      const style = window.getComputedStyle(el);
+      const marginY =
+        parseFloat(style.marginTop) + parseFloat(style.marginBottom);
+      max = Math.max(max, el.offsetHeight + marginY);
+    }
+    if (max > 0) setViewportHeight((prev) => (prev === max ? prev : max));
+  }, [canSlide, cols, index]);
+
+  // Re-measure whenever what is visible (or how tall it is) changes:
+  // slide change, column count, expand/collapse, and the post-mount
+  // shuffle that picks which reviews are on screen.
+  useLayoutEffect(() => {
+    measureViewportHeight();
+  }, [measureViewportHeight, expandedSet, ordered]);
+
+  // Re-measure when any slide's height changes for another reason
+  // (webfont swap, text reflow) — the track's size changes with it.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => measureViewportHeight());
+    ro.observe(track);
+    if (document.fonts) {
+      document.fonts.ready
+        .then(() => measureViewportHeight())
+        .catch(() => {});
+    }
+    return () => ro.disconnect();
+  }, [measureViewportHeight]);
 
   /** Responsive columns */
   useEffect(() => {
@@ -216,7 +268,19 @@ export default function TestimonialsList({
         {afterSubtitle}
 
         <div className="carousel-wrapper">
-          <div className="carousel-viewport">
+          <div
+            className="carousel-viewport"
+            style={
+              canSlide
+                ? {
+                    height: viewportHeight,
+                    // Animate the height so the prev/next arrows glide
+                    // down/up with the active card instead of jumping.
+                    transition: "height 0.4s ease",
+                  }
+                : undefined
+            }
+          >
             <div
               ref={trackRef}
               className={`carousel-track ${canSlide && animating ? "animating" : "no-anim"}`}
@@ -267,6 +331,9 @@ export default function TestimonialsList({
                 return (
                   <div
                     className="carousel-slide"
+                    ref={(el) => {
+                      slideRefs.current[i] = el;
+                    }}
                     style={canSlide ? undefined : { flex: "1 1 0" }}
                     key={i}
                   >
