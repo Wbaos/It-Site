@@ -31,6 +31,17 @@ function normalizeTitle(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }
 
+// Tags live in Sanity as slugs ("sprinkler-schedule-miami"); render
+// them as readable labels ("Sprinkler Schedule Miami"). Display only:
+// search still matches the raw slugs.
+function humanizeTag(tag: string): string {
+  return tag
+    .split("-")
+    .filter((w) => w.length > 0)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
 function getCategorySlug(category: Category | undefined): string {
   return normalizeSlug(category?.slug?.current);
 }
@@ -251,7 +262,7 @@ export default function BlogPageClient({
                         );
                         return uniqueTags.map((tag) => (
                           <span key={tag} className="heritage-blog-tag">
-                            {tag}
+                            {humanizeTag(tag)}
                           </span>
                         ));
                       })()}

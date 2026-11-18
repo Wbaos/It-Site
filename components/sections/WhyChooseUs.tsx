@@ -1,32 +1,24 @@
-import { ShieldCheck, Users, Clock, Smile } from "lucide-react";
-import SpriteIcon from "@/components/common/SpriteIcon";
 import type { HomePage } from "@/lib/sanityHome";
 import {
   getGoogleRatingSummary,
   formatGoogleRating,
   type GoogleRatingSummary,
 } from "@/lib/google-reviews";
+import WhyShowcase, { type WhyFeature } from "./WhyShowcase";
 
 function pick(en: string | undefined, es: string | undefined, isSpanish: boolean): string | undefined {
   if (isSpanish && es) return es;
   return en;
 }
 
-// The star is the sprite-backed SpriteIcon (same size/strokeWidth props
-// as the Lucide icons it sits next to); the rest stay Lucide.
-function StarIcon({
-  size = 24,
-  strokeWidth = 2,
-}: {
-  size?: number;
-  strokeWidth?: number;
-}) {
-  return (
-    <SpriteIcon name="star-lucide" size={size} strokeWidth={strokeWidth} />
-  );
-}
-
-const WHY_ICONS = [ShieldCheck, StarIcon, Users, Smile, Clock];
+// The five reasons, in order, with the icon each one uses (index into
+// the showcase's icon set). Same five reasons, same icons, same order
+// in both languages; only the text changes. The Spanish wording is a
+// faithful translation of the English wording. (There used to be a
+// sixth reason, "In-Person Service, At Your Home" — removed: every job
+// is done at the customer's property by definition, so calling it out
+// was redundant.)
+const WHY_ICON_COUNT = 5;
 
 export default async function WhyChooseUs({
   locale = "en",
@@ -38,95 +30,87 @@ export default async function WhyChooseUs({
   ratingSummary?: GoogleRatingSummary | null;
 }) {
   const isSpanish = locale === "es";
-  // The Google card below carries NO numbers until the live summary is
-  // applied: without a summary the card is dropped from the grid (see
+  // The Google reason below carries NO numbers until the live summary is
+  // applied: without a summary it is dropped from the showcase (see
   // below) instead of showing a stale rating/count.
-  // Same five cards, same icons, same order in both languages; only the
-  // text changes. The Spanish wording is a faithful translation of the
-  // English wording. (There used to be a sixth card, "In-Person Service,
-  // At Your Home" — removed: every job is done at the customer's property
-  // by definition, so calling it out was redundant.)
-  const fallbackFeatures = isSpanish
+  const fallbackFeatures: WhyFeature[] = isSpanish
     ? [
         {
-          icon: <ShieldCheck size={32} strokeWidth={1.5} />,
+          iconIndex: 0,
           title: "Garantía de Mano de Obra de 1 Año",
           text: "Garantía de mano de obra de 1 año cuando CallTechCare hace el trabajo y provee los materiales.",
         },
         {
-          icon: <SpriteIcon name="star-lucide" size={32} strokeWidth={1.5} />,
+          iconIndex: 1,
           title: "Mejor Calificados en Google",
           text: "Calificados por clientes reales en Google.",
         },
         {
-          icon: <Users size={32} strokeWidth={1.5} />,
+          iconIndex: 2,
           title: "Más de 1500 Clientes Ayudados",
           text: "Más de 1500 clientes felices en Miami y Broward.",
         },
         {
-          icon: <Smile size={32} strokeWidth={1.5} />,
+          iconIndex: 3,
           title: "Inspección Gratis, Estimado Claro",
           text: "Inspección gratis. Estimado claro después de inspeccionar. Sin cargos ocultos. Sin ventas adicionales. Sin presión.",
         },
         {
-          icon: <Clock size={32} strokeWidth={1.5} />,
+          iconIndex: 4,
           title: "Respuesta en Menos de Dos Horas",
           text: "Respondemos en menos de dos horas, con servicio el mismo día dentro del horario.",
         },
       ]
     : [
         {
-          icon: <ShieldCheck size={32} strokeWidth={1.5} />,
+          iconIndex: 0,
           title: "1-Year Workmanship Warranty",
           text: "1-year workmanship warranty when CallTechCare performs the work and provides the materials.",
         },
         {
-          icon: <SpriteIcon name="star-lucide" size={32} strokeWidth={1.5} />,
+          iconIndex: 1,
           title: "Top Rated on Google",
           text: "Rated by real customers on Google.",
         },
         {
-          icon: <Users size={32} strokeWidth={1.5} />,
+          iconIndex: 2,
           title: "1500+ Customers Helped",
           text: "More than 1500 happy customers across Miami and Broward.",
         },
         {
-          icon: <Smile size={32} strokeWidth={1.5} />,
+          iconIndex: 3,
           title: "Free Inspection, Clear Estimate",
           text: "Free inspection. Clear estimates after inspection. No hidden fees. No upselling. No pressure.",
         },
         {
-          icon: <Clock size={32} strokeWidth={1.5} />,
+          iconIndex: 4,
           title: "Response in Less Than Two Hours",
           text: "We respond in less than two hours, with same-day service within business hours.",
         },
       ];
 
-  const features =
-    doc?.whyCards && doc.whyCards.length === WHY_ICONS.length
-      ? doc.whyCards.map((card, i) => {
-          const Icon = WHY_ICONS[i];
-          return {
-            icon: <Icon size={32} strokeWidth={1.5} />,
-            title: pick(card.title, card.titleEs, isSpanish) ?? "",
-            text: pick(card.text, card.textEs, isSpanish) ?? "",
-          };
-        })
+  const features: WhyFeature[] =
+    doc?.whyCards && doc.whyCards.length === WHY_ICON_COUNT
+      ? doc.whyCards.map((card, i) => ({
+          iconIndex: i,
+          title: pick(card.title, card.titleEs, isSpanish) ?? "",
+          text: pick(card.text, card.textEs, isSpanish) ?? "",
+        }))
       : fallbackFeatures;
-  // The Google card (Sanity whyCards or the code fallback) quotes the
+  // The Google reason (Sanity whyCards or the code fallback) quotes the
   // rating and the review count. Both come from the single shared source in
-  // lib/google-reviews (Sanity site-settings), so the card updates
+  // lib/google-reviews (Sanity site-settings), so the reason updates
   // everywhere at the same time. Detected by its text mentioning Google,
   // not by the numbers, so it keeps working when the rating or the total
-  // changes. Without a summary the card is dropped from the grid rather
-  // than showing a stale number.
+  // changes. Without a summary the reason is dropped from the showcase
+  // rather than showing a stale number.
   const summary = ratingSummary ?? (await getGoogleRatingSummary());
   const liveFeatures = features
     .map((f) => {
       if (!summary) return f;
-      // The Google card is the one quoting the review count (Sanity whyCards
-      // or the code fallback). Detected by its text, not by the numbers, so it
-      // keeps working when the rating or the total changes.
+      // The Google reason is the one quoting the review count (Sanity
+      // whyCards or the code fallback). Detected by its text, not by the
+      // numbers, so it keeps working when the rating or the total changes.
       if (!f.text.includes("Google")) return f;
       const rating = formatGoogleRating(summary.rating);
       return {
@@ -178,9 +162,9 @@ export default async function WhyChooseUs({
           <p>{whySubtitle}</p>
         </div>
 
-        {/* Editorial layout, not a card grid: the photo in an arched
-            frame on one side, the five reasons as a numbered list on
-            the other — same photo, same icons, same text, same order. */}
+        {/* Editorial layout: the photo in an arched frame on one side,
+            the five reasons as a dynamic showcase on the other — same
+            photo, same icons, same text, same order. */}
         <div className="heritage-why-body">
           <div className="heritage-why-photo">
             <img
@@ -192,20 +176,7 @@ export default async function WhyChooseUs({
             />
           </div>
 
-          <ol className="heritage-why-list">
-            {liveFeatures.map((f, i) => (
-              <li key={i} className="heritage-why-item">
-                <span className="heritage-why-num" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="heritage-why-icon">{f.icon}</span>
-                <span className="heritage-why-text">
-                  <span className="heritage-why-title">{f.title}</span>
-                  <span className="heritage-why-desc">{f.text}</span>
-                </span>
-              </li>
-            ))}
-          </ol>
+          <WhyShowcase features={liveFeatures} isSpanish={isSpanish} />
         </div>
 
       </div>

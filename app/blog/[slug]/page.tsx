@@ -160,6 +160,16 @@ export async function generateMetadata({
   };
 }
 
+// Tags live in Sanity as slugs ("sprinkler-schedule-miami"); render
+// them as readable labels ("Sprinkler Schedule Miami"). Display only.
+function humanizeTag(tag: string): string {
+  return tag
+    .split("-")
+    .filter((w) => w.length > 0)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
 /* =========================
    PAGE COMPONENT
 ========================= */
@@ -435,7 +445,7 @@ export default async function BlogPost({
               <div className="single-blog-tags">
                 {uniqueTags.map((tag) => (
                   <span key={tag} className="single-blog-tag">
-                    {tag}
+                    {humanizeTag(tag)}
                   </span>
                 ))}
               </div>
