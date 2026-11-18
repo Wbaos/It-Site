@@ -139,13 +139,6 @@ export default function Footer({
           </div>
         </div>
 
-        <div className="footer-trust">
-          <p>
-            <SvgIcon name="checkmark-circle" size={18} color="#c9a227" />
-            {isSpanishPage ? "Llámanos para tu inspección gratis" : "Call us for your free inspection"}
-          </p>
-        </div>
-
         <a className="to-top" href="#top" aria-label={isSpanishPage ? "Volver arriba" : "Back to top"}>
           <ArrowUp size={18} />
         </a>
@@ -174,8 +167,6 @@ export default function Footer({
         <p className="copy">
           © {year} CallTechCare. {isSpanishPage ? "Todos los derechos reservados. Hecho con ❤️ en el sur de Florida." : "All rights reserved. Built with ❤️ in South Florida."}
         </p>
-
-        <p className="footer-owner">{isSpanishPage ? "Propietario: Wilber" : "Owner: Wilber"}</p>
       </div>
     </footer>
   );
