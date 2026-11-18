@@ -38,9 +38,9 @@ export default async function LocationsPage() {
   const settings = await resolveSiteSettings();
 
   // CLS fix (16 Nov 2026): fetch the county cards on the server so they
-  // (and the search bar) render in the SSR HTML instead of popping in
-  // after a client-side fetch. On failure the client component falls back
-  // to fetching them itself, exactly as before.
+  // render in the SSR HTML instead of popping in after a client-side fetch.
+  // On failure the client component falls back to fetching them itself,
+  // exactly as before.
   let initialLocations: Location[] = [];
   try {
     initialLocations = await getAllActiveLocations();
