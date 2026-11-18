@@ -148,9 +148,14 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
             : "From sprinkler repair and irrigation troubleshooting to security camera installation, we help homes and small businesses across Miami and Broward."}
         </p>
 
-      {/* Editorial index, not a card grid: numbered rows with a small
-          photo, title, short description and a "View Details" arrow,
-          separated by hairlines. Same data, same links, same text. */}
+      {/* Editorial index: each row leads with its photo LARGE and
+          rectangular — full row width, correct proportion, no arch
+          crop (the small arch thumb cropped the 4:3 photos into a
+          near-semicircle and looked bad) — then number, title, short
+          description and "View Details" below it. Same data, same
+          links, same text. The photo is served at 1200px wide from
+          Sanity so it stays sharp at full width instead of stretching
+          the old 320px version. */}
       <ol className="heritage-service-index">
         {sortedServices.map((s: any, i: number) => {
           const es = isSpanish ? SERVICES_ES[s.slug] : undefined;
@@ -159,21 +164,22 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
           return (
           <li key={s._id} className="heritage-service-row">
             <Link href={serviceHref(s.slug, locale)} className="heritage-service-link">
-              <span className="heritage-service-num" aria-hidden="true">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-
               {s.image?.asset && (
-                <span className="heritage-service-thumb">
+                <span className="heritage-service-photo">
                   <Image
-                    src={urlFor(s.image).width(320).height(240).url()}
+                    src={urlFor(s.image).width(1200).url()}
                     alt=""
-                    width={320}
-                    height={240}
-                    sizes="(max-width: 760px) 96px, 160px"
+                    width={1200}
+                    height={675}
+                    sizes="(max-width: 760px) 100vw, 1200px"
                   />
                 </span>
               )}
+
+              <span className="heritage-service-row-body">
+              <span className="heritage-service-num" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
 
               <span className="heritage-service-text">
                 <span className="heritage-service-title">{title}</span>
@@ -204,6 +210,7 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
               <span className="heritage-service-arrow">
                 <span>{isSpanish ? "Ver Detalles" : "View Details"}</span>
                 <span aria-hidden="true">→</span>
+              </span>
               </span>
             </Link>
           </li>

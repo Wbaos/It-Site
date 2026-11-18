@@ -6321,8 +6321,24 @@ main {
     align-self: center;
   }
 
+  /* Mobile: no horizontal carousel — stack the related cards
+     vertically so a card can never be cut off at the viewport edge
+     mid-swipe, and the arrows (useless once everything is visible)
+     are hidden. */
+  .single-blog-related-carousel {
+    flex-direction: column;
+    overflow-x: visible;
+    scroll-snap-type: none;
+    gap: 1.5rem;
+  }
+
   .single-blog-related-card {
-    flex: 0 0 100%;
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .single-blog-related-nav {
+    display: none;
   }
 
   .single-blog-related-card .blog-image-wrapper {
@@ -13547,14 +13563,20 @@ box-shadow:
   border-top: 1px solid rgba(201, 162, 39, 0.55);
 }
 
-/* ===== Top Section ===== */
+/* ===== Top Section: everything centered ===== */
 .footer-top {
-  display: grid;
-  grid-template-columns: 1.1fr 0.8fr 1.1fr;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 2.5rem;
-  align-items: start;
   border-bottom: 1px solid rgba(201, 162, 39, 0.35);
   padding-bottom: 2.5rem;
+}
+
+.footer-brand-wrapper {
+  display: flex;
+  justify-content: center;
 }
 
 .footer-brand {
@@ -13581,12 +13603,14 @@ box-shadow:
   width: 32px;
   height: 2px;
   background: var(--heritage-gold);
-  margin-top: 0.5rem;
+  margin: 0.5rem auto 0;
 }
 
 .footer-nav {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 0.55rem;
 }
 
@@ -13614,9 +13638,17 @@ box-shadow:
   margin-bottom: 1rem;
 }
 
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
 .footer-contact-line {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   margin: 0.4rem 0;
   color: #e9e4d6;
@@ -13652,12 +13684,13 @@ box-shadow:
   text-decoration: underline;
 }
 
-/* ===== Social & Trust ===== */
+/* ===== Social & Trust: centered like the rest ===== */
 .footer-middle {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  text-align: center;
   gap: 1.5rem;
   border-bottom: 1px solid rgba(201, 162, 39, 0.35);
   padding: 1.75rem 0;
@@ -13765,7 +13798,6 @@ box-shadow:
 
 @media (max-width: 768px) {
   .footer-top {
-    grid-template-columns: 1fr;
     gap: 2rem;
   }
   .footer-brand {
@@ -13773,7 +13805,7 @@ box-shadow:
   }
   .footer-middle {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 1.25rem;
   }
   .to-top {
@@ -20151,10 +20183,7 @@ h2,
 }
 
 .heritage-service-link {
-  display: grid;
-  grid-template-columns: 3rem 120px 1fr auto;
-  gap: 1.25rem;
-  align-items: center;
+  display: block;
   padding: 1.25rem 0.75rem;
   text-decoration: none;
   color: inherit;
@@ -20166,25 +20195,39 @@ h2,
   background: rgba(201, 162, 39, 0.08);
 }
 
+/* Large rectangular photo, full row width: 16:9 capped at 320px tall
+   so 12 rows stay scannable. No arch crop — straight corners with a
+   thin gold border. Served at 1200px wide, so it stays sharp. */
+.heritage-service-photo {
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgba(201, 162, 39, 0.4);
+  border-radius: 8px;
+  aspect-ratio: 16 / 9;
+  max-height: 320px;
+  margin-bottom: 1rem;
+}
+
+.heritage-service-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.heritage-service-row-body {
+  display: grid;
+  grid-template-columns: 3rem 1fr auto;
+  gap: 1.25rem;
+  align-items: center;
+}
+
 .heritage-service-num {
   font-family: var(--font-display), Georgia, "Times New Roman", serif;
   font-size: 1.3rem;
   font-weight: 600;
   color: var(--heritage-gold);
-}
-
-.heritage-service-thumb {
-  display: block;
-  border-radius: 48px 48px 8px 8px;
-  overflow: hidden;
-  border: 1px solid rgba(201, 162, 39, 0.4);
-}
-
-.heritage-service-thumb img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .heritage-service-text {
@@ -20237,9 +20280,11 @@ h2,
 
 @media (max-width: 760px) {
   .heritage-service-link {
-    grid-template-columns: 2rem 72px 1fr auto;
-    gap: 0.85rem;
     padding: 1rem 0.5rem;
+  }
+  .heritage-service-row-body {
+    grid-template-columns: 2rem 1fr auto;
+    gap: 0.85rem;
   }
   .heritage-service-title {
     font-size: 1.15rem;
@@ -20728,10 +20773,10 @@ h2,
   border: 1px solid rgba(201, 162, 39, 0.4);
 }
 
-.services-list-card-image-wrapper {
-  border-radius: 120px 120px 0 0;
-  overflow: hidden;
-}
+/* No arch on the hub card images: the 120px arch cropped the photos
+   the same way it did the blog thumbnails and the home service
+   thumbs. The image stays rectangular; the card's own 0.75rem radius
+   (with overflow hidden) gives it soft corners. */
 
 .services-list-card-title {
   font-family: var(--font-display), Georgia, "Times New Roman", serif;
@@ -20951,10 +20996,9 @@ h2,
   border: 1px solid rgba(201, 162, 39, 0.4);
 }
 
-.single-blog-related-card .blog-image-wrapper {
-  border-radius: 120px 120px 0 0;
-  overflow: hidden;
-}
+/* No arch on the related-card image: the 120px arch cropped the photo
+   the same way it did the blog thumbnails and the service thumbs, and
+   the card already rounds the image with its own 1rem radius. */
 
 /* ================= CONTACT PAGE ================= */
 .contact-support-heroIcon {
