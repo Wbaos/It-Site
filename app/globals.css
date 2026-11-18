@@ -21216,3 +21216,154 @@ h2,
 .about-cta {
   border-top: 3px solid var(--heritage-gold);
 }
+
+/* ================= HOME: interactive diagnostic =================
+   Ivory editorial panel replacing the old Highlights strip. Six
+   symptom buttons; tapping one animates to a result card with the
+   likely cause, the service link, and the free-inspection CTA. */
+.heritage-diagnostic {
+  background: var(--heritage-ivory);
+  color: var(--heritage-ink);
+  padding: 3.5rem 1.25rem;
+}
+
+.heritage-diag-inner {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.heritage-diag-title {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 600;
+  color: var(--heritage-green);
+  line-height: 1.15;
+  text-align: center;
+  margin: 0 0 0.5rem;
+}
+
+.heritage-diag-sub {
+  text-align: center;
+  color: var(--heritage-muted);
+  font-size: 1.05rem;
+  margin: 0 0 2rem;
+}
+
+.heritage-diag-view {
+  animation: heritage-diag-in 0.45s ease both;
+}
+
+@keyframes heritage-diag-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+.heritage-diag-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 760px) {
+  .heritage-diag-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.heritage-diag-btn {
+  min-height: 56px;
+  padding: 0.85rem 1rem;
+  background: var(--heritage-panel);
+  color: var(--heritage-green);
+  border: 1.5px solid rgba(201, 162, 39, 0.55);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.heritage-diag-btn:hover {
+  background: rgba(201, 162, 39, 0.14);
+  border-color: var(--heritage-gold);
+}
+
+.heritage-diag-result {
+  background: var(--heritage-panel);
+  border-top: 4px solid var(--heritage-gold);
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+  box-shadow: 0 10px 30px rgba(18, 32, 25, 0.12);
+}
+
+.heritage-diag-result-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #755e15;
+  margin: 0 0 0.75rem;
+}
+
+.heritage-diag-cause {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--heritage-ink);
+  margin: 0 0 1rem;
+}
+
+.heritage-diag-service {
+  margin: 0 0 1.5rem;
+}
+
+.heritage-diag-service a {
+  color: #7a5f16;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.heritage-diag-service a:hover {
+  text-decoration: underline;
+}
+
+.heritage-diag-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.heritage-diag-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(180deg, #d4af37 0%, #c9a227 100%);
+  color: #122019;
+  font-weight: 800;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.heritage-diag-back {
+  background: none;
+  border: none;
+  padding: 0.5rem 0;
+  color: var(--heritage-green);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.heritage-diag-back:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heritage-diag-view {
+    animation: none;
+  }
+}

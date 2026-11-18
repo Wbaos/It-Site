@@ -7,6 +7,7 @@ import {
 import { FALLBACK_SETTINGS, resolveSiteSettings } from "@/lib/sanitySettings";
 import { sanity } from "@/lib/sanity";
 import HomeHero from "@/components/sections/HomeHero";
+import SystemDiagnostic from "@/components/sections/SystemDiagnostic";
 import BeforeAfterSection, {
   type BeforeAfterComparison,
 } from "@/components/BeforeAfterSection";
@@ -15,7 +16,6 @@ import Services from "@/components/sections/Services";
 import HowItWorks from "@/components/sections/HowItWorks";
 import GoogleReviewsCTA from "@/components/sections/GoogleReviewsCTA";
 import Contact from "@/components/sections/Contact";
-import HighlightsServer from "@/components/sections/HighLigthsServer";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import HomeVideo from "@/components/sections/HomeVideo";
 
@@ -33,7 +33,7 @@ type Section = {
     | "seo-intro"
     | "services"
     | "home-video"
-    | "highlights"
+    | "diagnostic"
     | "how"
     | "why"
     | "testimonials"
@@ -236,7 +236,10 @@ export async function getHomeSections(
 
     { key: "services", Component: Services, props: { locale } },
 
-    { key: "highlights", Component: HighlightsServer, props: { locale } },
+    // Interactive diagnostic ("What's wrong with your system?") in
+    // place of the old rotating Highlights strip, removed 17 Nov 2026
+    // at the owner's request. Six symptoms, one result card each.
+    { key: "diagnostic", Component: SystemDiagnostic, props: { locale } },
 
     { key: "home-video", Component: HomeVideo, props: { locale, doc } },
 
