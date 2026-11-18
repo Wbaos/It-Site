@@ -117,32 +117,79 @@ export default function TestimonialsList({
   // visible window's height.
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // The viewport's height follows the tallest VISIBLE slide — not the
-  // tallest slide in the whole track. The track holds every review (plus
-  // loop clones), so its natural height is the tallest review overall;
-  // with no explicit viewport height the prev/next arrows below it sat
-  // at that height even when the card on screen was short. Measuring the
-  // visible window keeps the arrows right under the card being viewed:
-  // expanding a review pushes them down, collapsing pulls them back up.
+  // The visible row is uniform: every card on screen gets the height of
+  // the tallest VISIBLE card, so the row looks even — but the name +
+  // "Verified" badge stay glued right under the review text (the card
+  // is flex-start and the footer has a fixed 12px gap), and any slack
+  // ends up below the name at the bottom of the card.
+  //
+  // Why JS instead of `align-items: stretch` on the track: the track
+  // holds every review (plus loop clones), so stretch would size the row
+  // to the tallest review overall — even one off screen — and the arrows
+  // would sit at that height. Measuring only the visible window keeps
+  // the row and the arrows following the cards actually on screen.
+  //
+  // A card's natural height is measured from its footer (the last thing
+  // in the flow): footer bottom − card top + bottom padding/border.
+  // That stays true even after a min-height is applied, so re-measuring
+  // after an expand/collapse always sees the real content height.
+  // (box-sizing is border-box site-wide, so the min-height below takes
+  // the border-box height measured here.)
   const [viewportHeight, setViewportHeight] = useState<number | undefined>(
     undefined,
   );
   const measureViewportHeight = useCallback(() => {
-    if (!canSlide) return;
+    const count = canSlide ? cols : n;
+    const start = canSlide ? index : 0;
     let max = 0;
-    for (let k = index; k < index + cols; k++) {
-      const el = slideRefs.current[k];
-      if (!el) continue;
-      // offsetHeight excludes the slide's vertical margins, but the
-      // track's height includes them — count them or the card bottom
-      // gets clipped by the margin.
-      const style = window.getComputedStyle(el);
-      const marginY =
-        parseFloat(style.marginTop) + parseFloat(style.marginBottom);
-      max = Math.max(max, el.offsetHeight + marginY);
+    const seen: HTMLElement[] = [];
+    for (let k = start; k < start + count; k++) {
+      const slide = slideRefs.current[k];
+      if (!slide) continue;
+      seen.push(slide);
+      const card = slide.querySelector<HTMLElement>(".testimonial-card");
+      const footer = card?.querySelector<HTMLElement>(".testimonial-footer");
+      let natural = 0;
+      if (card && footer) {
+        const cardRect = card.getBoundingClientRect();
+        const footerRect = footer.getBoundingClientRect();
+        const cardStyle = window.getComputedStyle(card);
+        natural =
+          footerRect.bottom -
+          cardRect.top +
+          (parseFloat(cardStyle.paddingBottom) || 0) +
+          (parseFloat(cardStyle.borderBottomWidth) || 0);
+      } else {
+        natural = slide.offsetHeight;
+      }
+      max = Math.max(max, natural);
     }
-    if (max > 0) setViewportHeight((prev) => (prev === max ? prev : max));
-  }, [canSlide, cols, index]);
+    if (max <= 0) return;
+    // Uniform row: every card on screen gets the tallest visible height.
+    for (const slide of seen) {
+      const card = slide.querySelector<HTMLElement>(".testimonial-card");
+      if (card) card.style.minHeight = `${max}px`;
+    }
+    // Off-screen cards go back to their natural height, so they are
+    // measured correctly when they slide into view.
+    slideRefs.current.forEach((slide, i) => {
+      if (!slide || (i >= start && i < start + count)) return;
+      const card = slide.querySelector<HTMLElement>(".testimonial-card");
+      if (card) card.style.minHeight = "";
+    });
+    if (!canSlide) return;
+    // offsetHeight excludes the slide's vertical margins, but the
+    // track's height includes them — count them or the card bottom
+    // gets clipped by the margin.
+    let marginY = 0;
+    const first = seen[0];
+    if (first) {
+      const s = window.getComputedStyle(first);
+      marginY = parseFloat(s.marginTop) + parseFloat(s.marginBottom);
+    }
+    const next = max + marginY;
+    setViewportHeight((prev) => (prev === next ? prev : next));
+  }, [canSlide, cols, index, n]);
 
   // Re-measure whenever what is visible (or how tall it is) changes:
   // slide change, column count, expand/collapse, and the post-mount
@@ -153,18 +200,29 @@ export default function TestimonialsList({
 
   // Re-measure when any slide's height changes for another reason
   // (webfont swap, text reflow) — the track's size changes with it.
+  // The visible slides are observed directly too, so an expand/collapse
+  // re-measures even if the state update and the layout effect race:
+  // any real height change on screen re-measures, and the footer-based
+  // measurement is unaffected by the min-height itself, so there is no
+  // feedback loop.
   useEffect(() => {
     const track = trackRef.current;
     if (!track || typeof ResizeObserver === "undefined") return;
     const ro = new ResizeObserver(() => measureViewportHeight());
     ro.observe(track);
+    const count = canSlide ? cols : n;
+    const start = canSlide ? index : 0;
+    for (let k = start; k < start + count; k++) {
+      const el = slideRefs.current[k];
+      if (el) ro.observe(el);
+    }
     if (document.fonts) {
       document.fonts.ready
         .then(() => measureViewportHeight())
         .catch(() => {});
     }
     return () => ro.disconnect();
-  }, [measureViewportHeight]);
+  }, [measureViewportHeight, canSlide, cols, index, n]);
 
   /** Responsive columns */
   useEffect(() => {

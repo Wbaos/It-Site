@@ -12179,9 +12179,11 @@ object-fit: cover;
 
 .carousel-track {
   display: flex;
-  /* flex-start (not stretch): each review card sizes to its own content.
-     With stretch, every card grew to the tallest card's height and the
-     name sat at the bottom with a big gap on short reviews. */
+  /* flex-start (not stretch): the uniform row height is enforced by JS
+     (a min-height on the visible cards, see TestimonialsList). With
+     stretch the row would size to the tallest review in the whole track
+     — even one off screen — and the prev/next arrows would sit at that
+     height instead of under the cards being viewed. */
   align-items: flex-start;
   transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
