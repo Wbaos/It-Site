@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // Location copy may carry {{phone}} markers; they resolve to site-settings.
   const description = substitutePhonePlaceholders(
-    location.descriptionEs || location.description,
+    location.metaDescriptionEs || location.descriptionEs || location.description,
     settings,
   );
 

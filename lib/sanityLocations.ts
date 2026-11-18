@@ -49,6 +49,7 @@ export interface Location {
   metaTitle?: string;
   metaTitleEs?: string;
   metaDescription?: string;
+  metaDescriptionEs?: string;
   heroImage?: SanityImageSource;
   services?: string[];
   neighborhoods?: string[];
@@ -81,6 +82,7 @@ export async function getAllActiveLocations(): Promise<Location[]> {
     metaTitle,
     metaTitleEs,
     metaDescription,
+    metaDescriptionEs,
     heroImage,
     services,
     neighborhoods,
@@ -126,6 +128,7 @@ export async function getLocationBySlug(slug: string, locale: "en" | "es" = "en"
     metaTitle,
     metaTitleEs,
     metaDescription,
+    metaDescriptionEs,
     heroImage,
     services,
     neighborhoods,
