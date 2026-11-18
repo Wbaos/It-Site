@@ -118,7 +118,7 @@ export default function TestimonialsList({
   }, []);
 
   const extended = [...ordered.slice(-cols), ...ordered, ...ordered.slice(0, cols)];
-  const visible = canSlide ? extended : items;
+  const visible = canSlide ? extended : ordered;
   const cardWidth = 100 / cols;
 
   const goNext = () => {
