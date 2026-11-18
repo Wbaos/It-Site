@@ -34,7 +34,7 @@ const FALLBACK_EN = {
   heroSubtitle:
     "We're here to help. Contact CallTechCare for service requests, quotes, or questions about our sprinkler, irrigation, and security camera services across Miami and South Florida.",
   stats: [
-    { value: "Same-Day Service", label: "Within Business Hours" },
+    { value: "Same Day", label: "Within Business Hours" },
     // Google Rating value is filled from the live summary below; the
     // empty default is dropped when there is no summary, so no stale
     // number ever shows.
@@ -79,7 +79,7 @@ const FALLBACK_ES = {
   heroSubtitle:
     "Estamos aquí para ayudarte. Contacta a CallTechCare para solicitudes de servicio, cotizaciones o preguntas sobre nuestros servicios de sprinklers, irrigación y cámaras de seguridad en Miami y el sur de Florida.",
   stats: [
-    { value: "Servicio el Mismo Día", label: "En horario" },
+    { value: "Mismo Día", label: "En horario" },
     { value: "", label: "Calificación en Google" },
     { value: "1500+", label: "Clientes felices" },
     { value: "Lun–Dom", label: "Disponibilidad de soporte" },
