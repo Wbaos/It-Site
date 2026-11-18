@@ -19562,7 +19562,7 @@ details[open] .faq-toggle {
   width: 100%;
   display: block;
   aspect-ratio: 16 / 9;
-  object-fit: cover;
+  object-fit: contain;
   background: #000;
 }
 
@@ -20437,7 +20437,7 @@ h2,
 
 /* ================= HOME: video frame, SEO intro, testimonials, contact ================= */
 .home-video-frame {
-  border-radius: 200px 200px 12px 12px;
+  border-radius: 12px;
   border: 2px solid rgba(201, 162, 39, 0.5);
   overflow: hidden;
 }
