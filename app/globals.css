@@ -14419,7 +14419,10 @@ box-shadow:
 
 .contact-support-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* Exactly 3 visible cards (the quote card is filtered out in
+     ContactTemplate), so 3 columns: with 4 columns the row ended
+     285px early and the whole section looked shifted left. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
   align-items: stretch;
 }
@@ -14528,6 +14531,12 @@ box-shadow:
 @media (max-width: 980px) {
   .contact-support-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* With 3 cards in 2 columns the last one sat alone on the left
+     of row 2; span it full-width instead (only when it is odd,
+     so a 4-card row is unaffected). */
+  .contact-support-grid > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
   }
 }
 
