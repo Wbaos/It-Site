@@ -8,6 +8,7 @@
 // where that list already exists further down the page.
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useState } from "react";
 import { MAP_CITIES } from "@/lib/cityCoordinates";
 import { cityHref } from "@/lib/cityTwins";
 
@@ -21,6 +22,9 @@ export default function CoverageMap({
   showCityList?: boolean;
 }) {
   const isSpanish = locale === "es";
+  // The text list starts collapsed: the map + search already find the
+  // city, so the full 32-city list below it reads as a repeat.
+  const [listOpen, setListOpen] = useState(false);
   return (
     <section className="section coverage-map-section" aria-labelledby="coverage-map-title">
       <div className="site-container">
@@ -37,15 +41,34 @@ export default function CoverageMap({
         </p>
         <CityMap locale={locale} />
         {showCityList ? (
-          <ul className="coverage-map-list" aria-label={isSpanish ? "Las 32 ciudades que atendemos" : "All 32 cities we serve"}>
-            {MAP_CITIES.map((city) => (
-              <li key={city.slug}>
-                <Link href={cityHref(city.slug, locale)} className="coverage-map-chip">
-                  {city.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <>
+            <button
+              type="button"
+              className="coverage-map-list-toggle"
+              aria-expanded={listOpen}
+              aria-controls="coverage-map-list"
+              onClick={() => setListOpen((v) => !v)}
+            >
+              {listOpen
+                ? isSpanish
+                  ? "Ver menos"
+                  : "See fewer"
+                : isSpanish
+                  ? "Ver todas las ciudades"
+                  : "See all cities"}
+            </button>
+            {listOpen ? (
+              <ul id="coverage-map-list" className="coverage-map-list" aria-label={isSpanish ? "Las 32 ciudades que atendemos" : "All 32 cities we serve"}>
+                {MAP_CITIES.map((city) => (
+                  <li key={city.slug}>
+                    <Link href={cityHref(city.slug, locale)} className="coverage-map-chip">
+                      {city.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </>
         ) : null}
         <p className="coverage-map-count">
           {isSpanish

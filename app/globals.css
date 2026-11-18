@@ -21614,6 +21614,28 @@ h2,
   color: var(--heritage-gold-deep);
 }
 
+.coverage-map-list-toggle {
+  margin: 1.25rem 0 0;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--heritage-green);
+  background: var(--heritage-panel);
+  border: 1px solid var(--heritage-hairline);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.coverage-map-list-toggle:hover {
+  border-color: var(--heritage-gold);
+  color: var(--heritage-gold-deep);
+}
+
+.coverage-map-list-toggle:focus-visible {
+  outline: 2px solid var(--heritage-gold);
+  outline-offset: 2px;
+}
+
 .coverage-map-count {
   margin: 1rem 0 0;
   font-size: 0.92rem;
@@ -21635,13 +21657,21 @@ h2,
    Infinite scrolling strip with the five brands installed
    (Irritrol, Pearl, Goulds, Rain Bird, Hunter). Text only, no
    logos. The track holds the list twice and scrolls -50% in a
-   loop; it pauses on hover and while touched, and with reduced
-   motion it becomes a single static centered row.
+   loop; touching it never pauses it — the pause/play button in
+   the strip does, and hover pauses on mouse devices only. With
+   reduced motion it becomes a single static centered row.
    ================================================================ */
 .brand-marquee {
   background: var(--heritage-green);
   color: var(--heritage-ivory);
   padding: 1.1rem 1.25rem 1.25rem;
+}
+
+.brand-marquee-head {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin: 0 0 0.75rem;
 }
 
 .brand-marquee-label {
@@ -21651,7 +21681,33 @@ h2,
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(247, 243, 234, 0.65);
-  margin: 0 0 0.75rem;
+  margin: 0;
+}
+
+/* Minimal, discreet control: just a small icon in the strip's own
+   tone — no background, no border, nothing that stands out. It is
+   only noticeable if the user looks for it. */
+.brand-marquee-toggle {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(247, 243, 234, 0.55);
+  cursor: pointer;
+}
+
+.brand-marquee-toggle:hover {
+  color: rgba(247, 243, 234, 0.9);
+}
+
+.brand-marquee-toggle:focus-visible {
+  outline: 2px solid var(--heritage-gold);
+  outline-offset: 2px;
 }
 
 .brand-marquee-viewport {
@@ -21691,7 +21747,14 @@ h2,
   font-size: 0.8rem;
 }
 
-.brand-marquee-viewport:hover .brand-marquee-track,
+/* Hover pauses only on devices with a real mouse — never on touch,
+   where a tap must not stop the strip. The button pauses it instead. */
+@media (hover: hover) {
+  .brand-marquee-viewport:hover .brand-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
 .brand-marquee-viewport.is-paused .brand-marquee-track {
   animation-play-state: paused;
 }
@@ -21712,6 +21775,10 @@ h2,
     flex-wrap: wrap;
   }
   .brand-marquee-group[aria-hidden="true"] {
+    display: none;
+  }
+  /* Static strip needs no pause control. */
+  .brand-marquee-toggle {
     display: none;
   }
 }
