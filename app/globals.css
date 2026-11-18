@@ -19748,8 +19748,23 @@ h2,
 .heritage-hero-grid {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
+  grid-template-areas:
+    "copy form"
+    "photo photo";
   gap: 3rem;
   align-items: start;
+}
+
+.heritage-hero-copy {
+  grid-area: copy;
+}
+
+.heritage-hero-form {
+  grid-area: form;
+}
+
+.heritage-hero-photo {
+  grid-area: photo;
 }
 
 .heritage-hero-eyebrow {
@@ -19927,10 +19942,17 @@ h2,
 @media (max-width: 900px) {
   .heritage-hero-grid {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "copy"
+      "photo"
+      "form";
     gap: 2rem;
   }
   .heritage-hero {
     padding: 10.5rem 1.25rem 2rem;
+  }
+  .heritage-hero-photo {
+    margin: 0;
   }
   .heritage-hero-photo-img {
     aspect-ratio: 4 / 3;
