@@ -19906,6 +19906,17 @@ h2,
   display: block;
 }
 
+/* Hero video: same arched frame, same size as the photo (18 Nov 2026).
+   The video fills the frame exactly like the photo did (cover), so the
+   arch and the 21/9 desktop / 4/3 mobile ratios are unchanged. */
+.heritage-hero-photo video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 21 / 9;
+  object-fit: cover;
+  display: block;
+}
+
 .heritage-hero-trust {
   list-style: none;
   margin: 0;
@@ -19962,6 +19973,9 @@ h2,
     margin: 0;
   }
   .heritage-hero-photo-img {
+    aspect-ratio: 4 / 3;
+  }
+  .heritage-hero-photo video {
     aspect-ratio: 4 / 3;
   }
   .heritage-hero-trust li {
@@ -21354,5 +21368,264 @@ h2,
 @media (prefers-reduced-motion: reduce) {
   .heritage-diag-view {
     animation: none;
+  }
+}
+
+/* ================================================================
+   INTERACTIVE SERVICE-AREA MAP — 18 Nov 2026
+   Leaflet + OpenStreetMap: 32 city pins with grid clustering,
+   county filters and a city search. The section is a light ivory
+   band so it reads on the home (ivory) and on /locations (dark).
+   ================================================================ */
+.coverage-map-section {
+  background: var(--heritage-ivory);
+  color: var(--heritage-ink);
+  padding: 3.5rem 1.25rem;
+}
+
+.coverage-map-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #755e15;
+  margin: 0 0 0.75rem;
+}
+
+.coverage-map-eyebrow::before {
+  content: "";
+  width: 44px;
+  height: 2px;
+  background: var(--heritage-gold);
+  flex: none;
+}
+
+.coverage-map-title {
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  line-height: 1.08;
+  font-weight: 600;
+  color: var(--heritage-green);
+  margin: 0 0 0.75rem;
+}
+
+.coverage-map-sub {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--heritage-muted);
+  margin: 0 0 1.5rem;
+  max-width: 44rem;
+}
+
+.city-map-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.city-map-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.city-map-search {
+  position: relative;
+  flex: 1 1 260px;
+  min-width: 220px;
+}
+
+.city-map-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.7rem 1rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--heritage-ink);
+  background: var(--heritage-panel);
+  border: 1px solid var(--heritage-hairline);
+  border-radius: 999px;
+  outline: none;
+}
+
+.city-map-search-input:focus {
+  border-color: var(--heritage-gold);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.25);
+}
+
+.city-map-search-results {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem;
+  background: var(--heritage-panel);
+  border: 1px solid var(--heritage-hairline);
+  border-radius: 0.75rem;
+  box-shadow: 0 12px 32px rgba(18, 32, 25, 0.25);
+}
+
+.city-map-search-result {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--heritage-ink);
+  background: none;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.city-map-search-result:hover {
+  background: var(--heritage-ivory);
+}
+
+.city-map-search-empty {
+  padding: 0.6rem 0.75rem;
+  color: var(--heritage-muted);
+  font-size: 0.95rem;
+}
+
+.city-map-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.city-map-filter {
+  padding: 0.7rem 1.1rem;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--heritage-green);
+  background: var(--heritage-panel);
+  border: 1px solid var(--heritage-hairline);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.city-map-filter[aria-pressed="true"] {
+  background: var(--heritage-green);
+  color: var(--heritage-ivory);
+  border-color: var(--heritage-green);
+}
+
+.city-map {
+  position: relative;
+  z-index: 0;
+  height: 380px;
+  border-radius: 12px;
+  border: 1px solid var(--heritage-hairline);
+  overflow: hidden;
+  background: #e8e4d8;
+}
+
+/* Leaflet default divIcon draws a white box; our pins paint themselves. */
+.city-map-div-icon {
+  background: transparent;
+  border: none;
+}
+
+.city-map-pin {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--heritage-gold);
+  border: 2px solid var(--heritage-green);
+  box-shadow: 0 2px 8px rgba(18, 32, 25, 0.45);
+}
+
+.city-map-cluster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--heritage-green);
+  color: var(--heritage-ivory);
+  font-size: 0.95rem;
+  font-weight: 800;
+  border: 2px solid var(--heritage-gold);
+  box-shadow: 0 2px 10px rgba(18, 32, 25, 0.45);
+}
+
+.city-map-popup .leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(18, 32, 25, 0.3);
+}
+
+.city-map-popup .leaflet-popup-content {
+  margin: 0.9rem 1rem;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+.city-map-popup-name {
+  display: block;
+  font-size: 1.05rem;
+  color: var(--heritage-green);
+  margin-bottom: 0.35rem;
+}
+
+.city-map-popup-link {
+  color: var(--heritage-gold-deep);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.city-map-popup-link:hover {
+  text-decoration: underline;
+}
+
+.coverage-map-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+}
+
+.coverage-map-chip {
+  display: inline-block;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--heritage-green);
+  background: var(--heritage-panel);
+  border: 1px solid var(--heritage-hairline);
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.coverage-map-chip:hover {
+  border-color: var(--heritage-gold);
+  color: var(--heritage-gold-deep);
+}
+
+.coverage-map-count {
+  margin: 1rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--heritage-muted);
+}
+
+@media (max-width: 640px) {
+  .city-map {
+    height: 320px;
+  }
+  .coverage-map-section {
+    padding: 2.5rem 1.25rem;
   }
 }

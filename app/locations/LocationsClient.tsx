@@ -8,6 +8,7 @@ import { urlFor } from "@/lib/sanityImage";
 import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
 import { Search } from "lucide-react";
 import SpriteIcon from "@/components/common/SpriteIcon";
+import CoverageMap from "@/components/sections/CoverageMap";
 
 const DESCRIPTION_ES: Record<string, string> = {
   miami: "CallTechCare ofrece reparación profesional de sprinklers e instalación de irrigación en Miami para propiedades residenciales y comerciales. También ofrecemos instalación de cámaras de seguridad. Atendemos todos los barrios de Miami con servicio rápido y confiable y estimados claros.",
@@ -139,6 +140,11 @@ export default function LocationsClient({
           </p>
         </div>
       </section>
+
+      {/* Interactive service-area map: same component as the home.
+          The text list of the 32 cities is hidden here because the
+          "All 32 Cities We Serve" list already exists further down. */}
+      <CoverageMap locale={locale} showCityList={false} />
 
       {/* Search & Filter */}
       {locations.length > 1 && (

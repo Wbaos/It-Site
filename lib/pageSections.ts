@@ -17,7 +17,7 @@ import HowItWorks from "@/components/sections/HowItWorks";
 import GoogleReviewsCTA from "@/components/sections/GoogleReviewsCTA";
 import Contact from "@/components/sections/Contact";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
-import HomeVideo from "@/components/sections/HomeVideo";
+import CoverageMap from "@/components/sections/CoverageMap";
 
 // Single home template, both languages. The section list, order and
 // components are identical for English and Spanish; only the text changes,
@@ -32,13 +32,13 @@ type Section = {
     | "before-after"
     | "seo-intro"
     | "services"
-    | "home-video"
     | "diagnostic"
     | "how"
     | "why"
     | "testimonials"
     | "pricing"
-    | "contact";
+    | "contact"
+    | "coverage-map";
   Component: ComponentType<any>;
   props?: Record<string, unknown>;
 };
@@ -215,8 +215,9 @@ export async function getHomeSections(
       };
   const sections: Section[] = [
     // Editorial hero: copy + promise + the QuickLeadForm itself, a wide
-    // real-photo band and a single trust strip — the form is no longer a
-    // separate section below the fold.
+    // video band in the arched frame (the home video, muted on loop,
+    // with the hero photo as poster/fallback) and a single trust strip
+    // — the form is no longer a separate section below the fold.
     {
       key: "hero",
       Component: HomeHero,
@@ -241,12 +242,17 @@ export async function getHomeSections(
     // at the owner's request. Six symptoms, one result card each.
     { key: "diagnostic", Component: SystemDiagnostic, props: { locale } },
 
-    { key: "home-video", Component: HomeVideo, props: { locale, doc } },
-
     { key: "seo-intro", Component: SEOIntro, props: { locale, doc } },
     { key: "why", Component: WhyChooseUs, props: { locale, doc, ratingSummary } },
 
     { key: "how", Component: HowItWorks, props: { locale } },
+
+    // Interactive service-area map (18 Nov 2026): the 32 cities on a
+    // Leaflet map with county filters and search, plus the text list
+    // below as backup. The old home-video section was removed the same
+    // day: the video moved into the hero, so the same video twice on
+    // the home was a repeat.
+    { key: "coverage-map", Component: CoverageMap, props: { locale } },
 
     {
       key: "testimonials",
