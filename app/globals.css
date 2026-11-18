@@ -12179,7 +12179,10 @@ object-fit: cover;
 
 .carousel-track {
   display: flex;
-  align-items: stretch; 
+  /* flex-start (not stretch): each review card sizes to its own content.
+     With stretch, every card grew to the tallest card's height and the
+     name sat at the bottom with a big gap on short reviews. */
+  align-items: flex-start;
   transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
@@ -12215,7 +12218,9 @@ object-fit: cover;
   text-align: left;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* flex-start (not space-between): the footer follows the text instead
+     of being pushed to the bottom of a stretched card. */
+  justify-content: flex-start;
   flex: 1;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid #24402f;
@@ -12268,7 +12273,9 @@ object-fit: cover;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-top: auto;
+  /* Fixed gap (not margin-top: auto): the name sits right under the text
+     instead of at the bottom of a tall card. */
+  margin-top: 12px;
 }
 
 .footer-right {
