@@ -98,7 +98,17 @@ export default function TestimonialsList({
   const [index, setIndex] = useState(cols);
   const [animating, setAnimating] = useState(false);
 
-  const [expanded, setExpanded] = useState(false);
+  // Expanded state is per review (keyed by the review's index in `items`),
+  // so tapping "Read more" on one card grows only that card. A single
+  // shared boolean expanded every card's text at once.
+  const [expandedSet, setExpandedSet] = useState<ReadonlySet<number>>(new Set());
+  const toggleExpanded = (origIndex: number) =>
+    setExpandedSet((prev) => {
+      const next = new Set(prev);
+      if (next.has(origIndex)) next.delete(origIndex);
+      else next.add(origIndex);
+      return next;
+    });
 
   const trackRef = useRef<HTMLDivElement>(null);
   const startXRef = useRef<number | null>(null);
@@ -237,7 +247,20 @@ export default function TestimonialsList({
 
                 const fullText = t.text ?? "";
                 const isLong = fullText.split(" ").length > 15;
-                const textToShow = expanded
+                // `visible` is the items array itself when the carousel
+                // cannot slide, otherwise it is the loop-padded `extended`
+                // array with clones at both ends. Map the rendered position
+                // back to the review's index in `items` so the expanded
+                // state follows the review, not the rendered clone.
+                const origIndex = !canSlide
+                  ? i
+                  : i < cols
+                    ? n - cols + i
+                    : i < cols + n
+                      ? i - cols
+                      : i - (cols + n);
+                const isExpanded = expandedSet.has(origIndex);
+                const textToShow = isExpanded
                   ? fullText
                   : truncateWords(fullText, 15);
 
@@ -263,9 +286,9 @@ export default function TestimonialsList({
                         {isLong && (
                           <button
                             className="read-more-btn"
-                            onClick={() => setExpanded((x) => !x)}
+                            onClick={() => toggleExpanded(origIndex)}
                           >
-                            {expanded ? (isSpanish ? "Leer menos" : "Read less") : (isSpanish ? "Leer más" : "Read more")}
+                            {isExpanded ? (isSpanish ? "Leer menos" : "Read less") : (isSpanish ? "Leer más" : "Read more")}
                           </button>
                         )}
                       </div>
