@@ -4,7 +4,7 @@ import BlogPage from "@/app/blog/page";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Guías de Reparación de Sprinklers y Cámaras | Blog CallTechCare",
+  title: "Guías de Sprinklers y Cámaras | CallTechCare",
   description: "Guías útiles sobre reparación de sprinklers, riego, cámaras de seguridad y mantenimiento para propietarios en Miami y el sur de Florida.",
   alternates: {
     types: {
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   // the page inherited the English layout defaults in WhatsApp/Facebook
   // previews.
   openGraph: {
-    title: "Guías de Reparación de Sprinklers y Cámaras | Blog CallTechCare",
+    title: "Guías de Sprinklers y Cámaras | CallTechCare",
     description: "Guías útiles sobre reparación de sprinklers, riego, cámaras de seguridad y mantenimiento para propietarios en Miami y el sur de Florida.",
     url: "https://www.calltechcare.com/es/blog",
     siteName: "CallTechCare",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Guías de Reparación de Sprinklers y Cámaras | Blog CallTechCare",
+    title: "Guías de Sprinklers y Cámaras | CallTechCare",
     description: "Guías útiles sobre reparación de sprinklers, riego, cámaras de seguridad y mantenimiento para propietarios en Miami y el sur de Florida.",
   },
 };

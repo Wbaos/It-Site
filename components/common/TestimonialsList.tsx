@@ -73,7 +73,23 @@ export default function TestimonialsList({
     (isSpanish
       ? "Experiencias reales de propietarios y negocios satisfechos."
       : "Real experiences from satisfied homeowners and businesses.");
-  const n = items.length;
+  // Review order is randomized once on mount, client-side only: the
+  // server renders the Sanity order and the first client render matches
+  // it (no hydration mismatch); after mount a Fisher-Yates shuffle
+  // reorders the list, so the first visible reviews differ on every
+  // page load instead of always showing the same ones.
+  const [ordered, setOrdered] = useState<Testimonial[]>(items);
+  useEffect(() => {
+    const shuffled = [...items];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    setOrdered(shuffled);
+    // Run once on mount; `items` is static per page.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const n = ordered.length;
   const [cols, setCols] = useState(3);
   // With fewer reviews than visible columns, the infinite-loop padding
   // cannot fill the window when advancing, leaving an empty slot.
@@ -101,7 +117,7 @@ export default function TestimonialsList({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const extended = [...items.slice(-cols), ...items, ...items.slice(0, cols)];
+  const extended = [...ordered.slice(-cols), ...ordered, ...ordered.slice(0, cols)];
   const visible = canSlide ? extended : items;
   const cardWidth = 100 / cols;
 
