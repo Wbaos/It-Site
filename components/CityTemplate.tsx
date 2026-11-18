@@ -513,7 +513,7 @@ export default async function CityTemplate({ city, locale }: { city: City; local
   const cameraHref = serviceHref("wireless-camera-installation", locale);
 
   return (
-    <>
+    <div className="heritage-city-page">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -688,10 +688,12 @@ export default async function CityTemplate({ city, locale }: { city: City; local
         <div className="spr-landing">
           <h2 className="spr-landing-title">{t.highlightsTitle}</h2>
           <p className="spr-landing-sub">{highlightsSub}</p>
-          <div className="spr-cardGrid">
+          {/* Editorial rows, not cards: number + small illustration +
+              title + body, hairline-separated. Same text, same links,
+              same variant logic. */}
+          <ol className="heritage-city-highlights">
             {t.cards.map((card, i) => {
               const Illustration = ILLUSTRATIONS[i];
-              const delay = `${i * 80}ms`;
               const titleNode =
                 variant === "linked-titles" ? (
                   <Link
@@ -704,28 +706,33 @@ export default async function CityTemplate({ city, locale }: { city: City; local
                   card.title
                 );
               return (
-                <div key={card.linkSlug} className="spr-card spr-anim" style={{ animationDelay: delay }}>
-                  <div className="spr-cardMedia">
+                <li key={card.linkSlug} className="heritage-city-highlight-row">
+                  <span className="heritage-city-highlight-num" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="heritage-city-highlight-media">
                     <Illustration />
-                  </div>
-                  <h3 className="spr-cardTitle">{titleNode}</h3>
-                  <p className="spr-cardText">
-                    {card.body}
-                    {variant !== "linked-titles" && (
-                      <>
-                        {" "}
-                        {variant === "short-links" ? card.shortSee : card.see}
-                        <Link href={serviceHref(card.linkSlug, locale)}>
-                          {variant === "short-links" ? card.shortLinkText : card.linkText}
-                        </Link>
-                        {card.suffix}
-                      </>
-                    )}
-                  </p>
-                </div>
+                  </span>
+                  <span className="heritage-city-highlight-text">
+                    <span className="heritage-city-highlight-title">{titleNode}</span>
+                    <span className="heritage-city-highlight-body">
+                      {card.body}
+                      {variant !== "linked-titles" && (
+                        <>
+                          {" "}
+                          {variant === "short-links" ? card.shortSee : card.see}
+                          <Link href={serviceHref(card.linkSlug, locale)}>
+                            {variant === "short-links" ? card.shortLinkText : card.linkText}
+                          </Link>
+                          {card.suffix}
+                        </>
+                      )}
+                    </span>
+                  </span>
+                </li>
               );
             })}
-          </div>
+          </ol>
 
           <div className="spr-steps" aria-label={t.ariaSteps}>
             <h2 className="spr-landing-title">{t.stepsTitle}</h2>
@@ -757,6 +764,7 @@ export default async function CityTemplate({ city, locale }: { city: City; local
           <h2 className="spr-landing-title">{t.ourWorkTitle}</h2>
           <p className="spr-landing-sub">{gallerySub}</p>
           <div
+            className="spr-gallery-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
@@ -801,6 +809,6 @@ export default async function CityTemplate({ city, locale }: { city: City; local
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

@@ -330,6 +330,33 @@ export default function Navbar({
   const spanishHref = EN_TO_ES[pathname ?? ""] ?? ES_HUB_HREF;
   const englishHref = ES_TO_EN[pathname ?? ""] ?? "/";
 
+  // "Reserve" button target: the short QuickLeadForm (id="quick-lead")
+  // lives on the home, contact, service and city pages. On pages
+  // without it (blog, /locations, about, FAQ, legal, request-quote)
+  // the button points to the home form instead. No calendar: Wilber
+  // coordinates the visit himself after the form arrives.
+  const path = pathname ?? "";
+  const hasQuickLeadOnPage =
+    path === "/" ||
+    path === "/es" ||
+    path === "/contact" ||
+    path === "/es/contacto" ||
+    path.startsWith("/services/") ||
+    path.startsWith("/sprinkler-repair-") ||
+    path.startsWith("/es/reparacion-") ||
+    path.startsWith("/es/instalacion-") ||
+    path.startsWith("/es/actualizacion-") ||
+    path.startsWith("/es/plan-") ||
+    path.startsWith("/es/prueba-") ||
+    path.startsWith("/es/reemplazo-") ||
+    path.startsWith("/es/riego-") ||
+    path.startsWith("/es/seguridad-");
+  const reserveHref = hasQuickLeadOnPage
+    ? "#quick-lead"
+    : isSpanishPage
+      ? "/es#quick-lead"
+      : "/#quick-lead";
+
   // Segmented language switcher: two separate, directly tappable buttons
   // ("EN" and "ES") instead of one pill to toggle — tap the language you
   // want to go to. The active language is highlighted in brand green with
@@ -347,9 +374,9 @@ export default function Navbar({
         alignItems: "center",
         padding: "2px",
         background: "rgba(18, 32, 25, 0.55)",
-        border: "1px solid rgba(255, 255, 255, 0.18)",
+        border: "1px solid rgba(201, 162, 39, 0.55)",
         borderRadius: "999px",
-        fontSize: "12px",
+        fontSize: "14px",
         fontWeight: 700,
         lineHeight: "1",
         whiteSpace: "nowrap",
@@ -365,7 +392,7 @@ export default function Navbar({
               textDecoration: "none",
               color: "#eef0e6",
               opacity: 0.7,
-              padding: "5px 9px",
+              padding: "7px 12px",
               borderRadius: "999px",
             }}
           >
@@ -376,7 +403,7 @@ export default function Navbar({
             style={{
               background: "#c9a227",
               color: "#122019",
-              padding: "5px 9px",
+              padding: "7px 12px",
               borderRadius: "999px",
             }}
           >
@@ -390,7 +417,7 @@ export default function Navbar({
             style={{
               background: "#c9a227",
               color: "#122019",
-              padding: "5px 9px",
+              padding: "7px 12px",
               borderRadius: "999px",
             }}
           >
@@ -404,7 +431,7 @@ export default function Navbar({
               textDecoration: "none",
               color: "#eef0e6",
               opacity: 0.7,
-              padding: "5px 9px",
+              padding: "7px 12px",
               borderRadius: "999px",
             }}
           >
@@ -772,6 +799,13 @@ export default function Navbar({
           <small>{phoneDisplay}</small>
         </span>
       </a>
+      <a href={reserveHref} className="mobile-menu-reserve" onClick={closeAllMenus}>
+        <FileText size={20} />
+        <span>
+          <strong>{isSpanishPage ? "Reserva" : "Reserve"}</strong>
+          <small>{isSpanishPage ? "Inspección gratis" : "Free inspection"}</small>
+        </span>
+      </a>
     </>
   );
 
@@ -839,6 +873,12 @@ export default function Navbar({
             {/* LANGUAGE SWITCHER, mobile only (see .mobile-only): visible
                 without opening the menu. */}
             {langSwitcher("mobile-only lang-switcher--header-actions")}
+            {/* RESERVE: opens the short form (no calendar — Wilber
+                coordinates the visit himself). Hidden on mobile via CSS;
+                the mobile menu has its own reserve row below. */}
+            <a href={reserveHref} className="nav-reserve">
+              {isSpanishPage ? "Reserva" : "Reserve"}
+            </a>
             <button
               className="icon-btn"
               aria-label={isSpanishPage ? "Buscar" : "Search"}

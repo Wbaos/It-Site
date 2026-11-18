@@ -5,7 +5,11 @@ import {
   formatGoogleRating,
 } from "@/lib/google-reviews";
 import { FALLBACK_SETTINGS, resolveSiteSettings } from "@/lib/sanitySettings";
-import Hero from "@/components/sections/Hero";
+import { sanity } from "@/lib/sanity";
+import HomeHero from "@/components/sections/HomeHero";
+import BeforeAfterSection, {
+  type BeforeAfterComparison,
+} from "@/components/BeforeAfterSection";
 import SEOIntro from "@/components/sections/SEOIntro";
 import Services from "@/components/sections/Services";
 import HowItWorks from "@/components/sections/HowItWorks";
@@ -14,7 +18,6 @@ import Contact from "@/components/sections/Contact";
 import HighlightsServer from "@/components/sections/HighLigthsServer";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import HomeVideo from "@/components/sections/HomeVideo";
-import QuickLeadForm from "@/components/QuickLeadForm";
 
 // Single home template, both languages. The section list, order and
 // components are identical for English and Spanish; only the text changes,
@@ -26,6 +29,7 @@ export type HomeLocale = "en" | "es";
 type Section = {
   key:
     | "hero"
+    | "before-after"
     | "seo-intro"
     | "services"
     | "home-video"
@@ -34,7 +38,6 @@ type Section = {
     | "why"
     | "testimonials"
     | "pricing"
-    | "quick-lead"
     | "contact";
   Component: ComponentType<any>;
   props?: Record<string, unknown>;
@@ -140,8 +143,10 @@ export async function getHomeSections(
   const heroProps = doc
     ? {
         ...heroBase,
+        locale,
         primaryCtaHref: `tel:${settings.phoneTel}`,
         phoneNumber: settings.phoneTel,
+        phoneDisplay: settings.phoneDisplay,
         titleLine1: pick(doc.heroTitleLine1, doc.heroTitleLine1Es, isSpanish) ?? heroBase.titleLine1,
         titleLine2: pick(doc.heroTitleLine2, doc.heroTitleLine2Es, isSpanish) ?? heroBase.titleLine2,
         subtitle: pick(doc.heroSubtitle, doc.heroSubtitleEs, isSpanish) ?? heroBase.subtitle,
@@ -158,10 +163,45 @@ export async function getHomeSections(
       }
     : {
         ...heroBase,
+        locale,
         primaryCtaHref: `tel:${settings.phoneTel}`,
         phoneNumber: settings.phoneTel,
+        phoneDisplay: settings.phoneDisplay,
         googleRating,
       };
+  // Before & after gallery for the home: the home doc has no beforeAfter
+  // field, so the comparisons are reused from the service docs that
+  // already carry real before/after photos (sprinkler repair first, then
+  // the WiFi controller upgrade). Titles resolve to Spanish on /es.
+  // No photos or jobs are invented — only the existing service data.
+  let beforeAfterComparisons: BeforeAfterComparison[] = [];
+  try {
+    const baServices = await sanity.fetch<any[]>(
+      `*[_type == "service" && slug.current in ["sprinkler-repair-and-installation", "wifi-sprinkler-controller-upgrade"]]{ "slug": slug.current, beforeAfter{ comparisons[]{ title, titleEs, beforeImage{asset->{url}, alt}, afterImage{asset->{url}, alt} } } }`
+    );
+    const order = [
+      "sprinkler-repair-and-installation",
+      "wifi-sprinkler-controller-upgrade",
+    ];
+    baServices
+      .sort((a, b) => order.indexOf(a?.slug) - order.indexOf(b?.slug))
+      .forEach((s) => {
+        (s?.beforeAfter?.comparisons ?? []).forEach((c: any) => {
+          if (!c?.beforeImage?.asset?.url || !c?.afterImage?.asset?.url)
+            return;
+          beforeAfterComparisons.push({
+            title:
+              isSpanish && c?.titleEs?.trim() ? c.titleEs : c?.title ?? "",
+            titleEs: c?.titleEs,
+            beforeImage: c.beforeImage,
+            afterImage: c.afterImage,
+          });
+        });
+      });
+  } catch {
+    beforeAfterComparisons = [];
+  }
+
   const contactProps = isSpanish
     ? {
         headline: pick(doc?.contactHeadline, doc?.contactHeadlineEs, true) ?? "¿Preguntas? Hablemos.",
@@ -174,33 +214,31 @@ export async function getHomeSections(
         locale,
       };
   const sections: Section[] = [
+    // Editorial hero: copy + promise + the QuickLeadForm itself, a wide
+    // real-photo band and a single trust strip — the form is no longer a
+    // separate section below the fold.
     {
       key: "hero",
-      Component: Hero,
+      Component: HomeHero,
       props: heroProps,
     },
+
+    // Real before/after work, reused from the service docs (see the
+    // fetch above). Renders nothing when no comparisons exist.
+    {
+      key: "before-after",
+      Component: BeforeAfterSection,
+      props: {
+        locale,
+        data: { comparisons: beforeAfterComparisons },
+      },
+    },
+
+    { key: "services", Component: Services, props: { locale } },
 
     { key: "highlights", Component: HighlightsServer, props: { locale } },
 
     { key: "home-video", Component: HomeVideo, props: { locale, doc } },
-
-    { key: "services", Component: Services, props: { locale } },
-
-    // Quick lead form right after services: same shared component as the
-    // service/city pages (same POST /api/quote-request + same Google Ads
-    // conversion). No service/cityName on the home — there is no specific
-    // service or city here, and both props are optional; the API stores
-    // the lead with no service instead of attributing it to one the
-    // visitor never chose. Phone comes from site-settings, as elsewhere.
-    {
-      key: "quick-lead",
-      Component: QuickLeadForm,
-      props: {
-        locale,
-        phoneTel: settings.phoneTel,
-        phoneDisplay: settings.phoneDisplay,
-      },
-    },
 
     { key: "seo-intro", Component: SEOIntro, props: { locale, doc } },
     { key: "why", Component: WhyChooseUs, props: { locale, doc, ratingSummary } },

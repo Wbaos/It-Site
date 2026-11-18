@@ -148,59 +148,68 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
             : "From sprinkler repair and irrigation troubleshooting to security camera installation, we help homes and small businesses across Miami and Broward."}
         </p>
 
-       <div className="services-grid">
-        {sortedServices.map((s: any) => {
+      {/* Editorial index, not a card grid: numbered rows with a small
+          photo, title, short description and a "View Details" arrow,
+          separated by hairlines. Same data, same links, same text. */}
+      <ol className="heritage-service-index">
+        {sortedServices.map((s: any, i: number) => {
           const es = isSpanish ? SERVICES_ES[s.slug] : undefined;
           const title = es?.title ?? s.title;
           const description = es?.description ?? s.description;
           return (
-          <Link key={s._id} href={serviceHref(s.slug, locale)} className="service-card">
+          <li key={s._id} className="heritage-service-row">
+            <Link href={serviceHref(s.slug, locale)} className="heritage-service-link">
+              <span className="heritage-service-num" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
 
-            {s.image?.asset && (
-              <div className="service-card-photo">
-                <Image
-                  src={urlFor(s.image).width(480).height(270).url()}
-                  alt={s.image?.alt || title}
-                  width={480}
-                  height={270}
-                  sizes="(max-width: 760px) 90vw, 480px"
-                />
-              </div>
-            )}
-
-
-            <h3 className="service-card-title">{title}</h3>
-
-            {description && (
-              <p className="service-card-desc">{serviceCardText(s.slug, isSpanish ? "es" : "en") ?? shortExcerpt(description)}</p>
-            )}
-
-            <div className="service-card-bottom">
-              {s.showPrice && s.price && (
-                <p className="service-card-price">${s.price}</p>
-              )}
-              {/* No badge for in-home services: every job is done at the
-                  customer's property by definition, so the "In-Home" tag
-                  was redundant. The Online / Online + In-Home labels stay
-                  for services that use them. */}
-              {s.mode === "online" && (
-                <span className="service-card-mode">
-                  {isSpanish ? "En Línea" : "Online"}
+              {s.image?.asset && (
+                <span className="heritage-service-thumb">
+                  <Image
+                    src={urlFor(s.image).width(320).height(240).url()}
+                    alt=""
+                    width={320}
+                    height={240}
+                    sizes="(max-width: 760px) 96px, 160px"
+                  />
                 </span>
               )}
-              {s.mode === "both" && (
-                <span className="service-card-mode">
-                  {isSpanish ? "En Línea / A Domicilio" : "Online / In-Home"}
+
+              <span className="heritage-service-text">
+                <span className="heritage-service-title">{title}</span>
+                {description && (
+                  <span className="heritage-service-desc">{serviceCardText(s.slug, isSpanish ? "es" : "en") ?? shortExcerpt(description)}</span>
+                )}
+                <span className="heritage-service-meta">
+                  {s.showPrice && s.price && (
+                    <span className="heritage-service-price">${s.price}</span>
+                  )}
+                  {/* No badge for in-home services: every job is done at the
+                      customer's property by definition, so the "In-Home" tag
+                      was redundant. The Online / Online + In-Home labels stay
+                      for services that use them. */}
+                  {s.mode === "online" && (
+                    <span className="heritage-service-mode">
+                      {isSpanish ? "En Línea" : "Online"}
+                    </span>
+                  )}
+                  {s.mode === "both" && (
+                    <span className="heritage-service-mode">
+                      {isSpanish ? "En Línea / A Domicilio" : "Online / In-Home"}
+                    </span>
+                  )}
                 </span>
-              )}
-            </div>
+              </span>
 
-            <div className="service-card-btn">{isSpanish ? "Ver Detalles" : "View Details"}</div>
-
-          </Link>
+              <span className="heritage-service-arrow">
+                <span>{isSpanish ? "Ver Detalles" : "View Details"}</span>
+                <span aria-hidden="true">→</span>
+              </span>
+            </Link>
+          </li>
           );
         })}
-      </div>
+      </ol>
 
 
       </div>

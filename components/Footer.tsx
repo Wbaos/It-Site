@@ -92,9 +92,10 @@ export default function Footer({
         {/* Contact Info */}
         <div className="footer-contact">
           <p>
-            📞 <a href={`tel:${phoneTel}`} title="Call CallTechCare">{phoneDisplay}</a>
+            <SvgIcon name="phone" size={16} color="#c9a227" />{" "}
+            <a href={`tel:${phoneTel}`} title="Call CallTechCare">{phoneDisplay}</a>
             <br />
-            ✉️{" "}
+            <SvgIcon name="mail" size={16} color="#c9a227" />{" "}
               <a href={`mailto:${email}`} title="Email CallTechCare support">
               {email}
             </a>
