@@ -20855,13 +20855,9 @@ h2,
 .heritage-blog-thumb {
   display: block;
   position: relative;
-  border-radius: 120px 120px 8px 8px;
+  border-radius: 12px;
   overflow: hidden;
   border: 1px solid rgba(201, 162, 39, 0.4);
-}
-
-.heritage-blog-feature .heritage-blog-thumb {
-  border-radius: 200px 200px 8px 8px;
 }
 
 .heritage-blog-image {
@@ -20871,18 +20867,14 @@ h2,
   object-fit: cover;
 }
 
+/* Category eyebrow above the title (not overlaid on the photo): the
+   pill-on-photo clipped against the old arch on mobile. */
 .heritage-blog-badge {
-  position: absolute;
-  left: 0.75rem;
-  top: 0.75rem;
-  background: var(--heritage-gold);
-  color: #122019;
+  color: var(--heritage-gold-light);
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 0.3rem 0.7rem;
-  border-radius: 999px;
 }
 
 .heritage-blog-text {
@@ -20959,16 +20951,11 @@ h2,
     grid-template-columns: 96px 1fr;
     gap: 1rem;
   }
-  /* Row thumbs stay small rectangles on mobile: the tall arch that
-     suits the large featured image crops a 96px thumb into a dome
-     and clips the cover's baked-in text. The category badge would
-     not fit the small thumb either, so it is hidden here (it still
-     shows on the featured post). */
+  /* Row thumbs stay small rectangles on mobile. The category badge
+     now lives in the text block (not over the photo), so it shows
+     on rows too. */
   .heritage-blog-row .heritage-blog-thumb {
     border-radius: 12px;
-  }
-  .heritage-blog-row .heritage-blog-badge {
-    display: none;
   }
   .heritage-blog-title {
     font-size: 1.15rem;

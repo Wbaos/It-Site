@@ -31,17 +31,6 @@ function normalizeTitle(value: unknown): string {
   return typeof value === "string" ? value.trim() : "";
 }
 
-// Tags live in Sanity as slugs ("sprinkler-schedule-miami"); render
-// them as readable labels ("Sprinkler Schedule Miami"). Display only:
-// search still matches the raw slugs.
-function humanizeTag(tag: string): string {
-  return tag
-    .split("-")
-    .filter((w) => w.length > 0)
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
-}
-
 function getCategorySlug(category: Category | undefined): string {
   return normalizeSlug(category?.slug?.current);
 }
@@ -222,12 +211,12 @@ export default function BlogPageClient({
                         className="heritage-blog-image"
                       />
                     )}
-                    {primaryCategoryTitle ? (
-                      <span className="heritage-blog-badge">{primaryCategoryTitle}</span>
-                    ) : null}
                   </span>
 
                   <span className="heritage-blog-text">
+                    {primaryCategoryTitle ? (
+                      <span className="heritage-blog-badge">{primaryCategoryTitle}</span>
+                    ) : null}
                     <span className="heritage-blog-title">{post.title}</span>
                     <span className="heritage-blog-excerpt">
                       {post.excerpt ? post.excerpt : ui.fallbackExcerpt}
@@ -248,24 +237,6 @@ export default function BlogPageClient({
                             : ""}
                         </span>
                       </span>
-                    </span>
-                    <span className="heritage-blog-tags">
-                      {(() => {
-                        const rawTags = Array.isArray(post.tags) ? (post.tags as unknown[]) : [];
-                        const uniqueTags: string[] = Array.from(
-                          new Set(
-                            rawTags
-                              .filter((t): t is string => typeof t === "string")
-                              .map((t) => t.trim())
-                              .filter((t) => t.length > 0)
-                          )
-                        );
-                        return uniqueTags.map((tag) => (
-                          <span key={tag} className="heritage-blog-tag">
-                            {humanizeTag(tag)}
-                          </span>
-                        ));
-                      })()}
                     </span>
                     <span className="heritage-blog-readmore">
                       <span>{ui.readMore}</span>

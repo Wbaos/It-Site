@@ -175,7 +175,7 @@ export default function Footer({
           © {year} CallTechCare. {isSpanishPage ? "Todos los derechos reservados. Hecho con ❤️ en el sur de Florida." : "All rights reserved. Built with ❤️ in South Florida."}
         </p>
 
-        <p className="footer-owner">Propietario: Wilber Baños Pacheco</p>
+        <p className="footer-owner">{isSpanishPage ? "Propietario: Wilber" : "Owner: Wilber"}</p>
       </div>
     </footer>
   );
