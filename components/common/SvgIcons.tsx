@@ -75,13 +75,15 @@ export default function SvgIcon({
     // in HTML pages, where it is unnecessary.) Icons not listed here fall
     // through to the inline rendering below, unchanged.
     if (name === "star") {
+        // No fill/stroke attributes: .star-filled / .star-outline in
+        // globals.css set them, and CSS beats presentation attributes —
+        // the old fill="none" stroke="none" were already overridden.
+        // Every star call site passes one of those two classes.
         return (
             <svg
                 width={size || 18}
                 height={size || 18}
                 className={className}
-                fill="none"
-                stroke="none"
             >
                 <use href="#ctc-star" />
             </svg>

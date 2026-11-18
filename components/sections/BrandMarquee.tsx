@@ -3,14 +3,22 @@
 // Brands marquee (18 Nov 2026): an infinite scrolling strip with the
 // five brands installed — Irritrol, Pearl, Goulds, Rain Bird, Hunter.
 // Text only, no logos, no claims; brand names do not translate, so the
-// strip is identical in EN and ES. The track holds the list twice and
-// scrolls -50% in a loop. Touching the banner never pauses it: the only
-// way to pause is the pause/play button at the right end of the strip
-// (hover pauses on mouse devices only, via CSS). With reduced motion
-// it does not move at all (single static row, button hidden via CSS).
+// strip is identical in EN and ES. The track holds the list FOUR times
+// and scrolls -25% (exactly one group) per loop: one group (~850px) is
+// narrower than the container (~1168px), so with only two copies the
+// right side of the strip went empty at the end of each loop. Four
+// copies keep (4-1) groups of coverage past the loop point at any
+// viewport width. Touching the banner never pauses it: the only way to
+// pause is the pause/play button at the right end of the strip (hover
+// pauses on mouse devices only, via CSS). With reduced motion it does
+// not move at all (single static row, button hidden via CSS).
 import { useState } from "react";
 
 const BRANDS = ["Irritrol", "Pearl", "Goulds", "Rain Bird", "Hunter"];
+
+// Four copies of the brand list: the seam stays invisible only while
+// the track extends past the viewport by at least one full group.
+const COPIES = 4;
 
 export default function BrandMarquee({ locale = "en" }: { locale?: "en" | "es" }) {
   const isSpanish = locale === "es";
@@ -55,11 +63,11 @@ export default function BrandMarquee({ locale = "en" }: { locale?: "en" | "es" }
         </div>
         <div className={`brand-marquee-viewport${paused ? " is-paused" : ""}`}>
           <div className="brand-marquee-track">
-            {[false, true].map((hidden) => (
+            {Array.from({ length: COPIES }).map((_, copy) => (
               <ul
-                key={hidden ? "copy" : "main"}
+                key={copy}
                 className="brand-marquee-group"
-                aria-hidden={hidden || undefined}
+                aria-hidden={copy > 0 || undefined}
               >
                 {BRANDS.map((brand) => (
                   <li key={brand} className="brand-marquee-item">
