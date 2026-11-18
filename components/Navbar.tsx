@@ -387,7 +387,7 @@ export default function Navbar({
           <Link
             href={englishHref}
             onClick={closeAllMenus}
-            aria-label="View this page in English"
+            aria-label="EN — View this page in English"
             style={{
               textDecoration: "none",
               color: "#eef0e6",
@@ -426,7 +426,7 @@ export default function Navbar({
           <Link
             href={spanishHref}
             onClick={closeAllMenus}
-            aria-label="Ver esta página en español"
+            aria-label="ES — Ver esta página en español"
             style={{
               textDecoration: "none",
               color: "#eef0e6",
@@ -850,6 +850,16 @@ export default function Navbar({
           <div className="left-slot">
             <button
               className="menu-toggle"
+              aria-label={
+                open
+                  ? isSpanishPage
+                    ? "Cerrar menú"
+                    : "Close menu"
+                  : isSpanishPage
+                    ? "Abrir menú"
+                    : "Open menu"
+              }
+              aria-expanded={open}
               onClick={() => {
                 if (open) {
                   setMobileServicesPanel(false);

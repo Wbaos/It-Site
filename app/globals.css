@@ -21928,7 +21928,9 @@ h2,
     transform: translateX(0);
   }
   to {
-    transform: translateX(-50%);
+    /* Exactly one group: the track holds COPIES identical groups, so
+       -100%/COPIES lands the next copy where the first one started. */
+    transform: translateX(-25%);
   }
 }
 

@@ -157,7 +157,7 @@ export default function Footer({
             {isSpanishPage ? "Configuración de Cookies" : "Cookie Settings"}
           </a>
           <span>•</span>
-          <Link href={isSpanishPage ? "/es/terminos-y-condiciones" : "/terms-and-conditions"} aria-label={isSpanishPage ? "Términos y Condiciones" : "Terms and Conditions"}>
+          <Link href={isSpanishPage ? "/es/terminos-y-condiciones" : "/terms-and-conditions"} aria-label={isSpanishPage ? "Términos y Condiciones" : "Terms & Conditions"}>
             {isSpanishPage ? "Términos y Condiciones" : "Terms & Conditions"}
           </Link>
           <span>•</span>

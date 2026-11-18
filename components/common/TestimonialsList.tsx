@@ -297,19 +297,35 @@ export default function TestimonialsList({
   }, [cols, index, animating]);
 
   /** Render stars */
-  const renderStars = (rating = 0) => (
-    <div className="stars">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <SvgIcon
-          key={i}
-          name="star"
-          size={18}
-          color="#d4af37"
-          className={i < rating ? "star-filled" : "star-outline"}
-        />
-      ))}
-    </div>
-  );
+  const renderStars = (rating = 0) => {
+    // All five stars filled at the card size (18px): one <svg> using the
+    // #ctc-stars-5 sprite symbol renders the same 98px row (5x18px stars
+    // + the 2px gaps from .stars) as five separate <svg> stars, at ~1/7
+    // the bytes (~465 saved per card). Any other rating still renders
+    // the five individual stars below.
+    if (rating >= 5) {
+      return (
+        <div className="stars">
+          <svg width="98" height="18" aria-hidden="true">
+            <use href="#ctc-stars-5" width="98" height="18" />
+          </svg>
+        </div>
+      );
+    }
+    return (
+      <div className="stars">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <SvgIcon
+            key={i}
+            name="star"
+            size={18}
+            color="#d4af37"
+            className={i < rating ? "star-filled" : "star-outline"}
+          />
+        ))}
+      </div>
+    );
+  };
 
     /** Trim words */
   function truncateWords(text: string = "", limit = 15) {

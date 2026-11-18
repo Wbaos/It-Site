@@ -173,8 +173,14 @@ export default function BeforeAfterSection({ data, locale = "en" }: Props) {
                         <Image
                           src={thumbUrl}
                           alt={c?.beforeImage?.alt || c?.afterImage?.alt || (isSpanish ? `Comparación ${idx + 1}` : `Comparison ${idx + 1}`)}
-                          fill
-                          sizes="96px"
+                          // Fixed 86x58 (the thumb button size): with `fill`
+                          // + sizes="96px" Next.js shipped the full 15-entry
+                          // srcset (~2.3 KB per thumb) even though the thumb
+                          // never renders larger than 86px. Fixed dimensions
+                          // emit only the 1x/2x entries (~0.3 KB) and render
+                          // identically — the button is a fixed 86x58 box.
+                          width={86}
+                          height={58}
                           className="beforeafter-thumbImage"
                         />
                       </span>
