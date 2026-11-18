@@ -6,7 +6,6 @@ import Link from "next/link";
 import { getAllActiveLocations, Location } from "@/lib/sanityLocations";
 import { urlFor } from "@/lib/sanityImage";
 import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
-import { Search } from "lucide-react";
 import SpriteIcon from "@/components/common/SpriteIcon";
 import CoverageMap from "@/components/sections/CoverageMap";
 
@@ -59,13 +58,12 @@ export default function LocationsClient({
   locale = "en",
   phoneDisplay = FALLBACK_SETTINGS.phoneDisplay,
   // Locations pre-fetched on the server (page.tsx) and passed in, so the
-  // search bar and the county cards render in the SSR HTML instead of
-  // popping in after a client-side fetch — that pop-in was the /locations
-  // CLS 0.312 (SEMrush CWV, 16 Nov 2026): first paint showed only the
-  // hero + "Loading...", then the search section appeared and the grid
-  // swapped to two large cards, pushing everything below down. When no
-  // initial data is passed (e.g. the server fetch failed) the component
-  // falls back to the client-side fetch exactly as before.
+  // county cards render in the SSR HTML instead of popping in after a
+  // client-side fetch — that pop-in was the /locations CLS 0.312 (SEMrush
+  // CWV, 16 Nov 2026): first paint showed only the hero + "Loading...",
+  // then the grid swapped to two large cards, pushing everything below
+  // down. When no initial data is passed (e.g. the server fetch failed)
+  // the component falls back to the client-side fetch exactly as before.
   initialLocations,
 }: {
   locale?: "en" | "es";
@@ -78,8 +76,6 @@ export default function LocationsClient({
   const isSpanish = locale === "es";
   const hasInitial = !!initialLocations && initialLocations.length > 0;
   const [locations, setLocations] = useState<Location[]>(initialLocations ?? []);
-  const [filteredLocations, setFilteredLocations] = useState<Location[]>(initialLocations ?? []);
-  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(!hasInitial);
 
   useEffect(() => {
@@ -87,36 +83,10 @@ export default function LocationsClient({
     getAllActiveLocations()
       .then((data) => {
         setLocations(data);
-        setFilteredLocations(data);
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, [hasInitial]);
-
-  useEffect(() => {
-    let filtered = locations;
-
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (loc) =>
-          loc.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          loc.state.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    setFilteredLocations(filtered);
-  }, [searchTerm, locations]);
-
-  const cityQuery = searchTerm.trim().toLowerCase();
-  const cityMatches = cityQuery
-    ? CITY_LINKS.filter((city) => city.name.toLowerCase().includes(cityQuery)).sort((a, b) => {
-        const aExact = a.name.toLowerCase() === cityQuery ? 0 : 1;
-        const bExact = b.name.toLowerCase() === cityQuery ? 0 : 1;
-        return aExact - bExact;
-      })
-    : [];
-  const totalResults = filteredLocations.length + cityMatches.length;
-  const hideGrid = !loading && filteredLocations.length === 0 && cityMatches.length > 0;
 
   return (
     <div className="locations-page">
@@ -146,61 +116,17 @@ export default function LocationsClient({
           "All 32 Cities We Serve" list already exists further down. */}
       <CoverageMap locale={locale} showCityList={false} />
 
-      {/* Search & Filter */}
-      {locations.length > 1 && (
-        <section className="locations-search-section">
-          <div className="locations-search-container">
-            <div className="locations-search-wrapper">
-              <div className="locations-search-input-wrapper">
-                <Search className="locations-search-icon" />
-                <input
-                  type="text"
-                  placeholder={isSpanish ? "Buscar por ciudad..." : "Search by city..."}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="locations-search-input"
-                />
-              </div>
-            </div>
-
-            {cityMatches.length > 0 && (
-              <ul className="locations-city-results">
-                {cityMatches.map((city) => (
-                  <li key={city.en} className="locations-city-result">
-                    <Link href={isSpanish ? city.es : city.en}>
-                      <span>{city.name}</span>
-                      <SpriteIcon name="arrow-right-lucide" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            <p className="locations-count">
-              {searchTerm.trim() === ""
-                ? isSpanish
-                  ? `Mostrando ${filteredLocations.length} área${filteredLocations.length !== 1 ? "s" : ""} de servicio`
-                  : <>Showing {filteredLocations.length} service area{filteredLocations.length !== 1 ? "s" : ""}</>
-                : isSpanish
-                  ? `Mostrando ${totalResults} resultado${totalResults !== 1 ? "s" : ""}`
-                  : <>Showing {totalResults} result{totalResults !== 1 ? "s" : ""}</>}
-            </p>
-          </div>
-        </section>
-      )}
-
       {/* Locations Grid */}
-      {!hideGrid && (
       <section className="locations-grid-section">
         <div className="locations-grid">
           {loading ? (
             <div className="locations-loading">{isSpanish ? "Cargando..." : "Loading..."}</div>
-          ) : filteredLocations.length === 0 ? (
+          ) : locations.length === 0 ? (
             <div className="locations-empty">
-              {isSpanish ? "No se encontraron ubicaciones que coincidan con tu criterio." : "No locations found matching your criteria."}
+              {isSpanish ? "No hay ubicaciones disponibles en este momento." : "No locations available at the moment."}
             </div>
           ) : (
-            filteredLocations.map((location) => (
+            locations.map((location) => (
               <Link
                 key={location._id}
                 href={isSpanish ? `/es/areas-de-servicio/${location.slug.current}` : `/locations/${location.slug.current}`}
@@ -259,7 +185,6 @@ export default function LocationsClient({
           )}
         </div>
       </section>
-      )}
 
       {/* Coverage Section */}
       <section className="locations-coverage-section">
