@@ -1,7 +1,7 @@
 // Home video asset (Sanity CDN). Plain module (no "use client") so the
 // values resolve both in Server Components (the VideoObject schema in
 // HomeTemplate) and in the Client Component (the <video> element in
-// HomeVideo). Both import from here, so the schema and the player can
+// HeroVideo). Both import from here, so the schema and the player can
 // never drift apart.
 // The file went live 2026-11-06 (lighter re-encode of the same video).
 export const HOME_VIDEO_URL =

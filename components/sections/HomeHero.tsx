@@ -1,16 +1,18 @@
-import Image from "next/image";
 import QuickLeadForm from "@/components/QuickLeadForm";
+import HeroVideo from "@/components/sections/HeroVideo";
 import SvgIcon from "@/components/common/SvgIcons";
 
 // Editorial home hero (design A "Patrimonio"): ivory field, serif
 // headline with a gold second line, a single promise, the phone in the
 // open, and the QuickLeadForm sitting inside the hero itself — no longer
-// a separate section below the fold. The wide real-photo band in an
-// arched frame sits between the copy and the form, so the photo is
-// visible at the top of the page on mobile too (before the form it
-// used to sit below it, far down the first screens). Then a single
-// trust strip (the stats are shown here only, not repeated down the
-// page).
+// a separate section below the fold. The wide media band in an arched
+// frame sits between the copy and the form, so it is visible at the top
+// of the page on mobile too (before the form it used to sit below it,
+// far down the first screens). The band plays the home video muted on
+// loop inside the arch, with the hero photo as poster/fallback (and
+// instead of the video when the visitor prefers reduced motion). Then a
+// single trust strip (the stats are shown here only, not repeated down
+// the page).
 // Server Component: same props and same text as the old Hero; no hooks.
 type HeroStat = { value: string; label: string };
 
@@ -126,19 +128,11 @@ export default function HomeHero({
 
           {imageSrc ? (
             <figure className="heritage-hero-photo">
-              <picture>
-                {mobileImageSrc ? (
-                  <source media="(max-width: 640px)" srcSet={mobileImageSrc} />
-                ) : null}
-                <Image
-                  src={imageSrc}
-                  alt={imageAlt ?? ""}
-                  width={1600}
-                  height={1200}
-                  priority
-                  className="heritage-hero-photo-img"
-                />
-              </picture>
+              <HeroVideo
+                imageSrc={imageSrc}
+                mobileImageSrc={mobileImageSrc}
+                imageAlt={imageAlt}
+              />
             </figure>
           ) : null}
 
