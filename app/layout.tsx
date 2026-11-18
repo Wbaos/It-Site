@@ -285,6 +285,12 @@ export default async function RootLayout({
   return (
     <html lang={locale === "es" ? "es" : "en"} data-scroll-behavior="smooth" className={fraunces.variable}>
       <head>
+        {/* Pre-paint background: the site base color (#0a1a12) inlined here
+            so the first paint is dark green, not the browser-default white,
+            while globals.css is still loading on a cold cache / slow
+            network. Mirrors the html rule in globals.css. */}
+        <style>{`html,body{background-color:#0a1a12}`}</style>
+
         {/* Preconnect before the GTM loader below, so the tag manager
             connection is already warm when its script is injected. */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
