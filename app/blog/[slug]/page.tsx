@@ -425,23 +425,6 @@ export default async function BlogPost({
             <PortableText value={displayBody} />
           </div>
 
-          {uniqueTags.length > 0 && (
-            <div className="single-blog-tags-box">
-              <span className="single-blog-tags-label">
-                <SvgIcon name="tag" size={17} color="var(--brand-teal)" />
-                {isSpanish ? "Etiquetas" : "Tags"}
-              </span>
-
-              <div className="single-blog-tags">
-                {uniqueTags.map((tag) => (
-                  <span key={tag} className="single-blog-tag">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
           {Array.isArray(relatedPosts) && relatedPosts.length > 0 ? (
             <section className="single-blog-related" aria-labelledby="related-articles">
               <RelatedArticlesCarousel posts={relatedPosts} locale={locale} />

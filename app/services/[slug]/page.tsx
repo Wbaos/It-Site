@@ -1087,7 +1087,7 @@ export default async function ServicePage({
                     <ul className="styled-features-list">
                       {catFeatures.map((f: string, i: number) => (
                         <li key={i} className="styled-feature-item">
-                          <SvgIcon name="checkmark-circle" size={20} color="#10b981" />
+                          <SvgIcon name="checkmark-circle" size={20} color="#c9a227" />
                           {f}
                         </li>
                       ))}
@@ -1542,20 +1542,26 @@ export default async function ServicePage({
                 ? "Reparamos e instalamos cada parte de tu sistema de riego:"
                 : "We repair and install every part of your irrigation system:"}
             </p>
-            <div className="related-services-grid">
-              {relatedServices.map((s) => (
-                <Link
-                  key={s.slug}
-                  href={serviceHref(s.slug, locale)}
-                  className="related-service-card"
-                >
-                  <span className="related-service-title">{s.title}</span>
-                  {s.description && (
-                    <span className="related-service-desc">{s.description}</span>
-                  )}
-                </Link>
+            {/* Editorial index rows (numbered, hairline-separated) instead
+                of a card grid — same links and same text. */}
+            <ol className="heritage-related-list">
+              {relatedServices.map((s, i) => (
+                <li key={s.slug} className="heritage-related-row">
+                  <Link href={serviceHref(s.slug, locale)} className="heritage-related-link">
+                    <span className="heritage-related-num" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="heritage-related-text">
+                      <span className="heritage-related-title">{s.title}</span>
+                      {s.description && (
+                        <span className="heritage-related-desc">{s.description}</span>
+                      )}
+                    </span>
+                    <span className="heritage-related-arrow" aria-hidden="true">→</span>
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         )}
 

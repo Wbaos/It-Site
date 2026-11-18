@@ -178,24 +178,34 @@ export default async function WhyChooseUs({
           <p>{whySubtitle}</p>
         </div>
 
-        <div className="why-photo">
-          <img
-            src="https://cdn.sanity.io/images/celkrwoq/production/3d495269e52ed93bb03e5191f5fd5c2082be1bcd-1024x768.jpg?w=1024&auto=format&q=80"
-            alt={whyPhotoAlt}
-            width={1024}
-            height={420}
-            loading="lazy"
-          />
-        </div>
+        {/* Editorial layout, not a card grid: the photo in an arched
+            frame on one side, the five reasons as a numbered list on
+            the other — same photo, same icons, same text, same order. */}
+        <div className="heritage-why-body">
+          <div className="heritage-why-photo">
+            <img
+              src="https://cdn.sanity.io/images/celkrwoq/production/3d495269e52ed93bb03e5191f5fd5c2082be1bcd-1024x768.jpg?w=1024&auto=format&q=80"
+              alt={whyPhotoAlt}
+              width={1024}
+              height={420}
+              loading="lazy"
+            />
+          </div>
 
-        <div className="why-grid">
-          {liveFeatures.map((f, i) => (
-            <div key={i} className="why-card">
-              <div className="why-icon">{f.icon}</div>
-              <h3>{f.title}</h3>
-              <p>{f.text}</p>
-            </div>
-          ))}
+          <ol className="heritage-why-list">
+            {liveFeatures.map((f, i) => (
+              <li key={i} className="heritage-why-item">
+                <span className="heritage-why-num" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="heritage-why-icon">{f.icon}</span>
+                <span className="heritage-why-text">
+                  <span className="heritage-why-title">{f.title}</span>
+                  <span className="heritage-why-desc">{f.text}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
         </div>
 
       </div>

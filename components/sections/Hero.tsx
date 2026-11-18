@@ -1,8 +1,8 @@
 // Server Component (no "use client"): Hero is pure presentational markup
-// with no hooks or event handlers, and both importers (CityTemplate,
-// lib/pageSections) are Server Components — so the hero renders on the
-// server and never ships as client JS or hydrates (CWV lot 20, 16 Nov
-// 2026). Keep it that way: do not add hooks/handlers here.
+// with no hooks or event handlers, and its only importer (CityTemplate)
+// is a Server Component — so the hero renders on the server and never
+// ships as client JS or hydrates (CWV lot 20, 16 Nov 2026). Keep it that
+// way: do not add hooks/handlers here.
 import SvgIcon from "@/components/common/SvgIcons";
 import Link from "next/link";
 import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
@@ -87,92 +87,103 @@ export default function Hero({
   const visibleStats = effectiveStats.filter((s) => s.value);
 
   return (
-    <section id="hero" role="region" aria-labelledby="hero-title">
-      {imageSrc && (
-        <picture className="hero-bg">
-          {mobileImageSrc && (
-            <source media="(max-width: 760px)" srcSet={mobileImageSrc} />
+    <section
+      id="hero"
+      className="heritage-city-hero"
+      role="region"
+      aria-labelledby="hero-title"
+    >
+      <div className="heritage-city-hero-inner">
+        {/* Eyebrow */}
+        {badgeText && <p className="heritage-city-hero-eyebrow">{badgeText}</p>}
+
+        {/* Title */}
+        <h1 id="hero-title" className="heritage-city-hero-title">
+          <span className="heritage-city-hero-title-line1">{titleLine1}</span>
+          {titleLine2 && (
+            <span className="heritage-city-hero-title-line2">{titleLine2}</span>
           )}
-          <img
-            src={imageSrc}
-            alt={imageAlt}
-            className="hero-bg-img"
-            width={1600}
-            height={1200}
-            loading="eager"
-            fetchPriority="high"
-          />
-        </picture>
-      )}
-      <div className="hero-scrim" aria-hidden="true" />
+        </h1>
 
-      {/* Badge */}
-      {badgeText && <div className="hero-badge">{badgeText}</div>}
+        {/* Subtitle */}
+        {subtitle && <p className="heritage-city-hero-sub">{subtitle}</p>}
 
-      {/* Title */}
-      <h1 id="hero-title" className="hero-title">
-        <span className="hero-title-line1">{titleLine1}</span>
-        {titleLine2 && (
-          <span className="hero-title-line2">{titleLine2}</span>
-        )}
-      </h1>
+        {/* CTAs */}
+        <div className="heritage-city-hero-ctas">
+          {primaryCtaText && primaryCtaHref && (
+            isPrimaryPhoneLink ? (
+              <a
+                href={primaryCtaHref}
+                className="heritage-city-hero-call"
+                aria-label="Call CallTechCare for sprinkler repair in Miami and Broward"
+              >
+                <SvgIcon name="phone" size={18} />
+                {primaryCtaText}
+              </a>
+            ) : (
+              <Link
+                href={primaryCtaHref}
+                className="heritage-city-hero-call"
+                aria-label="Get sprinkler repair and irrigation service in Miami and Broward"
+              >
+                {primaryCtaText}
+              </Link>
+            )
+          )}
 
-      {/* Subtitle */}
-      {subtitle && <p className="hero-sub">{subtitle}</p>}
-
-      {/* CTAs */}
-      <div className="hero-ctas">
-        {primaryCtaText && primaryCtaHref && (
-          isPrimaryPhoneLink ? (
+          {secondaryCtaText && secondaryCtaHref && (
+            <Link
+              href={secondaryCtaHref}
+              className="heritage-city-hero-reserve"
+              aria-label={secondaryCtaAriaLabel}
+            >
+              <SvgIcon name="document" size={20} />
+              {secondaryCtaText}
+            </Link>
+          )}
+          {showCallButton && !isPrimaryPhoneLink && (
             <a
-              href={primaryCtaHref}
-              className="btn-cta btn-primary"
+              href={`tel:${phoneNumber}`}
+              className="heritage-city-hero-call"
               aria-label="Call CallTechCare for sprinkler repair in Miami and Broward"
             >
-              {primaryCtaText}
+              <SvgIcon name="phone" size={20} />
+              Call Now
             </a>
-          ) : (
-            <Link
-              href={primaryCtaHref}
-              className="btn-cta btn-primary"
-              aria-label="Get sprinkler repair and irrigation service in Miami and Broward"
-            >
-              {primaryCtaText}
-            </Link>
-          )
+          )}
+        </div>
+
+        {/* Real photo band in an arched frame — same image, same
+            LCP-critical attributes as before, no longer a full-bleed
+            background with a scrim. */}
+        {imageSrc && (
+          <figure className="heritage-city-hero-photo">
+            <picture>
+              {mobileImageSrc && (
+                <source media="(max-width: 760px)" srcSet={mobileImageSrc} />
+              )}
+              <img
+                src={imageSrc}
+                alt={imageAlt}
+                className="heritage-city-hero-photo-img"
+                width={1600}
+                height={1200}
+                loading="eager"
+                fetchPriority="high"
+              />
+            </picture>
+          </figure>
         )}
 
-        {secondaryCtaText && secondaryCtaHref && (
-          <Link
-            href={secondaryCtaHref}
-            className="btn-cta btn-secondary flex items-center gap-2"
-            aria-label={secondaryCtaAriaLabel}
-          >
-            <SvgIcon name="document" size={20} />
-            {secondaryCtaText}
-          </Link>
-        )}
-        {showCallButton && !isPrimaryPhoneLink && (
-        <a
-          href={`tel:${phoneNumber}`}
-          className="btn-cta btn-cta btn-primary flex items-center gap-2"
-          aria-label="Call CallTechCare for sprinkler repair in Miami and Broward"
-        >
-          <SvgIcon name="phone" size={20} />
-          Call Now
-        </a>
-      )}
+        <ul className="heritage-city-hero-trust" aria-label="Trust">
+          {visibleStats.map((s, i) => (
+            <li key={i}>
+              <span className="heritage-city-hero-trust-value">{s.value}</span>
+              <span className="heritage-city-hero-trust-label">{s.label}</span>
+            </li>
+          ))}
+        </ul>
       </div>
-
-      <div className="hero-stats">
-        {visibleStats.map((s, i) => (
-          <div className="hero-stat-card" key={i}>
-            <div className="stat-value">{s.value}</div>
-            <div className="stat-label">{s.label}</div>
-          </div>
-        ))}
-      </div>
-
     </section>
   );
 }

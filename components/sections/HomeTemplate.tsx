@@ -35,7 +35,7 @@ export default async function HomeTemplate({ locale = "en" }: { locale?: HomeLoc
     duration: HOME_VIDEO_DURATION,
   };
   return (
-    <main>
+    <main className="heritage-home">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }}

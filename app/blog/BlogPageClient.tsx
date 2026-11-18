@@ -179,92 +179,87 @@ export default function BlogPageClient({
       {filteredPosts.length === 0 ? (
         <p className="blog-empty">{ui.empty}</p>
       ) : (
-        <div className="blog-grid">
-          {filteredPosts.map((post) => {
-            const postSlug = normalizeSlug(post?.slug?.current);
-            if (!postSlug) return null;
+        <>
+          {/* Editorial list, not a card grid: when nothing is filtered,
+              the first post is a large featured row (big image + text);
+              every post after it is an index row (thumb + title +
+              excerpt + meta, hairline-separated). Same links, same
+              text, same filter/search behaviour. */}
+          {(() => {
+            const isFiltering =
+              Boolean(selectedCategory) || Boolean(normalizeTitle(searchTerm));
+            const featured = !isFiltering ? filteredPosts[0] : undefined;
+            const rest = featured ? filteredPosts.slice(1) : filteredPosts;
 
-            const primaryCategoryTitle = getCategoryTitle(post?.categories?.[0]);
+            const renderPost = (post: Post, isFeatured: boolean) => {
+              const postSlug = normalizeSlug(post?.slug?.current);
+              if (!postSlug) return null;
+              const primaryCategoryTitle = getCategoryTitle(post?.categories?.[0]);
+              return (
+                <Link
+                  key={post._id}
+                  href={blogHref(postSlug, locale)}
+                  className={isFeatured ? "heritage-blog-feature" : "heritage-blog-row"}
+                >
+                  <span className="heritage-blog-thumb">
+                    {post.mainImage?.asset?.url && (
+                      <Image
+                        src={post.mainImage.asset.url}
+                        alt={post.mainImage.alt || post.title || "Blog post image"}
+                        width={isFeatured ? 900 : 320}
+                        height={isFeatured ? 540 : 240}
+                        className="heritage-blog-image"
+                      />
+                    )}
+                  </span>
+
+                  <span className="heritage-blog-text">
+                    {primaryCategoryTitle ? (
+                      <span className="heritage-blog-badge">{primaryCategoryTitle}</span>
+                    ) : null}
+                    <span className="heritage-blog-title">{post.title}</span>
+                    <span className="heritage-blog-excerpt">
+                      {post.excerpt ? post.excerpt : ui.fallbackExcerpt}
+                    </span>
+                    <span className="heritage-blog-meta-row">
+                      <span className="heritage-blog-meta-left">
+                        <SvgIcon name="blog-author" size={18} color="#9fb3c8" />
+                        <span className="heritage-blog-author-name">{post.authorName}</span>
+                      </span>
+                      <span className="heritage-blog-meta-right">
+                        <SvgIcon name="calendar" size={18} color="#9fb3c8" />
+                        <span className="heritage-blog-date">
+                          {post.publishedAt
+                            ? new Date(post.publishedAt).toLocaleDateString(
+                                isSpanish ? "es" : "en",
+                                { timeZone: "America/New_York" }
+                              )
+                            : ""}
+                        </span>
+                      </span>
+                    </span>
+                    <span className="heritage-blog-readmore">
+                      <span>{ui.readMore}</span>
+                      <SvgIcon
+                        name="chevron-right"
+                        size={18}
+                        className="heritage-blog-arrow"
+                        color="var(--brand-teal)"
+                      />
+                    </span>
+                  </span>
+                </Link>
+              );
+            };
 
             return (
-              <Link key={post._id} href={blogHref(postSlug, locale)} className="blog-card">
-                <div className="blog-image-wrapper">
-                  {post.mainImage?.asset?.url && (
-                    <Image
-                      src={post.mainImage.asset.url}
-                      alt={post.mainImage.alt || post.title || "Blog post image"}
-                      width={500}
-                      height={300}
-                      className="blog-image"
-                    />
-                  )}
-
-                  {primaryCategoryTitle ? (
-                    <span className="blog-badge">{primaryCategoryTitle}</span>
-                  ) : null}
-                </div>
-
-                <div className="blog-content">
-                  <h2 className="blog-card-title">{post.title}</h2>
-
-                  <p className="blog-excerpt">
-                    {post.excerpt ? post.excerpt : ui.fallbackExcerpt}
-                  </p>
-
-                  <div className="blog-meta-row">
-                    <div className="blog-meta-left">
-                      <SvgIcon name="blog-author" size={18} color="#9fb3c8" />
-                      <span className="blog-author-name">{post.authorName}</span>
-                    </div>
-
-                    <div className="blog-meta-right">
-                      <SvgIcon name="calendar" size={18} color="#9fb3c8" />
-                      <span className="blog-date">
-                        {post.publishedAt
-                          ? new Date(post.publishedAt).toLocaleDateString(
-                              isSpanish ? "es" : "en",
-                              { timeZone: "America/New_York" }
-                            )
-                          : ""}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="blog-tags">
-                    {(() => {
-                      const rawTags = Array.isArray(post.tags) ? (post.tags as unknown[]) : [];
-
-                      const uniqueTags: string[] = Array.from(
-                        new Set(
-                          rawTags
-                            .filter((t): t is string => typeof t === "string")
-                            .map((t) => t.trim())
-                            .filter((t) => t.length > 0)
-                        )
-                      );
-
-                      return uniqueTags.map((tag) => (
-                        <span key={tag} className="blog-tag">
-                          {tag}
-                        </span>
-                      ));
-                    })()}
-                  </div>
-                </div>
-
-                <div className="blog-readmore">
-                  <span>{ui.readMore}</span>
-                  <SvgIcon
-                    name="chevron-right"
-                    size={18}
-                    className="blog-arrow"
-                    color="var(--brand-teal)"
-                  />
-                </div>
-              </Link>
+              <div className="heritage-blog-list">
+                {featured ? renderPost(featured, true) : null}
+                {rest.map((post) => renderPost(post, false))}
+              </div>
             );
-          })}
-        </div>
+          })()}
+        </>
       )}
     </>
   );

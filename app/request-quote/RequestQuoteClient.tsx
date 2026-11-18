@@ -581,7 +581,7 @@ export default function RequestQuoteClient(props: {
       <div className="rq-client__hero">
         <div className="rq-client__heroInner">
           <div className="rq-client__heroIconWrap">
-            <SvgIcon name="document" size={34} color="#00E793" />
+            <SvgIcon name="document" size={34} color="#c9a227" />
           </div>
           <h1 className="rq-client__heroTitle">{heroTitle}</h1>
           <p className="rq-client__heroSubtitle">{heroSubtitle}</p>

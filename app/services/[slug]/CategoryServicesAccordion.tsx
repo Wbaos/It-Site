@@ -63,7 +63,7 @@ export default function CategoryServicesAccordion({ serviceGroups, locale = "en"
             >
               <div className="category-service-info">
                 <span className="category-service-title-row">
-                  <SvgIcon name="checkmark-circle" size={40} color="#34d399" className="category-service-check" />
+                  <SvgIcon name="checkmark-circle" size={40} color="#d4af37" className="category-service-check" />
                   <span className="category-service-title-block">
                     <span className="category-service-title-row-flex">
                       <span className="category-service-title">{isSpanish && group.titleEs ? group.titleEs : group.title}</span>

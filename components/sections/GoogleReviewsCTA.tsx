@@ -73,7 +73,7 @@ export default async function GoogleReviewsCTA({
               key={i}
               name="star"
               size={28}
-              color="#facc15"
+              color="#d4af37"
               className="star-filled"
             />
           ))}

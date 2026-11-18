@@ -63,7 +63,7 @@ export default function Step4AdditionalDetails(props: {
             <div className="rq-step4__cardContent">
               <div className="rq-step4__cardTitleRow">
                 <div className="rq-step4__cardTitleIcon">
-                  <SvgIcon name="calendar" size={22} color="#10b981" />
+                  <SvgIcon name="calendar" size={22} color="#c9a227" />
                 </div>
                 <div className="rq-step4__cardTitle">
                   {locale === "es" ? "Me gustaría que un técnico visite primero" : "I’d like a technician to visit first"}
@@ -157,7 +157,7 @@ export default function Step4AdditionalDetails(props: {
         <SvgIcon
           name="paper-plane"
           size={18}
-          color={props.canSubmit && !props.submitting ? "#fff" : "#64748b"}
+          color={props.canSubmit && !props.submitting ? "#fff" : "#7d8f7f"}
         />
         <span>
           {props.submitting ? (locale === "es" ? "Enviando..." : "Submitting...") : (locale === "es" ? "Enviar solicitud de cotización" : "Submit Quote Request")}

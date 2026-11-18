@@ -49,25 +49,24 @@ export default function Footer({
 
   return (
     <footer className="site-footer">
-      {/* ===== Top Section ===== */}
+      {/* ===== Top Section: brand / explore / contact ===== */}
       <div className="site-container footer-top">
         {/* Brand */}
         <div className="footer-brand-wrapper">
           <a
-  href="#top"
-  className="footer-brand"
-  aria-label="CallTechCare – back to top"
->
-
+            href="#top"
+            className="footer-brand"
+            aria-label="CallTechCare – back to top"
+          >
             <Image
               src="/footer-logo.svg"
               alt="CallTechCare – Sprinkler Repair & Irrigation Services in Miami and Broward"
-              width={150}
-              height={91}
+              width={170}
+              height={103}
               className="footer-logo"
               priority
               style={{
-                width: "150px",
+                width: "170px",
                 height: "auto",
                 objectFit: "contain",
                 objectPosition: "center",
@@ -81,6 +80,7 @@ export default function Footer({
             #contact), the Spanish blog page, and the existing English pages
             (locations, about, faq). No /es/* page that does not exist is linked. */}
         <nav className="footer-nav" aria-label={isSpanishPage ? "Navegación del pie de página" : "Footer Navigation"}>
+          <p className="footer-heading">{isSpanishPage ? "Explorar" : "Explore"}</p>
           <a href={isSpanishPage ? "/es/#how" : "/#how"}>{isSpanishPage ? "Cómo Funciona" : "How It Works"}</a>
           <Link href={isSpanishPage ? "/es/blog" : "/blog"}>Blog</Link>
           <a href={isSpanishPage ? "/es/contacto" : "/contact"}>{isSpanishPage ? "Contacto" : "Contact"}</a>
@@ -91,30 +91,31 @@ export default function Footer({
 
         {/* Contact Info */}
         <div className="footer-contact">
-          <p>
-            📞 <a href={`tel:${phoneTel}`} title="Call CallTechCare">{phoneDisplay}</a>
-            <br />
-            ✉️{" "}
-              <a href={`mailto:${email}`} title="Email CallTechCare support">
+          <p className="footer-heading">{isSpanishPage ? "Contacto" : "Contact"}</p>
+          <a href={`tel:${phoneTel}`} className="footer-call-btn" title="Call CallTechCare">
+            <SvgIcon name="phone" size={16} />
+            {phoneDisplay}
+          </a>
+          <p className="footer-contact-line">
+            <SvgIcon name="mail" size={16} color="#c9a227" />{" "}
+            <a href={`mailto:${email}`} title="Email CallTechCare support">
               {email}
             </a>
           </p>
-          <p>
+          <p className="footer-hours">
             {isSpanishPage ? `${hoursWeekdayLabelEs}: ${hoursWeekdayTime}` : `${hoursWeekdayLabel}: ${hoursWeekdayTime}`}
             <br />
             {isSpanishPage ? `${hoursWeekendLabelEs}: ${hoursWeekendTime}` : `${hoursWeekendLabel}: ${hoursWeekendTime}`}
           </p>
-          <div className="footer-areas">
-            <p className="areas-list">
-              <Link href={isSpanishPage ? "/es/areas-de-servicio" : "/locations"}>
-                {isSpanishPage ? "Ver todas las áreas" : "View all service areas"}
-              </Link>
-            </p>
-          </div>
+          <p className="areas-list">
+            <Link href={isSpanishPage ? "/es/areas-de-servicio" : "/locations"}>
+              {isSpanishPage ? "Ver todas las áreas" : "View all service areas"}
+            </Link>
+          </p>
         </div>
       </div>
 
-      {/* ===== Social + Legal ===== */}
+      {/* ===== Social + Trust ===== */}
       <div className="site-container footer-middle">
         <div className="footer-social">
           <p>{isSpanishPage ? "Síguenos" : "Follow Us"}</p>
@@ -125,7 +126,7 @@ export default function Footer({
               target="_blank"
               rel="noopener noreferrer"
             >
-              <SvgIcon name="facebook" size={28} color="#ffffff" className="social-icon" />
+              <SvgIcon name="facebook" size={20} color="#ffffff" className="social-icon" />
             </a>
             <a
               href="https://instagram.com/calltechcare"
@@ -133,22 +134,8 @@ export default function Footer({
               target="_blank"
               rel="noopener noreferrer"
             >
-              <SvgIcon name="instagram" size={28} color="#ffffff" />
+              <SvgIcon name="instagram" size={20} color="#ffffff" />
             </a>
-            
-          </div>
-        </div>
-
-        <div className="footer-trust">
-          <p>{isSpanishPage ? "Llámanos para tu inspección gratis" : "Call us for your free inspection"}</p>
-          <div className="trust-icons">
-            <Image
-              src="/icons/ssl.png"
-              alt="SSL Secured"
-              width={24}
-              height={24}
-              style={{ width: "auto", height: "auto" }}
-            />
           </div>
         </div>
 

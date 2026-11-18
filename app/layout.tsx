@@ -1,6 +1,18 @@
 
 import "./globals.css";
 
+import { Fraunces } from "next/font/google";
+
+// Heritage (Patrimonio) redesign: editorial serif for display type
+// (headings, hero title, section titles). Body text stays the system
+// sans. The variable is consumed by the heritage layer in globals.css.
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["500", "600", "700"],
+  display: "swap",
+});
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Providers } from "./Providers";
@@ -271,7 +283,7 @@ export default async function RootLayout({
   // above), so Spanish pages serve <html lang="es"> from the server —
   // no client-side fix-up, no hydration change.
   return (
-    <html lang={locale === "es" ? "es" : "en"} data-scroll-behavior="smooth">
+    <html lang={locale === "es" ? "es" : "en"} data-scroll-behavior="smooth" className={fraunces.variable}>
       <head>
         {/* Preconnect before the GTM loader below, so the tag manager
             connection is already warm when its script is injected. */}
@@ -307,7 +319,7 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-title" content="CallTechCare" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#0891b2" />
+        <meta name="theme-color" content="#1e4d3a" />
 
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />

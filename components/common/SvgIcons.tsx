@@ -105,7 +105,7 @@ export default function SvgIcon({
                 width={size}
                 height={size}
                 className={className}
-                fill={color || "#34d399"}
+                fill={color || "#d4af37"}
             >
                 <use href="#ctc-checkmark-circle" />
             </svg>
@@ -281,7 +281,7 @@ export default function SvgIcon({
                     viewBox="0 0 512 512"
                     className={className}
                 >
-                    <circle cx="256" cy="256" r="248" fill="#0891b2" />
+                    <circle cx="256" cy="256" r="248" fill="#1e4d3a" />
                     <path
                         d="M368 176a144 144 0 1 0 0 160"
                         fill="none"
@@ -527,7 +527,7 @@ export default function SvgIcon({
             return (
                 <svg width={size} height={size} viewBox="0 0 24 24" className={className}>
                 <circle cx="12" cy="12" r="10"
-                    fill="#10b981"
+                    fill="#c9a227"
                     fillOpacity="0.15"
                 />
                 <path
@@ -538,7 +538,7 @@ export default function SvgIcon({
                     C9 17.5 6.5 14.7 6.5 11.2
                     V8.1
                     C8.2 7.8 10.1 7.3 12 6.5Z"
-                    stroke="#10b981"
+                    stroke="#c9a227"
                     strokeWidth="1.3"
                     fill="none"
                     strokeLinejoin="round"
@@ -563,28 +563,28 @@ export default function SvgIcon({
                     width="28"
                     height="28"
                     rx="8"
-                    fill="#10b981"
+                    fill="#c9a227"
                     fillOpacity="0.10"
                 />
 
                 <g transform="translate(5 4) scale(0.75)">
                     <path
                     d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
-                    stroke="#34d399"
+                    stroke="#d4af37"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     />
                     <path
                     d="M14 2v4a2 2 0 0 0 2 2h4"
-                    stroke="#34d399"
+                    stroke="#d4af37"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     />
-                    <path d="M10 9H8" stroke="#34d399" strokeWidth="2" strokeLinecap="round" />
-                    <path d="M16 13H8" stroke="#34d399" strokeWidth="2" strokeLinecap="round" />
-                    <path d="M16 17H8" stroke="#34d399" strokeWidth="2" strokeLinecap="round" />
+                    <path d="M10 9H8" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" />
+                    <path d="M16 13H8" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" />
+                    <path d="M16 17H8" stroke="#d4af37" strokeWidth="2" strokeLinecap="round" />
                 </g>
                 </svg>
             );
@@ -608,14 +608,14 @@ export default function SvgIcon({
                     width="28"
                     height="28"
                     rx="8"
-                    fill="#10b981"
+                    fill="#c9a227"
                     fillOpacity="0.10"
                 />
 
                 <g transform="translate(5 5) scale(0.75)">
                     <path
                     d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"
-                    stroke="#34d399"
+                    stroke="#d4af37"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -624,7 +624,7 @@ export default function SvgIcon({
                     cx="12"
                     cy="12"
                     r="3"
-                    stroke="#34d399"
+                    stroke="#d4af37"
                     strokeWidth="2"
                     />
                 </g>
@@ -649,14 +649,14 @@ export default function SvgIcon({
                     width="28"
                     height="28"
                     rx="8"
-                    fill="#10b981"
+                    fill="#c9a227"
                     fillOpacity="0.10"
                 />
 
                 <g transform="translate(5 5) scale(0.70)">
                     <path
                     d="M7 11V8a5 5 0 0 1 10 0v3"
-                    stroke="#34d399"
+                    stroke="#d4af37"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -667,7 +667,7 @@ export default function SvgIcon({
                     width="14"
                     height="10"
                     rx="2"
-                    stroke="#34d399"
+                    stroke="#d4af37"
                     strokeWidth="2"
                     fill="none"
                     />
@@ -682,14 +682,14 @@ export default function SvgIcon({
             return (
                 <svg width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
                 <rect x="0" y="0" width="28" height="28" rx="8"
-                        fill="#10b981" fillOpacity="0.10" />
+                        fill="#c9a227" fillOpacity="0.10" />
 
                 <g transform="translate(4 5) scale(0.75)">
-                    <circle cx="18" cy="5" r="3" stroke="#34d399" strokeWidth="2" />
-                    <circle cx="6" cy="12" r="3" stroke="#34d399" strokeWidth="2" />
-                    <circle cx="18" cy="19" r="3" stroke="#34d399" strokeWidth="2" />
+                    <circle cx="18" cy="5" r="3" stroke="#d4af37" strokeWidth="2" />
+                    <circle cx="6" cy="12" r="3" stroke="#d4af37" strokeWidth="2" />
+                    <circle cx="18" cy="19" r="3" stroke="#d4af37" strokeWidth="2" />
                     <path d="M8.6 10.7l6.8-4.2M8.6 13.3l6.8 4.2"
-                        stroke="#34d399" strokeWidth="2" strokeLinecap="round" />
+                        stroke="#d4af37" strokeWidth="2" strokeLinecap="round" />
                 </g>
                 </svg>
             );
@@ -702,23 +702,23 @@ export default function SvgIcon({
             return (
                 <svg width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
                 <rect x="0" y="0" width="28" height="28" rx="8"
-                        fill="#10b981" fillOpacity="0.10" />
+                        fill="#c9a227" fillOpacity="0.10" />
 
                 <g transform="translate(4 5) scale(0.75)">
                     <path
                     d="M21.8 12.1A9 9 0 1 1 11 2.2
                         a4 4 0 0 0 6.9 3.2
                         4 4 0 0 0 3.9 4.7Z"
-                    stroke="#34d399"
+                    stroke="#d4af37"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     fill="none"
                     />
-                    <circle cx="10" cy="8" r="1" fill="#34d399" />
-                    <circle cx="14.5" cy="10" r="1" fill="#34d399" />
-                    <circle cx="9" cy="14" r="1" fill="#34d399" />
-                    <circle cx="15" cy="15.5" r="1" fill="#34d399" />
+                    <circle cx="10" cy="8" r="1" fill="#d4af37" />
+                    <circle cx="14.5" cy="10" r="1" fill="#d4af37" />
+                    <circle cx="9" cy="14" r="1" fill="#d4af37" />
+                    <circle cx="15" cy="15.5" r="1" fill="#d4af37" />
                 </g>
                 </svg>
             );
@@ -730,18 +730,18 @@ export default function SvgIcon({
             return (
                 <svg width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
                 <rect x="0" y="0" width="28" height="28" rx="8"
-                        fill="#10b981" fillOpacity="0.10" />
+                        fill="#c9a227" fillOpacity="0.10" />
 
                 <g transform="translate(5 4) scale(0.75)">
                     {/* Adult */}
-                    <circle cx="14" cy="7" r="3" stroke="#34d399" strokeWidth="2" />
+                    <circle cx="14" cy="7" r="3" stroke="#d4af37" strokeWidth="2" />
                     <path d="M10 21v-6a4 4 0 0 1 8 0v6" 
-                        stroke="#34d399" strokeWidth="2" strokeLinecap="round"/>
+                        stroke="#d4af37" strokeWidth="2" strokeLinecap="round"/>
 
                     {/* Child */}
-                    <circle cx="7" cy="12" r="2" stroke="#34d399" strokeWidth="2" />
+                    <circle cx="7" cy="12" r="2" stroke="#d4af37" strokeWidth="2" />
                     <path d="M5 21v-5a2 2 0 0 1 4 0v5"
-                        stroke="#34d399" strokeWidth="2" strokeLinecap="round"/>
+                        stroke="#d4af37" strokeWidth="2" strokeLinecap="round"/>
                 </g>
                 </svg>
             );
@@ -753,19 +753,19 @@ export default function SvgIcon({
             return (
                 <svg width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
                 <rect x="0" y="0" width="28" height="28" rx="8"
-                        fill="#10b981" fillOpacity="0.10" />
+                        fill="#c9a227" fillOpacity="0.10" />
 
                 <g transform="translate(5 5) scale(0.75)">
                     <path
                     d="M3 12a9 9 0 1 1 3 6.7"
-                    stroke="#34d399"
+                    stroke="#d4af37"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     />
                     <path
                     d="M3 12h4m-4 0v4"
-                    stroke="#34d399"
+                    stroke="#d4af37"
                     strokeWidth="2"
                     strokeLinecap="round"
                     />
@@ -779,18 +779,18 @@ export default function SvgIcon({
         case "privacy-questions":
             return (
                 <svg width={size} height={size} viewBox="0 0 28 28" fill="none" className={className}>
-                <rect width="28" height="28" rx="8" fill="#10b981" fillOpacity="0.10" />
+                <rect width="28" height="28" rx="8" fill="#c9a227" fillOpacity="0.10" />
                 <g transform="translate(4 4) scale(0.75)">
                     <path
                     d="M6 7h9a3 3 0 0 1 3 3v2a3 3 0 0 1-3 3H9l-3 2v-5a3 3 0 0 1 0-5Z"
-                    stroke="#34d399"
+                    stroke="#d4af37"
                     strokeWidth="2"
                     strokeLinecap="round"
                     fill="none"
                     />
                     <path
                     d="M18 14c1.5 0 3 1 3 2.5v3.5l-3-1h-2"
-                    stroke="#34d399"
+                    stroke="#d4af37"
                     strokeWidth="2"
                     strokeLinecap="round"
                     />
