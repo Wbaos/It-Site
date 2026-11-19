@@ -12014,6 +12014,16 @@ object-fit: cover;
   text-align: center;
 }
 
+/* Service pages (19 Nov 2026): drop the dark gradient backgrounds of
+   the reviews blocks so they blend into the page's own dark
+   background (#0a1a12). The heading, cards and button keep their own
+   colors, so nothing else changes. Scoped to .service-detail so the
+   home and city pages keep their backgrounds. */
+.service-detail .section.testimonials,
+.service-detail .reviews-section {
+  background: none;
+}
+
 .site-container-testimonials {
   max-width: 1250px;
   margin: 0 auto;
