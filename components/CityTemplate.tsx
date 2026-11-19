@@ -714,7 +714,7 @@ export default async function CityTemplate({ city, locale }: { city: City; local
                     <Illustration />
                   </span>
                   <span className="heritage-city-highlight-text">
-                    <span className="heritage-city-highlight-title">{titleNode}</span>
+                    <h3 className="heritage-city-highlight-title">{titleNode}</h3>
                     <span className="heritage-city-highlight-body">
                       {card.body}
                       {variant !== "linked-titles" && (
