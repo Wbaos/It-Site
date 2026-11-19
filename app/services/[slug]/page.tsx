@@ -16,7 +16,6 @@ import FaqAccordion from "@/components/FaqAccordion";
 import ServiceGroupList from "@/components/ServiceGroupList";
 import { SERVICE_ES_PATHS, serviceHref } from "@/lib/serviceTwins";
 import { serviceCardText } from "@/lib/serviceCardText";
-import { cityHref } from "@/lib/cityTwins";
 import BeforeAfterSection from "@/components/BeforeAfterSection";
 import CoverageMap from "@/components/sections/CoverageMap";
 import QuickLeadForm from "@/components/QuickLeadForm";
@@ -42,41 +41,6 @@ type SubService = {
 };
 
 export const revalidate = 3600;
-
-const SPRINKLER_CITY_LINKS = [
-  { name: "Sunrise", href: "/sprinkler-repair-sunrise" },
-  { name: "Fort Lauderdale", href: "/sprinkler-repair-fort-lauderdale" },
-  { name: "Dania Beach", href: "/sprinkler-repair-dania-beach" },
-  { name: "Weston", href: "/sprinkler-repair-weston" },
-  { name: "Davie", href: "/sprinkler-repair-davie" },
-  { name: "Southwest Ranches", href: "/sprinkler-repair-southwest-ranches" },
-  { name: "Hollywood", href: "/sprinkler-repair-hollywood" },
-  { name: "West Park", href: "/sprinkler-repair-west-park" },
-  { name: "Pembroke Pines", href: "/sprinkler-repair-pembroke-pines" },
-  { name: "Miramar", href: "/sprinkler-repair-miramar" },
-  { name: "Miami Gardens", href: "/sprinkler-repair-miami-gardens" },
-  { name: "Miami Lakes", href: "/sprinkler-repair-miami-lakes" },
-  { name: "Country Club", href: "/sprinkler-repair-country-club" },
-  { name: "Aventura", href: "/sprinkler-repair-aventura" },
-  { name: "Sunny Isles Beach", href: "/sprinkler-repair-sunny-isles-beach" },
-  { name: "North Miami", href: "/sprinkler-repair-north-miami" },
-  { name: "Surfside", href: "/sprinkler-repair-surfside" },
-  { name: "North Bay Village", href: "/sprinkler-repair-north-bay-village" },
-  { name: "Miami Beach", href: "/sprinkler-repair-miami-beach" },
-  { name: "Hialeah", href: "/sprinkler-repair-hialeah" },
-  { name: "Doral", href: "/sprinkler-repair-doral" },
-  { name: "Fontainebleau", href: "/sprinkler-repair-fontainebleau" },
-  { name: "Tamiami", href: "/sprinkler-repair-tamiami" },
-  { name: "Miami", href: "/sprinkler-repair-miami" },
-  { name: "Coral Gables", href: "/sprinkler-repair-coral-gables" },
-  { name: "Key Biscayne", href: "/sprinkler-repair-key-biscayne" },
-  { name: "Kendall", href: "/sprinkler-repair-kendall" },
-  { name: "Kendale Lakes", href: "/sprinkler-repair-kendale-lakes" },
-  { name: "Country Walk", href: "/sprinkler-repair-country-walk" },
-  { name: "Cutler Bay", href: "/sprinkler-repair-cutler-bay" },
-  { name: "Plantation", href: "/sprinkler-repair-plantation" },
-  { name: "Coral Springs", href: "/sprinkler-repair-coral-springs" },
-];
 
 const SPRINKLER_SERVICE_LINKS = [
   { slug: "sprinkler-repair-and-installation", title: "Sprinkler Repair" },
@@ -291,11 +255,6 @@ export default async function ServicePage({
   const { slug } = await params;
     console.log("SERVICE SLUG:", slug);
   const isSpanish = locale === "es";
-  // Camera pages (group + wireless install) must not show sprinkler-city
-  // pills: their destinations are sprinkler repair pages, which does not
-  // correspond to a camera page. The neutral city row above stays.
-  const isCameraPage =
-    slug === "home-security" || slug === "wireless-camera-installation";
   const settings = await resolveSiteSettings();
 
   const pageUrl =
@@ -336,16 +295,10 @@ export default async function ServicePage({
     ).values()
   );
 
-  // The featured location pills above already link to Miami and Fort
-  // Lauderdale (the active location pages), so the sprinkler-city row
-  // below must not repeat them.
-  const featuredCityNames = new Set(
-    serviceAreas.map((a) => a.city.trim().toLowerCase())
-  );
-  const sprinklerCityLinks = SPRINKLER_CITY_LINKS.filter(
-    (city) => !featuredCityNames.has(city.name.trim().toLowerCase())
-  );
-
+  // The city pills used to live here (featured locations + the 32
+  // sprinkler-city links), repeating the same cities the interactive
+  // map below already shows. Removed 19 Nov 2026: the section now
+  // keeps only its title and the new map.
   const ServiceAreasSection = () => (
     serviceAreas.length > 0 ? (
     <section className="service-areas-section">
@@ -359,67 +312,6 @@ export default async function ServicePage({
               ? "Atendemos comunidades en Miami-Dade y Broward."
               : "Serving communities across Miami-Dade and Broward County."}
           </p>
-          <div className="service-areas-pills">
-            {serviceAreas.map((area) => (
-              <Link
-                key={area.slug}
-                href={isSpanish ? `/es/areas-de-servicio/${area.slug}` : `/locations/${area.slug}`}
-                className="service-area-pill"
-                aria-label={
-                  isSpanish
-                    ? `Ver servicios en ${area.city}`
-                    : `View services in ${area.city}`
-                }
-              >
-                <SvgIcon
-                  name="map-pin"
-                  size={14}
-                  color="var(--brand-teal)"
-                  className="service-area-icon"
-                />
-                {area.city}
-              </Link>
-            ))}
-          </div>
-          {/* Sprinkler-city pills: sprinkler pages only. On camera pages
-              these destinations would not correspond to the page, so the
-              whole row is skipped there (the neutral city row above stays). */}
-          {!isCameraPage && (
-            <>
-          <p className="service-areas-subtitle">
-            {isSpanish ? "Atendemos estas ciudades:" : "We serve these cities:"}
-          </p>
-          <div className="service-areas-pills">
-            {sprinklerCityLinks.map((city) => (
-              <Link
-                key={city.href}
-                href={cityHref(city.href.replace("/sprinkler-repair-", ""), locale)}
-                className="service-area-pill"
-                aria-label={
-                  // Camera pages link to sprinkler city pages too, but the
-                  // label must not claim sprinkler repair: keep it neutral.
-                  slug === "home-security" ||
-                  slug === "wireless-camera-installation"
-                    ? isSpanish
-                      ? `Ver servicios en ${city.name}`
-                      : `See services in ${city.name}`
-                    : isSpanish
-                      ? `Reparación de sprinklers en ${city.name}`
-                      : `Sprinkler repair in ${city.name}`
-                }
-              >
-                <SvgIcon
-                  name="map-pin"
-                  size={14}
-                  color="var(--brand-teal)"
-                  className="service-area-icon"
-                />
-                {city.name}
-              </Link>
-            ))}
-          </div>
-            </>
-          )}
         </div>
       </div>
       {/* Interactive map of the 32 cities, same component as the home
