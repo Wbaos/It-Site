@@ -297,32 +297,14 @@ export default async function ServicePage({
 
   // The city pills used to live here (featured locations + the 32
   // sprinkler-city links), repeating the same cities the interactive
-  // map below already shows. Removed 19 Nov 2026: the section now
-  // keeps only its title and the new map.
+  // map already shows. Removed 19 Nov 2026, and the leftover title
+  // block went with them: a bare "Service Areas" heading over an
+  // empty dark band. The section is now just the map itself, with
+  // its own "Where We Work" heading — the same block as the home
+  // page, title and map together in one panel.
   const ServiceAreasSection = () => (
     serviceAreas.length > 0 ? (
-    <section className="service-areas-section">
-      <div className="site-container">
-        <div className="service-areas-inner">
-          <h2 className="service-areas-title">
-            {isSpanish ? "Áreas de servicio" : "Service Areas"}
-          </h2>
-          <p className="service-areas-subtitle">
-            {isSpanish
-              ? "Atendemos comunidades en Miami-Dade y Broward."
-              : "Serving communities across Miami-Dade and Broward County."}
-          </p>
-        </div>
-      </div>
-      {/* Interactive map of the 32 cities, same component as the home
-          "Where We Work" section: county filters, search, pins linking
-          to each city page, and the city list collapsed behind "See
-          all cities". No heading here — this section already has its
-          own "Service Areas" title and subtitle. The ivory band reads
-          as its own panel inside the dark section, same rhythm as the
-          home (dark section, ivory map, dark section). */}
-      <CoverageMap locale={locale} showHeading={false} />
-    </section>
+      <CoverageMap locale={locale} showHeading={true} />
     ) : null
   );
 
