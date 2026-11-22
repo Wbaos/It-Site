@@ -119,6 +119,26 @@ export default function Contact({
             ? "Refiere a un vecino o amigo: cuando reserve un trabajo con nosotros, recibe $50 de descuento en su próxima visita."
             : "Refer a neighbor or friend — when they book a job with us, you get $50 off your next visit."}
         </p>
+        {/* WhatsApp photo diagnosis: visitors who don't want to call can
+            send photos and get the likely cause before the visit. */}
+        <p className="contact-desc">
+          {isSpanish
+            ? "¿Prefieres WhatsApp? Mándanos fotos de tu sistema de sprinklers y te decimos qué puede ser antes de la visita."
+            : "Prefer WhatsApp? Send us photos of your sprinkler system and we'll tell you what it could be before the visit."}
+        </p>
+        <a
+          className="btn-submit"
+          style={{ display: "block", textAlign: "center", textDecoration: "none" }}
+          href={
+            isSpanish
+              ? "https://wa.me/17863662729?text=Hola%2C%20te%20mando%20fotos%20de%20mi%20sistema%20de%20sprinklers."
+              : "https://wa.me/17863662729?text=Hi%2C%20I%27m%20sending%20photos%20of%20my%20sprinkler%20system."
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {isSpanish ? "Mandar fotos por WhatsApp" : "Send photos on WhatsApp"}
+        </a>
       </div>
 
       <div className="contact-form-card">

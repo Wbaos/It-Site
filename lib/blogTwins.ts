@@ -33,6 +33,12 @@ export const BLOG_ES_PATHS: Record<string, string> = {
   "sprinkler-repair-miami-fl":
     "/es/blog/reparacion-de-sprinklers-miami-fl",
   "miami-sprinkler": "/es/blog/sprinklers-en-miami",
+  "miami-dade-broward-irrigation-rebates-guide":
+    "/es/blog/reembolsos-riego-miami-dade-broward",
+  "why-sprinkler-systems-fail-south-florida":
+    "/es/blog/por-que-fallan-sprinklers-sur-florida",
+  "dry-season-sprinkler-checklist-miami":
+    "/es/blog/lista-revision-sprinklers-temporada-seca-miami",
 };
 
 export function blogHref(slug: string, locale: "en" | "es"): string {
