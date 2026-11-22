@@ -78,7 +78,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         return urls;
     });
 
-    // City landing pages live in Sanity (Lote 2): 31 standard pages, EN + ES.
+    // City landing pages live in Sanity (Lote 2): 32 standard pages, EN + ES.
     // The Miami hub keeps its fixed entries below (0.95 EN / 0.9 ES).
     // Falls back to the fixed slug list when Sanity comes back empty.
     const FALLBACK_CITY_SLUGS = [
@@ -113,6 +113,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         "country-walk",
         "plantation",
         "coral-springs",
+        "cooper-city",
     ];
     const cityEntries = (cityItems?.length ? cityItems : FALLBACK_CITY_SLUGS.map((slug) => ({
         slug: { current: slug },

@@ -36,6 +36,7 @@ export const CITY_ES_PATHS: Record<string, string> = {
   "cutler-bay": "/es/reparacion-de-sprinklers-cutler-bay",
   "plantation": "/es/reparacion-de-sprinklers-plantation",
   "coral-springs": "/es/reparacion-de-sprinklers-coral-springs",
+  "cooper-city": "/es/reparacion-de-sprinklers-cooper-city",
 };
 
 export function cityHref(slug: string, locale: "en" | "es"): string {

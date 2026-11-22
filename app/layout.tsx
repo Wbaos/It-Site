@@ -230,7 +230,7 @@ export default async function RootLayout({
     inLanguage: locale === "es" ? "es" : "en-US",
   };
 
-  // Generic Service node: serviceType + provider only. The 32-city
+  // Generic Service node: serviceType + provider only. The 33-city
   // areaServed list used to be duplicated here AND on the LocalBusiness
   // node above (~950 B); the provider reference covers it. And the whole
   // node is omitted on pages that already emit their own, richer Service

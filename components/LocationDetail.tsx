@@ -213,7 +213,7 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
       <section className="location-hero-section">
         {location.heroImage && (
           <Image
-            src={urlFor(location.heroImage).width(1920).height(600).url()}
+            src={urlFor(location.heroImage).auto("format").url()}
             alt={location.city}
             fill
             sizes="100vw"

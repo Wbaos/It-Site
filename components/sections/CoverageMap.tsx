@@ -4,7 +4,7 @@
 // with the same component and copy: the home (after How It Works) and the
 // top of /locations. Client component so the /locations client page can
 // render it too. The Leaflet map itself loads with ssr: false.
-// `showCityList` hides the text list of the 32 cities on /locations,
+// `showCityList` hides the text list of the cities on /locations,
 // where that list already exists further down the page.
 // `showHeading` hides the eyebrow/title/sub: the service pages render
 // the map inside their own "Service Areas" section, which already has
@@ -29,7 +29,7 @@ export default function CoverageMap({
 }) {
   const isSpanish = locale === "es";
   // The text list starts collapsed: the map + search already find the
-  // city, so the full 32-city list below it reads as a repeat.
+  // city, so the full city list below it reads as a repeat.
   const [listOpen, setListOpen] = useState(false);
   return (
     <section
@@ -77,7 +77,7 @@ export default function CoverageMap({
                   : "See all cities"}
             </button>
             {listOpen ? (
-              <ul id="coverage-map-list" className="coverage-map-list" aria-label={isSpanish ? "Las 32 ciudades que atendemos" : "All 32 cities we serve"}>
+              <ul id="coverage-map-list" className="coverage-map-list" aria-label={isSpanish ? `Las ${MAP_CITIES.length} ciudades que atendemos` : `All ${MAP_CITIES.length} cities we serve`}>
                 {MAP_CITIES.map((city) => (
                   <li key={city.slug}>
                     <Link href={cityHref(city.slug, locale)} className="coverage-map-chip">
@@ -89,10 +89,12 @@ export default function CoverageMap({
             ) : null}
           </>
         ) : null}
+        {/* The count follows MAP_CITIES so the map, the list and the
+            number can never drift apart when a city is added. */}
         <p className="coverage-map-count">
           {isSpanish
-            ? "32 ciudades en Miami-Dade y Broward"
-            : "32 cities across Miami-Dade & Broward"}
+            ? `${MAP_CITIES.length} ciudades en Miami-Dade y Broward`
+            : `${MAP_CITIES.length} cities across Miami-Dade & Broward`}
         </p>
       </div>
     </section>

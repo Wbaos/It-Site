@@ -1,9 +1,9 @@
-// City-center coordinates for the 32 service cities, for the interactive
+// City-center coordinates for the 33 service cities, for the interactive
 // service-area map (Leaflet + OpenStreetMap). These are public geographic
 // facts (approximate downtown centers, good to ~1-2 km) — pins on a
 // county-level map do not need street precision. Order matches
 // FALLBACK_CITIES in lib/sanityCities.ts (0 = Sunrise … 31 = Coral
-// Springs); `county` matches the `county` field on the Sanity `city`
+// Springs, 32 = Cooper City); `county` matches the `county` field on the Sanity `city`
 // docs, verified 18 Nov 2026. Miami is "both": its Sanity doc carries
 // county "both" because it is the hub for both counties, so it shows
 // under either county filter.
@@ -50,4 +50,7 @@ export const MAP_CITIES: MapCity[] = [
   { slug: "cutler-bay", name: "Cutler Bay", county: "Miami-Dade", lat: 25.589, lng: -80.3364 },
   { slug: "plantation", name: "Plantation", county: "Broward", lat: 26.1279, lng: -80.251 },
   { slug: "coral-springs", name: "Coral Springs", county: "Broward", lat: 26.2712, lng: -80.2706 },
+  // Cooper City (33rd city, added 22 Nov 2026): city center verified
+  // by geocoding (Cooper City Hall, 9090 SW 50th Pl, 33328).
+  { slug: "cooper-city", name: "Cooper City", county: "Broward", lat: 26.0584, lng: -80.2723 },
 ];

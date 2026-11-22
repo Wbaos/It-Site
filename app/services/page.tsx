@@ -7,6 +7,8 @@ import type { Metadata } from "next";
 import { serviceHref } from "@/lib/serviceTwins";
 import { serviceCardText } from "@/lib/serviceCardText";
 
+export const revalidate = 3600;
+
 // Fixed display order for the services list: the main repair service first,
 // then repairs, then installs/controls, then the maintenance plan, cameras
 // last. Services not listed here sort last, alphabetically by title.
@@ -293,8 +295,6 @@ export default async function ServicesPage() {
                           <div className="services-list-card-image-wrapper">
                             <Image
                               src={urlFor(service.image)
-                                .width(400)
-                                .height(250)
                                 .auto("format")
                                 .url()}
                               alt={`${service.title} service`}
@@ -409,7 +409,7 @@ export default async function ServicesPage() {
           <h3>Where we work</h3>
 
           <p>
-            We serve Miami-Dade and Broward County — 32 cities in all. That
+            We serve Miami-Dade and Broward County — 33 cities in all. That
             includes Miami, Fort Lauderdale, Weston, Coral Springs, Miramar,
             Pembroke Pines, Sunrise, Davie, Doral, Coral Gables and
             Plantation. See the full list on our{" "}

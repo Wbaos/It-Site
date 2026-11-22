@@ -47,6 +47,7 @@ const CITY_LINKS: Array<{ name: string; en: string; es: string }> = [
   { name: "Cutler Bay", en: "/sprinkler-repair-cutler-bay", es: "/es/reparacion-de-sprinklers-cutler-bay" },
   { name: "Plantation", en: "/sprinkler-repair-plantation", es: "/es/reparacion-de-sprinklers-plantation" },
   { name: "Coral Springs", en: "/sprinkler-repair-coral-springs", es: "/es/reparacion-de-sprinklers-coral-springs" },
+  { name: "Cooper City", en: "/sprinkler-repair-cooper-city", es: "/es/reparacion-de-sprinklers-cooper-city" },
 ];
 
 const COUNTY_LABEL: Record<string, { en: string; es: string }> = {
@@ -101,7 +102,7 @@ export default function LocationsClient({
             {isSpanish ? "Explora las ciudades y comunidades que CallTechCare atiende en Miami-Dade, Broward y áreas cercanas del sur de Florida." : "Browse the cities and communities CallTechCare serves across Miami-Dade, Broward County, and surrounding South Florida areas."}
           </p>
           <p className="locations-hero-badge">
-            {isSpanish ? "✦ Atendemos 32 ciudades en Miami-Dade y Broward" : "✦ Serving 32 cities across Miami-Dade & Broward"}
+            {isSpanish ? `✦ Atendemos ${CITY_LINKS.length} ciudades en Miami-Dade y Broward` : `✦ Serving ${CITY_LINKS.length} cities across Miami-Dade & Broward`}
           </p>
           {/* 1-year warranty with the exact condition (audit fix 2026-11-10):
               the locations page had no warranty mention. */}
@@ -112,8 +113,8 @@ export default function LocationsClient({
       </section>
 
       {/* Interactive service-area map: same component as the home.
-          The text list of the 32 cities is hidden here because the
-          "All 32 Cities We Serve" list already exists further down. */}
+          The text list of the cities is hidden here because the
+          "All Cities We Serve" list already exists further down. */}
       <CoverageMap locale={locale} showCityList={false} />
 
       {/* Locations Grid */}
@@ -136,8 +137,7 @@ export default function LocationsClient({
                   <div className="location-card-image">
                     <Image
                       src={urlFor(location.heroImage)
-                        .width(600)
-                        .height(400)
+                        .auto("format")
                         .url()}
                       alt={`${location.city}, ${location.state}`}
                       fill
@@ -205,7 +205,7 @@ export default function LocationsClient({
                 <div className="location-stat-label">{isSpanish ? "Condado" : "County"}</div>
               </div>
               <div>
-                <div className="location-stat-value">32</div>
+                <div className="location-stat-value">{CITY_LINKS.length}</div>
                 <div className="location-stat-label">{isSpanish ? "Ciudades Atendidas" : "Cities Served"}</div>
               </div>
               <div>
@@ -238,7 +238,7 @@ export default function LocationsClient({
           <div className="locations-coverage-card">
             <h2 className="locations-coverage-title">{isSpanish ? "Cómo Funciona Nuestra Cobertura" : "How Our Coverage Works"}</h2>
             <p className="locations-coverage-description">
-              {isSpanish ? "Un solo equipo cubre las 32 ciudades de Miami-Dade y Broward, dentro de un radio de 45 millas. El servicio es el mismo en cada ciudad de la lista: reparación de sprinklers, instalación nueva de irrigación, reparación de válvulas y fugas, instalación de temporizadores y controladores WiFi, y cámaras inalámbricas de seguridad." : "One team covers all 32 cities in Miami-Dade and Broward, within a 45-mile radius. The service is the same in every city on the list: sprinkler repair, new irrigation installation, valve and leak repair, timer and WiFi controller installation, and wireless security cameras."}
+              {isSpanish ? `Un solo equipo cubre las ${CITY_LINKS.length} ciudades de Miami-Dade y Broward, dentro de un radio de 45 millas. El servicio es el mismo en cada ciudad de la lista: reparación de sprinklers, instalación nueva de irrigación, reparación de válvulas y fugas, instalación de temporizadores y controladores WiFi, y cámaras inalámbricas de seguridad.` : `One team covers all ${CITY_LINKS.length} cities in Miami-Dade and Broward, within a 45-mile radius. The service is the same in every city on the list: sprinkler repair, new irrigation installation, valve and leak repair, timer and WiFi controller installation, and wireless security cameras.`}
             </p>
             <p className="locations-coverage-description">
               {isSpanish ? "Cada visita empieza igual. Llamas o escribes, y la inspección es gratis. Encontramos el problema, lo explicamos con palabras claras y te damos un precio claro antes de empezar cualquier trabajo. El servicio el mismo día está disponible dentro del horario. Cuando hacemos el trabajo y proveemos los materiales, tiene garantía de mano de obra de 1 año. Cada página de ciudad lista los mismos servicios, la misma garantía y el mismo teléfono. Para ver los detalles de tu ciudad, selecciónala arriba." : "Every visit starts the same way. You call or text, and the inspection is free. We find the problem, explain it in plain words, and give you a clear price before any work starts. Same-day service is available within business hours. When we do the work and provide the materials, it carries a 1-year workmanship warranty. Every city page lists the same services, the same warranty, and the same phone number. To see the service details for your city, select it above."}
@@ -251,7 +251,7 @@ export default function LocationsClient({
       <section className="locations-coverage-section">
         <div className="locations-coverage-container">
           <div className="locations-coverage-card">
-            <h2 className="locations-coverage-title">{isSpanish ? "Las 32 Ciudades que Atendemos" : "All 32 Cities We Serve"}</h2>
+            <h2 className="locations-coverage-title">{isSpanish ? `Las ${CITY_LINKS.length} Ciudades que Atendemos` : `All ${CITY_LINKS.length} Cities We Serve`}</h2>
             <p className="locations-coverage-description">
               {isSpanish ? "Reparación de sprinklers e irrigación en Miami-Dade y Broward: " : "Sprinkler repair and irrigation across Miami-Dade and Broward: "}
               {CITY_LINKS.map((city, i) => (

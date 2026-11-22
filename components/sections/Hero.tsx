@@ -3,6 +3,7 @@
 // is a Server Component — so the hero renders on the server and never
 // ships as client JS or hydrates (CWV lot 20, 16 Nov 2026). Keep it that
 // way: do not add hooks/handlers here.
+import Image from "next/image";
 import SvgIcon from "@/components/common/SvgIcons";
 import Link from "next/link";
 import { FALLBACK_SETTINGS } from "@/lib/sanitySettings";
@@ -54,14 +55,12 @@ export default function Hero({
   phoneNumber = FALLBACK_SETTINGS.phoneTel,
   showCallButton = true,
   // Default hero image (city pages: CityTemplate does not pass imageSrc,
-  // so every city page uses this). Served through the Sanity CDN at 1920w
-  // instead of the raw 5712x4284 original: same image, same on-screen
-  // size (the hero never displays wider than a desktop viewport), but
-  // 949 KB instead of 5.6 MB. The raw file was the LCP element on all
-  // 32 city pages (SEMrush CWV: Miami LCP 6.23s, 16 Nov 2026) and decoding
-  // a 24 MP image also cost main-thread time (TBT 420ms). No visible
-  // quality change — CDN resize only, q=80 like the home hero.
-  imageSrc = "https://cdn.sanity.io/images/celkrwoq/production/5deeea70b525963987af93601f412cebdbede547-5712x4284.webp?w=1920&auto=format&q=80",
+  // so every city page uses this). The bare Sanity asset URL — no ?w=…
+  // baked in — so next/image below picks the real width from `sizes`
+  // instead of upscaling a 1920px source to 2048px. The raw file is
+  // 5712x4284 (5.6 MB); the CDN resize is what keeps it off the LCP
+  // budget, same as before, only now the width is chosen per viewport.
+  imageSrc = "https://cdn.sanity.io/images/celkrwoq/production/5deeea70b525963987af93601f412cebdbede547-5712x4284.webp",
   mobileImageSrc,
   imageAlt = "Sprinkler system working",
   stats = [
@@ -97,9 +96,13 @@ export default function Hero({
         {/* Eyebrow */}
         {badgeText && <p className="heritage-city-hero-eyebrow">{badgeText}</p>}
 
-        {/* Title */}
+        {/* Title. Line 1 ends with a colon when line 2 exists: the two
+            spans used to run together ("Sprinkler Repair in Miramar
+            Irrigation • Repairs • New Systems"), so the H1 read as if
+            the city were called "Miramar Irrigation". The colon keeps
+            line 1 a heading and line 2 its (gold, smaller) subtitle. */}
         <h1 id="hero-title" className="heritage-city-hero-title">
-          <span className="heritage-city-hero-title-line1">{titleLine1}</span>
+          <span className="heritage-city-hero-title-line1">{titleLine1}{titleLine2 ? ":" : ""}</span>
           {titleLine2 && (
             <span className="heritage-city-hero-title-line2">{titleLine2}</span>
           )}
@@ -155,21 +158,26 @@ export default function Hero({
 
         {/* Real photo band in an arched frame — same image, same
             LCP-critical attributes as before, no longer a full-bleed
-            background with a scrim. */}
+            background with a scrim. next/image (was a plain <img> at a
+            fixed w=1920): with `sizes` a phone picks 640/828w (~113 KB
+            for this file) instead of the full 949 KB, and `priority`
+            keeps the fetchpriority="high" + preload the plain img had.
+            The hero inner is max 1100px wide, so 1100px is the desktop
+            size. */}
         {imageSrc && (
           <figure className="heritage-city-hero-photo">
             <picture>
               {mobileImageSrc && (
                 <source media="(max-width: 760px)" srcSet={mobileImageSrc} />
               )}
-              <img
+              <Image
                 src={imageSrc}
                 alt={imageAlt}
                 className="heritage-city-hero-photo-img"
                 width={1600}
                 height={1200}
-                loading="eager"
-                fetchPriority="high"
+                priority
+                sizes="(max-width: 760px) 100vw, 1100px"
               />
             </picture>
           </figure>

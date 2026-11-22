@@ -3,11 +3,13 @@ import LocationsClient from "./LocationsClient";
 import { resolveSiteSettings } from "@/lib/sanitySettings";
 import { getAllActiveLocations, type Location } from "@/lib/sanityLocations";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Sprinkler Repair Service Areas | CallTechCare",
 
   description:
-    "Explore the 32 cities CallTechCare serves across Miami-Dade and Broward County for sprinkler repair, irrigation installation, valve and timer replacement.",
+    "Explore the 33 cities CallTechCare serves across Miami-Dade and Broward County for sprinkler repair, irrigation installation, valve and timer replacement.",
 
   alternates: {
     canonical: "https://www.calltechcare.com/locations",
@@ -21,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Sprinkler Repair Service Areas | Miami & Broward",
     description:
-      "Explore the 32 cities CallTechCare serves across Miami-Dade and Broward County for sprinkler repair, irrigation installation, valve and timer replacement.",
+      "Explore the 33 cities CallTechCare serves across Miami-Dade and Broward County for sprinkler repair, irrigation installation, valve and timer replacement.",
     url: "https://www.calltechcare.com/locations",
     siteName: "CallTechCare",
     images: [

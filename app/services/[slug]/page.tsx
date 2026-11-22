@@ -295,7 +295,7 @@ export default async function ServicePage({
     ).values()
   );
 
-  // The city pills used to live here (featured locations + the 32
+  // The city pills used to live here (featured locations + the 33
   // sprinkler-city links), repeating the same cities the interactive
   // map already shows. Removed 19 Nov 2026, and the leftover title
   // block went with them: a bare "Service Areas" heading over an

@@ -2,7 +2,7 @@
 
 // Interactive service-area map (Leaflet + OpenStreetMap, no API key).
 // Loaded with ssr: false from CoverageMap, so Leaflet never runs on the
-// server. 32 city pins with lightweight grid clustering (no extra
+// server. 33 city pins with lightweight grid clustering (no extra
 // dependency): nearby cities group into numbered gold bubbles that split
 // open when tapped/zoomed. County filter buttons, a city search, and a
 // popup card per city linking to that city's page in the current locale.
