@@ -1,4 +1,4 @@
-import { ShieldCheck, Users, Clock, Smile } from "lucide-react";
+import { ShieldCheck, Clock, Smile } from "lucide-react";
 import SpriteIcon from "@/components/common/SpriteIcon";
 import type { HomePage } from "@/lib/sanityHome";
 import {
@@ -26,7 +26,7 @@ function StarIcon({
   );
 }
 
-const WHY_ICONS = [ShieldCheck, StarIcon, Users, Smile, Clock];
+const WHY_ICONS = [ShieldCheck, StarIcon, Smile, Clock];
 
 export default async function WhyChooseUs({
   locale = "en",
@@ -41,7 +41,7 @@ export default async function WhyChooseUs({
   // The Google card below carries NO numbers until the live summary is
   // applied: without a summary the card is dropped from the grid (see
   // below) instead of showing a stale rating/count.
-  // Same five cards, same icons, same order in both languages; only the
+  // Same four cards, same icons, same order in both languages; only the
   // text changes. The Spanish wording is a faithful translation of the
   // English wording. (There used to be a sixth card, "In-Person Service,
   // At Your Home" — removed: every job is done at the customer's property
@@ -57,11 +57,6 @@ export default async function WhyChooseUs({
           icon: <SpriteIcon name="star-lucide" size={32} strokeWidth={1.5} />,
           title: "Mejor Calificados en Google",
           text: "Calificados por clientes reales en Google.",
-        },
-        {
-          icon: <Users size={32} strokeWidth={1.5} />,
-          title: "Más de 1500 Clientes Ayudados",
-          text: "Más de 1500 clientes felices en Miami y Broward.",
         },
         {
           icon: <Smile size={32} strokeWidth={1.5} />,
@@ -84,11 +79,6 @@ export default async function WhyChooseUs({
           icon: <SpriteIcon name="star-lucide" size={32} strokeWidth={1.5} />,
           title: "Top Rated on Google",
           text: "Rated by real customers on Google.",
-        },
-        {
-          icon: <Users size={32} strokeWidth={1.5} />,
-          title: "1500+ Customers Helped",
-          text: "More than 1500 happy customers across Miami and Broward.",
         },
         {
           icon: <Smile size={32} strokeWidth={1.5} />,
@@ -179,7 +169,7 @@ export default async function WhyChooseUs({
         </div>
 
         {/* Editorial layout, not a card grid: the photo in an arched
-            frame on one side, the five reasons as a numbered list on
+            frame on one side, the four reasons as a numbered list on
             the other — same photo, same icons, same text, same order. */}
         <div className="heritage-why-body">
           <div className="heritage-why-photo">
