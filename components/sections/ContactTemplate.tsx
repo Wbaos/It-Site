@@ -6,7 +6,6 @@ import {
   HelpCircle,
   FileText,
   Clock,
-  Users,
   BadgeCheck,
   Zap,
 } from "lucide-react";
@@ -27,7 +26,7 @@ import {
 
 type Locale = "en" | "es";
 
-const STAT_ICONS = [Zap, BadgeCheck, Users, Clock];
+const STAT_ICONS = [Zap, BadgeCheck, Clock];
 
 const FALLBACK_EN = {
   heroTitle: "Contact CallTechCare for Sprinkler Repair",
@@ -39,7 +38,6 @@ const FALLBACK_EN = {
     // empty default is dropped when there is no summary, so no stale
     // number ever shows.
     { value: "", label: "Google Rating" },
-    { value: "1500+", label: "Happy Customers" },
     { value: "Mon–Sun", label: "Support Availability" },
   ],
   optionsTitle: "How Can We Help You?",
@@ -81,7 +79,6 @@ const FALLBACK_ES = {
   stats: [
     { value: "Mismo Día", label: "En horario" },
     { value: "", label: "Calificación en Google" },
-    { value: "1500+", label: "Clientes felices" },
     { value: "Lun–Dom", label: "Disponibilidad de soporte" },
   ],
   optionsTitle: "¿Cómo podemos ayudarte?",

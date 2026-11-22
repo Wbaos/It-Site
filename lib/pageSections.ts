@@ -87,7 +87,6 @@ const heroPropsEn = {
   imageAlt: "Sprinklers watering a landscaped front yard in Miami, with the CallTechCare truck",
 
   stats: [
-    { value: "1500+", label: "Local Clients Helped" },
     { value: "", label: "Google Rating" },
     { value: "Same-Day", label: "Appointments Available Within Business Hours" },
   ],
@@ -115,7 +114,6 @@ const heroPropsEs = {
   mobileImageSrc: "https://cdn.sanity.io/images/celkrwoq/production/66fa6374e721953321827264b014a7ea5c47a930-750x1000.webp?w=750&auto=format&q=50",
   imageAlt: "Sprinklers regando un jardín delantero en Miami, con el truck de CallTechCare",
   stats: [
-    { value: "1500+", label: "Clientes Locales Atendidos" },
     { value: "", label: "Calificación en Google" },
     { value: "Mismo Día", label: "Citas Disponibles Dentro del Horario" },
   ],

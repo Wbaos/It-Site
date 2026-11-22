@@ -25,15 +25,10 @@ function checkRateLimit(ip: string): boolean {
 }
 
 export async function middleware(request: NextRequest) {
-  // Locale for server components (root layout JSON-LD): /es/* pages are Spanish.
-  // Pathname for the same layout: the LocalBusiness description varies by
-  // page type (camera pages describe cameras, the rest describe sprinklers).
-  const pathname = request.nextUrl.pathname;
-  const isSpanish = pathname === "/es" || pathname.startsWith("/es/");
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-locale", isSpanish ? "es" : "en");
-  requestHeaders.set("x-pathname", pathname);
-  const response = NextResponse.next({ request: { headers: requestHeaders } });
+  // (The x-locale/x-pathname request headers used to be set here for the
+  // root layout JSON-LD; the layout no longer reads headers() — the
+  // schema moved to components/SiteJsonLd — so they are gone.)
+  const response = NextResponse.next();
 
   const setNoIndex = (res: NextResponse) => {
     res.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');

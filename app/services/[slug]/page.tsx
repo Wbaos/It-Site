@@ -42,6 +42,25 @@ type SubService = {
 
 export const revalidate = 3600;
 
+// Prerender every service page at build time so the HTML is served from
+// the edge cache (same pattern as /locations/[slug]). Without this the
+// route stays dynamic even with revalidate=3600: Vercel answers every
+// request with Cache-Control: no-store and X-Vercel-Cache: MISS. A Sanity
+// blip at build time returns [] instead of failing the build — unlisted
+// slugs still render on demand.
+export async function generateStaticParams() {
+  try {
+    const services = await sanity.fetch<{ slug: string }[]>(
+      `*[_type == "service" && defined(slug.current)]{ "slug": slug.current }`
+    );
+    return (services ?? [])
+      .map((s) => ({ slug: s.slug }))
+      .filter((s) => s.slug);
+  } catch {
+    return [];
+  }
+}
+
 const SPRINKLER_SERVICE_LINKS = [
   { slug: "sprinkler-repair-and-installation", title: "Sprinkler Repair" },
   { slug: "emergency-sprinkler-repair", title: "Emergency Sprinkler Repair" },

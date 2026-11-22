@@ -387,7 +387,6 @@ const NOT_SURE_P: Record<Locale, string> = {
 };
 
 const ES_STATS = [
-  { value: "1500+", label: "Clientes Locales Atendidos" },
   // Google Rating value comes from the live summary (googleRating prop on
   // Hero); the empty default is filtered out at render when there is no
   // summary, so no stale number ever shows.
