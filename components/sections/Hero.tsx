@@ -64,7 +64,6 @@ export default function Hero({
   mobileImageSrc,
   imageAlt = "Sprinkler system working",
   stats = [
-    { value: "1500+", label: "Local Clients Helped" },
     // Google Rating value comes from the `googleRating` prop (live Sanity
     // value, passed by the server parent). The empty default is filtered
     // out at render below, so no stale number ever shows.
