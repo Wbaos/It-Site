@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import Hero from "@/components/sections/Hero";
 import QuickLeadForm from "@/components/QuickLeadForm";
@@ -38,18 +39,44 @@ function pick(en: string | undefined, es: string | undefined, locale: Locale): s
   return en ?? "";
 }
 
+// The Sanity hero title for a city should read "Sprinkler Repair in
+// <City>" / "Reparación de Sprinklers en <City>". Southwest Ranches'
+// document is missing the preposition ("Sprinkler Repair Southwest
+// Ranches"). Derive it here, like the breadcrumb and Service-name
+// derivations below, instead of special-casing one city: any title
+// that starts with the service prefix followed directly by its own
+// city name gets the preposition inserted. Titles that already have
+// it, or that do not follow the pattern, are untouched.
+function normalizeHeroTitle1(title: string, cityName: string, locale: Locale): string {
+  if (!cityName) return title;
+  if (locale === "en") {
+    const prefix = "Sprinkler Repair ";
+    if (title.startsWith(prefix) && !title.startsWith(`${prefix}in `)) {
+      const rest = title.slice(prefix.length);
+      if (rest === cityName || rest.startsWith(`${cityName} `)) return `${prefix}in ${rest}`;
+    }
+    return title;
+  }
+  const prefix = "Reparación de Sprinklers ";
+  if (title.startsWith(prefix) && !title.startsWith(`${prefix}en `)) {
+    const rest = title.slice(prefix.length);
+    if (rest === cityName || rest.startsWith(`${cityName} `)) return `${prefix}en ${rest}`;
+  }
+  return title;
+}
+
 // Breadcrumb name = hero title with " in " removed in English
 // ("Sprinkler Repair in Surfside" -> "Sprinkler Repair Surfside");
 // Spanish keeps "en" ("Reparación de Sprinklers en Miami").
 export function cityBreadcrumbName(city: City, locale: Locale): string {
-  const h1 = pick(city.heroTitle1, city.heroTitle1Es, locale);
+  const h1 = normalizeHeroTitle1(pick(city.heroTitle1, city.heroTitle1Es, locale), city.name ?? "", locale);
   return locale === "es" ? h1 : h1.replace(" in ", " ");
 }
 
 // Service schema name = hero title, except Aventura which drops " in "
 // ("Sprinkler Repair Aventura" / "Reparación de Sprinklers Aventura").
 export function cityServiceName(city: City, locale: Locale): string {
-  const h1 = pick(city.heroTitle1, city.heroTitle1Es, locale);
+  const h1 = normalizeHeroTitle1(pick(city.heroTitle1, city.heroTitle1Es, locale), city.name ?? "", locale);
   if ((city.slug?.current ?? "") === "aventura") {
     return locale === "es" ? "Reparación de Sprinklers Aventura" : "Sprinkler Repair Aventura";
   }
@@ -423,11 +450,33 @@ function renderAreaSegments(segments: CityAreaSegment[], locale: Locale) {
     const segText = seg.text ?? "";
     const needsSpace =
       nodes.length > 0 && !segText.startsWith(",") && !segText.startsWith(".");
-    if (seg.linkHref) {
+    // The Sanity area copy links "see the full list" at the Fort
+    // Lauderdale page (/locations/fort-lauderdale) instead of the
+    // locations hub (/locations). Rewrite that one known-bad pair
+    // here so all city pages point at the full list; the source data
+    // in Sanity still carries the old link. Any other link (real
+    // city links included) passes through untouched.
+    let linkHref = seg.linkHref;
+    let linkText = seg.linkText;
+    if (
+      (linkHref === "/locations/fort-lauderdale" ||
+        linkHref === "/es/areas-de-servicio/fort-lauderdale") &&
+      (linkText === "Fort Lauderdale page" ||
+        linkText === "página de Fort Lauderdale")
+    ) {
+      if (locale === "es") {
+        linkHref = "/es/areas-de-servicio";
+        linkText = "página de áreas de servicio";
+      } else {
+        linkHref = "/locations";
+        linkText = "locations page";
+      }
+    }
+    if (linkHref) {
       if (nodes.length > 0) nodes.push(" ");
       nodes.push(
-        <Link key={`l${i}`} href={routeAreaHref(seg.linkHref, locale)}>
-          {seg.linkText}
+        <Link key={`l${i}`} href={routeAreaHref(linkHref, locale)}>
+          {linkText}
         </Link>,
       );
     } else if (segText) {
@@ -464,7 +513,7 @@ export default async function CityTemplate({ city, locale }: { city: City; local
     ? `https://www.calltechcare.com/es/${city.esSlug ?? `reparacion-de-sprinklers-${slug}`}`
     : `https://www.calltechcare.com/sprinkler-repair-${slug}`;
 
-  const heroTitle1 = pick(city.heroTitle1, city.heroTitle1Es, locale);
+  const heroTitle1 = normalizeHeroTitle1(pick(city.heroTitle1, city.heroTitle1Es, locale), name, locale);
   // Hero image alt: the city's own Sanity alt when set, otherwise the
   // default describing the shared hero photo (sprinklers working),
   // in the page language. Hero.tsx used to hardcode alt="", so the
@@ -772,16 +821,29 @@ export default async function CityTemplate({ city, locale }: { city: City; local
             }}
           >
             {(city.gallery ?? []).map((img, i) => {
+              // next/image (was a plain <img> at a fixed ?w=900): the
+              // gallery grid is 240px+ columns, so with `sizes` a phone
+              // picks 640/828w (~113 KB for the 5712px file) instead of
+              // the fixed 949 KB. One shared template covers all 32
+              // city pages, EN + ES. The src is the bare Sanity asset
+              // URL — no ?w= baked in, so next/image chooses the width.
               const src = sanityImageUrl(img.asset?._ref);
+              // next/image throws on an empty src (a plain <img> only
+              // showed a broken image), so skip gallery entries whose
+              // asset reference is missing instead of rendering them.
+              if (!src) return null;
               const alt = pick(img.alt, img.altEs, locale);
               const caption = pick(img.caption, img.captionEs, locale);
               return (
                 <figure key={`${src}-${i}`} style={{ margin: 0 }}>
-                  <img
-                    src={`${src}?w=900&auto=format`}
+                  <Image
+                    src={src}
                     alt={alt}
+                    width={900}
+                    height={675}
                     loading="lazy"
-                    style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    style={{ width: "100%", height: "auto", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "12px", display: "block" }}
                   />
                   <figcaption>{caption}</figcaption>
                 </figure>

@@ -40,6 +40,14 @@ export default function HeroVideo({
     video.play().catch(() => setShowVideo(false));
   }, [showVideo]);
 
+  // Video poster: a sized Sanity variant (1200w) of the same photo, so
+  // the <video> does not download the full-resolution file just for the
+  // poster frame. The photo shown while the video is off comes from
+  // next/image below, which picks its own width from `sizes`.
+  const posterUrl = imageSrc.includes("cdn.sanity.io")
+    ? `${imageSrc.split("?")[0]}?w=1200&auto=format&q=75`
+    : imageSrc;
+
   if (showVideo !== true) {
     return (
       <picture>
@@ -52,6 +60,11 @@ export default function HeroVideo({
           width={1600}
           height={1200}
           priority
+          // The photo band is full container width (21/9 desktop, 4/3
+          // under 900px): without `sizes` next/image only offered the
+          // 1920/2048 variants, so a phone downloaded ~640 KB for the
+          // hero. With sizes the phone picks 640/828w (~161 KB).
+          sizes="(max-width: 900px) 100vw, 1200px"
           className="heritage-hero-photo-img"
         />
       </picture>
@@ -63,7 +76,7 @@ export default function HeroVideo({
       ref={videoRef}
       className="heritage-hero-video"
       src={HOME_VIDEO_URL}
-      poster={imageSrc}
+      poster={posterUrl}
       muted
       loop
       playsInline

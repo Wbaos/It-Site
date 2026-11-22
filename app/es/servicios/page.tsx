@@ -7,6 +7,8 @@ import { serviceHref } from "@/lib/serviceTwins";
 import { serviceCardText } from "@/lib/serviceCardText";
 import type { Metadata } from "next";
 
+export const revalidate = 3600;
+
 // Fixed display order for the services list, shared with /services: the main
 // repair service first, then repairs, then installs/controls, then the
 // maintenance plan, cameras last. Services not listed here sort last,
@@ -298,8 +300,6 @@ export default async function ServicesPageEs() {
                           <div className="services-list-card-image-wrapper">
                             <Image
                               src={urlFor(service.image)
-                                .width(400)
-                                .height(250)
                                 .auto("format")
                                 .url()}
                               alt={`${service.titleEs || service.title} servicio`}
@@ -416,7 +416,7 @@ export default async function ServicesPageEs() {
           <h3>Dónde trabajamos</h3>
 
           <p>
-            Atendemos Miami-Dade y Broward — 32 ciudades en total. Eso
+            Atendemos Miami-Dade y Broward — 33 ciudades en total. Eso
             incluye Miami, Fort Lauderdale, Weston, Coral Springs, Miramar,
             Pembroke Pines, Sunrise, Davie, Doral, Coral Gables y Plantation.
             Mira la lista completa en nuestra{" "}

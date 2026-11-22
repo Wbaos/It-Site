@@ -77,7 +77,12 @@ const heroPropsEn = {
 
   phoneNumber: FALLBACK_SETTINGS.phoneTel,
   showCallButton: true,
-  imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/33438c04872f15d5d2aa76f5ede7dcae856fd67a-1600x1200.webp?w=1600&auto=format&q=80",
+  // The imageSrc passed to next/image is the bare Sanity asset URL (no
+  // ?w=… baked in): next/image picks the real width from `sizes`, so the
+  // browser never downloads a 1600px source upscaled to 2048px.
+  // The mobile portrait (750x1000) keeps its own params: it is served
+  // directly through a <source> element, not through next/image.
+  imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/33438c04872f15d5d2aa76f5ede7dcae856fd67a-1600x1200.webp",
   mobileImageSrc: "https://cdn.sanity.io/images/celkrwoq/production/66fa6374e721953321827264b014a7ea5c47a930-750x1000.webp?w=750&auto=format&q=50",
   imageAlt: "Sprinklers watering a landscaped front yard in Miami, with the CallTechCare truck",
 
@@ -104,7 +109,9 @@ const heroPropsEs = {
   // solo ofrece el botón de llamar.
   phoneNumber: FALLBACK_SETTINGS.phoneTel,
   showCallButton: true,
-  imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/33438c04872f15d5d2aa76f5ede7dcae856fd67a-1600x1200.webp?w=1600&auto=format&q=80",
+  // Misma URL sin parámetros que en la versión en inglés: ver el
+  // comentario allí (la URL sin ?w=… es la fuente de next/image).
+  imageSrc: "https://cdn.sanity.io/images/celkrwoq/production/33438c04872f15d5d2aa76f5ede7dcae856fd67a-1600x1200.webp",
   mobileImageSrc: "https://cdn.sanity.io/images/celkrwoq/production/66fa6374e721953321827264b014a7ea5c47a930-750x1000.webp?w=750&auto=format&q=50",
   imageAlt: "Sprinklers regando un jardín delantero en Miami, con el truck de CallTechCare",
   stats: [
@@ -254,7 +261,7 @@ export async function getHomeSections(
 
     { key: "how", Component: HowItWorks, props: { locale } },
 
-    // Interactive service-area map (18 Nov 2026): the 32 cities on a
+    // Interactive service-area map (18 Nov 2026): the 33 cities on a
     // Leaflet map with county filters and search, plus the text list
     // below as backup. The old home-video section was removed the same
     // day: the video moved into the hero, so the same video twice on

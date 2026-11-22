@@ -51,7 +51,7 @@ export default async function GoogleReviewsCTA({
       <div className="site-container-testimonials google-cta-card">
         <div className="google-cta-photo">
           <img
-            src="https://cdn.sanity.io/images/celkrwoq/production/7b390027ba801d9cd8d1b588194d1787b25004f8-1024x768.jpg?w=800&auto=format&q=80"
+            src="https://cdn.sanity.io/images/celkrwoq/production/7b390027ba801d9cd8d1b588194d1787b25004f8-1024x768.jpg?w=800&auto=format&q=75"
             alt={isSpanish ? "Sprinklers regando un jardín con piedras negras y palmera" : "Sprinklers watering a garden with black stones and a palm tree"}
             width={600}
             height={400}

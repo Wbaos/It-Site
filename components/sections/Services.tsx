@@ -153,8 +153,10 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
           on mobile. Same data, same links, same text as the old
           editorial index — only the presentation changed. Cards share
           one height per row so the link always sits at the bottom.
-          Photos served at 800px wide: a card column is ~400px, so 2x
-          stays sharp without the weight of the old 1200px rows. */}
+          The image URL passed to next/image is the bare Sanity asset
+          URL (no .width() baked in): next/image picks the real width
+          from `sizes`, so the browser never downloads a 400px source
+          upscaled to 828px. */}
       <ol className="heritage-service-grid">
         {sortedServices.map((s: any, i: number) => {
           const es = isSpanish ? SERVICES_ES[s.slug] : undefined;
@@ -166,7 +168,7 @@ export default async function Services({ locale = "en" }: { locale?: "en" | "es"
               {s.image?.asset && (
                 <span className="heritage-service-card-photo">
                   <Image
-                    src={urlFor(s.image).width(800).url()}
+                    src={urlFor(s.image).url()}
                     alt=""
                     width={800}
                     height={450}
