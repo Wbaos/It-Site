@@ -81,7 +81,11 @@ export default function HeroVideo({
       loop
       playsInline
       autoPlay
-      preload="auto"
+      // Deferred loading: only the metadata is fetched up front; the
+      // video data itself loads when play() starts it (see the effect
+      // above), so the 3.5 MB file never competes with the hero photo
+      // (the LCP element) during the initial load.
+      preload="metadata"
       aria-label={imageAlt ?? ""}
       onError={() => setShowVideo(false)}
     />
