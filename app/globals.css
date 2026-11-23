@@ -18290,17 +18290,6 @@ details[open] .faq-toggle {
   text-overflow: ellipsis;
 }
 
-.discount-popup__teaserChevron {
-  margin-left: auto;
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.14);
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-}
-
 .discount-popup__teaserDismiss {
   position: absolute;
   right: -8px;
@@ -18341,6 +18330,30 @@ details[open] .faq-toggle {
 }
 
 @media (max-width: 600px) {
+  /* Narrow the discount teaser on phones so it never reaches the
+     floating call button: the call pill is ~150px wide at right:16px,
+     so the teaser must end at least 12px before it (plus 8px for the
+     dismiss x that sticks out of the teaser's top-right corner).
+     Measured on a 440px-wide phone: teaser ended at ~276px and the
+     call pill started at ~274px, so they overlapped. */
+  .discount-popup__teaser {
+    width: min(260px, calc(100vw - 212px));
+    padding: 10px 12px;
+  }
+
+  .discount-popup__teaserInner {
+    gap: 10px;
+  }
+
+  .discount-popup__teaserIcon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .discount-popup__teaserTitle {
+    font-size: 13px;
+  }
+
   .discount-popup__subtitle{
     line-height: 1.2;
   }
