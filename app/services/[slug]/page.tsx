@@ -79,6 +79,30 @@ const SPRINKLER_SERVICE_LINKS = [
   { slug: "commercial-irrigation-hoa-services", title: "Commercial Irrigation & HOA Services" },
 ];
 
+// Priority city pages linked from the main sprinkler service page, so
+// each city page — not this hub — is the one that ranks for "sprinkler
+// repair <city>". Plain text links only; the Nov 19 removal took city
+// buttons off the service hubs, and this restores the links on the main
+// service page alone, in the same index-row style as the related
+// services below. Same single template for EN/ES; only the text changes.
+const PRIORITY_CITY_LINKS = [
+  { slug: "miramar", name: "Miramar" },
+  { slug: "pembroke-pines", name: "Pembroke Pines" },
+  { slug: "weston", name: "Weston" },
+  { slug: "sunrise", name: "Sunrise" },
+  { slug: "davie", name: "Davie" },
+  { slug: "hollywood", name: "Hollywood" },
+  { slug: "southwest-ranches", name: "Southwest Ranches" },
+  { slug: "plantation", name: "Plantation" },
+  { slug: "cooper-city", name: "Cooper City" },
+];
+
+function cityHref(citySlug: string, loc: "en" | "es") {
+  return loc === "es"
+    ? `/es/reparacion-de-sprinklers-${citySlug}`
+    : `/sprinkler-repair-${citySlug}`;
+}
+
 // Splits a service description into a short hero intro and the remainder,
 // from the SAME text, so a sentence is never shown twice and none is lost.
 // The hero shows the first 1–2 sentences (~maxLen, ending with an
@@ -1458,6 +1482,43 @@ export default async function ServicePage({
                       {s.description && (
                         <span className="heritage-related-desc">{s.description}</span>
                       )}
+                    </span>
+                    <span className="heritage-related-arrow" aria-hidden="true">→</span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+
+        {/* Priority city index on the main service page only: text
+            links to the nine city pages, in the same editorial row
+            style as the related services above. */}
+        {slug === "sprinkler-repair-and-installation" && (
+          <div className="related-services-box">
+            <h2>
+              {isSpanish
+                ? "Reparación de sprinklers cerca de ti"
+                : "Sprinkler repair near you"}
+            </h2>
+            <p className="related-services-intro">
+              {isSpanish
+                ? "Estas son las ciudades donde más trabajamos, cada una con su propia página:"
+                : "These are the cities we work in most, each with its own page:"}
+            </p>
+            <ol className="heritage-related-list">
+              {PRIORITY_CITY_LINKS.map((c, i) => (
+                <li key={c.slug} className="heritage-related-row">
+                  <Link href={cityHref(c.slug, locale)} className="heritage-related-link">
+                    <span className="heritage-related-num" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="heritage-related-text">
+                      <span className="heritage-related-title">
+                        {isSpanish
+                          ? `Reparación de sprinklers en ${c.name}`
+                          : `Sprinkler repair in ${c.name}`}
+                      </span>
                     </span>
                     <span className="heritage-related-arrow" aria-hidden="true">→</span>
                   </Link>
