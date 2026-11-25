@@ -47,8 +47,13 @@ function pick(en: string | undefined, es: string | undefined, locale: Locale): s
 // that starts with the service prefix followed directly by its own
 // city name gets the preposition inserted. Titles that already have
 // it, or that do not follow the pattern, are untouched.
-function normalizeHeroTitle1(title: string, cityName: string, locale: Locale): string {
+function normalizeHeroTitle1(title: string, cityName: string, locale: Locale, slug = ""): string {
   if (!cityName) return title;
+  // Davie is the one exception: its hero title intentionally uses the
+  // exact search phrase without the preposition ("Sprinkler Repair
+  // Davie, FL" / "Reparación de Sprinklers Davie"), matching its title
+  // tag, so the H1 carries the full phrase people search for.
+  if (slug === "davie") return title;
   if (locale === "en") {
     const prefix = "Sprinkler Repair ";
     if (title.startsWith(prefix) && !title.startsWith(`${prefix}in `)) {
@@ -69,14 +74,14 @@ function normalizeHeroTitle1(title: string, cityName: string, locale: Locale): s
 // ("Sprinkler Repair in Surfside" -> "Sprinkler Repair Surfside");
 // Spanish keeps "en" ("Reparación de Sprinklers en Miami").
 export function cityBreadcrumbName(city: City, locale: Locale): string {
-  const h1 = normalizeHeroTitle1(pick(city.heroTitle1, city.heroTitle1Es, locale), city.name ?? "", locale);
+  const h1 = normalizeHeroTitle1(pick(city.heroTitle1, city.heroTitle1Es, locale), city.name ?? "", locale, city.slug?.current ?? "");
   return locale === "es" ? h1 : h1.replace(" in ", " ");
 }
 
 // Service schema name = hero title, except Aventura which drops " in "
 // ("Sprinkler Repair Aventura" / "Reparación de Sprinklers Aventura").
 export function cityServiceName(city: City, locale: Locale): string {
-  const h1 = normalizeHeroTitle1(pick(city.heroTitle1, city.heroTitle1Es, locale), city.name ?? "", locale);
+  const h1 = normalizeHeroTitle1(pick(city.heroTitle1, city.heroTitle1Es, locale), city.name ?? "", locale, city.slug?.current ?? "");
   if ((city.slug?.current ?? "") === "aventura") {
     return locale === "es" ? "Reparación de Sprinklers Aventura" : "Sprinkler Repair Aventura";
   }
@@ -512,7 +517,7 @@ export default async function CityTemplate({ city, locale }: { city: City; local
     ? `https://www.calltechcare.com/es/${city.esSlug ?? `reparacion-de-sprinklers-${slug}`}`
     : `https://www.calltechcare.com/sprinkler-repair-${slug}`;
 
-  const heroTitle1 = normalizeHeroTitle1(pick(city.heroTitle1, city.heroTitle1Es, locale), name, locale);
+  const heroTitle1 = normalizeHeroTitle1(pick(city.heroTitle1, city.heroTitle1Es, locale), name, locale, slug);
   // Hero image alt: the city's own Sanity alt when set, otherwise the
   // default describing the shared hero photo (sprinklers working),
   // in the page language. Hero.tsx used to hardcode alt="", so the
