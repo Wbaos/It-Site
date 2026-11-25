@@ -1,3 +1,4 @@
+// Redeploy refresh 2026-11-25 (2): publish the real-photo blog covers set in Sanity for eight posts.
 // Spanish twin paths for blog posts, keyed by English slug.
 // Used by the language switcher map, the blog index, the post template
 // and the sitemap, so Spanish navigation lands on the Spanish twin
