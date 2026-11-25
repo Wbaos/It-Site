@@ -1,3 +1,4 @@
+// Redeploy refresh 2026-11-25 (10): re-trigger the production deployment for the city extra-section cards change (PR #539), whose first production build did not go live.
 // Redeploy refresh 2026-11-25 (9): publish the Miami city gallery caption fix set in Sanity (the backyard line photo was a check valve installation, not a new system installation).
 // Redeploy refresh 2026-11-25 (8): publish the sprinkler pump gallery fix set in Sanity (removed one of the two Palmetto Estates photos so the same client does not appear twice).
 // Redeploy refresh 2026-11-25 (7): publish the final New Irrigation Installation photos set in Sanity (main photo: new system running in Aventura; gallery: trench work in Fort Lauderdale and Weston; the Miami photo was a check valve job, not a new installation, so it is out).
