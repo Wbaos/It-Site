@@ -30,8 +30,7 @@ export const BLOG_ES_PATHS: Record<string, string> = {
     "/es/blog/como-encontrar-una-fuga-de-sprinklers-en-tu-jardin",
   "smart-sprinkler-system-repair-miami":
     "/es/blog/reparacion-de-sistema-de-sprinklers-inteligente-miami",
-  "sprinkler-repair-miami-fl":
-    "/es/blog/reparacion-de-sprinklers-miami-fl",
+  "sprinkler-repair-miami-fl": "/es/blog/reparacion-de-sprinklers-miami-fl",
   "miami-sprinkler": "/es/blog/sprinklers-en-miami",
   "miami-dade-broward-irrigation-rebates-guide":
     "/es/blog/reembolsos-riego-miami-dade-broward",
@@ -39,6 +38,10 @@ export const BLOG_ES_PATHS: Record<string, string> = {
     "/es/blog/por-que-fallan-sprinklers-sur-florida",
   "dry-season-sprinkler-checklist-miami":
     "/es/blog/lista-revision-sprinklers-temporada-seca-miami",
+  "miami-dade-broward-irrigation-rules-guide":
+    "/es/blog/reglas-de-riego-miami-dade-broward",
+  "why-sprinkler-systems-fail-broward":
+    "/es/blog/por-que-fallan-sprinklers-broward",
 };
 
 export function blogHref(slug: string, locale: "en" | "es"): string {
