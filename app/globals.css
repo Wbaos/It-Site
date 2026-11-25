@@ -13995,18 +13995,9 @@ box-shadow:
     font-size: 0.85rem;
     font-weight: 600;
 }
-.seo-area-list a {
-    display: inline-block;
-    padding: 0.3rem 0.85rem;
-    margin: 0.15rem 0.1rem;
-    border: 1px solid rgba(201, 162, 39, 0.4);
-    border-radius: 999px;
-    background: rgba(201, 162, 39, 0.1);
-}
-.seo-area-list a:hover {
-    background: rgba(201, 162, 39, 0.22);
-    text-decoration: none;
-}
+/* City links inside the "Service area" paragraph read as normal
+   in-text links (the .seo-intro a style above). They used to be pill
+   buttons, which broke the sentence flow; removed Nov 24, 2026. */
 .seo-intro-title {
   font-size: 1.6rem;
   font-weight: 700;
