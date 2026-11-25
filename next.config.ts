@@ -1,3 +1,4 @@
+// Redeploy refresh 2026-11-25: publish the blog cover images (mainImage) set in Sanity for the rebates, watering-rules and two failure-guide posts.
 import type { NextConfig } from "next";
 
 /** @type {NextConfig} */
