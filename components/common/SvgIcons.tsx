@@ -80,7 +80,7 @@ export default function SvgIcon({
         // the old fill="none" stroke="none" were already overridden.
         // Every star call site passes one of those two classes.
         return (
-            <svg
+            <svg aria-hidden="true"
                 width={size || 18}
                 height={size || 18}
                 className={className}
@@ -91,7 +91,7 @@ export default function SvgIcon({
     }
     if (name === "verified-check") {
         return (
-            <svg
+            <svg aria-hidden="true"
                 width={size || 14}
                 height={size || 14}
                 className={className}
@@ -103,7 +103,7 @@ export default function SvgIcon({
     }
     if (name === "checkmark-circle") {
         return (
-            <svg
+            <svg aria-hidden="true"
                 width={size}
                 height={size}
                 className={className}
@@ -114,7 +114,7 @@ export default function SvgIcon({
         );
     }
     const strokeSprite = (id: string, strokeWidth: number | string) => (
-        <svg
+        <svg aria-hidden="true"
             width={size}
             height={size}
             className={className}
@@ -152,7 +152,7 @@ export default function SvgIcon({
             return strokeSprite("ctc-calendar", 2);
         case "document":
             return (
-                <svg
+                <svg aria-hidden="true"
                     width={size}
                     height={size}
                     className={className}
@@ -170,7 +170,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "alert-circle":
             return (
-                <svg
+                <svg aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width={size}
                     height={size}
@@ -192,7 +192,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "shield":
             return (
-                <svg
+                <svg aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width={size}
                     height={size}
@@ -211,7 +211,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "paper-plane":
             return (
-                <svg
+                <svg aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width={size}
                     height={size}
@@ -229,7 +229,7 @@ export default function SvgIcon({
             );
         case "x":
             return (
-                <svg
+                <svg aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width={size}
                     height={size}
@@ -249,7 +249,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "user-avatar":
             return (
-                <svg
+                <svg aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width={size}
                     height={size}
@@ -276,7 +276,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "calltechcare-logo":
             return (
-                <svg
+                <svg aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width={size}
                     height={size}
@@ -308,7 +308,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "facebook":
             return (
-                <svg
+                <svg aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 48 48"
                     width={size}
@@ -327,7 +327,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "instagram":
             return (
-                <svg
+                <svg aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 448 512"
                     width={size}
@@ -345,7 +345,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "linkedin":
             return (
-                <svg
+                <svg aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 448 512"
                     width={size}
@@ -363,7 +363,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "calltechcare-logoName":
             return (
-                <svg
+                <svg aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 240 55"
                     width={size}
@@ -414,7 +414,7 @@ export default function SvgIcon({
          
         case "calltechcare-logoMobile":
             return (
-                <svg
+                <svg aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 130 52"
                 width={size}
@@ -458,7 +458,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "blog-author":
             return (
-                <svg
+                <svg aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width={size}
                     height={size}
@@ -479,7 +479,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "clock":
             return (
-                <svg
+                <svg aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width={size}
                     height={size}
@@ -501,7 +501,7 @@ export default function SvgIcon({
 
         case "book-open":
             return (
-                <svg
+                <svg aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width={size}
                 height={size}
@@ -527,7 +527,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "privacy-shield":
             return (
-                <svg width={size} height={size} viewBox="0 0 24 24" className={className}>
+                <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" className={className}>
                 <circle cx="12" cy="12" r="10"
                     fill="#c9a227"
                     fillOpacity="0.15"
@@ -552,7 +552,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "privacy-info-collect":
             return (
-                <svg
+                <svg aria-hidden="true"
                 width={size}
                 height={size}
                 viewBox="0 0 28 28"
@@ -597,7 +597,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "privacy-how-we-use":
             return (
-                <svg
+                <svg aria-hidden="true"
                 width={size}
                 height={size}
                 viewBox="0 0 28 28"
@@ -638,7 +638,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "privacy-security":
             return (
-                <svg
+                <svg aria-hidden="true"
                 width={size}
                 height={size}
                 viewBox="0 0 28 28"
@@ -682,7 +682,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "privacy-sharing":
             return (
-                <svg width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
+                <svg aria-hidden="true" width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
                 <rect x="0" y="0" width="28" height="28" rx="8"
                         fill="#c9a227" fillOpacity="0.10" />
 
@@ -702,7 +702,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "privacy-cookies":
             return (
-                <svg width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
+                <svg aria-hidden="true" width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
                 <rect x="0" y="0" width="28" height="28" rx="8"
                         fill="#c9a227" fillOpacity="0.10" />
 
@@ -730,7 +730,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "privacy-children":
             return (
-                <svg width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
+                <svg aria-hidden="true" width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
                 <rect x="0" y="0" width="28" height="28" rx="8"
                         fill="#c9a227" fillOpacity="0.10" />
 
@@ -753,7 +753,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "privacy-changes":
             return (
-                <svg width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
+                <svg aria-hidden="true" width={size} height={size} viewBox="0 0 28 28" className={className} fill="none">
                 <rect x="0" y="0" width="28" height="28" rx="8"
                         fill="#c9a227" fillOpacity="0.10" />
 
@@ -780,7 +780,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "privacy-questions":
             return (
-                <svg width={size} height={size} viewBox="0 0 28 28" fill="none" className={className}>
+                <svg aria-hidden="true" width={size} height={size} viewBox="0 0 28 28" fill="none" className={className}>
                 <rect width="28" height="28" rx="8" fill="#c9a227" fillOpacity="0.10" />
                 <g transform="translate(4 4) scale(0.75)">
                     <path
@@ -804,7 +804,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "star-outline":
             return (
-                <svg
+                <svg aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width={size}
                     height={size}
@@ -828,7 +828,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "camera":
             return (
-                <svg
+                <svg aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width={size}
                 height={size}
@@ -849,7 +849,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "wifi":
             return (
-                <svg
+                <svg aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width={size}
                 height={size}
@@ -870,7 +870,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "home":
             return (
-                <svg
+                <svg aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width={size}
                 height={size}
@@ -891,7 +891,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "laptop":
             return (
-                <svg
+                <svg aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width={size}
                 height={size}
@@ -912,7 +912,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "briefcase":
             return (
-                <svg
+                <svg aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width={size}
                 height={size}
@@ -933,7 +933,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "clipboard":
             return (
-                <svg
+                <svg aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width={size}
                 height={size}
@@ -953,7 +953,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "dollar-circle":
             return (
-                <svg
+                <svg aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width={size}
                 height={size}
@@ -974,7 +974,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "lightning":
             return (
-                <svg
+                <svg aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width={size}
                 height={size}
@@ -995,7 +995,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "lock":
             return (
-                <svg
+                <svg aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width={size}
                 height={size}
@@ -1016,7 +1016,7 @@ export default function SvgIcon({
         // ------------------------------------------------------------------------
         case "time-clock":
             return (
-                <svg
+                <svg aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width={size}
                 height={size}
