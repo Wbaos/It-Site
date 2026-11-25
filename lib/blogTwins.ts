@@ -1,3 +1,4 @@
+// Redeploy refresh 2026-11-25 (4): publish the main-service and WiFi-controller galleries set in Sanity.
 // Redeploy refresh 2026-11-25 (3): publish the new per-service photo galleries set in Sanity.
 // Redeploy refresh 2026-11-25 (2): publish the real-photo blog covers set in Sanity for eight posts.
 // Spanish twin paths for blog posts, keyed by English slug.
