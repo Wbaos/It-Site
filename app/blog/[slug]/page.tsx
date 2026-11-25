@@ -100,8 +100,8 @@ export async function generateMetadata({
 
   const post = await sanity.fetch(
     `*[_type == "post" && slug.current == $slug][0]{
-      title,
       metaTitle,
+      title,
       metaDescription,
       excerpt,
       canonicalUrl,
@@ -179,8 +179,8 @@ export default async function BlogPost({
 
   const post = await sanity.fetch<BlogPostResult | null>(
     `*[_type == "post" && slug.current == $slug][0]{
-      title,
       titleEs,
+      title,
       h1,
       h1Es,
       metaTitle,
@@ -261,8 +261,8 @@ export default async function BlogPost({
         `*[_type == "post" && slug.current != $slug && publishedAt <= now() && $primaryCategoryId in categories[]._ref]
           | order(publishedAt desc)[0...$relatedLimit]{
             _id,
-            title,
             titleEs,
+            title,
             slug,
             mainImage { asset->{url}, alt },
             excerpt,
