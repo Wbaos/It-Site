@@ -19,6 +19,7 @@ import Contact from "@/components/sections/Contact";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import CoverageMap from "@/components/sections/CoverageMap";
 import BrandMarquee from "@/components/sections/BrandMarquee";
+import CommercialBand from "@/components/sections/CommercialBand";
 
 // Single home template, both languages. The section list, order and
 // components are identical for English and Spanish; only the text changes,
@@ -34,6 +35,7 @@ type Section = {
     | "before-after"
     | "seo-intro"
     | "services"
+    | "commercial"
     | "diagnostic"
     | "how"
     | "why"
@@ -248,6 +250,16 @@ export async function getHomeSections(
     },
 
     { key: "services", Component: Services, props: { locale } },
+
+    // Commercial track (Nov 25, 2026): a band for HOAs, property
+    // managers and businesses right after the residential services,
+    // linking to the commercial service page. That page already existed
+    // but the home never linked to it.
+    {
+      key: "commercial",
+      Component: CommercialBand,
+      props: { locale, phoneTel: settings.phoneTel, phoneDisplay: settings.phoneDisplay },
+    },
 
     // Interactive diagnostic ("What's wrong with your system?") in
     // place of the old rotating Highlights strip, removed 17 Nov 2026
