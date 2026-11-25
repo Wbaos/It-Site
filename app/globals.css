@@ -21962,3 +21962,46 @@ h2,
     display: none;
   }
 }
+
+/* City extra sections: items as cards (gold number + bold lead-in)
+   instead of a plain list. Added 2026-11-25. */
+.spr-extra-cards {
+  margin: 30px auto 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  text-align: left;
+}
+@media (min-width: 900px) {
+  .spr-extra-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.spr-extra-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: rgba(238, 240, 230, 0.04);
+  border: 1px solid var(--heritage-gold-line);
+  border-radius: 16px;
+  padding: 20px 22px;
+}
+.spr-extra-num {
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--heritage-gold);
+  flex-shrink: 0;
+}
+.spr-extra-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-primary);
+  margin: 0 0 6px;
+}
+.spr-extra-card-text p {
+  margin: 0;
+  line-height: 1.65;
+  color: rgba(169, 189, 170, 0.95);
+}
