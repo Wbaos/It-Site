@@ -1,3 +1,4 @@
+// Redeploy refresh 2026-11-25 (2): publish the iCloud job-photo galleries set in Sanity for the well, pump, valve, timer and WiFi controller services.
 // Redeploy refresh 2026-11-25: publish the blog cover images (mainImage) set in Sanity for the rebates, watering-rules and two failure-guide posts.
 import type { NextConfig } from "next";
 
