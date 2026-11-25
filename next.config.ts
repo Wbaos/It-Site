@@ -1,3 +1,4 @@
+// Redeploy refresh 2026-11-25 (4): publish the wells gallery removal set in Sanity (gallery left empty until a real new-well job photo exists).
 // Redeploy refresh 2026-11-25 (3): publish the wells gallery fix set in Sanity (removed two photos of an old system, kept the check valve photo).
 // Redeploy refresh 2026-11-25 (2): publish the iCloud job-photo galleries set in Sanity for the well, pump, valve, timer and WiFi controller services.
 // Redeploy refresh 2026-11-25: publish the blog cover images (mainImage) set in Sanity for the rebates, watering-rules and two failure-guide posts.
