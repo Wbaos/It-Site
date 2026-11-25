@@ -1,3 +1,4 @@
+// Redeploy refresh 2026-11-25 (8): publish the sprinkler pump gallery fix set in Sanity (removed one of the two Palmetto Estates photos so the same client does not appear twice).
 // Redeploy refresh 2026-11-25 (7): publish the final New Irrigation Installation photos set in Sanity (main photo: new system running in Aventura; gallery: trench work in Fort Lauderdale and Weston; the Miami photo was a check valve job, not a new installation, so it is out).
 // Redeploy refresh 2026-11-25 (6): publish the real main photo for New Irrigation Installation set in Sanity (Weston trench photo instead of the generic stock image).
 // Redeploy refresh 2026-11-25 (5): publish the new irrigation installation gallery set in Sanity (trench photos from three different jobs: Fort Lauderdale, Weston and Miami).
