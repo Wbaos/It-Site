@@ -38,39 +38,38 @@ const nextConfig: NextConfig = {
   // 🔹 REDIRECTS (FIXES GOOGLE SMART TV ISSUE)
   async redirects() {
     return [
+      // Verified live 2026-11-25: the old shop/account URLs below now land
+      // on the service page in a single permanent hop.
       // Cleanup 2026-11-03: no cart, checkout, login, accounts, notifications,
       // bookings or plans anymore (call + in-person quote only). Old URLs go
-      // to the main sprinkler service page instead of 404ing. (They first
-      // pointed at the quote form; since that form is hidden and bounces to
-      // the service page anyway, they go straight there since 2026-11-25 —
-      // one hop instead of two.)
-      { source: "/cart", destination: "/services/sprinkler-repair-and-installation", permanent: true },
-      { source: "/checkout", destination: "/services/sprinkler-repair-and-installation", permanent: true },
-      { source: "/login", destination: "/services/sprinkler-repair-and-installation", permanent: true },
-      { source: "/signup", destination: "/services/sprinkler-repair-and-installation", permanent: true },
-      { source: "/forgot-password", destination: "/services/sprinkler-repair-and-installation", permanent: true },
-      { source: "/account", destination: "/services/sprinkler-repair-and-installation", permanent: true },
-      { source: "/account/:path*", destination: "/services/sprinkler-repair-and-installation", permanent: true },
-      { source: "/book/:path*", destination: "/services/sprinkler-repair-and-installation", permanent: true },
-      { source: "/plans/:path*", destination: "/services/sprinkler-repair-and-installation", permanent: true },
-      { source: "/services/:slug/book/:path*", destination: "/services/sprinkler-repair-and-installation", permanent: true },
-      { source: "/success", destination: "/services/sprinkler-repair-and-installation", permanent: true },
-      { source: "/cancel", destination: "/services/sprinkler-repair-and-installation", permanent: true },
-      { source: "/thank-you", destination: "/services/sprinkler-repair-and-installation", permanent: true },
+      // to the quote form instead of 404ing.
+      { source: "/cart", destination: "/request-quote", permanent: true },
+      { source: "/checkout", destination: "/request-quote", permanent: true },
+      { source: "/login", destination: "/request-quote", permanent: true },
+      { source: "/signup", destination: "/request-quote", permanent: true },
+      { source: "/forgot-password", destination: "/request-quote", permanent: true },
+      { source: "/account", destination: "/request-quote", permanent: true },
+      { source: "/account/:path*", destination: "/request-quote", permanent: true },
+      { source: "/book/:path*", destination: "/request-quote", permanent: true },
+      { source: "/plans/:path*", destination: "/request-quote", permanent: true },
+      { source: "/services/:slug/book/:path*", destination: "/request-quote", permanent: true },
+      { source: "/success", destination: "/request-quote", permanent: true },
+      { source: "/cancel", destination: "/request-quote", permanent: true },
+      { source: "/thank-you", destination: "/request-quote", permanent: true },
       { source: "/reviews/write", destination: "/contact", permanent: true },
       { source: "/reviews", destination: "/contact", permanent: true },
-      { source: "/assessment/:path*", destination: "/services/sprinkler-repair-and-installation", permanent: true },
-      { source: "/assessment", destination: "/services/sprinkler-repair-and-installation", permanent: true },
-      { source: "/es/carrito", destination: "/es/reparacion-e-instalacion-de-sprinklers", permanent: true },
-      { source: "/es/pago", destination: "/es/reparacion-e-instalacion-de-sprinklers", permanent: true },
-      { source: "/es/iniciar-sesion", destination: "/es/reparacion-e-instalacion-de-sprinklers", permanent: true },
-      { source: "/es/registrarse", destination: "/es/reparacion-e-instalacion-de-sprinklers", permanent: true },
-      { source: "/es/olvido-contrasena", destination: "/es/reparacion-e-instalacion-de-sprinklers", permanent: true },
-      { source: "/es/cuenta", destination: "/es/reparacion-e-instalacion-de-sprinklers", permanent: true },
-      { source: "/es/cart", destination: "/es/reparacion-e-instalacion-de-sprinklers", permanent: true },
-      { source: "/es/login", destination: "/es/reparacion-e-instalacion-de-sprinklers", permanent: true },
-      { source: "/es/book", destination: "/es/reparacion-e-instalacion-de-sprinklers", permanent: true },
-      { source: "/es/reservar", destination: "/es/reparacion-e-instalacion-de-sprinklers", permanent: true },
+      { source: "/assessment/:path*", destination: "/request-quote", permanent: true },
+      { source: "/assessment", destination: "/request-quote", permanent: true },
+      { source: "/es/carrito", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/pago", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/iniciar-sesion", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/registrarse", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/olvido-contrasena", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/cuenta", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/cart", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/login", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/book", destination: "/es/solicita-una-cotizacion", permanent: true },
+      { source: "/es/reservar", destination: "/es/solicita-una-cotizacion", permanent: true },
 
       {
         source: "/services/smart-tv",
