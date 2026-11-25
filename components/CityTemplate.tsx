@@ -34,6 +34,26 @@ import type { City, CityAreaSegment } from "@/lib/sanityCities";
 
 type Locale = "en" | "es";
 
+// Split an extra-section item into a bold lead-in and the rest of the text.
+// Items are written three ways across the cities: "Problem — we check ...",
+// "Label: description ..." and "First sentence. Rest of the text ...".
+// The words never change; only the presentation splits them.
+function splitExtraItem(item: string): { title: string | null; body: string } {
+  const dash = item.indexOf(" \u2014 ");
+  if (dash > 0 && dash <= 120) {
+    return { title: item.slice(0, dash).trim(), body: item.slice(dash + 3).trim() };
+  }
+  const colon = item.indexOf(": ");
+  if (colon > 0 && colon <= 60) {
+    return { title: item.slice(0, colon).trim(), body: item.slice(colon + 2).trim() };
+  }
+  const dot = item.indexOf(". ");
+  if (dot > 0 && dot <= 120) {
+    return { title: item.slice(0, dot + 1).trim(), body: item.slice(dot + 2).trim() };
+  }
+  return { title: null, body: item };
+}
+
 function pick(en: string | undefined, es: string | undefined, locale: Locale): string {
   if (locale === "es" && es) return es;
   return en ?? "";
@@ -711,11 +731,26 @@ export default async function CityTemplate({ city, locale }: { city: City; local
             <div className="spr-landing">
               {heading ? <h2 className="spr-landing-title">{heading}</h2> : null}
               {intro ? <p className="spr-landing-sub">{intro}</p> : null}
-              <ul>
-                {items.map((item, j) => (
-                  <li key={j}>{item}</li>
-                ))}
-              </ul>
+              {items.length ? (
+                <div className="spr-extra-cards">
+                  {items.map((item, j) => {
+                    const parts = splitExtraItem(item);
+                    return (
+                      <article key={j} className="spr-extra-card">
+                        <span className="spr-extra-num" aria-hidden="true">
+                          {String(j + 1).padStart(2, "0")}
+                        </span>
+                        <div className="spr-extra-card-text">
+                          {parts.title ? (
+                            <h3 className="spr-extra-card-title">{parts.title}</h3>
+                          ) : null}
+                          <p>{parts.body}</p>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              ) : null}
             </div>
           </section>
         );
