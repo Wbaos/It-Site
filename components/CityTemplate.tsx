@@ -12,6 +12,10 @@ import {
   formatGoogleRating,
 } from "@/lib/google-reviews";
 import GoogleReviewsCTA from "@/components/sections/GoogleReviewsCTA";
+import BeforeAfterSection, {
+  type BeforeAfterComparison,
+} from "@/components/BeforeAfterSection";
+import { sanity } from "@/lib/sanity";
 import type { City, CityAreaSegment } from "@/lib/sanityCities";
 
 // Single template for every city landing page (Lote 2 migration).
@@ -527,6 +531,12 @@ const PRIORITY_CITY_CLUSTER = [
   { slug: "fort-lauderdale", name: "Fort Lauderdale" },
   { slug: "plantation", name: "Plantation" },
   { slug: "cooper-city", name: "Cooper City" },
+  // Miami joins as host and target (Nov 26, 2026): its page is the money
+  // page for "sprinkler repair miami", so the cluster pages link to it
+  // with the exact anchor, and its page links back to the cluster — the
+  // Miami page was ranking for the Sunrise and Cooper City Spanish
+  // phrases precisely because it had no links out to those city pages.
+  { slug: "miami", name: "Miami" },
 ];
 const CLUSTER_HOST_SLUGS = new Set(PRIORITY_CITY_CLUSTER.map((c) => c.slug));
 const CLUSTER_LINK_TARGETS = [
@@ -582,6 +592,41 @@ export default async function CityTemplate({ city, locale }: { city: City; local
   const areaSegments = isEs && city.areaSegmentsEs?.length ? city.areaSegmentsEs : city.areaSegments ?? [];
   const faqs = composeFaqs(city, locale, settings);
   const variant = city.highlightsVariant ?? "";
+
+  // Before/after comparisons for THIS city only. Comparisons on the
+  // service docs carry a citySlug tag in Sanity, set only when the job's
+  // city is known and the pair is the city's one entry for that job (a
+  // second angle of the same job stays untagged). Cities without tagged
+  // pairs render no section — BeforeAfterSection returns null when the
+  // list is empty. Same reuse pattern as the home (lib/pageSections).
+  let cityComparisons: BeforeAfterComparison[] = [];
+  try {
+    const baServices = await sanity.fetch<any[]>(
+      `*[_type == "service" && slug.current in ["sprinkler-repair-and-installation", "wifi-sprinkler-controller-upgrade"]]{ "slug": slug.current, beforeAfter{ comparisons[citySlug == $slug]{ title, titleEs, beforeImage{asset->{url}, alt}, afterImage{asset->{url}, alt} } } }`,
+      { slug }
+    );
+    const baOrder = [
+      "sprinkler-repair-and-installation",
+      "wifi-sprinkler-controller-upgrade",
+    ];
+    (baServices ?? [])
+      .sort((a, b) => baOrder.indexOf(a?.slug) - baOrder.indexOf(b?.slug))
+      .forEach((s) => {
+        (s?.beforeAfter?.comparisons ?? []).forEach((c: any) => {
+          if (!c?.beforeImage?.asset?.url || !c?.afterImage?.asset?.url)
+            return;
+          cityComparisons.push({
+            title:
+              isEs && c?.titleEs?.trim() ? c.titleEs : c?.title ?? "",
+            titleEs: c?.titleEs,
+            beforeImage: c.beforeImage,
+            afterImage: c.afterImage,
+          });
+        });
+      });
+  } catch {
+    cityComparisons = [];
+  }
 
   // Derivations (see header comment + exported helpers above).
   const breadcrumbName = cityBreadcrumbName(city, locale);
@@ -915,8 +960,8 @@ export default async function CityTemplate({ city, locale }: { city: City; local
         </div>
       </section>
 
-      {/* Nearby Broward priority cities, linked with the same index-row
-          style as the service pages, so each city page gets exact-anchor
+      {/* Nearby priority cities, linked with the same index-row style
+          as the service pages, so each city page gets exact-anchor
           links from its sibling city pages. */}
       {CLUSTER_HOST_SLUGS.has(slug) && (
         <section className="spr-landing-section" aria-label={isEs ? "Ciudades cercanas" : "Nearby cities"}>
@@ -929,8 +974,8 @@ export default async function CityTemplate({ city, locale }: { city: City; local
               </h2>
               <p className="related-services-intro">
                 {isEs
-                  ? "También reparamos e instalamos sistemas de sprinklers en estas ciudades de Broward, cada una con su propia página:"
-                  : "We also repair and install sprinkler systems in these Broward cities, each with its own page:"}
+                  ? "También reparamos e instalamos sistemas de sprinklers en estas ciudades del sur de la Florida, cada una con su propia página:"
+                  : "We also repair and install sprinkler systems in these South Florida cities, each with its own page:"}
               </p>
               <ol className="heritage-related-list">
                 {CLUSTER_LINK_TARGETS.filter((c) => c.slug !== slug).map((c, i) => (
@@ -955,6 +1000,10 @@ export default async function CityTemplate({ city, locale }: { city: City; local
           </div>
         </section>
       )}
+
+      {/* Real before/after work done in this city (see the citySlug fetch
+          above). Renders nothing when the city has no tagged pairs. */}
+      <BeforeAfterSection locale={locale} data={{ comparisons: cityComparisons }} />
 
       <section className="spr-landing-section" aria-label={t.ariaFaq}>
         <div className="spr-landing">
