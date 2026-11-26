@@ -230,8 +230,8 @@ export async function generateMetadata({
   // Otherwise category
   const category = await sanity.fetch(
     `*[_type == "category" && slug.current == $slug][0]{
-      title,
       seoTitle,
+      title,
       metaDescription,
       description,
       tagline,
@@ -677,8 +677,8 @@ export default async function ServicePage({
           titleEs,
           description,
           descriptionEs,
-          seoTitle,
           seoTitleEs,
+          seoTitle,
           metaDescription,
           metaDescriptionEs,
           tagline,
