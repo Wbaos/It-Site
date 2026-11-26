@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
     }`
   );
   const title =
-    service?.metaTitleEs || service?.titleEs || "Prueba de Backflow";
+    service?.metaTitleEs || service?.titleEs || "Reparación de Backflow";
   const description =
     service?.metaDescriptionEs ||
     service?.descriptionEs ||

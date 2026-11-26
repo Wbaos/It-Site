@@ -6,7 +6,7 @@ import { getAboutPage } from "@/lib/sanityAbout";
 // English route, with locale="es". No duplicated page copy lives here.
 export async function generateMetadata(): Promise<Metadata> {
   const doc = await getAboutPage();
-  const title = doc?.metaTitleEs ?? "Sobre CallTechCare | Reparación de Sprinklers en Miami y Broward";
+  const title = doc?.metaTitleEs ?? "Sobre CallTechCare | Reparación de Sprinklers en Miami";
   const description =
     doc?.metaDescriptionEs ??
     "Conoce a CallTechCare, la empresa de reparación de sprinklers e irrigación de Miami y Broward. Servicio el mismo día dentro del horario, inspección gratis y garantía de mano de obra de 1 año.";

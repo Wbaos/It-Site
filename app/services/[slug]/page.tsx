@@ -74,7 +74,7 @@ const SPRINKLER_SERVICE_LINKS = [
   { slug: "new-irrigation-installation", title: "New Irrigation Installation" },
   { slug: "sprinkler-maintenance-plan", title: "Sprinkler Maintenance Plan" },
   { slug: "drip-irrigation-installation", title: "Drip Irrigation Installation" },
-  { slug: "backflow-testing", title: "Backflow Testing" },
+  { slug: "backflow-testing", title: "Backflow Repair" },
   { slug: "sprinkler-head-replacement", title: "Sprinkler Head Replacement" },
   { slug: "commercial-irrigation-hoa-services", title: "Commercial Irrigation & HOA Services" },
 ];

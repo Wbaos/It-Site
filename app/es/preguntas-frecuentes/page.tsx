@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const doc = await getFaqPage();
   const title =
     doc?.metaTitleEs ??
-    "Preguntas Frecuentes | Reparación de Sprinklers en Miami y Broward | CallTechCare";
+    "Preguntas Frecuentes | Sprinklers en Miami | CallTechCare";
   const description =
     doc?.metaDescriptionEs ??
     "Encuentra respuestas a preguntas comunes sobre la reparación de sprinklers e irrigación de CallTechCare en Miami y Broward: costos, servicio el mismo día, fugas, válvulas y temporizadores.";
