@@ -185,8 +185,12 @@ export async function getHomeSections(
   // No photos or jobs are invented — only the existing service data.
   let beforeAfterComparisons: BeforeAfterComparison[] = [];
   try {
+    // Projection order rotated Nov 26, 2026 (never-used order): the
+    // query string is part of the fetch cache key, so this refreshes
+    // the cached response after a duplicate comparison was removed
+    // from the main service doc in Sanity. Same fields, same data.
     const baServices = await sanity.fetch<any[]>(
-      `*[_type == "service" && slug.current in ["sprinkler-repair-and-installation", "wifi-sprinkler-controller-upgrade"]]{ "slug": slug.current, beforeAfter{ comparisons[]{ title, titleEs, beforeImage{asset->{url}, alt}, afterImage{asset->{url}, alt} } } }`
+      `*[_type == "service" && slug.current in ["sprinkler-repair-and-installation", "wifi-sprinkler-controller-upgrade"]]{ beforeAfter{ comparisons[]{ afterImage{asset->{url}, alt}, beforeImage{asset->{url}, alt}, titleEs, title } }, "slug": slug.current }`
     );
     const order = [
       "sprinkler-repair-and-installation",
