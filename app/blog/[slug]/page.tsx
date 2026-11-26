@@ -177,31 +177,34 @@ export default async function BlogPost({
   const { slug } = await params;
   const isSpanish = locale === "es";
 
+  // Field order rotated Nov 26, 2026 (a never-used order): the query
+  // string is part of the fetch cache key, so reordering refreshes the
+  // cached Sanity response for post pages. Same fields, same data.
   const post = await sanity.fetch<BlogPostResult | null>(
     `*[_type == "post" && slug.current == $slug][0]{
-      focusKeyword,
-      titleEs,
-      title,
-      h1,
-      h1Es,
-      metaTitle,
-      metaTitleEs,
-      metaDescription,
-      metaDescriptionEs,
-      excerpt,
-      excerptEs,
-      canonicalUrl,
-      "authorName": author->name,
-      publishedAt,
-      _updatedAt,
-      mainImage { asset->{url}, alt },
-      ogImage { asset->{url} },
-      readingTime,
-      body,
       bodyEs,
-      "categories": categories[]->{ _id, title, titleEs },
+      body,
+      tagsEs,
       tags,
-      tagsEs
+      "categories": categories[]->{ _id, title, titleEs },
+      ogImage { asset->{url} },
+      mainImage { asset->{url}, alt },
+      _updatedAt,
+      publishedAt,
+      "authorName": author->name,
+      canonicalUrl,
+      excerptEs,
+      excerpt,
+      metaDescriptionEs,
+      metaDescription,
+      metaTitleEs,
+      metaTitle,
+      h1Es,
+      h1,
+      title,
+      titleEs,
+      focusKeyword,
+      readingTime
     }`,
     { slug }
   );
