@@ -118,6 +118,13 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
   const sprinklerCityLinks = (SPRINKLER_CITY_LINKS[slug] || []).filter(
     (city) => city.label.trim().toLowerCase() !== location.city.trim().toLowerCase()
   );
+  // The locations page for a city must point at that city's own repair
+  // page with an exact anchor, so the city page — not this hub — ranks
+  // for "sprinkler repair <city>". Only set when the link list for this
+  // slug actually contains the city's own page.
+  const ownCityLink = (SPRINKLER_CITY_LINKS[slug] || []).find(
+    (city) => city.href === `/sprinkler-repair-${slug}`
+  );
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -381,6 +388,28 @@ export default async function LocationDetail({ slug, locale = "en" }: { slug: st
                       </div>
                     </div>
                   </>
+                )}
+
+                {ownCityLink && (
+                  <p className="location-section-text">
+                    {isSpanish ? (
+                      <>
+                        {"¿Necesitas un técnico de sprinklers en esta ciudad? Mira nuestra página de "}
+                        <Link href={esCityHref(ownCityLink.href)}>
+                          {`reparación de sprinklers en ${location.city}`}
+                        </Link>
+                        {" para ver los servicios, las fotos y las preguntas frecuentes de esta ciudad."}
+                      </>
+                    ) : (
+                      <>
+                        {"Need a sprinkler crew in this city? See our "}
+                        <Link href={ownCityLink.href}>
+                          {`sprinkler repair in ${location.city}`}
+                        </Link>
+                        {" page for this city's services, photos and FAQs."}
+                      </>
+                    )}
+                  </p>
                 )}
 
                 {/* Sprinkler Repair by City */}

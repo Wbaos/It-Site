@@ -511,6 +511,29 @@ function renderAreaSegments(segments: CityAreaSegment[], locale: Locale) {
   return nodes;
 }
 
+
+// Broward priority cluster: these city pages link to each other so the
+// city page itself — not the service hub or a /locations page — is the
+// one that ranks for "sprinkler repair <city>". Southwest Ranches is a
+// link target only: its page already ranks at the top and stays
+// untouched. Same single template for EN/ES; only the text changes.
+const PRIORITY_CITY_CLUSTER = [
+  { slug: "miramar", name: "Miramar" },
+  { slug: "pembroke-pines", name: "Pembroke Pines" },
+  { slug: "weston", name: "Weston" },
+  { slug: "sunrise", name: "Sunrise" },
+  { slug: "davie", name: "Davie" },
+  { slug: "hollywood", name: "Hollywood" },
+  { slug: "fort-lauderdale", name: "Fort Lauderdale" },
+  { slug: "plantation", name: "Plantation" },
+  { slug: "cooper-city", name: "Cooper City" },
+];
+const CLUSTER_HOST_SLUGS = new Set(PRIORITY_CITY_CLUSTER.map((c) => c.slug));
+const CLUSTER_LINK_TARGETS = [
+  ...PRIORITY_CITY_CLUSTER,
+  { slug: "southwest-ranches", name: "Southwest Ranches" },
+];
+
 export default async function CityTemplate({ city, locale }: { city: City; locale: Locale }) {
   // Live Google rating summary, from the single shared source in
   // lib/google-reviews (Sanity site-settings). Used for the hero stat (via
@@ -891,6 +914,47 @@ export default async function CityTemplate({ city, locale }: { city: City; local
           </div>
         </div>
       </section>
+
+      {/* Nearby Broward priority cities, linked with the same index-row
+          style as the service pages, so each city page gets exact-anchor
+          links from its sibling city pages. */}
+      {CLUSTER_HOST_SLUGS.has(slug) && (
+        <section className="spr-landing-section" aria-label={isEs ? "Ciudades cercanas" : "Nearby cities"}>
+          <div className="spr-landing">
+            <div className="related-services-box">
+              <h2>
+                {isEs
+                  ? "Reparación de sprinklers en ciudades cercanas"
+                  : "Sprinkler repair in nearby cities"}
+              </h2>
+              <p className="related-services-intro">
+                {isEs
+                  ? "También reparamos e instalamos sistemas de sprinklers en estas ciudades de Broward, cada una con su propia página:"
+                  : "We also repair and install sprinkler systems in these Broward cities, each with its own page:"}
+              </p>
+              <ol className="heritage-related-list">
+                {CLUSTER_LINK_TARGETS.filter((c) => c.slug !== slug).map((c, i) => (
+                  <li key={c.slug} className="heritage-related-row">
+                    <Link href={cityHref(c.slug, locale)} className="heritage-related-link">
+                      <span className="heritage-related-num" aria-hidden="true">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="heritage-related-text">
+                        <span className="heritage-related-title">
+                          {isEs
+                            ? `Reparación de sprinklers en ${c.name}`
+                            : `Sprinkler repair in ${c.name}`}
+                        </span>
+                      </span>
+                      <span className="heritage-related-arrow" aria-hidden="true">→</span>
+                    </Link>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="spr-landing-section" aria-label={t.ariaFaq}>
         <div className="spr-landing">
