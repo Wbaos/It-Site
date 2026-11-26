@@ -128,7 +128,13 @@ export default function Contact({
         </p>
         <a
           className="btn-submit"
-          style={{ display: "block", textAlign: "center", textDecoration: "none" }}
+          style={{
+            display: "block",
+            width: "fit-content",
+            margin: "12px auto 0",
+            textAlign: "center",
+            textDecoration: "none",
+          }}
           href={
             isSpanish
               ? "https://wa.me/17863662729?text=Hola%2C%20te%20mando%20fotos%20de%20mi%20sistema%20de%20sprinklers."
